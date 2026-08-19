@@ -1,0 +1,21 @@
+export const EXPRESSION_DESCRIPTIONS: Record<string, string> = {
+    equals_op: "Checks if two values are exactly equal",
+    isin_op: "Checks if a value exists in a list",
+    notequals_op: "Checks if two values are not equal",
+    notin_op: "Checks if a value does not exist in a list",
+    object_isin_op: "Checks if an object exists in a list of objects",
+    object_equals_op: "Checks if two objects are equal",
+    exists_object_isin_op: "Checks if an object matching criteria exists in a list",
+    attribute_equals: "Checks if an object's attribute equals a specific value",
+    attribute_isin: "Checks if an object's attribute value exists in a list",
+    exists_attribute_notin: "Checks if an attribute does not exist or is not in a list",
+    exists_object_with_attribute_match: "Checks if an object exists with matching attribute values",
+    object_with_attribute_match: "Matches objects based on attribute criteria",
+    list_any_attribute_isin:
+        "Checks if any object in a list has an attribute value in a given list",
+    results_equation: "Processes and evaluates result equations",
+    isin_ont: "Checks if a value exists in an ontology (knowledge base)",
+    equals_ont: "Checks if a value equals an ontology term",
+    exists_value_equals_ont: "Checks if a value matching ontology criteria exists",
+    not_isin_ont: "Checks if a value does not exist in an ontology",
+};

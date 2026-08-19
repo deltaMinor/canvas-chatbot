@@ -1,0 +1,13 @@
+**/.git
+**/.venv
+**/venv
+**/__pycache__
+**/.vscode
+**/node_modules
+server.log
+worker.log
+.env
+Dockerfile
+
+# temp_dir  
+*/module

@@ -1,0 +1,9 @@
+jsonschema>=4.26.0
+langchain-core>=1.4.0
+langchain-google-genai>=4.2.3
+langchain-ollama>=1.1.0
+langchain-openai>=1.2.2
+networkx>=3.4.2
+owlready2>=0.48
+pandas>=2.2.0
+shared-libs

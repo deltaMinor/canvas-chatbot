@@ -1,0 +1,62 @@
+import os
+
+import pytz
+
+# =====================
+# ENVIRONMENT VARIABLES
+# =====================
+DB_NAME = "tm_db_dev"
+
+LOG_PERF_TIMER = os.environ.get("LOG_PERF_TIMER")
+SESSION_EXPIRE_SECONDS = int(os.environ.get("SESSION_EXPIRE_SECONDS", 60 * 30))
+TASK_TIME_LIMIT = int(os.environ.get("TASK_TIME_LIMIT", 60 * 5))
+TASK_WAIT_RESULT_TIMEOUT = int(os.environ.get("TASK_WAIT_RESULT_TIMEOUT", 60 * 5))
+TASK_TIME_LIMIT_ENGINE_MAIN = int(
+    os.environ.get("TASK_TIME_LIMIT_ENGINE_MAIN", 60 * 60)
+)
+TASK_TIME_LIMIT_ENGINE_LLM = int(os.environ.get("TASK_TIME_LIMIT_ENGINE_LLM", 60 * 120))
+TASK_SOFT_TIME_LIMIT_ENGINE_LLM = int(
+    os.environ.get("TASK_SOFT_TIME_LIMIT_ENGINE_LLM", 60 * 119)
+)
+TASK_TIME_LIMIT_ENGINE_PENTEST = int(
+    os.environ.get("TASK_TIME_LIMIT_ENGINE_PENTEST", 60 * 120)
+)
+TASK_SOFT_TIME_LIMIT_ENGINE_PENTEST = int(
+    os.environ.get("TASK_SOFT_TIME_LIMIT_ENGINE_PENTEST", 60 * 119)
+)
+WRITE_ENGINE_RESULT_TO_FILE = bool(
+    os.environ.get("WRITE_ENGINE_RESULT_TO_FILE") == "TRUE"
+)
+
+
+# =================
+# DYNAMIC VARIABLES
+# =================
+TASK_SOFT_TIME_LIMIT = max(TASK_TIME_LIMIT - 10, 1)
+
+
+# =========
+# CONSTANTS
+# =========
+AUDIT_LOG_LENGTH = 3
+PBKDF2HMAC_ITERATIONS_DATA = 100000
+PBKDF2HMAC_ITERATIONS_PWD = 600000
+PBKDF2HMAC_LENGTH_DATA = 32
+PBKDF2HMAC_LENGTH_PWD = 32
+PBKDF2HMAC_SCHEME_DATA = "pbkdf2_sha256"
+PBKDF2HMAC_SCHEME_PWD = "pbkdf2_sha256"
+REDIS_DEFAULT_EXPIRY = 60
+TASK_DEFAULT_RETRY_DELAY = 0
+TASK_EXPIRES = 60
+TASK_MAX_RETRIES = 0
+TIMER_THREADING_INTERVAL = 10
+TIMER_THRESHOLD = 60 * 60  # seconds
+TZINFO = pytz.utc
+
+
+# =========
+# PATHS
+# =========
+EXEMPTED_PATHS = [
+    "/api/v1/application/app_preflight",
+]

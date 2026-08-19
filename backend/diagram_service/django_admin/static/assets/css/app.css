@@ -1,0 +1,198 @@
+.bg-secondary {
+  background-color: #f7fafc !important;
+}
+
+a.bg-secondary:hover,
+a.bg-secondary:focus,
+button.bg-secondary:hover,
+button.bg-secondary:focus {
+  background-color: #d2e3ee !important;
+}
+
+.text-primary {
+  color: #5e72e4 !important;
+}
+
+a.text-primary:hover,
+a.text-primary:focus {
+  color: #233dd2 !important;
+}
+
+.text-secondary {
+  color: #f7fafc !important;
+}
+
+a.text-secondary:hover,
+a.text-secondary:focus {
+  color: #bfd7e7 !important;
+}
+
+.text-success {
+  color: #2dce89 !important;
+}
+
+a.text-success:hover,
+a.text-success:focus {
+  color: #1f8f5f !important;
+}
+
+.text-info {
+  color: #11cdef !important;
+}
+
+a.text-info:hover,
+a.text-info:focus {
+  color: #0b90a8 !important;
+}
+
+.text-warning {
+  color: #fb6340 !important;
+}
+
+a.text-warning:hover,
+a.text-warning:focus {
+  color: #ea3005 !important;
+}
+
+.text-danger {
+  color: #f5365c !important;
+}
+
+a.text-danger:hover,
+a.text-danger:focus {
+  color: #d40b33 !important;
+}
+
+.text-light {
+  color: #adb5bd !important;
+}
+
+a.text-light:hover,
+a.text-light:focus {
+  color: #838f9b !important;
+}
+
+.text-dark {
+  color: #212529 !important;
+}
+
+.text-default {
+  color: #172b4d !important;
+}
+
+a.text-default:hover,
+a.text-default:focus {
+  color: #050a12 !important;
+}
+
+a.text-white:hover,
+a.text-white:focus {
+  color: #d9d9d9 !important;
+}
+
+a.text-neutral:hover,
+a.text-neutral:focus {
+  color: #d9d9d9 !important;
+}
+
+.text-body {
+  color: #525f7f !important;
+}
+
+.text-muted {
+  color: #8898aa !important;
+}
+
+.container {
+  width: 100%;
+  padding-right: 15px;
+  padding-left: 15px;
+  margin-right: auto;
+  margin-left: auto;
+}
+@media (min-width: 576px) {
+  .container {
+    max-width: 540px;
+  }
+}
+@media (min-width: 768px) {
+  .container {
+    max-width: 720px;
+  }
+}
+@media (min-width: 992px) {
+  .container {
+    max-width: 960px;
+  }
+}
+@media (min-width: 1200px) {
+  .container {
+    max-width: 1140px;
+  }
+}
+
+.card {
+  margin-bottom: 30px;
+  box-shadow: 0 0 2rem 0 rgba(136, 152, 170, 0.15);
+  border: 0;
+}
+
+.card-translucent {
+  background-color: rgba(18, 91, 152, 0.08);
+}
+
+.card-deck .card {
+  margin-bottom: 30px;
+}
+
+.card .table {
+  margin-bottom: 0;
+}
+
+.card .table td,
+.card .table th {
+  padding-left: 1.5rem;
+  padding-right: 1.5rem;
+}
+
+.card-header {
+  padding: 1.25rem 1.5rem;
+  margin-bottom: 0;
+  background-color: #fff;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+}
+
+.card-header:first-child {
+  border-radius: calc(0.375rem - 1px) calc(0.375rem - 1px) 0 0;
+}
+
+.card-header + .list-group .list-group-item:first-child {
+  border-top: 0;
+}
+
+.card-footer {
+  padding: 1.25rem 1.5rem;
+  background-color: #fff;
+  border-top: 1px solid rgba(0, 0, 0, 0.05);
+}
+.card-footer:last-child {
+  border-radius: 0 0 calc(0.375rem - 1px) calc(0.375rem - 1px);
+}
+
+.card-header-tabs {
+  margin-right: -0.75rem;
+  margin-bottom: -1.25rem;
+  margin-left: -0.75rem;
+  border-bottom: 0;
+}
+
+.card-header-pills {
+  margin-right: -0.75rem;
+  margin-left: -0.75rem;
+}
+
+.card-body {
+  flex: 1 1 auto;
+  min-height: 1px;
+  padding: 1.5rem;
+}

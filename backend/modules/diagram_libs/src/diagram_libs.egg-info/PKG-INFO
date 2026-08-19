@@ -1,0 +1,127 @@
+Metadata-Version: 2.4
+Name: diagram-libs
+Version: 0.1.0
+Summary: Internal diagram engine library for tm-backend services.
+Author-email: Integrative Threat Modelling Admin <tm_admin@iarcs-create.edu.sg>
+Maintainer-email: Integrative Threat Modelling Admin <tm_admin@iarcs-create.edu.sg>
+License: Proprietary
+Keywords: diagram,engine,internal,libraries
+Classifier: Private :: Do Not Upload
+Classifier: Intended Audience :: Developers
+Classifier: Topic :: Software Development :: Libraries
+Classifier: Operating System :: OS Independent
+Classifier: Programming Language :: Python :: 3 :: Only
+Classifier: Programming Language :: Python :: 3.12
+Classifier: License :: Other/Proprietary License
+Requires-Python: <3.14,>=3.10
+Description-Content-Type: text/markdown
+Requires-Dist: engine-libs
+Requires-Dist: pillow>=12.2.0
+Requires-Dist: shared-libs
+
+# diagram_libs
+
+Diagram-specific LLM engine library. Houses the generators and validators that are exclusively needed by `diagram_service`. Extracting them here removes `owlready2` (OWL ontology parser) from the `risk_register_service` install graph, where it was never needed.
+
+> **Status:** Directory scaffold created. Code migration from `engine_libs` is in progress.
+
+---
+
+## Dependants
+
+| Service | What it uses |
+|---|---|
+| `diagram_service` | Both generators, TOSCA validators, diagram layout utility |
+
+---
+
+## Dependencies
+
+```
+engine-libs    LLM runtime, provider implementations, generator base classes
+shared-libs    Domain models, infrastructure, protocols
+owlready2      OWL ontology parsing for TOSCA hierarchy validation
+pillow         Image dimension extraction for canvas coordinate scaling
+```
+
+---
+
+## Package layout
+
+```
+src/diagram_libs/
+├── generators/
+│   ├── llm_generator_topology/     Architecture topology diagram generation
+│   └── llm_generator_dataflow/     Data-flow diagram generation
+├── lib/
+│   └── tosca_validator/            TOSCA template edge and hierarchy validation
+├── utils/
+│   └── diagram_layout_util.py      Canvas coordinate scaling from image dimensions
+└── ontology/
+    └── (TOSCA / SODALITE RDF, TTL, XML files)
+```
+
+---
+
+## Generators
+
+### `LLMTopologyGenerator`  (`generators/llm_generator_topology/`)
+
+Generates architecture topology diagrams from a combination of:
+- An uploaded image of an existing diagram (data URL, image/* or PDF)
+- Questionnaire-derived system description
+- TOSCA icon-to-type mapping from the knowledge base
+
+The internal worker (`_LLMTopologyWorker`) sends the image and prompts to the configured LLM provider and receives a structured `LLMReturnStructDiagram` containing typed nodes and edges. Nodes carry `icon`, `label`, `tosca_type`, `parentId`, and initial `position` hints. The output is then:
+1. Deduplicated (by icon + label + parent)
+2. Merged with layout anchors extracted from the original image
+3. Repositioned by `DiagramNodesReposition` (grid layout within cluster parents)
+4. Post-validated and compacted by `DiagramNodesLayoutOptimizer`
+
+### `LLMDataflowGenerator`  (`generators/llm_generator_dataflow/`)
+
+Generates data-flow diagrams for individual user-story canvases. Takes the project questionnaire, user-story card selections, and architecture context as input and produces a `LLMReturnStructDataflow` with typed data-flow edges (source node → target node, protocol, data classification).
+
+The internal worker (`_LLMDataflowWorker`) orchestrates the prompt assembly via `LLMPromptBuilder` and routes inference through `LlmExecutionResolver` to the appropriate provider.
+
+---
+
+## TOSCA validators (`lib/tosca_validator/`)
+
+Validates TOSCA-typed architecture diagrams against ontology rules defined in `ontology/`. Two validators are used by the diagram service's `ProjectADApplicationService`:
+
+### `ToscaEdgeValidator`
+
+Checks that edges between diagram nodes are permitted by the TOSCA relationship model:
+- Loads the TOSCA and SODALITE ontologies via `owlready2`
+- For each canvas edge, validates that the `tosca_type` of the source and target nodes allow the declared relationship type
+- Returns a list of `EdgeValidationIssue` objects with severity and message
+
+### `ToscaHierarchyValidator`
+
+Checks that parent–child cluster containment is valid under the TOSCA node hierarchy:
+- A node can only be hosted inside a cluster whose `tosca_type` permits it as a child according to the ontology
+- Returns a list of `HierarchyValidationIssue` objects
+
+Both validators write their findings to the canvas `warnings` list, surfaced in the diagram editor UI without blocking the user.
+
+---
+
+## Utilities (`utils/`)
+
+### `DiagramLayoutUtil`  (`utils/diagram_layout_util.py`)
+
+Provides `build_layout_hints_from_data_url(data_url: str) -> DiagramLayoutHints`.
+
+Decodes a base64 image or PDF data URL, uses Pillow to extract the image dimensions, and returns a `DiagramLayoutHints` object used to scale LLM-provided bounding-box coordinates into canvas coordinates (canvas size defaults: 2000 × 1200 px). The hints include per-node confidence values that determine the `layout_lock` strength (`"hard"` ≥ 0.85, `"soft"` ≥ 0.60, `"none"` below).
+
+---
+
+## Ontology files (`ontology/`)
+
+TOSCA and SODALITE ontology definitions used by the TOSCA validators at runtime. Loaded once via `owlready2` and cached. Files include:
+- TOSCA Simple Profile ontology (`.ttl`, `.rdf`)
+- SODALITE abstract resource types (`.xml`)
+- Custom tm-backend node type extensions
+
+These files determine which node-to-node relationships are structurally valid and which parent–child containment rules apply.

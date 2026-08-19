@@ -1,0 +1,2268 @@
+{
+    "templateData": {
+        "edges": [
+            {
+                "id": "edge_21769da7-f251-4ca2-998a-e27364ef8b48",
+                "animated": false,
+                "className": "",
+                "data": {
+                    "type": "architecture",
+                    "bidirectional": false,
+                    "lineSegments": [
+                        {
+                            "lineStart": {
+                                "x": 450,
+                                "y": -60
+                            },
+                            "lineEnd": {
+                                "x": 450,
+                                "y": -60
+                            },
+                            "lineLength": 0,
+                            "handleOffset": 0,
+                            "snappedHandleOffset": 0,
+                            "direction": "vertical",
+                            "id": "line_segment_252eb765-b770-45f2-b0e6-7e9a8f828eec"
+                        }
+                    ]
+                },
+                "deletable": true,
+                "hidden": false,
+                "interactionWidth": 20,
+                "label": "",
+                "labelBgPadding": [6, 2],
+                "markerEnd": {
+                    "type": "arrowclosed",
+                    "color": "#000"
+                },
+                "markerStart": {},
+                "source": "node_9c003b07-ba62-4afe-841d-bbbaf1d41ab0",
+                "sourceHandle": "source_right",
+                "style": {
+                    "strokeWidth": 2,
+                    "stroke": "#000",
+                    "opacity": 1
+                },
+                "target": "node_4360c8aa-423c-409c-a0b6-60ca918a70a0",
+                "targetHandle": "target_left",
+                "type": "floating",
+                "zIndex": 101,
+                "selected": false
+            },
+            {
+                "id": "edge_3db84592-206a-49de-bf28-73466196a418",
+                "animated": false,
+                "className": "",
+                "data": {
+                    "type": "architecture",
+                    "bidirectional": false,
+                    "lineSegments": [
+                        {
+                            "lineStart": {
+                                "x": 610,
+                                "y": -60
+                            },
+                            "lineEnd": {
+                                "x": 610,
+                                "y": -60
+                            },
+                            "lineLength": 0,
+                            "handleOffset": 0,
+                            "snappedHandleOffset": 0,
+                            "direction": "vertical",
+                            "id": "line_segment_add657c0-97d4-4511-8214-3ea7eae87061"
+                        }
+                    ]
+                },
+                "deletable": true,
+                "hidden": false,
+                "interactionWidth": 20,
+                "label": "",
+                "labelBgPadding": [6, 2],
+                "markerEnd": {
+                    "type": "arrowclosed",
+                    "color": "#000"
+                },
+                "markerStart": {},
+                "source": "node_4360c8aa-423c-409c-a0b6-60ca918a70a0",
+                "sourceHandle": "source_right",
+                "style": {
+                    "strokeWidth": 2,
+                    "stroke": "#000",
+                    "opacity": 1
+                },
+                "target": "node_a870f378-a1bf-4693-975e-7c5c40ab3d99",
+                "targetHandle": "target_left",
+                "type": "floating",
+                "zIndex": 101,
+                "selected": false
+            },
+            {
+                "id": "edge_fdae6d6f-cb64-4a34-bca6-935d92a5c719",
+                "animated": false,
+                "className": "",
+                "data": {
+                    "type": "architecture",
+                    "bidirectional": false,
+                    "lineSegments": [
+                        {
+                            "lineStart": {
+                                "x": 820,
+                                "y": -52.5
+                            },
+                            "lineEnd": {
+                                "x": 820,
+                                "y": 60
+                            },
+                            "lineLength": 112.5,
+                            "handleOffset": 0,
+                            "snappedHandleOffset": 0,
+                            "direction": "vertical",
+                            "id": "line_segment_8f900990-1f07-4e34-b8e3-3bf3cacfb1fc"
+                        }
+                    ]
+                },
+                "deletable": true,
+                "hidden": false,
+                "interactionWidth": 20,
+                "label": "",
+                "labelBgPadding": [6, 2],
+                "markerEnd": {
+                    "type": "arrowclosed",
+                    "color": "#000"
+                },
+                "markerStart": {},
+                "source": "node_a870f378-a1bf-4693-975e-7c5c40ab3d99",
+                "sourceHandle": "source_right",
+                "style": {
+                    "strokeWidth": 2,
+                    "stroke": "#000",
+                    "opacity": 1
+                },
+                "target": "node_1452aeb4-885b-4ace-aef9-9d4799ba0c04",
+                "targetHandle": "target_left",
+                "type": "floating",
+                "zIndex": 101,
+                "selected": false
+            },
+            {
+                "id": "edge_94edc259-c4c4-4082-8e02-c4bab98b8265",
+                "animated": false,
+                "className": "",
+                "data": {
+                    "type": "architecture",
+                    "bidirectional": false,
+                    "lineSegments": [
+                        {
+                            "lineStart": {
+                                "x": 942.5,
+                                "y": 140
+                            },
+                            "lineEnd": {
+                                "x": 880,
+                                "y": 140
+                            },
+                            "lineLength": 0,
+                            "handleOffset": 0,
+                            "snappedHandleOffset": 0,
+                            "direction": "horizontal",
+                            "id": "line_segment_43d63341-f562-4182-ad14-d6881d3c0e82"
+                        }
+                    ]
+                },
+                "deletable": true,
+                "hidden": false,
+                "interactionWidth": 20,
+                "label": "",
+                "labelBgPadding": [6, 2],
+                "markerEnd": {
+                    "type": "arrowclosed",
+                    "color": "#000"
+                },
+                "markerStart": {},
+                "source": "node_1452aeb4-885b-4ace-aef9-9d4799ba0c04",
+                "sourceHandle": "source_bottom",
+                "style": {
+                    "strokeWidth": 2,
+                    "stroke": "#000",
+                    "opacity": 1
+                },
+                "target": "node_a838e007-e022-46ab-877c-4ef7e51691fb",
+                "targetHandle": "target_top",
+                "type": "floating",
+                "zIndex": 101,
+                "selected": false
+            },
+            {
+                "id": "edge_b712b1f3-1224-4ca2-a54d-4bd3628fb4dd",
+                "animated": false,
+                "className": "",
+                "data": {
+                    "type": "architecture",
+                    "bidirectional": false,
+                    "lineSegments": [
+                        {
+                            "lineStart": {
+                                "x": 1160,
+                                "y": -240
+                            },
+                            "lineEnd": {
+                                "x": 1160,
+                                "y": -240
+                            },
+                            "lineLength": 0,
+                            "handleOffset": 0,
+                            "snappedHandleOffset": 0,
+                            "direction": "vertical",
+                            "id": "line_segment_23a593d6-0b96-45ff-af5a-309d52078c5c"
+                        }
+                    ]
+                },
+                "deletable": true,
+                "hidden": false,
+                "interactionWidth": 20,
+                "label": "",
+                "labelBgPadding": [6, 2],
+                "markerEnd": {
+                    "type": "arrowclosed",
+                    "color": "#000"
+                },
+                "markerStart": {},
+                "source": "node_b62a710f-8a26-4b7b-9d22-3910b38c6fa8",
+                "sourceHandle": "source_left",
+                "style": {
+                    "strokeWidth": 2,
+                    "stroke": "#000",
+                    "opacity": 1
+                },
+                "target": "node_ee698f60-ab99-4091-95b7-2f9650186bec",
+                "targetHandle": "target_right",
+                "type": "floating",
+                "zIndex": 101,
+                "selected": false
+            },
+            {
+                "id": "edge_e91357e1-82df-4740-a301-c8e91a5affbe",
+                "animated": false,
+                "className": "",
+                "data": {
+                    "type": "architecture",
+                    "bidirectional": false,
+                    "lineSegments": []
+                },
+                "deletable": true,
+                "hidden": false,
+                "interactionWidth": 20,
+                "label": "",
+                "labelBgPadding": [6, 2],
+                "markerEnd": {
+                    "type": "arrowclosed",
+                    "color": "#000"
+                },
+                "markerStart": {},
+                "source": "node_a870f378-a1bf-4693-975e-7c5c40ab3d99",
+                "sourceHandle": "source_right",
+                "style": {
+                    "strokeWidth": 2,
+                    "stroke": "#000",
+                    "opacity": 1
+                },
+                "target": "node_ee698f60-ab99-4091-95b7-2f9650186bec",
+                "targetHandle": "target_bottom",
+                "type": "floating",
+                "zIndex": 101,
+                "selected": false
+            },
+            {
+                "id": "edge_3862a3c5-8cfb-45af-adf1-d060eee92766",
+                "animated": false,
+                "className": "",
+                "data": {
+                    "type": "architecture",
+                    "bidirectional": false,
+                    "lineSegments": [
+                        {
+                            "lineStart": {
+                                "x": 960,
+                                "y": -247.5
+                            },
+                            "lineEnd": {
+                                "x": 960,
+                                "y": -300
+                            },
+                            "lineLength": 52.5,
+                            "handleOffset": 0,
+                            "snappedHandleOffset": 0,
+                            "direction": "vertical",
+                            "id": "line_segment_af3a3982-7636-4c70-ba1c-689430b43752"
+                        }
+                    ]
+                },
+                "deletable": true,
+                "hidden": false,
+                "interactionWidth": 20,
+                "label": "",
+                "labelBgPadding": [6, 2],
+                "markerEnd": {
+                    "type": "arrowclosed",
+                    "color": "#000"
+                },
+                "markerStart": {},
+                "source": "node_ee698f60-ab99-4091-95b7-2f9650186bec",
+                "sourceHandle": "source_left",
+                "style": {
+                    "strokeWidth": 2,
+                    "stroke": "#000",
+                    "opacity": 1
+                },
+                "target": "node_e5d1be4c-6986-4f2e-9914-3a1e9ee60a89",
+                "targetHandle": "target_right",
+                "type": "floating",
+                "zIndex": 101,
+                "selected": false
+            },
+            {
+                "id": "edge_794778ff-35e0-44d8-a3d3-159676df0ef9",
+                "animated": false,
+                "className": "",
+                "data": {
+                    "type": "architecture",
+                    "bidirectional": false,
+                    "lineSegments": [
+                        {
+                            "lineStart": {
+                                "x": 960,
+                                "y": -232.5
+                            },
+                            "lineEnd": {
+                                "x": 960,
+                                "y": -180
+                            },
+                            "lineLength": 52.5,
+                            "handleOffset": 0,
+                            "snappedHandleOffset": 0,
+                            "direction": "vertical",
+                            "id": "line_segment_62f7fd26-f948-4e08-a5c6-8642775207b6"
+                        }
+                    ]
+                },
+                "deletable": true,
+                "hidden": false,
+                "interactionWidth": 20,
+                "label": "",
+                "labelBgPadding": [6, 2],
+                "markerEnd": {
+                    "type": "arrowclosed",
+                    "color": "#000"
+                },
+                "markerStart": {},
+                "source": "node_ee698f60-ab99-4091-95b7-2f9650186bec",
+                "sourceHandle": "source_left",
+                "style": {
+                    "strokeWidth": 2,
+                    "stroke": "#000",
+                    "opacity": 1
+                },
+                "target": "node_296cabd4-a59b-470e-b712-b98ecc21f7fc",
+                "targetHandle": "target_right",
+                "type": "floating",
+                "zIndex": 101,
+                "selected": false
+            },
+            {
+                "id": "edge_92944234-259d-4ea7-8f81-6a41fd1333c9",
+                "animated": false,
+                "className": "",
+                "data": {
+                    "type": "architecture",
+                    "bidirectional": false,
+                    "lineSegments": [
+                        {
+                            "lineStart": {
+                                "x": 1690,
+                                "y": -530
+                            },
+                            "lineEnd": {
+                                "x": 1690,
+                                "y": -530
+                            },
+                            "lineLength": 0,
+                            "handleOffset": 0,
+                            "snappedHandleOffset": 0,
+                            "direction": "vertical",
+                            "id": "line_segment_8795ace1-3dd0-42c1-8e54-3b27bb3768d7"
+                        }
+                    ]
+                },
+                "deletable": true,
+                "hidden": false,
+                "interactionWidth": 20,
+                "label": "",
+                "labelBgPadding": [6, 2],
+                "markerEnd": {
+                    "type": "arrowclosed",
+                    "color": "#000"
+                },
+                "markerStart": {},
+                "source": "node_78ee213d-0d7d-40cb-8414-1378ba6cc120",
+                "sourceHandle": "source_right",
+                "style": {
+                    "strokeWidth": 2,
+                    "stroke": "#000",
+                    "opacity": 1
+                },
+                "target": "node_ab68048c-9774-4f83-807a-8b6fb16964fe",
+                "targetHandle": "target_left",
+                "type": "floating",
+                "zIndex": 101,
+                "selected": false
+            },
+            {
+                "id": "edge_27cc794e-8809-43f0-a1eb-2c5e0429f23b",
+                "animated": false,
+                "className": "",
+                "data": {
+                    "type": "architecture",
+                    "bidirectional": false,
+                    "lineSegments": [
+                        {
+                            "lineStart": {
+                                "x": 1895,
+                                "y": -530
+                            },
+                            "lineEnd": {
+                                "x": 1895,
+                                "y": -530
+                            },
+                            "lineLength": 0,
+                            "handleOffset": 0,
+                            "snappedHandleOffset": 0,
+                            "direction": "vertical",
+                            "id": "line_segment_a526cd4a-6aec-41b7-ad16-7c9f6be17eb8"
+                        }
+                    ]
+                },
+                "deletable": true,
+                "hidden": false,
+                "interactionWidth": 20,
+                "label": "",
+                "labelBgPadding": [6, 2],
+                "markerEnd": {
+                    "type": "arrowclosed",
+                    "color": "#000"
+                },
+                "markerStart": {},
+                "source": "node_ab68048c-9774-4f83-807a-8b6fb16964fe",
+                "sourceHandle": "source_right",
+                "style": {
+                    "strokeWidth": 2,
+                    "stroke": "#000",
+                    "opacity": 1
+                },
+                "target": "node_4f73abfa-a5ea-48a9-a4b7-6cd1ef323f9b",
+                "targetHandle": "target_left",
+                "type": "floating",
+                "zIndex": 101,
+                "selected": false
+            },
+            {
+                "id": "edge_64c1adf4-9c9d-4700-aeaa-b14712bd73fa",
+                "animated": false,
+                "className": "",
+                "data": {
+                    "type": "architecture",
+                    "bidirectional": false,
+                    "lineSegments": [
+                        {
+                            "lineStart": {
+                                "x": 1185,
+                                "y": -527.5
+                            },
+                            "lineEnd": {
+                                "x": 1185,
+                                "y": -530
+                            },
+                            "lineLength": 2.5,
+                            "handleOffset": 0,
+                            "snappedHandleOffset": 0,
+                            "direction": "vertical",
+                            "id": "line_segment_7c28b2f9-8f9e-4408-9500-5479386ed732"
+                        }
+                    ]
+                },
+                "deletable": true,
+                "hidden": false,
+                "interactionWidth": 20,
+                "label": "",
+                "labelBgPadding": [6, 2],
+                "markerEnd": {
+                    "type": "arrowclosed",
+                    "color": "#000"
+                },
+                "markerStart": {},
+                "source": "node_3eaafd60-31da-452f-aca4-37c8fd7c22e3",
+                "sourceHandle": "source_right",
+                "style": {
+                    "strokeWidth": 2,
+                    "stroke": "#000",
+                    "opacity": 1
+                },
+                "target": "node_2b308518-d7e7-4ba4-8f16-0ee14246a090",
+                "targetHandle": "target_left",
+                "type": "floating",
+                "zIndex": 101,
+                "selected": false
+            },
+            {
+                "id": "edge_e6b97d02-fa6c-4eb8-b7b6-c8989035f984",
+                "animated": false,
+                "className": "",
+                "data": {
+                    "type": "architecture",
+                    "bidirectional": false,
+                    "lineSegments": [
+                        {
+                            "lineStart": {
+                                "x": 1500,
+                                "y": -530
+                            },
+                            "lineEnd": {
+                                "x": 1500,
+                                "y": -530
+                            },
+                            "lineLength": 0,
+                            "handleOffset": 0,
+                            "snappedHandleOffset": 0,
+                            "direction": "vertical",
+                            "id": "line_segment_46d489c8-bed9-4350-88a2-6e471b1b64a6"
+                        }
+                    ]
+                },
+                "deletable": true,
+                "hidden": false,
+                "interactionWidth": 20,
+                "label": "",
+                "labelBgPadding": [6, 2],
+                "markerEnd": {
+                    "type": "arrowclosed",
+                    "color": "#000"
+                },
+                "markerStart": {},
+                "source": "node_2b308518-d7e7-4ba4-8f16-0ee14246a090",
+                "sourceHandle": "source_right",
+                "style": {
+                    "strokeWidth": 2,
+                    "stroke": "#000",
+                    "opacity": 1
+                },
+                "target": "node_78ee213d-0d7d-40cb-8414-1378ba6cc120",
+                "targetHandle": "target_left",
+                "type": "floating",
+                "zIndex": 101,
+                "selected": false
+            },
+            {
+                "id": "edge_fbf07949-5b1e-4768-bf12-77b278821ee9",
+                "animated": false,
+                "className": "",
+                "data": {
+                    "type": "architecture",
+                    "bidirectional": false,
+                    "lineSegments": [
+                        {
+                            "lineStart": {
+                                "x": 957.5,
+                                "y": 140
+                            },
+                            "lineEnd": {
+                                "x": 1030,
+                                "y": 140
+                            },
+                            "lineLength": 0,
+                            "handleOffset": 0,
+                            "snappedHandleOffset": 0,
+                            "direction": "horizontal",
+                            "id": "line_segment_bc1031cc-bb29-4bed-ba55-55f7319de3df"
+                        }
+                    ]
+                },
+                "deletable": true,
+                "hidden": false,
+                "interactionWidth": 20,
+                "label": "",
+                "labelBgPadding": [6, 2],
+                "markerEnd": {
+                    "type": "arrowclosed",
+                    "color": "#000"
+                },
+                "markerStart": {},
+                "source": "node_1452aeb4-885b-4ace-aef9-9d4799ba0c04",
+                "sourceHandle": "source_bottom",
+                "style": {
+                    "strokeWidth": 2,
+                    "stroke": "#000",
+                    "opacity": 1
+                },
+                "target": "node_1263a732-9a6f-4b33-b62e-199cdec11afa",
+                "targetHandle": "target_top",
+                "type": "floating",
+                "zIndex": 101,
+                "selected": false
+            },
+            {
+                "id": "edge_ac1a02ba-0d9b-4713-a367-823d7760329c",
+                "animated": false,
+                "className": "",
+                "data": {
+                    "type": "architecture",
+                    "bidirectional": false,
+                    "lineSegments": []
+                },
+                "deletable": true,
+                "hidden": false,
+                "interactionWidth": 20,
+                "label": "",
+                "labelBgPadding": [6, 2],
+                "markerEnd": {
+                    "type": "arrowclosed",
+                    "color": "#000"
+                },
+                "markerStart": {},
+                "source": "node_b62a710f-8a26-4b7b-9d22-3910b38c6fa8",
+                "sourceHandle": "source_bottom",
+                "style": {
+                    "strokeWidth": 2,
+                    "stroke": "#000",
+                    "opacity": 1
+                },
+                "target": "node_1452aeb4-885b-4ace-aef9-9d4799ba0c04",
+                "targetHandle": "target_right",
+                "type": "floating",
+                "zIndex": 101,
+                "selected": false
+            },
+            {
+                "id": "edge_736ea9af-e949-4218-9b1c-faaf22e9bdeb",
+                "animated": false,
+                "className": "",
+                "data": {
+                    "type": "architecture",
+                    "bidirectional": false,
+                    "lineSegments": []
+                },
+                "deletable": true,
+                "hidden": false,
+                "interactionWidth": 20,
+                "label": "",
+                "labelBgPadding": [6, 2],
+                "markerEnd": {
+                    "type": "arrowclosed",
+                    "color": "#000"
+                },
+                "markerStart": {},
+                "source": "node_b62a710f-8a26-4b7b-9d22-3910b38c6fa8",
+                "sourceHandle": "source_top",
+                "style": {
+                    "strokeWidth": 2,
+                    "stroke": "#000",
+                    "opacity": 1
+                },
+                "target": "node_3eaafd60-31da-452f-aca4-37c8fd7c22e3",
+                "targetHandle": "target_right",
+                "type": "floating",
+                "zIndex": 101,
+                "selected": false
+            },
+            {
+                "id": "edge_169444c4-114e-4bdc-a4d6-fb6a3aa31b0a",
+                "animated": false,
+                "className": "",
+                "data": {
+                    "type": "architecture",
+                    "bidirectional": false,
+                    "lineSegments": [
+                        {
+                            "lineStart": {
+                                "x": 1745,
+                                "y": -240
+                            },
+                            "lineEnd": {
+                                "x": 1745,
+                                "y": -240
+                            },
+                            "lineLength": 0,
+                            "handleOffset": 0,
+                            "snappedHandleOffset": 0,
+                            "direction": "vertical",
+                            "id": "line_segment_fb33331b-1345-47e5-94ad-9e8d66ddfef8"
+                        }
+                    ]
+                },
+                "deletable": true,
+                "hidden": false,
+                "interactionWidth": 20,
+                "label": "",
+                "labelBgPadding": [6, 2],
+                "markerEnd": {
+                    "type": "arrowclosed",
+                    "color": "#000"
+                },
+                "markerStart": {},
+                "source": "node_293c8ee0-7ecc-4d9e-ade8-68cda4a26502",
+                "sourceHandle": "source_left",
+                "style": {
+                    "strokeWidth": 2,
+                    "stroke": "#000",
+                    "opacity": 1
+                },
+                "target": "node_ece60b2e-de25-4ef7-99ff-a19ee7aaf3c6",
+                "targetHandle": "target_right",
+                "type": "floating",
+                "zIndex": 101,
+                "selected": false
+            },
+            {
+                "id": "edge_ec5b45e6-9503-4860-93ae-f5f9d58e94c2",
+                "animated": false,
+                "className": "",
+                "data": {
+                    "type": "architecture",
+                    "bidirectional": false,
+                    "lineSegments": [
+                        {
+                            "lineStart": {
+                                "x": 1385,
+                                "y": -240
+                            },
+                            "lineEnd": {
+                                "x": 1385,
+                                "y": -240
+                            },
+                            "lineLength": 0,
+                            "handleOffset": 0,
+                            "snappedHandleOffset": 0,
+                            "direction": "vertical",
+                            "id": "line_segment_74ee3d6d-8eab-4b7d-b652-7d3d73cdb7cc"
+                        }
+                    ]
+                },
+                "deletable": true,
+                "hidden": false,
+                "interactionWidth": 20,
+                "label": "",
+                "labelBgPadding": [6, 2],
+                "markerEnd": {
+                    "type": "arrowclosed",
+                    "color": "#000"
+                },
+                "markerStart": {},
+                "source": "node_ece60b2e-de25-4ef7-99ff-a19ee7aaf3c6",
+                "sourceHandle": "source_left",
+                "style": {
+                    "strokeWidth": 2,
+                    "stroke": "#000",
+                    "opacity": 1
+                },
+                "target": "node_b62a710f-8a26-4b7b-9d22-3910b38c6fa8",
+                "targetHandle": "target_right",
+                "type": "floating",
+                "zIndex": 101,
+                "selected": false
+            },
+            {
+                "id": "edge_96113b8a-7fde-4cfc-acda-82c8fdfcba45",
+                "animated": false,
+                "className": "",
+                "data": {
+                    "type": "architecture",
+                    "bidirectional": false,
+                    "lineSegments": []
+                },
+                "deletable": true,
+                "hidden": false,
+                "interactionWidth": 20,
+                "label": "",
+                "labelBgPadding": [6, 2],
+                "markerEnd": {
+                    "type": "arrowclosed",
+                    "color": "#000"
+                },
+                "markerStart": {},
+                "source": "node_4f73abfa-a5ea-48a9-a4b7-6cd1ef323f9b",
+                "sourceHandle": "source_bottom",
+                "style": {
+                    "strokeWidth": 2,
+                    "stroke": "#000",
+                    "opacity": 1
+                },
+                "target": "node_293c8ee0-7ecc-4d9e-ade8-68cda4a26502",
+                "targetHandle": "target_top",
+                "type": "floating",
+                "zIndex": 101,
+                "selected": false
+            },
+            {
+                "id": "edge_8c0842ca-f986-46ca-a2cf-2b7bcbfcd24b",
+                "animated": false,
+                "className": "",
+                "data": {
+                    "type": "architecture",
+                    "bidirectional": false,
+                    "lineSegments": [
+                        {
+                            "lineStart": {
+                                "x": 1287.5,
+                                "y": -85
+                            },
+                            "lineEnd": {
+                                "x": 1380,
+                                "y": -85
+                            },
+                            "lineLength": 0,
+                            "handleOffset": 0,
+                            "snappedHandleOffset": 0,
+                            "direction": "horizontal",
+                            "id": "line_segment_cb4a6790-b37b-4fe6-96ac-d826826fc9b6"
+                        }
+                    ]
+                },
+                "deletable": true,
+                "hidden": false,
+                "interactionWidth": 20,
+                "label": "",
+                "labelBgPadding": [6, 2],
+                "markerEnd": {
+                    "type": "arrowclosed",
+                    "color": "#000"
+                },
+                "markerStart": {},
+                "source": "node_b62a710f-8a26-4b7b-9d22-3910b38c6fa8",
+                "sourceHandle": "source_bottom",
+                "style": {
+                    "strokeWidth": 2,
+                    "stroke": "#000",
+                    "opacity": 1
+                },
+                "target": "node_f21bd190-cab6-4499-91f8-5deefeb25d20",
+                "targetHandle": "target_top",
+                "type": "floating",
+                "zIndex": 101,
+                "selected": false
+            },
+            {
+                "id": "edge_124eb889-cb18-415c-9454-d3591f38c812",
+                "animated": false,
+                "className": "",
+                "data": {
+                    "type": "architecture",
+                    "bidirectional": false,
+                    "lineSegments": []
+                },
+                "deletable": true,
+                "hidden": false,
+                "interactionWidth": 20,
+                "label": "",
+                "labelBgPadding": [6, 2],
+                "markerEnd": {
+                    "type": "arrowclosed",
+                    "color": "#000"
+                },
+                "markerStart": {},
+                "source": "node_f21bd190-cab6-4499-91f8-5deefeb25d20",
+                "sourceHandle": "source_bottom",
+                "style": {
+                    "strokeWidth": 2,
+                    "stroke": "#000"
+                },
+                "target": "node_2e1a363d-3109-4d84-99f5-679b8aaf6c24",
+                "targetHandle": "target_top",
+                "type": "floating",
+                "zIndex": 100,
+                "selected": false
+            }
+        ],
+        "nodes": [
+            {
+                "ariaLabel": "",
+                "className": "",
+                "connectable": true,
+                "deletable": true,
+                "draggable": true,
+                "dragHandle": "",
+                "expandParent": false,
+                "hidden": false,
+                "id": "node_293c8ee0-7ecc-4d9e-ade8-68cda4a26502",
+                "parentId": "",
+                "position": {
+                    "x": 1960,
+                    "y": -280
+                },
+                "origin": [0, 0],
+                "resizing": true,
+                "selectable": true,
+                "sourcePosition": "bottom",
+                "targetPosition": "top",
+                "type": "infoNode",
+                "zIndex": 1,
+                "patchVer_": "patch_3c930b71-6104-4105-adde-a6ccbdf2c953",
+                "focusable": false,
+                "selected": false,
+                "dragging": false,
+                "width": 80,
+                "height": 80,
+                "initialWidth": null,
+                "initialHeight": null,
+                "extent": null,
+                "handles": null,
+                "style": {
+                    "height": 80,
+                    "width": 80,
+                    "opacity": 1
+                },
+                "data": {
+                    "class": "",
+                    "icon": "apiGateway",
+                    "label": "API Gateway",
+                    "tosca_schema": "1.4.2",
+                    "tosca_type": "arcs.icons.aws.AppIntegration.apiGateway",
+                    "type": "architecture",
+                    "data_stored": []
+                }
+            },
+            {
+                "ariaLabel": "",
+                "className": "",
+                "connectable": true,
+                "deletable": true,
+                "draggable": true,
+                "dragHandle": "",
+                "expandParent": false,
+                "hidden": false,
+                "id": "node_4f73abfa-a5ea-48a9-a4b7-6cd1ef323f9b",
+                "parentId": "",
+                "position": {
+                    "x": 1960,
+                    "y": -570
+                },
+                "origin": [0, 0],
+                "resizing": true,
+                "selectable": true,
+                "sourcePosition": "bottom",
+                "targetPosition": "top",
+                "type": "infoNode",
+                "zIndex": 1,
+                "patchVer_": "patch_3c930b71-6104-4105-adde-a6ccbdf2c953",
+                "focusable": false,
+                "selected": false,
+                "dragging": false,
+                "width": 80,
+                "height": 80,
+                "initialWidth": null,
+                "initialHeight": null,
+                "extent": null,
+                "handles": null,
+                "style": {
+                    "height": 80,
+                    "width": 80,
+                    "opacity": 1
+                },
+                "data": {
+                    "class": "",
+                    "icon": "internet",
+                    "label": "Internet",
+                    "tosca_schema": "1.4.2",
+                    "tosca_type": "arcs.nodes.Network.WAN",
+                    "type": "architecture",
+                    "data_stored": []
+                }
+            },
+            {
+                "ariaLabel": "",
+                "className": "",
+                "connectable": true,
+                "deletable": true,
+                "draggable": true,
+                "dragHandle": ".ClusterNode_DragHandle",
+                "expandParent": false,
+                "hidden": false,
+                "id": "node_cdbbc506-30bb-4d0c-99f4-0257452930f3",
+                "parentId": "",
+                "position": {
+                    "x": 270,
+                    "y": -640
+                },
+                "origin": [0, 0],
+                "resizing": true,
+                "selectable": true,
+                "sourcePosition": "bottom",
+                "targetPosition": "top",
+                "type": "clusterNode",
+                "zIndex": 1,
+                "patchVer_": "patch_3c930b71-6104-4105-adde-a6ccbdf2c953",
+                "focusable": false,
+                "selected": false,
+                "dragging": false,
+                "width": 1610,
+                "height": 980,
+                "initialWidth": null,
+                "initialHeight": null,
+                "extent": null,
+                "handles": null,
+                "style": {
+                    "backgroundColor": "#24881410",
+                    "borderColor": "#24881433",
+                    "borderStyle": "solid",
+                    "borderWidth": "2px",
+                    "height": 980,
+                    "width": 1610,
+                    "maxHeight": 2000,
+                    "maxWidth": 2000,
+                    "minHeight": 200,
+                    "minWidth": 200,
+                    "opacity": 1
+                },
+                "data": {
+                    "class": "",
+                    "publiclyAccessible": false,
+                    "icon_position": "top-left",
+                    "icon": "vpcCluster",
+                    "label": "VPC Cluster",
+                    "tosca_schema": "1.4.2",
+                    "tosca_type": "arcs.nodes.Network.VPC",
+                    "type": "architecture",
+                    "allowed_child_nodes": [],
+                    "allowed_parent_nodes": [],
+                    "data_stored": []
+                }
+            },
+            {
+                "ariaLabel": "",
+                "className": "",
+                "connectable": true,
+                "deletable": true,
+                "draggable": true,
+                "dragHandle": ".ClusterNode_DragHandle",
+                "expandParent": false,
+                "hidden": false,
+                "id": "node_95efd273-1956-4718-9e37-de63f9096ddd",
+                "parentId": "node_cdbbc506-30bb-4d0c-99f4-0257452930f3",
+                "position": {
+                    "x": 880,
+                    "y": 570
+                },
+                "origin": [0, 0],
+                "resizing": true,
+                "selectable": true,
+                "sourcePosition": "bottom",
+                "targetPosition": "top",
+                "type": "clusterNode",
+                "zIndex": 1,
+                "patchVer_": "patch_3c930b71-6104-4105-adde-a6ccbdf2c953",
+                "focusable": false,
+                "selected": false,
+                "dragging": false,
+                "width": 450,
+                "height": 380,
+                "initialWidth": null,
+                "initialHeight": null,
+                "extent": null,
+                "handles": null,
+                "style": {
+                    "backgroundColor": "#00a4a610",
+                    "borderColor": "#00a4a633",
+                    "borderStyle": "solid",
+                    "borderWidth": "2px",
+                    "height": 380,
+                    "width": 450,
+                    "maxHeight": 2000,
+                    "maxWidth": 2000,
+                    "minHeight": 200,
+                    "minWidth": 200,
+                    "opacity": 1
+                },
+                "data": {
+                    "class": "",
+                    "publiclyAccessible": false,
+                    "icon_position": "top-left",
+                    "icon": "privateSubnet",
+                    "label": "Private Subnet",
+                    "tosca_schema": "1.4.2",
+                    "tosca_type": "arcs.nodes.Network.Subnet",
+                    "type": "architecture",
+                    "allowed_child_nodes": [],
+                    "allowed_parent_nodes": [],
+                    "data_stored": []
+                }
+            },
+            {
+                "ariaLabel": "",
+                "className": "",
+                "connectable": true,
+                "deletable": true,
+                "draggable": true,
+                "dragHandle": "",
+                "expandParent": false,
+                "hidden": false,
+                "id": "node_2e1a363d-3109-4d84-99f5-679b8aaf6c24",
+                "parentId": "node_95efd273-1956-4718-9e37-de63f9096ddd",
+                "position": {
+                    "x": 190,
+                    "y": 250
+                },
+                "origin": [0, 0],
+                "resizing": true,
+                "selectable": true,
+                "sourcePosition": "bottom",
+                "targetPosition": "top",
+                "type": "infoNode",
+                "zIndex": 1,
+                "patchVer_": "patch_3c930b71-6104-4105-adde-a6ccbdf2c953",
+                "focusable": false,
+                "selected": false,
+                "dragging": false,
+                "width": 80,
+                "height": 80,
+                "initialWidth": null,
+                "initialHeight": null,
+                "extent": null,
+                "handles": null,
+                "style": {
+                    "height": 80,
+                    "width": 80,
+                    "opacity": 1
+                },
+                "data": {
+                    "class": "",
+                    "icon": "s3",
+                    "label": "Conversation Logs Storage",
+                    "tosca_schema": "1.4.2",
+                    "tosca_type": "arcs.icons.aws.Storage.s3",
+                    "type": "architecture",
+                    "data_stored": []
+                }
+            },
+            {
+                "ariaLabel": "",
+                "className": "",
+                "connectable": true,
+                "deletable": true,
+                "draggable": true,
+                "dragHandle": "",
+                "expandParent": false,
+                "hidden": false,
+                "id": "node_f21bd190-cab6-4499-91f8-5deefeb25d20",
+                "parentId": "node_95efd273-1956-4718-9e37-de63f9096ddd",
+                "position": {
+                    "x": 190,
+                    "y": 100
+                },
+                "origin": [0, 0],
+                "resizing": true,
+                "selectable": true,
+                "sourcePosition": "bottom",
+                "targetPosition": "top",
+                "type": "infoNode",
+                "zIndex": 1,
+                "patchVer_": "patch_3c930b71-6104-4105-adde-a6ccbdf2c953",
+                "focusable": false,
+                "selected": false,
+                "dragging": false,
+                "width": 80,
+                "height": 80,
+                "initialWidth": null,
+                "initialHeight": null,
+                "extent": null,
+                "handles": null,
+                "style": {
+                    "height": 80,
+                    "width": 80,
+                    "opacity": 1
+                },
+                "data": {
+                    "class": "",
+                    "icon": "lambda",
+                    "label": "Conversation Logger",
+                    "tosca_schema": "1.4.2",
+                    "tosca_type": "arcs.icons.aws.Compute.lambda",
+                    "type": "architecture",
+                    "data_stored": []
+                }
+            },
+            {
+                "ariaLabel": "",
+                "className": "",
+                "connectable": true,
+                "deletable": true,
+                "draggable": true,
+                "dragHandle": "",
+                "expandParent": false,
+                "hidden": false,
+                "id": "node_ab68048c-9774-4f83-807a-8b6fb16964fe",
+                "parentId": "node_cdbbc506-30bb-4d0c-99f4-0257452930f3",
+                "position": {
+                    "x": 1480,
+                    "y": 70
+                },
+                "origin": [0, 0],
+                "resizing": true,
+                "selectable": true,
+                "sourcePosition": "bottom",
+                "targetPosition": "top",
+                "type": "infoNode",
+                "zIndex": 1,
+                "patchVer_": "patch_3c930b71-6104-4105-adde-a6ccbdf2c953",
+                "focusable": false,
+                "selected": false,
+                "dragging": false,
+                "width": 80,
+                "height": 80,
+                "initialWidth": null,
+                "initialHeight": null,
+                "extent": null,
+                "handles": null,
+                "style": {
+                    "height": 80,
+                    "width": 80,
+                    "opacity": 1
+                },
+                "data": {
+                    "class": "",
+                    "icon": "vpcInternetGateway",
+                    "label": "VPC Internet Gateway",
+                    "tosca_schema": "1.4.2",
+                    "tosca_type": "arcs.nodes.Gateway.Internet",
+                    "type": "architecture",
+                    "data_stored": []
+                }
+            },
+            {
+                "ariaLabel": "",
+                "className": "",
+                "connectable": true,
+                "deletable": true,
+                "draggable": true,
+                "dragHandle": ".ClusterNode_DragHandle",
+                "expandParent": false,
+                "hidden": false,
+                "id": "node_a7d25463-a9c1-4e0f-8f7f-552143887f3c",
+                "parentId": "node_cdbbc506-30bb-4d0c-99f4-0257452930f3",
+                "position": {
+                    "x": 540,
+                    "y": 240
+                },
+                "origin": [0, 0],
+                "resizing": false,
+                "selectable": true,
+                "sourcePosition": "bottom",
+                "targetPosition": "top",
+                "type": "clusterNode",
+                "zIndex": 1,
+                "patchVer_": "patch_3c930b71-6104-4105-adde-a6ccbdf2c953",
+                "focusable": false,
+                "selected": false,
+                "dragging": false,
+                "width": 310,
+                "height": 280,
+                "initialWidth": null,
+                "initialHeight": null,
+                "extent": null,
+                "handles": null,
+                "style": {
+                    "backgroundColor": "#00a4a610",
+                    "borderColor": "#00a4a633",
+                    "borderStyle": "solid",
+                    "borderWidth": "2px",
+                    "height": 280,
+                    "width": 310,
+                    "maxHeight": 2000,
+                    "maxWidth": 2000,
+                    "minHeight": 200,
+                    "minWidth": 200,
+                    "opacity": 1
+                },
+                "data": {
+                    "class": "",
+                    "publiclyAccessible": false,
+                    "icon_position": "top-left",
+                    "icon": "privateSubnet",
+                    "label": "Private Subnet",
+                    "tosca_schema": "1.4.2",
+                    "tosca_type": "arcs.nodes.Network.Subnet",
+                    "type": "architecture",
+                    "allowed_child_nodes": [],
+                    "allowed_parent_nodes": [],
+                    "data_stored": []
+                }
+            },
+            {
+                "ariaLabel": "",
+                "className": "",
+                "connectable": true,
+                "deletable": true,
+                "draggable": true,
+                "dragHandle": "",
+                "expandParent": false,
+                "hidden": false,
+                "id": "node_ee698f60-ab99-4091-95b7-2f9650186bec",
+                "parentId": "node_a7d25463-a9c1-4e0f-8f7f-552143887f3c",
+                "position": {
+                    "x": 190,
+                    "y": 120
+                },
+                "origin": [0, 0],
+                "resizing": true,
+                "selectable": true,
+                "sourcePosition": "bottom",
+                "targetPosition": "top",
+                "type": "infoNode",
+                "zIndex": 1,
+                "patchVer_": "patch_3c930b71-6104-4105-adde-a6ccbdf2c953",
+                "focusable": false,
+                "selected": false,
+                "dragging": false,
+                "width": 80,
+                "height": 80,
+                "initialWidth": null,
+                "initialHeight": null,
+                "extent": null,
+                "handles": null,
+                "style": {
+                    "height": 80,
+                    "width": 80,
+                    "opacity": 1
+                },
+                "data": {
+                    "class": "",
+                    "icon": "lambda",
+                    "label": "RAG Agent",
+                    "tosca_schema": "1.4.2",
+                    "tosca_type": "arcs.icons.aws.Compute.lambda",
+                    "type": "architecture",
+                    "data_stored": []
+                }
+            },
+            {
+                "ariaLabel": "",
+                "className": "",
+                "connectable": true,
+                "deletable": true,
+                "draggable": true,
+                "dragHandle": "",
+                "expandParent": false,
+                "hidden": false,
+                "id": "node_296cabd4-a59b-470e-b712-b98ecc21f7fc",
+                "parentId": "node_a7d25463-a9c1-4e0f-8f7f-552143887f3c",
+                "position": {
+                    "x": 30,
+                    "y": 180
+                },
+                "origin": [0, 0],
+                "resizing": true,
+                "selectable": true,
+                "sourcePosition": "bottom",
+                "targetPosition": "top",
+                "type": "infoNode",
+                "zIndex": 1,
+                "patchVer_": "patch_3c930b71-6104-4105-adde-a6ccbdf2c953",
+                "focusable": false,
+                "selected": false,
+                "dragging": false,
+                "width": 80,
+                "height": 80,
+                "initialWidth": null,
+                "initialHeight": null,
+                "extent": null,
+                "handles": null,
+                "style": {
+                    "height": 80,
+                    "width": 80,
+                    "opacity": 1
+                },
+                "data": {
+                    "class": "",
+                    "icon": "openSearchService",
+                    "label": "Vector Store",
+                    "tosca_schema": "1.4.2",
+                    "tosca_type": "arcs.icons.aws.Analytics.openSearchService",
+                    "type": "architecture",
+                    "data_stored": []
+                }
+            },
+            {
+                "ariaLabel": "",
+                "className": "",
+                "connectable": true,
+                "deletable": true,
+                "draggable": true,
+                "dragHandle": "",
+                "expandParent": false,
+                "hidden": false,
+                "id": "node_e5d1be4c-6986-4f2e-9914-3a1e9ee60a89",
+                "parentId": "node_a7d25463-a9c1-4e0f-8f7f-552143887f3c",
+                "position": {
+                    "x": 30,
+                    "y": 60
+                },
+                "origin": [0, 0],
+                "resizing": true,
+                "selectable": true,
+                "sourcePosition": "bottom",
+                "targetPosition": "top",
+                "type": "infoNode",
+                "zIndex": 1,
+                "patchVer_": "patch_3c930b71-6104-4105-adde-a6ccbdf2c953",
+                "focusable": false,
+                "selected": false,
+                "dragging": false,
+                "width": 80,
+                "height": 80,
+                "initialWidth": null,
+                "initialHeight": null,
+                "extent": null,
+                "handles": null,
+                "style": {
+                    "height": 80,
+                    "width": 80,
+                    "opacity": 1
+                },
+                "data": {
+                    "class": "",
+                    "icon": "dynamoDB",
+                    "label": "Internal Documents",
+                    "tosca_schema": "1.4.2",
+                    "tosca_type": "arcs.icons.aws.Database.dynamoDB",
+                    "type": "architecture",
+                    "data_stored": []
+                }
+            },
+            {
+                "ariaLabel": "",
+                "className": "",
+                "connectable": true,
+                "deletable": true,
+                "draggable": true,
+                "dragHandle": ".ClusterNode_DragHandle",
+                "expandParent": false,
+                "hidden": false,
+                "id": "node_120aa98c-f744-4475-b789-dc609d3d3d12",
+                "parentId": "node_cdbbc506-30bb-4d0c-99f4-0257452930f3",
+                "position": {
+                    "x": 20,
+                    "y": 480
+                },
+                "origin": [0, 0],
+                "resizing": false,
+                "selectable": true,
+                "sourcePosition": "bottom",
+                "targetPosition": "top",
+                "type": "clusterNode",
+                "zIndex": 1,
+                "patchVer_": "patch_3c930b71-6104-4105-adde-a6ccbdf2c953",
+                "focusable": false,
+                "selected": false,
+                "dragging": false,
+                "width": 480,
+                "height": 200,
+                "initialWidth": null,
+                "initialHeight": null,
+                "extent": null,
+                "handles": null,
+                "style": {
+                    "backgroundColor": "#5a6c8633",
+                    "borderColor": "#5a6c8633",
+                    "borderStyle": "solid",
+                    "borderWidth": "2px",
+                    "height": 200,
+                    "width": 480,
+                    "maxHeight": 2000,
+                    "maxWidth": 2000,
+                    "minHeight": 200,
+                    "minWidth": 200,
+                    "opacity": 1
+                },
+                "data": {
+                    "class": "",
+                    "publiclyAccessible": false,
+                    "icon_position": "top-left",
+                    "icon": "cicd",
+                    "label": "CI/CD",
+                    "tosca_schema": "1.4.2",
+                    "tosca_type": "arcs.nodes.Orchestration.Workflow",
+                    "type": "architecture",
+                    "allowed_child_nodes": [
+                        "codeArtifact",
+                        "codeBuild",
+                        "codeCatalyst",
+                        "codeCommit",
+                        "codeDeploy",
+                        "codePipeline"
+                    ],
+                    "allowed_parent_nodes": [],
+                    "data_stored": []
+                }
+            },
+            {
+                "ariaLabel": "",
+                "className": "",
+                "connectable": true,
+                "deletable": true,
+                "draggable": true,
+                "dragHandle": "",
+                "expandParent": false,
+                "hidden": false,
+                "id": "node_a870f378-a1bf-4693-975e-7c5c40ab3d99",
+                "parentId": "node_120aa98c-f744-4475-b789-dc609d3d3d12",
+                "position": {
+                    "x": 360,
+                    "y": 60
+                },
+                "origin": [0, 0],
+                "resizing": true,
+                "selectable": true,
+                "sourcePosition": "bottom",
+                "targetPosition": "top",
+                "type": "infoNode",
+                "zIndex": 1,
+                "patchVer_": "patch_3c930b71-6104-4105-adde-a6ccbdf2c953",
+                "focusable": false,
+                "selected": false,
+                "dragging": false,
+                "width": 80,
+                "height": 80,
+                "initialWidth": null,
+                "initialHeight": null,
+                "extent": null,
+                "handles": null,
+                "style": {
+                    "height": 80,
+                    "width": 80,
+                    "opacity": 1
+                },
+                "data": {
+                    "class": "",
+                    "icon": "codeDeploy",
+                    "label": "CodeDeploy",
+                    "tosca_schema": "1.4.2",
+                    "tosca_type": "arcs.nodes.DeveloperTools.CodeDeploy",
+                    "type": "architecture",
+                    "data_stored": []
+                }
+            },
+            {
+                "ariaLabel": "",
+                "className": "",
+                "connectable": true,
+                "deletable": true,
+                "draggable": true,
+                "dragHandle": "",
+                "expandParent": false,
+                "hidden": false,
+                "id": "node_4360c8aa-423c-409c-a0b6-60ca918a70a0",
+                "parentId": "node_120aa98c-f744-4475-b789-dc609d3d3d12",
+                "position": {
+                    "x": 200,
+                    "y": 60
+                },
+                "origin": [0, 0],
+                "resizing": true,
+                "selectable": true,
+                "sourcePosition": "bottom",
+                "targetPosition": "top",
+                "type": "infoNode",
+                "zIndex": 1,
+                "patchVer_": "patch_3c930b71-6104-4105-adde-a6ccbdf2c953",
+                "focusable": false,
+                "selected": false,
+                "dragging": false,
+                "width": 80,
+                "height": 80,
+                "initialWidth": null,
+                "initialHeight": null,
+                "extent": null,
+                "handles": null,
+                "style": {
+                    "height": 80,
+                    "width": 80,
+                    "opacity": 1
+                },
+                "data": {
+                    "class": "",
+                    "icon": "codeBuild",
+                    "label": "CodeBuild",
+                    "tosca_schema": "1.4.2",
+                    "tosca_type": "arcs.nodes.DeveloperTools.CodeBuild",
+                    "type": "architecture",
+                    "data_stored": []
+                }
+            },
+            {
+                "ariaLabel": "",
+                "className": "",
+                "connectable": true,
+                "deletable": true,
+                "draggable": true,
+                "dragHandle": "",
+                "expandParent": false,
+                "hidden": false,
+                "id": "node_9c003b07-ba62-4afe-841d-bbbaf1d41ab0",
+                "parentId": "node_120aa98c-f744-4475-b789-dc609d3d3d12",
+                "position": {
+                    "x": 40,
+                    "y": 60
+                },
+                "origin": [0, 0],
+                "resizing": true,
+                "selectable": true,
+                "sourcePosition": "bottom",
+                "targetPosition": "top",
+                "type": "infoNode",
+                "zIndex": 1,
+                "patchVer_": "patch_3c930b71-6104-4105-adde-a6ccbdf2c953",
+                "focusable": false,
+                "selected": false,
+                "dragging": false,
+                "width": 80,
+                "height": 80,
+                "initialWidth": null,
+                "initialHeight": null,
+                "extent": null,
+                "handles": null,
+                "style": {
+                    "height": 80,
+                    "width": 80,
+                    "opacity": 1
+                },
+                "data": {
+                    "class": "",
+                    "icon": "codeCommit",
+                    "label": "CodeCommit",
+                    "tosca_schema": "1.4.2",
+                    "tosca_type": "arcs.nodes.DeveloperTools.CodeCommit",
+                    "type": "architecture",
+                    "data_stored": []
+                }
+            },
+            {
+                "ariaLabel": "",
+                "className": "",
+                "connectable": true,
+                "deletable": true,
+                "draggable": true,
+                "dragHandle": ".ClusterNode_DragHandle",
+                "expandParent": false,
+                "hidden": false,
+                "id": "node_a902e092-4dcf-414c-aaa2-4ac3de1793e3",
+                "parentId": "node_cdbbc506-30bb-4d0c-99f4-0257452930f3",
+                "position": {
+                    "x": 880,
+                    "y": 240
+                },
+                "origin": [0, 0],
+                "resizing": false,
+                "selectable": true,
+                "sourcePosition": "bottom",
+                "targetPosition": "top",
+                "type": "clusterNode",
+                "zIndex": 1,
+                "patchVer_": "patch_3c930b71-6104-4105-adde-a6ccbdf2c953",
+                "focusable": false,
+                "selected": false,
+                "dragging": false,
+                "width": 450,
+                "height": 280,
+                "initialWidth": null,
+                "initialHeight": null,
+                "extent": null,
+                "handles": null,
+                "style": {
+                    "backgroundColor": "#00a4a610",
+                    "borderColor": "#00a4a633",
+                    "borderStyle": "solid",
+                    "borderWidth": "2px",
+                    "height": 280,
+                    "width": 450,
+                    "maxHeight": 2000,
+                    "maxWidth": 2000,
+                    "minHeight": 200,
+                    "minWidth": 200,
+                    "opacity": 1
+                },
+                "data": {
+                    "class": "",
+                    "publiclyAccessible": false,
+                    "icon_position": "top-left",
+                    "icon": "privateSubnet",
+                    "label": "Private Subnet",
+                    "tosca_schema": "1.4.2",
+                    "tosca_type": "arcs.nodes.Network.Subnet",
+                    "type": "architecture",
+                    "allowed_child_nodes": [],
+                    "allowed_parent_nodes": [],
+                    "data_stored": []
+                }
+            },
+            {
+                "ariaLabel": "",
+                "className": "",
+                "connectable": true,
+                "deletable": true,
+                "draggable": true,
+                "dragHandle": "",
+                "expandParent": false,
+                "hidden": false,
+                "id": "node_ece60b2e-de25-4ef7-99ff-a19ee7aaf3c6",
+                "parentId": "node_a902e092-4dcf-414c-aaa2-4ac3de1793e3",
+                "position": {
+                    "x": 300,
+                    "y": 120
+                },
+                "origin": [0, 0],
+                "resizing": true,
+                "selectable": true,
+                "sourcePosition": "bottom",
+                "targetPosition": "top",
+                "type": "infoNode",
+                "zIndex": 1,
+                "patchVer_": "patch_3c930b71-6104-4105-adde-a6ccbdf2c953",
+                "focusable": false,
+                "selected": false,
+                "dragging": false,
+                "width": 80,
+                "height": 80,
+                "initialWidth": null,
+                "initialHeight": null,
+                "extent": null,
+                "handles": null,
+                "style": {
+                    "height": 80,
+                    "width": 80,
+                    "opacity": 1
+                },
+                "data": {
+                    "class": "",
+                    "icon": "elbApplicationLoadBalancer",
+                    "label": "ELB Application Load Balancer",
+                    "tosca_schema": "1.4.2",
+                    "tosca_type": "arcs.nodes.LoadBalancer.Application",
+                    "type": "architecture",
+                    "data_stored": []
+                }
+            },
+            {
+                "ariaLabel": "",
+                "className": "",
+                "connectable": true,
+                "deletable": true,
+                "draggable": true,
+                "dragHandle": "",
+                "expandParent": false,
+                "hidden": false,
+                "id": "node_b62a710f-8a26-4b7b-9d22-3910b38c6fa8",
+                "parentId": "node_a902e092-4dcf-414c-aaa2-4ac3de1793e3",
+                "position": {
+                    "x": 90,
+                    "y": 120
+                },
+                "origin": [0, 0],
+                "resizing": true,
+                "selectable": true,
+                "sourcePosition": "bottom",
+                "targetPosition": "top",
+                "type": "infoNode",
+                "zIndex": 1,
+                "patchVer_": "patch_3c930b71-6104-4105-adde-a6ccbdf2c953",
+                "focusable": false,
+                "selected": false,
+                "dragging": false,
+                "width": 80,
+                "height": 80,
+                "initialWidth": null,
+                "initialHeight": null,
+                "extent": null,
+                "handles": null,
+                "style": {
+                    "height": 80,
+                    "width": 80,
+                    "opacity": 1
+                },
+                "data": {
+                    "class": "",
+                    "icon": "ecsAnywhere",
+                    "label": "LLM Agent Orchestrator",
+                    "tosca_schema": "1.4.2",
+                    "tosca_type": "arcs.icons.aws.Containers.ecsAnywhere",
+                    "type": "architecture",
+                    "data_stored": []
+                }
+            },
+            {
+                "ariaLabel": "",
+                "className": "",
+                "connectable": true,
+                "deletable": true,
+                "draggable": true,
+                "dragHandle": ".ClusterNode_DragHandle",
+                "expandParent": false,
+                "hidden": false,
+                "id": "node_cbd46c5f-a63f-41e0-99a2-57077bf413de",
+                "parentId": "node_cdbbc506-30bb-4d0c-99f4-0257452930f3",
+                "position": {
+                    "x": 540,
+                    "y": 570
+                },
+                "origin": [0, 0],
+                "resizing": true,
+                "selectable": true,
+                "sourcePosition": "bottom",
+                "targetPosition": "top",
+                "type": "clusterNode",
+                "zIndex": 1,
+                "patchVer_": "patch_3c930b71-6104-4105-adde-a6ccbdf2c953",
+                "focusable": false,
+                "selected": false,
+                "dragging": false,
+                "width": 310,
+                "height": 380,
+                "initialWidth": null,
+                "initialHeight": null,
+                "extent": null,
+                "handles": null,
+                "style": {
+                    "backgroundColor": "#00a4a610",
+                    "borderColor": "#00a4a633",
+                    "borderStyle": "solid",
+                    "borderWidth": "2px",
+                    "height": 380,
+                    "width": 310,
+                    "maxHeight": 2000,
+                    "maxWidth": 2000,
+                    "minHeight": 200,
+                    "minWidth": 200,
+                    "opacity": 1
+                },
+                "data": {
+                    "class": "",
+                    "publiclyAccessible": false,
+                    "icon_position": "top-left",
+                    "icon": "privateSubnet",
+                    "label": "Private Subnet",
+                    "tosca_schema": "1.4.2",
+                    "tosca_type": "arcs.nodes.Network.Subnet",
+                    "type": "architecture",
+                    "allowed_child_nodes": [],
+                    "allowed_parent_nodes": [],
+                    "data_stored": []
+                }
+            },
+            {
+                "ariaLabel": "",
+                "className": "",
+                "connectable": true,
+                "deletable": true,
+                "draggable": true,
+                "dragHandle": "",
+                "expandParent": false,
+                "hidden": false,
+                "id": "node_1452aeb4-885b-4ace-aef9-9d4799ba0c04",
+                "parentId": "node_cbd46c5f-a63f-41e0-99a2-57077bf413de",
+                "position": {
+                    "x": 100,
+                    "y": 90
+                },
+                "origin": [0, 0],
+                "resizing": true,
+                "selectable": true,
+                "sourcePosition": "bottom",
+                "targetPosition": "top",
+                "type": "infoNode",
+                "zIndex": 1,
+                "patchVer_": "patch_3c930b71-6104-4105-adde-a6ccbdf2c953",
+                "focusable": false,
+                "selected": false,
+                "dragging": false,
+                "width": 80,
+                "height": 80,
+                "initialWidth": null,
+                "initialHeight": null,
+                "extent": null,
+                "handles": null,
+                "style": {
+                    "height": 80,
+                    "width": 80,
+                    "opacity": 1
+                },
+                "data": {
+                    "class": "",
+                    "icon": "ec2",
+                    "label": "Main Agent",
+                    "tosca_schema": "1.4.2",
+                    "tosca_type": "arcs.icons.aws.Compute.ec2",
+                    "type": "architecture",
+                    "data_stored": []
+                }
+            },
+            {
+                "ariaLabel": "",
+                "className": "",
+                "connectable": true,
+                "deletable": true,
+                "draggable": true,
+                "dragHandle": "",
+                "expandParent": false,
+                "hidden": false,
+                "id": "node_a838e007-e022-46ab-877c-4ef7e51691fb",
+                "parentId": "node_cbd46c5f-a63f-41e0-99a2-57077bf413de",
+                "position": {
+                    "x": 30,
+                    "y": 250
+                },
+                "origin": [0, 0],
+                "resizing": true,
+                "selectable": true,
+                "sourcePosition": "bottom",
+                "targetPosition": "top",
+                "type": "infoNode",
+                "zIndex": 1,
+                "patchVer_": "patch_3c930b71-6104-4105-adde-a6ccbdf2c953",
+                "focusable": false,
+                "selected": false,
+                "dragging": false,
+                "width": 80,
+                "height": 80,
+                "initialWidth": null,
+                "initialHeight": null,
+                "extent": null,
+                "handles": null,
+                "style": {
+                    "height": 80,
+                    "width": 80,
+                    "opacity": 1
+                },
+                "data": {
+                    "class": "",
+                    "icon": "s3",
+                    "label": "Training Data Storage",
+                    "tosca_schema": "1.4.2",
+                    "tosca_type": "arcs.icons.aws.Storage.s3",
+                    "type": "architecture",
+                    "data_stored": []
+                }
+            },
+            {
+                "ariaLabel": "",
+                "className": "",
+                "connectable": true,
+                "deletable": true,
+                "draggable": true,
+                "dragHandle": "",
+                "expandParent": false,
+                "hidden": false,
+                "id": "node_1263a732-9a6f-4b33-b62e-199cdec11afa",
+                "parentId": "node_cbd46c5f-a63f-41e0-99a2-57077bf413de",
+                "position": {
+                    "x": 180,
+                    "y": 250
+                },
+                "origin": [0, 0],
+                "resizing": true,
+                "selectable": true,
+                "sourcePosition": "bottom",
+                "targetPosition": "top",
+                "type": "infoNode",
+                "zIndex": 1,
+                "patchVer_": "patch_3c930b71-6104-4105-adde-a6ccbdf2c953",
+                "focusable": false,
+                "selected": false,
+                "dragging": false,
+                "width": 80,
+                "height": 80,
+                "initialWidth": null,
+                "initialHeight": null,
+                "extent": null,
+                "handles": null,
+                "style": {
+                    "height": 80,
+                    "width": 80,
+                    "opacity": 1
+                },
+                "data": {
+                    "class": "",
+                    "icon": "s3",
+                    "label": "Model Weights Storage",
+                    "tosca_schema": "1.4.2",
+                    "tosca_type": "arcs.icons.aws.Storage.s3",
+                    "type": "architecture",
+                    "data_stored": []
+                }
+            },
+            {
+                "ariaLabel": "",
+                "className": "",
+                "connectable": true,
+                "deletable": true,
+                "draggable": true,
+                "dragHandle": ".ClusterNode_DragHandle",
+                "expandParent": false,
+                "hidden": false,
+                "id": "node_d6747448-17b0-4b4c-a75c-e7e6519ec74f",
+                "parentId": "node_cdbbc506-30bb-4d0c-99f4-0257452930f3",
+                "position": {
+                    "x": 890,
+                    "y": 10
+                },
+                "origin": [0, 0],
+                "resizing": true,
+                "selectable": true,
+                "sourcePosition": "bottom",
+                "targetPosition": "top",
+                "type": "clusterNode",
+                "zIndex": 1,
+                "patchVer_": "patch_3c930b71-6104-4105-adde-a6ccbdf2c953",
+                "focusable": false,
+                "selected": false,
+                "dragging": false,
+                "width": 500,
+                "height": 200,
+                "initialWidth": null,
+                "initialHeight": null,
+                "extent": null,
+                "handles": null,
+                "style": {
+                    "backgroundColor": "#7aa11610",
+                    "borderColor": "#7aa11633",
+                    "borderStyle": "solid",
+                    "borderWidth": "2px",
+                    "height": 200,
+                    "width": 500,
+                    "maxHeight": 2000,
+                    "maxWidth": 2000,
+                    "minHeight": 200,
+                    "minWidth": 200,
+                    "opacity": 1
+                },
+                "data": {
+                    "class": "",
+                    "publiclyAccessible": false,
+                    "icon_position": "top-left",
+                    "icon": "publicSubnet",
+                    "label": "Public Subnet",
+                    "tosca_schema": "1.4.2",
+                    "tosca_type": "arcs.nodes.Network.Subnet",
+                    "type": "architecture",
+                    "allowed_child_nodes": [],
+                    "allowed_parent_nodes": [],
+                    "data_stored": []
+                }
+            },
+            {
+                "ariaLabel": "",
+                "className": "",
+                "connectable": true,
+                "deletable": true,
+                "draggable": true,
+                "dragHandle": "",
+                "expandParent": false,
+                "hidden": false,
+                "id": "node_2b308518-d7e7-4ba4-8f16-0ee14246a090",
+                "parentId": "node_d6747448-17b0-4b4c-a75c-e7e6519ec74f",
+                "position": {
+                    "x": 210,
+                    "y": 60
+                },
+                "origin": [0, 0],
+                "resizing": true,
+                "selectable": true,
+                "sourcePosition": "bottom",
+                "targetPosition": "top",
+                "type": "infoNode",
+                "zIndex": 1,
+                "patchVer_": "patch_3c930b71-6104-4105-adde-a6ccbdf2c953",
+                "focusable": false,
+                "selected": false,
+                "dragging": false,
+                "width": 80,
+                "height": 80,
+                "initialWidth": null,
+                "initialHeight": null,
+                "extent": null,
+                "handles": null,
+                "style": {
+                    "height": 80,
+                    "width": 80,
+                    "opacity": 1
+                },
+                "data": {
+                    "class": "",
+                    "icon": "networkFirewall",
+                    "label": "Network Firewall",
+                    "tosca_schema": "1.4.2",
+                    "tosca_type": "arcs.nodes.Security.Firewall.NetworkFirewall",
+                    "type": "architecture",
+                    "data_stored": []
+                }
+            },
+            {
+                "ariaLabel": "",
+                "className": "",
+                "connectable": true,
+                "deletable": true,
+                "draggable": true,
+                "dragHandle": "",
+                "expandParent": false,
+                "hidden": false,
+                "id": "node_78ee213d-0d7d-40cb-8414-1378ba6cc120",
+                "parentId": "node_d6747448-17b0-4b4c-a75c-e7e6519ec74f",
+                "position": {
+                    "x": 390,
+                    "y": 60
+                },
+                "origin": [0, 0],
+                "resizing": true,
+                "selectable": true,
+                "sourcePosition": "bottom",
+                "targetPosition": "top",
+                "type": "infoNode",
+                "zIndex": 1,
+                "patchVer_": "patch_3c930b71-6104-4105-adde-a6ccbdf2c953",
+                "focusable": false,
+                "selected": false,
+                "dragging": false,
+                "width": 80,
+                "height": 80,
+                "initialWidth": null,
+                "initialHeight": null,
+                "extent": null,
+                "handles": null,
+                "style": {
+                    "height": 80,
+                    "width": 80,
+                    "opacity": 1
+                },
+                "data": {
+                    "class": "",
+                    "icon": "vpcNATGateway",
+                    "label": "VPC NAT Gateway",
+                    "tosca_schema": "1.4.2",
+                    "tosca_type": "arcs.nodes.Gateway.NAT",
+                    "type": "architecture",
+                    "data_stored": []
+                }
+            },
+            {
+                "ariaLabel": "",
+                "className": "",
+                "connectable": true,
+                "deletable": true,
+                "draggable": true,
+                "dragHandle": ".ClusterNode_DragHandle",
+                "expandParent": false,
+                "hidden": false,
+                "id": "node_1671982e-70b1-4cb8-a58c-1e6af103432c",
+                "parentId": "node_cdbbc506-30bb-4d0c-99f4-0257452930f3",
+                "position": {
+                    "x": 540,
+                    "y": 10
+                },
+                "origin": [0, 0],
+                "resizing": true,
+                "selectable": true,
+                "sourcePosition": "bottom",
+                "targetPosition": "top",
+                "type": "clusterNode",
+                "zIndex": 1,
+                "patchVer_": "patch_3c930b71-6104-4105-adde-a6ccbdf2c953",
+                "focusable": false,
+                "selected": false,
+                "dragging": false,
+                "width": 300,
+                "height": 200,
+                "initialWidth": null,
+                "initialHeight": null,
+                "extent": null,
+                "handles": null,
+                "style": {
+                    "backgroundColor": "#7aa11610",
+                    "borderColor": "#7aa11633",
+                    "borderStyle": "solid",
+                    "borderWidth": "2px",
+                    "height": 200,
+                    "width": 300,
+                    "maxHeight": 2000,
+                    "maxWidth": 2000,
+                    "minHeight": 200,
+                    "minWidth": 200,
+                    "opacity": 1
+                },
+                "data": {
+                    "class": "",
+                    "publiclyAccessible": false,
+                    "icon_position": "top-left",
+                    "icon": "publicSubnet",
+                    "label": "Public Subnet",
+                    "tosca_schema": "1.4.2",
+                    "tosca_type": "arcs.nodes.Network.Subnet",
+                    "type": "architecture",
+                    "allowed_child_nodes": [],
+                    "allowed_parent_nodes": [],
+                    "data_stored": []
+                }
+            },
+            {
+                "ariaLabel": "",
+                "className": "",
+                "connectable": true,
+                "deletable": true,
+                "draggable": true,
+                "dragHandle": "",
+                "expandParent": false,
+                "hidden": false,
+                "id": "node_3eaafd60-31da-452f-aca4-37c8fd7c22e3",
+                "parentId": "node_1671982e-70b1-4cb8-a58c-1e6af103432c",
+                "position": {
+                    "x": 110,
+                    "y": 70
+                },
+                "origin": [0, 0],
+                "resizing": true,
+                "selectable": true,
+                "sourcePosition": "bottom",
+                "targetPosition": "top",
+                "type": "infoNode",
+                "zIndex": 1,
+                "patchVer_": "patch_3c930b71-6104-4105-adde-a6ccbdf2c953",
+                "focusable": false,
+                "selected": false,
+                "dragging": false,
+                "width": 80,
+                "height": 80,
+                "initialWidth": null,
+                "initialHeight": null,
+                "extent": null,
+                "handles": null,
+                "style": {
+                    "height": 80,
+                    "width": 80,
+                    "opacity": 1
+                },
+                "data": {
+                    "class": "",
+                    "icon": "lambda",
+                    "label": "Internet Retrieval Agent",
+                    "tosca_schema": "1.4.2",
+                    "tosca_type": "arcs.icons.aws.Compute.lambda",
+                    "type": "architecture",
+                    "data_stored": []
+                }
+            }
+        ],
+        "viewport": {
+            "x": 206,
+            "y": 448,
+            "zoom": 0.6
+        }
+    },
+    "templateId": "template_b332f16b-cfc2-4dc1-a37b-3c931a5720cb",
+    "templateImageName": "aws_ai_sec_ops",
+    "templateName": "AWS AISecOps",
+    "schema_": "1.0.0"
+}

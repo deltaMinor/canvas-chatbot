@@ -1,0 +1,75 @@
+{
+    "compilerOptions": {
+        // Target and Module
+        "target": "ES2022",
+        "module": "ESNext",
+        "moduleResolution": "bundler",
+        "jsx": "react-jsx",
+        "lib": ["DOM", "DOM.Iterable", "ES2022", "WebWorker"],
+        "types": ["node", "vite/client"],
+
+        // Path Mapping
+        "paths": {
+            "#root/*": ["./src/*"]
+        },
+
+        // Type Checking
+        "strict": true,
+        "noImplicitReturns": true,
+        "noFallthroughCasesInSwitch": true,
+        "noUncheckedIndexedAccess": true,
+        "noImplicitOverride": true,
+        "noPropertyAccessFromIndexSignature": true,
+        "noUnusedLocals": true,
+        "noUnusedParameters": true,
+
+        // Module Resolution
+        "esModuleInterop": true,
+        "allowSyntheticDefaultImports": true,
+        "resolveJsonModule": true,
+        "isolatedModules": true,
+        "allowImportingTsExtensions": true,
+        "preserveSymlinks": true,
+
+        // Emit
+        "noEmit": true,
+        "declaration": true,
+        "sourceMap": false,
+        "importHelpers": true,
+
+        // Interop Constraints
+        "forceConsistentCasingInFileNames": true,
+        "skipLibCheck": true,
+        "useDefineForClassFields": true,
+
+        // Additional Checks
+        "exactOptionalPropertyTypes": true,
+        "noImplicitThis": true,
+        "alwaysStrict": true
+    },
+    "include": [
+        "src/**/*",
+        "e2e/**/*",
+        "vite.config.mts",
+        "vitest.config.ts",
+        "playwright.config.ts",
+        "eslint.config.mjs",
+        "vite_env.d.ts"
+    ],
+    "exclude": [
+        "node_modules",
+        "dist",
+        "build",
+        "coverage",
+        "test-results",
+        "playwright-report",
+        "venv",
+        "**/*.test.ts",
+        "**/*.test.tsx",
+        "**/*.spec.ts",
+        "**/*.spec.tsx"
+    ],
+    "ts-node": {
+        "esm": true
+    }
+}

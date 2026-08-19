@@ -1,0 +1,14 @@
+export enum ChatbotState {
+    Neutral = 0,
+    ConfirmClearChat = 101,
+    ConfirmClearDiagram = 102,
+    ConfirmClearRuns = 103,
+    ConfirmClearAll = 104,
+    LlmOnto = 211,
+    LlmIntent = 221,
+    LlmTopology = 231,
+    LlmTopologySetup = 232,
+    LlmTopologySetupContinue = 233,
+    LlmTopologySetupUploadedPdf = 234,
+    LlmTopologySetupUpload = 235,
+}

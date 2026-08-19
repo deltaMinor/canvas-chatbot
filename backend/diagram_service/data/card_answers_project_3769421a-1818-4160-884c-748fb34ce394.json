@@ -1,0 +1,36 @@
+[
+  {
+    "card_id": "card_w4EsppFkoS2gNazcVFBLeG",
+    "field_RcTZUir6t69LEoJv9ipQsQ": "Create threat model",
+    "field_kjoQLrFNiwtPd6PSFiF4ui": {
+      "label": "Data Export, Analytics and Manipulation/Transformation",
+      "value": "option_bMZBMs4XpaSL5JrMbd4q3e"
+    },
+    "field_Beug2fybTozsC4q9GzrisZ": [
+      {
+        "label": "Personal Device",
+        "value": "option_RCTBx6kKMd0jadBhqEDyCT"
+      }
+    ],
+    "field_nd6pU88Fpe5mtLkyHMTnPW": [
+      {
+        "label": "Web Browser",
+        "value": "option_166808ba42c1459691c29a"
+      }
+    ],
+    "field_KxsU6BvQmFPtXRcH44ZhKj": [
+      {
+        "label": "Public End User",
+        "value": "text_iNCEBAe8LbYwxEegK71nwT"
+      }
+    ],
+    "field_Zz8qcXRmTdRthKaSaSsYGp": [
+      {
+        "label": "PII",
+        "value": "text_aDMXZhmD5M6qvVEgjNkYvG"
+      }
+    ],
+    "field_SQgayC4tL9q294ao54XnYD": "threat model my system",
+    "field_TNPsydHStdtNvySMqfV8qF": "comply to security policies"
+  }
+]

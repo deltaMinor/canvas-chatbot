@@ -1,0 +1,54 @@
+# data
+*.dump
+_*.json
+requirements_report.json
+*.7z
+.scannerwork/
+.mongodump/
+
+#intentrx
+intentrx/
+
+# temp directory
+build/
+temp/
+
+# environment
+node_modules/
+__pycache__/
+venv/
+.venv/
+*.secret
+
+# credentials
+credentials/
+
+# logs
+nohup.out
+*.log
+
+# results
+results/
+data_test/
+
+# test coverage reports
+**/coverage.txt
+.benchmarks/
+
+nginx.conf.detached
+nginx.conf.local
+diff.txt
+temp/
+diff_commit.txt
+.pytest_cache
+.ruff_cache/
+*.pem
+*.secret.env
+backup/**/*.json
+backup/**/*.bson
+
+# linting issues output files
+ruff_format_issues.txt
+mypy_issues.txt
+
+.task.lock

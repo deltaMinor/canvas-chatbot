@@ -1,0 +1,121 @@
+import { ChatMessage } from "#root/interfaces/chatbot";
+import { IntentRXPanel, readIntentRXFile } from "#root/services/domain/intentrx";
+import { formatIntentRXPanels } from "#root/utils/diagramChatbot/formatIntentRX";
+import {
+    extractTopologyRunId,
+    persistTopologyRunContext,
+} from "#root/utils/diagramChatbot/topologyRunContext";
+
+interface TopologyFileTrackingState {
+    aliases: Record<string, string>;
+    filePath: string | null;
+    runId: string | null;
+    runContextPersisted: boolean;
+    lastMtime: number | null;
+    lastSize: number | null;
+}
+
+const TOPOLOGY_FILEDIR_PANELTITLE = "TOPO-GENERATOR-PREFLIGHT";
+
+const PATH_ALIAS_LINE_RE = /^-\s*\$([A-Za-z_][A-Za-z0-9_]*):\s*(.+)$/;
+const TOPOLOGY_FILE_LINE_RE = /^-\s*topology_file:\s*(.+?)\s*\(exists=/;
+
+const topologyFileTrackingBySession = new Map<string, TopologyFileTrackingState>();
+
+const getTopologyFileTrackingState = (sessionId: string): TopologyFileTrackingState => {
+    let state = topologyFileTrackingBySession.get(sessionId);
+    if (!state) {
+        state = {
+            aliases: {},
+            filePath: null,
+            runId: null,
+            runContextPersisted: false,
+            lastMtime: null,
+            lastSize: null,
+        };
+        topologyFileTrackingBySession.set(sessionId, state);
+    }
+    return state;
+};
+
+export const resetTopologyFileTrackingState = (sessionId: string): void => {
+    topologyFileTrackingBySession.delete(sessionId);
+};
+
+const updateTopologyFileTracking = (state: TopologyFileTrackingState, text: string): void => {
+    for (const rawLine of text.split("\n")) {
+        const line = rawLine.trim();
+
+        const aliasMatch = PATH_ALIAS_LINE_RE.exec(line);
+        if (aliasMatch) {
+            const [, name, value] = aliasMatch;
+            if (name && value) state.aliases[name] = value.trim();
+            continue;
+        }
+
+        if (state.filePath === null) {
+            const fileMatch = TOPOLOGY_FILE_LINE_RE.exec(line);
+            const rawPath = fileMatch?.[1];
+            if (rawPath) {
+                let resolved = rawPath.trim();
+                for (const [name, value] of Object.entries(state.aliases)) {
+                    resolved = resolved.split(`$${name}`).join(value);
+                }
+                state.filePath = resolved;
+            }
+        }
+
+        if (state.runId === null) {
+            const runId = extractTopologyRunId(line);
+            if (runId) state.runId = runId;
+        }
+    }
+};
+
+export const applyTopologyFileFromAddress = async (
+    sessionId: string,
+    address: string
+): Promise<ChatMessage[]> => {
+    const state = getTopologyFileTrackingState(sessionId);
+    state.filePath = address;
+
+    const fileRead = await readIntentRXFile(state.filePath);
+    if (!fileRead.exists || fileRead.content === undefined) return [];
+
+    const unchanged = fileRead.mtime === state.lastMtime && fileRead.size === state.lastSize;
+    if (unchanged) return [];
+
+    state.lastMtime = fileRead.mtime ?? null;
+    state.lastSize = fileRead.size ?? null;
+
+    return [
+        {
+            text: "A diagram has been generated from TopologyGenerator.",
+            topology_diagram_address: state.filePath,
+        },
+    ];
+};
+
+export const checkAndApplyTopologyFile = async (
+    sessionId: string,
+    projectId: string,
+    conversationId: string,
+    panels: IntentRXPanel[]
+): Promise<ChatMessage[]> => {
+    const state = getTopologyFileTrackingState(sessionId);
+    for (const panel of panels) {
+        if (panel.title !== TOPOLOGY_FILEDIR_PANELTITLE) continue;
+        updateTopologyFileTracking(state, panel.text);
+    }
+    const messages = formatIntentRXPanels(panels);
+
+    if (state.runId && state.filePath && !state.runContextPersisted) {
+        state.runContextPersisted = true;
+        persistTopologyRunContext(projectId, conversationId, state.runId, state.filePath);
+    }
+
+    if (!state.filePath) return messages;
+
+    const importMessages = await applyTopologyFileFromAddress(sessionId, state.filePath);
+    return [...messages, ...importMessages];
+};

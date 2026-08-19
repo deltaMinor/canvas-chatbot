@@ -1,0 +1,48 @@
+FROM python:3.13-slim-trixie
+ARG UV_SYNC_PACKAGES="diagram-service"
+ENV PYTHONUNBUFFERED=1 PYTHONDONTWRITEBYTECODE=1 TZ=UTC
+ENV VENV=/app/.venv
+ENV UV_SYNC_PACKAGES=${UV_SYNC_PACKAGES}
+WORKDIR /app
+
+# Step 1: Create non-root user for security (early)
+RUN echo "[RUNTIME] Creating non-root user..." && \
+    groupadd -r serviceuser && \
+    useradd -r -g serviceuser -d /app -s /bin/bash serviceuser
+
+# Step 2: Install System dependencies (as root - required for package installation)
+RUN echo "[RUNTIME] Installing system dependencies..." && \
+    apt update && apt install -y --no-install-recommends \
+    ca-certificates \
+    wget curl tzdata bash jq dnsutils dos2unix && \
+    rm -rf /var/lib/apt/lists/*
+
+# Step 3: Ensure /app directory is owned by serviceuser before switching
+RUN chown -R serviceuser:serviceuser /app
+
+# Step 4: Switch to non-root user early
+USER serviceuser
+
+# Step 5: Copy application files (now owned by serviceuser automatically)
+COPY --chown=serviceuser:serviceuser ./modules/shared_libs /modules/shared_libs
+COPY --chown=serviceuser:serviceuser ./modules/engine_libs /modules/engine_libs
+COPY --chown=serviceuser:serviceuser ./diagram_service /app
+
+# Step 6: Create new venv & Install Python dependencies (as serviceuser with --user flag)
+RUN echo "[RUNTIME] Installing Python dependencies..." && \
+    pip install --user --upgrade pip uv
+ENV PATH="/app/.local/bin:${VENV}/bin:$PATH"
+RUN echo "[RUNTIME] Installing uv workspace package dependencies: ${UV_SYNC_PACKAGES}" && \
+    UV_SYNC_ARGS="" && \
+    for package in $(echo "${UV_SYNC_PACKAGES}" | tr ',' ' '); do \
+    UV_SYNC_ARGS="${UV_SYNC_ARGS} --package ${package}"; \
+    done && \
+    uv sync --frozen --no-dev ${UV_SYNC_ARGS}
+
+# Step 7: Create uvicorn log directories (as serviceuser)
+RUN echo "[RUNTIME] Creating uvicorn directories..." && \
+    mkdir -p /tmp/log/uvicorn && mkdir -p /tmp/run/uvicorn
+
+# Step 8: Convert shell script line endings and set entrypoint
+RUN dos2unix ./scripts/docker/server-entrypoint.sh
+ENTRYPOINT ["bash", "./scripts/docker/server-entrypoint.sh"]

@@ -1,0 +1,3 @@
+recursive-include src/shared_libs *
+include *.txt
+global-exclude __pycache__/*

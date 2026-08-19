@@ -1,0 +1,442 @@
+{
+    "edges": [
+        {
+            "animated": false,
+            "className": "Rendered",
+            "data": {
+                "type": "architecture"
+            },
+            "deletable": true,
+            "hidden": false,
+            "id": "aws_s3_bucket.s3-aws_cloudfront_distribution.CF",
+            "interactionWidth": 30,
+            "label": "",
+            "labelBgPadding": [
+                6,
+                2
+            ],
+            "markerEnd": {
+                "color": "black",
+                "type": "arrowclosed"
+            },
+            "source": "aws_s3_bucket.s3",
+            "sourceHandle": "",
+            "style": {
+                "stroke": "#000",
+                "strokeWidth": 1
+            },
+            "target": "aws_cloudfront_distribution.CF",
+            "targetHandle": "",
+            "type": "step",
+            "zIndex": 19
+        },
+        {
+            "animated": false,
+            "className": "Rendered",
+            "data": {
+                "type": "architecture"
+            },
+            "deletable": true,
+            "hidden": false,
+            "id": "aws_cloudfront_distribution.CF-aws_acm_certificate.acm",
+            "interactionWidth": 30,
+            "label": "",
+            "labelBgPadding": [
+                6,
+                2
+            ],
+            "markerEnd": {
+                "color": "black",
+                "type": "arrowclosed"
+            },
+            "source": "aws_cloudfront_distribution.CF",
+            "sourceHandle": "",
+            "style": {
+                "stroke": "#000",
+                "strokeWidth": 1
+            },
+            "target": "aws_acm_certificate.acm",
+            "targetHandle": "",
+            "type": "step",
+            "zIndex": 19
+        },
+        {
+            "animated": false,
+            "className": "Rendered",
+            "data": {
+                "type": "architecture"
+            },
+            "deletable": true,
+            "hidden": false,
+            "id": "aws_route53_record.route_53-aws_cloudfront_distribution.CF",
+            "interactionWidth": 30,
+            "label": "",
+            "labelBgPadding": [
+                6,
+                2
+            ],
+            "markerEnd": {
+                "color": "black",
+                "type": "arrowclosed"
+            },
+            "source": "aws_route53_record.route_53",
+            "sourceHandle": "",
+            "style": {
+                "stroke": "#000",
+                "strokeWidth": 1
+            },
+            "target": "aws_cloudfront_distribution.CF",
+            "targetHandle": "",
+            "type": "step",
+            "zIndex": 19
+        },
+        {
+            "animated": false,
+            "className": "Rendered",
+            "data": {
+                "type": "architecture"
+            },
+            "deletable": true,
+            "hidden": false,
+            "id": "tv_aws_users.users-aws_route53_record.route_53",
+            "interactionWidth": 30,
+            "label": "",
+            "labelBgPadding": [
+                6,
+                2
+            ],
+            "markerEnd": {
+                "color": "black",
+                "type": "arrowclosed"
+            },
+            "source": "tv_aws_users.users",
+            "sourceHandle": "",
+            "style": {
+                "stroke": "#000",
+                "strokeWidth": 1
+            },
+            "target": "aws_route53_record.route_53",
+            "targetHandle": "",
+            "type": "step",
+            "zIndex": 19
+        }
+    ],
+    "nodes": [
+        {
+            "className": "Rendered",
+            "connectable": true,
+            "data": {
+                "class": "tv_aws_users.users",
+                "label": "tv_aws_users.users",
+                "type": "architecture"
+            },
+            "deletable": true,
+            "draggable": true,
+            "dragHandle": "",
+            "expandParent": false,
+            "height": 40,
+            "hidden": false,
+            "id": "tv_aws_users.users",
+            "parentNode": "",
+            "position": {
+                "x": 150,
+                "y": 5
+            },
+            "selectable": true,
+            "sourcePosition": "bottom",
+            "style": {
+                "fontFamily": "Tahoma",
+                "height": "auto",
+                "width": "auto"
+            },
+            "targetPosition": "top",
+            "type": "input",
+            "width": 125,
+            "zIndex": 20
+        },
+        {
+            "className": "Rendered",
+            "connectable": true,
+            "data": {
+                "class": "aws",
+                "label": "aws",
+                "type": "architecture"
+            },
+            "deletable": true,
+            "draggable": true,
+            "dragHandle": "",
+            "expandParent": false,
+            "height": 700,
+            "hidden": false,
+            "id": "aws",
+            "parentNode": "",
+            "position": {
+                "x": 100,
+                "y": 100
+            },
+            "selectable": true,
+            "sourcePosition": "bottom",
+            "style": {
+                "backgroundColor": "rgba(39, 133, 245, 0.3)",
+                "fontFamily": "Tahoma",
+                "height": 700,
+                "width": 500,
+                "zIndex": -1
+            },
+            "targetPosition": "top",
+            "type": "clusterNode",
+            "width": 500,
+            "zIndex": 20
+        },
+        {
+            "className": "Rendered",
+            "connectable": true,
+            "data": {
+                "class": "aws_cloudfront_distribution.CF",
+                "label": "aws_cloudfront_distribution.CF",
+                "type": "architecture"
+            },
+            "deletable": true,
+            "draggable": true,
+            "dragHandle": "",
+            "expandParent": false,
+            "height": 40,
+            "hidden": false,
+            "id": "aws_cloudfront_distribution.CF",
+            "parentNode": "aws",
+            "position": {
+                "x": 175,
+                "y": 360
+            },
+            "selectable": true,
+            "sourcePosition": "bottom",
+            "style": {
+                "backgroundColor": "#2785f54d",
+                "display": "flex",
+                "fontFamily": "Tahoma",
+                "height": "auto",
+                "justifyContent": "center",
+                "overflowWrap": "anywhere",
+                "width": "auto"
+            },
+            "targetPosition": "top",
+            "type": "default",
+            "width": 185,
+            "zIndex": 20
+        },
+        {
+            "className": "Rendered",
+            "connectable": true,
+            "data": {
+                "class": "aws_route53_record.route_53",
+                "label": "aws_route53_record.route_53",
+                "type": "architecture"
+            },
+            "deletable": true,
+            "draggable": true,
+            "dragHandle": "",
+            "expandParent": false,
+            "height": 40,
+            "hidden": false,
+            "id": "aws_route53_record.route_53",
+            "parentNode": "aws",
+            "position": {
+                "x": 50,
+                "y": 110
+            },
+            "selectable": true,
+            "sourcePosition": "bottom",
+            "style": {
+                "backgroundColor": "#2785f54d",
+                "display": "flex",
+                "fontFamily": "Tahoma",
+                "height": "auto",
+                "justifyContent": "center",
+                "overflowWrap": "anywhere",
+                "width": "auto"
+            },
+            "targetPosition": "top",
+            "type": "default",
+            "width": 181,
+            "zIndex": 20
+        },
+        {
+            "className": "Rendered",
+            "connectable": true,
+            "data": {
+                "class": "aws_s3_bucket.s3",
+                "label": "aws_s3_bucket.s3",
+                "type": "architecture"
+            },
+            "deletable": true,
+            "draggable": true,
+            "dragHandle": "",
+            "expandParent": false,
+            "height": 40,
+            "hidden": false,
+            "id": "aws_s3_bucket.s3",
+            "parentNode": "aws",
+            "position": {
+                "x": 310,
+                "y": 110
+            },
+            "selectable": true,
+            "sourcePosition": "bottom",
+            "style": {
+                "backgroundColor": "#2785f54d",
+                "fontFamily": "Tahoma",
+                "height": "auto",
+                "width": "auto"
+            },
+            "targetPosition": "top",
+            "type": "default",
+            "width": 118,
+            "zIndex": 20
+        },
+        {
+            "className": "Rendered",
+            "connectable": true,
+            "data": {
+                "class": "SS.Shared_Services",
+                "label": "SS.Shared_Services",
+                "type": "architecture"
+            },
+            "deletable": true,
+            "draggable": true,
+            "dragHandle": "",
+            "expandParent": false,
+            "height": 200,
+            "hidden": false,
+            "id": "SS.Shared_Services",
+            "parentNode": "aws",
+            "position": {
+                "x": 150,
+                "y": 450
+            },
+            "selectable": true,
+            "sourcePosition": "bottom",
+            "style": {
+                "backgroundColor": "rgba(245,176,39,0.5)",
+                "fontFamily": "Tahoma",
+                "height": 200,
+                "width": 200
+            },
+            "targetPosition": "top",
+            "type": "clusterNode",
+            "width": 200,
+            "zIndex": 20
+        },
+        {
+            "className": "Rendered",
+            "connectable": true,
+            "data": {
+                "class": "aws_acm_certificate.acm",
+                "label": "aws_acm_certificate.acm",
+                "type": "architecture"
+            },
+            "deletable": true,
+            "draggable": true,
+            "dragHandle": "",
+            "expandParent": false,
+            "height": 40,
+            "hidden": false,
+            "id": "aws_acm_certificate.acm",
+            "parentNode": "SS.Shared_Services",
+            "position": {
+                "x": 25,
+                "y": 100
+            },
+            "selectable": true,
+            "sourcePosition": "bottom",
+            "style": {
+                "backgroundColor": "orange",
+                "fontFamily": "Tahoma",
+                "height": "auto",
+                "width": "auto"
+            },
+            "targetPosition": "top",
+            "type": "output",
+            "width": 155,
+            "zIndex": 20
+        },
+        {
+            "className": "",
+            "connectable": true,
+            "data": {
+                "class": "EC2",
+                "icon": "EC2",
+                "label": "EC2",
+                "type": "architecture"
+            },
+            "deletable": true,
+            "draggable": true,
+            "dragging": true,
+            "dragHandle": "",
+            "expandParent": false,
+            "height": 100,
+            "hidden": false,
+            "id": "ec2",
+            "position": {
+                "x": 700,
+                "y": 190
+            },
+            "positionAbsolute": {
+                "x": 700,
+                "y": 190
+            },
+            "selectable": true,
+            "selected": false,
+            "sourcePosition": "bottom",
+            "style": {
+                "height": 100,
+                "width": 100
+            },
+            "targetPosition": "top",
+            "type": "infoNode",
+            "width": 100,
+            "zIndex": 20
+        },
+        {
+            "className": "",
+            "connectable": true,
+            "data": {
+                "class": "SqlServer",
+                "icon": "AuroraSQLServer",
+                "label": "SQL Server",
+                "type": "architecture"
+            },
+            "deletable": true,
+            "draggable": true,
+            "dragging": true,
+            "dragHandle": "",
+            "expandParent": false,
+            "height": 100,
+            "hidden": false,
+            "id": "AuroraSQLServer",
+            "position": {
+                "x": 700,
+                "y": 390
+            },
+            "positionAbsolute": {
+                "x": 700,
+                "y": 390
+            },
+            "selectable": true,
+            "selected": true,
+            "sourcePosition": "bottom",
+            "style": {
+                "height": 100,
+                "width": 100
+            },
+            "targetPosition": "top",
+            "type": "infoNode",
+            "width": 100,
+            "zIndex": 20
+        }
+    ],
+    "viewport": {
+        "x": 0,
+        "y": 0,
+        "zoom": 1
+    }
+}

@@ -1,0 +1,22 @@
+{
+    "data": [
+        {
+            "enforce": "mandatory",
+            "source": ["arcs.nodes.Network.VPC", "arcs.nodes.Abstract.Group"],
+            "target": "arcs.nodes.Compute",
+            "comment": "EC2 inside VPC"
+        },
+        {
+            "enforce": "optional",
+            "source": ["arcs.nodes.Network.VPC"],
+            "target": "arcs.nodes.Abstract.Group",
+            "comment": "AZ inside VPC"
+        },
+        {
+            "enforce": "mandatory",
+            "source": ["arcs.nodes.Compute"],
+            "target": "arcs.nodes.Interface",
+            "comment": "Interface node inside Device cluster"
+        }
+    ]
+}

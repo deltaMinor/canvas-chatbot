@@ -1,0 +1,307 @@
+.form-control {
+  display: block;
+  width: 100%;
+  height: calc(1.5em + 1.25rem + 2px);
+  padding: 0.625rem 0.75rem;
+  font-size: 0.875rem;
+  font-weight: 400;
+  line-height: 1.5;
+  color: #8898aa;
+  background-color: #fff;
+  background-clip: padding-box;
+  border: 1px solid #dee2e6;
+  border-radius: 0.25rem;
+  box-shadow: 0 3px 2px rgba(233, 236, 239, 0.05);
+  transition: all 0.15s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .form-control {
+    transition: none;
+  }
+}
+
+.form-control::-ms-expand {
+  background-color: transparent;
+  border: 0;
+}
+
+.form-control:-moz-focusring {
+  color: transparent;
+  text-shadow: 0 0 0 #8898aa;
+}
+
+.form-control:focus {
+  color: #8898aa;
+  background-color: #fff;
+  border-color: #5e72e4;
+  outline: 0;
+  box-shadow: 0 3px 9px rgba(50, 50, 9, 0), 3px 4px 8px rgba(94, 114, 228, 0.1);
+}
+
+.form-control::placeholder {
+  color: #adb5bd;
+  opacity: 1;
+}
+
+.form-control:disabled,
+.form-control[readonly] {
+  background-color: #e9ecef;
+  opacity: 1;
+}
+
+select.form-control:focus::-ms-value {
+  color: #8898aa;
+  background-color: #fff;
+}
+
+.form-control-file,
+.form-control-range {
+  display: block;
+  width: 100%;
+}
+
+.form-control-plaintext {
+  display: block;
+  width: 100%;
+  padding: 0.625rem 0;
+  margin-bottom: 0;
+  font-size: 0.875rem;
+  line-height: 1.5;
+  color: #525f7f;
+  background-color: transparent;
+  border: solid transparent;
+  border-width: 1px 0;
+}
+
+.form-control-plaintext.form-control-sm,
+.form-control-plaintext.form-control-lg {
+  padding-right: 0;
+  padding-left: 0;
+}
+
+.form-control-sm {
+  height: calc(1.5em + 0.5rem + 2px);
+  padding: 0.25rem 0.5rem;
+  font-size: 0.75rem;
+  line-height: 1.5;
+  border-radius: 0.25rem;
+}
+
+.form-control-lg {
+  height: calc(1.5em + 1.75rem + 2px);
+  padding: 0.875rem 1rem;
+  font-size: 0.875rem;
+  line-height: 1.5;
+  border-radius: 0.4375rem;
+}
+
+select.form-control[size],
+select.form-control[multiple] {
+  height: auto;
+}
+
+textarea.form-control {
+  height: auto;
+}
+
+.form-group {
+  margin-bottom: 1.5rem;
+}
+
+.form-text {
+  display: block;
+  margin-top: 0.25rem;
+}
+
+.form-row {
+  display: flex;
+  flex-wrap: wrap;
+  margin-right: -5px;
+  margin-left: -5px;
+}
+
+.form-row > .col,
+.form-row > [class*='col-'] {
+  padding-right: 5px;
+  padding-left: 5px;
+}
+
+.form-check {
+  position: relative;
+  display: block;
+  padding-left: 1.25rem;
+}
+
+.form-check-input {
+  position: absolute;
+  margin-top: 0.3rem;
+  margin-left: -1.25rem;
+}
+.form-check-input[disabled] ~ .form-check-label,
+.form-check-input:disabled ~ .form-check-label {
+  color: #8898aa;
+}
+
+.form-check-label {
+  margin-bottom: 0;
+}
+
+.form-check-inline {
+  display: inline-flex;
+  align-items: center;
+  padding-left: 0;
+  margin-right: 0.75rem;
+}
+
+.form-check-inline .form-check-input {
+  position: static;
+  margin-top: 0;
+  margin-right: 0.3125rem;
+  margin-left: 0;
+}
+
+.form-control-lg,
+.input-group-lg .form-control,
+.input-group-text {
+  font-size: 1rem !important;
+}
+
+.custom-control {
+  padding-left: 1.75rem;
+}
+
+.input-group {
+  box-shadow: 0 3px 2px rgba(233, 236, 239, 0.05);
+  border-radius: 0.25rem;
+  transition: all 0.15s ease-in-out;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .input-group {
+    transition: none;
+  }
+}
+
+.input-group .form-control {
+  box-shadow: none;
+}
+
+.input-group .form-control:focus {
+  box-shadow: none;
+}
+
+.input-group-text {
+  transition: all 0.15s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .input-group-text {
+    transition: none;
+  }
+}
+
+.input-group-text i {
+  font-size: 0.875rem;
+}
+
+.input-group-text .custom-control {
+  line-height: 1;
+}
+
+.input-group-prepend .input-group-text {
+  border-right: 0;
+}
+
+.input-group-append .input-group-text {
+  border-left: 0;
+}
+
+.input-group-merge .form-control:not(:first-child) {
+  border-left: 0;
+  padding-left: 0;
+}
+
+.input-group-merge .form-control:not(:last-child) {
+  border-right: 0;
+  padding-right: 0;
+}
+
+.input-group-alternative {
+  box-shadow: 0 1px 3px rgba(50, 50, 93, 0.15), 0 1px 0 rgba(0, 0, 0, 0.02);
+  border: 0;
+  transition: box-shadow 0.15s ease;
+}
+
+.input-group-alternative .form-control,
+.input-group-alternative .input-group-text {
+  border: 0;
+  box-shadow: none;
+}
+
+.focused .input-group-alternative {
+  box-shadow: 0 4px 6px rgba(50, 50, 93, 0.11), 0 1px 3px rgba(0, 0, 0, 0.08) !important;
+}
+
+.input-group-flush {
+  box-shadow: none;
+}
+
+.input-group-flush > .form-control {
+  padding: 0;
+  border-width: 0;
+  background-color: transparent;
+}
+
+.input-group-flush > .input-group-prepend > .input-group-text,
+.input-group-flush > .input-group-append > .input-group-text {
+  padding: 0;
+  padding-right: 1rem;
+  border-width: 0;
+  background-color: transparent;
+}
+
+.focused .input-group {
+  box-shadow: 0 3px 9px rgba(50, 50, 9, 0), 3px 4px 8px rgba(94, 114, 228, 0.1);
+}
+
+.focused .input-group-text {
+  color: #8898aa;
+  background-color: #fff;
+  border-color: #5e72e4;
+}
+
+.focused .form-control {
+  border-color: #5e72e4;
+}
+
+.focused .input-group-flush {
+  box-shadow: none;
+}
+
+.has-success,
+.has-danger {
+  position: relative;
+}
+
+.has-success:after,
+.has-danger:after {
+  display: none;
+  width: 19px;
+  height: 19px;
+  line-height: 19px;
+  text-align: center;
+  font-family: 'NucleoIcons';
+  position: absolute;
+  right: 15px;
+  top: 50%;
+  transform: translateY(-50%);
+  border-radius: 50%;
+  font-size: 9px;
+  opacity: 1;
+}
+
+.has-success .input-group-prepend .input-group-text,
+.has-danger .input-group-prepend .input-group-text {
+  border-color: red;
+}

@@ -1,0 +1,27 @@
+Metadata-Version: 2.4
+Name: engine_libs
+Version: 0.1.0
+Summary: Internal engine-focused libraries for tm-backend services.
+Author-email: Integrative Threat Modelling Admin <tm_admin@iarcs-create.edu.sg>
+Maintainer-email: Integrative Threat Modelling Admin <tm_admin@iarcs-create.edu.sg>
+License: Proprietary
+Keywords: engine,internal,libraries
+Classifier: Private :: Do Not Upload
+Classifier: Intended Audience :: Developers
+Classifier: Topic :: Software Development :: Libraries
+Classifier: Operating System :: OS Independent
+Classifier: Programming Language :: Python :: 3 :: Only
+Classifier: Programming Language :: Python :: 3.12
+Classifier: License :: Other/Proprietary License
+Requires-Python: <3.14,>=3.10
+Description-Content-Type: text/markdown
+Requires-Dist: jsonschema>=4.26.0
+Requires-Dist: langchain-core>=1.4.0
+Requires-Dist: langchain-google-genai>=4.2.3
+Requires-Dist: langchain-ollama>=1.1.0
+Requires-Dist: langchain-openai>=1.2.2
+Requires-Dist: networkx>=3.4.2
+Requires-Dist: owlready2>=0.48
+Requires-Dist: pandas>=2.2.0
+Requires-Dist: shared-libs
+Dynamic: description-content-type

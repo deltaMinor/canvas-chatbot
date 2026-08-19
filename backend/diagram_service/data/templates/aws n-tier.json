@@ -1,0 +1,1319 @@
+{
+  "nodes": [
+    {
+      "id": "node_7e04289a-502f-4427-bc4c-83a12720b30f",
+      "className": "",
+      "connectable": true,
+      "data": {
+        "class": "generic_resource",
+        "icon": "Internet",
+        "label": "Internet",
+        "tosca_type": "arcs.nodes.Internet",
+        "type": "architecture",
+        "data_stored": [],
+        "cardRefKey": ""
+      },
+      "deletable": true,
+      "draggable": true,
+      "dragHandle": "",
+      "expandParent": false,
+      "hidden": false,
+      "parentNode": "",
+      "position": {
+        "x": -1650,
+        "y": 160
+      },
+      "positionAbsolute": {
+        "x": -1650,
+        "y": 160
+      },
+      "selectable": true,
+      "sourcePosition": "bottom",
+      "style": {
+        "height": 80,
+        "width": 80
+      },
+      "targetPosition": "top",
+      "type": "infoNode",
+      "zIndex": 1
+    },
+    {
+      "id": "node_6567ce85-22c8-4012-a6f7-be850b5a74cf",
+      "className": "",
+      "connectable": true,
+      "data": {
+        "class": "aws_wafv2_rule_group",
+        "icon": "WAF",
+        "label": "WAF",
+        "tosca_type": "arcs.nodes.Rule.Traffic",
+        "type": "architecture",
+        "data_stored": [],
+        "cardRefKey": ""
+      },
+      "deletable": true,
+      "draggable": true,
+      "dragHandle": "",
+      "expandParent": false,
+      "hidden": false,
+      "parentNode": "node_be0aa835-5b94-4379-aaf7-194b4901a727",
+      "position": {
+        "x": 30,
+        "y": 140
+      },
+      "positionAbsolute": {
+        "x": -150,
+        "y": 650
+      },
+      "selectable": true,
+      "sourcePosition": "bottom",
+      "style": {
+        "height": 80,
+        "width": 80
+      },
+      "targetPosition": "top",
+      "type": "infoNode",
+      "zIndex": 2
+    },
+    {
+      "id": "node_ac16535d-7ec8-4ca1-8c00-c6cde90859f5",
+      "className": "",
+      "connectable": true,
+      "data": {
+        "class": "aws_apigatewayv2_api",
+        "icon": "APIGateway",
+        "label": "API Gateway",
+        "tosca_type": "arcs.nodes.TrafficManager.Gateway",
+        "type": "architecture",
+        "data_stored": [],
+        "cardRefKey": ""
+      },
+      "deletable": true,
+      "draggable": true,
+      "dragHandle": "",
+      "expandParent": false,
+      "hidden": false,
+      "parentNode": "node_be0aa835-5b94-4379-aaf7-194b4901a727",
+      "position": {
+        "x": 180,
+        "y": 140
+      },
+      "positionAbsolute": {
+        "x": 0,
+        "y": 650
+      },
+      "selectable": true,
+      "sourcePosition": "bottom",
+      "style": {
+        "height": 80,
+        "width": 80
+      },
+      "targetPosition": "top",
+      "type": "infoNode",
+      "zIndex": 2
+    },
+    {
+      "id": "node_021c8a52-d0ec-47c8-8111-11a36afba4ed",
+      "className": "",
+      "connectable": true,
+      "data": {
+        "class": "aws_route53_record",
+        "icon": "Route53",
+        "label": "Route 53",
+        "tosca_type": "arcs.artifacts.dns.DNSRecord",
+        "type": "architecture",
+        "data_stored": [],
+        "cardRefKey": ""
+      },
+      "deletable": true,
+      "draggable": true,
+      "dragHandle": "",
+      "expandParent": false,
+      "hidden": false,
+      "parentNode": "node_b0a2459f-f979-4d01-937f-21be86378998",
+      "position": {
+        "x": 60,
+        "y": 60
+      },
+      "positionAbsolute": {
+        "x": 200,
+        "y": 570
+      },
+      "selectable": true,
+      "sourcePosition": "bottom",
+      "style": {
+        "height": 80,
+        "width": 80
+      },
+      "targetPosition": "top",
+      "type": "infoNode",
+      "zIndex": 2
+    },
+    {
+      "id": "node_82e0b683-f80a-4cac-b604-3816530faa0a",
+      "className": "",
+      "connectable": true,
+      "data": {
+        "class": "aws_networkfirewall_firewall",
+        "icon": "NetworkFirewall",
+        "label": "Network Firewall",
+        "tosca_type": "arcs.nodes.network.NetworkFirewall",
+        "type": "architecture",
+        "data_stored": [],
+        "cardRefKey": ""
+      },
+      "deletable": true,
+      "draggable": true,
+      "dragHandle": "",
+      "expandParent": false,
+      "hidden": false,
+      "parentNode": "node_b0a2459f-f979-4d01-937f-21be86378998",
+      "position": {
+        "x": 60,
+        "y": 200
+      },
+      "positionAbsolute": {
+        "x": 200,
+        "y": 710
+      },
+      "selectable": true,
+      "sourcePosition": "bottom",
+      "style": {
+        "height": 80,
+        "width": 80
+      },
+      "targetPosition": "top",
+      "type": "infoNode",
+      "zIndex": 2
+    },
+    {
+      "id": "node_74d5c25a-e6ea-4ff9-b209-eedee9e44cb9",
+      "className": "",
+      "connectable": true,
+      "data": {
+        "class": "aws_lb",
+        "icon": "ELBNetworkLoadBalancer",
+        "label": "ELB Network Load Balancer",
+        "tosca_type": "arcs.nodes.TrafficManager.LoadBalancer",
+        "type": "architecture",
+        "data_stored": [],
+        "cardRefKey": ""
+      },
+      "deletable": true,
+      "draggable": true,
+      "dragHandle": "",
+      "expandParent": false,
+      "hidden": false,
+      "parentNode": "node_a5829d45-0fb0-4691-aa2c-a04ac3fc2fcd",
+      "position": {
+        "x": 60,
+        "y": 200
+      },
+      "positionAbsolute": {
+        "x": 520,
+        "y": 640
+      },
+      "selectable": true,
+      "sourcePosition": "bottom",
+      "style": {
+        "height": 80,
+        "width": 80
+      },
+      "targetPosition": "top",
+      "type": "infoNode",
+      "zIndex": 2
+    },
+    {
+      "id": "node_70b36411-6af3-4d80-941e-93493b0d9245",
+      "className": "",
+      "connectable": true,
+      "data": {
+        "class": "aws_ecs_service",
+        "icon": "ElasticContainerService",
+        "label": "Elastic Container Service",
+        "tosca_type": "arcs.nodes.Container.Orchestration",
+        "type": "architecture",
+        "data_stored": [],
+        "cardRefKey": ""
+      },
+      "deletable": true,
+      "draggable": true,
+      "dragHandle": "",
+      "expandParent": false,
+      "hidden": false,
+      "parentNode": "node_112e1415-4cfc-4fd8-bdf7-447245c699c1",
+      "position": {
+        "x": 60,
+        "y": 50
+      },
+      "positionAbsolute": {
+        "x": 770,
+        "y": 580
+      },
+      "selectable": true,
+      "sourcePosition": "bottom",
+      "style": {
+        "height": 80,
+        "width": 80
+      },
+      "targetPosition": "top",
+      "type": "infoNode",
+      "zIndex": 2
+    },
+    {
+      "id": "node_4c37c49f-ce4b-4c2a-a52d-1683a5d601bf",
+      "className": "",
+      "connectable": true,
+      "data": {
+        "class": "aws_ecs_service",
+        "icon": "ElasticContainerService",
+        "label": "Elastic Container Service",
+        "tosca_type": "arcs.nodes.Container.Orchestration",
+        "type": "architecture",
+        "data_stored": [],
+        "cardRefKey": ""
+      },
+      "deletable": true,
+      "draggable": true,
+      "dragHandle": "",
+      "expandParent": false,
+      "hidden": false,
+      "parentNode": "node_112e1415-4cfc-4fd8-bdf7-447245c699c1",
+      "position": {
+        "x": 60,
+        "y": 180
+      },
+      "positionAbsolute": {
+        "x": 770,
+        "y": 710
+      },
+      "selectable": true,
+      "sourcePosition": "bottom",
+      "style": {
+        "height": 80,
+        "width": 80
+      },
+      "targetPosition": "top",
+      "type": "infoNode",
+      "zIndex": 2
+    },
+    {
+      "id": "node_da23c34a-d684-42e4-b3c1-3e15f20ac4e0",
+      "className": "",
+      "connectable": true,
+      "data": {
+        "class": "generic_resource",
+        "icon": "RDS",
+        "label": "RDS",
+        "tosca_type": "tosca.nodes.DBMS",
+        "type": "architecture",
+        "data_stored": [],
+        "cardRefKey": ""
+      },
+      "deletable": true,
+      "draggable": true,
+      "dragHandle": "",
+      "expandParent": false,
+      "hidden": false,
+      "parentNode": "node_76eda6e6-6954-4926-9e8a-9cdbbd734505",
+      "position": {
+        "x": 60,
+        "y": 140
+      },
+      "positionAbsolute": {
+        "x": 1110,
+        "y": 650
+      },
+      "selectable": true,
+      "sourcePosition": "bottom",
+      "style": {
+        "height": 80,
+        "width": 80
+      },
+      "targetPosition": "top",
+      "type": "infoNode",
+      "zIndex": 2
+    },
+    {
+      "id": "node_a4970b23-ca91-4c9c-9a0e-06ba89797498",
+      "className": "",
+      "connectable": true,
+      "data": {
+        "class": "aws_iam_role",
+        "icon": "IdentityAndAccessManagement",
+        "label": "Identity and Access Management",
+        "tosca_type": "arcs.nodes.SoftwareComponent.IAM",
+        "type": "architecture",
+        "data_stored": [],
+        "cardRefKey": ""
+      },
+      "deletable": true,
+      "draggable": true,
+      "dragHandle": "",
+      "expandParent": false,
+      "hidden": false,
+      "parentNode": "node_678faf74-0e84-4d81-8ac0-aea691d6081e",
+      "position": {
+        "x": 70,
+        "y": 70
+      },
+      "positionAbsolute": {
+        "x": 290,
+        "y": 240
+      },
+      "selectable": true,
+      "sourcePosition": "bottom",
+      "style": {
+        "height": 80,
+        "width": 80
+      },
+      "targetPosition": "top",
+      "type": "infoNode",
+      "zIndex": 2
+    },
+    {
+      "id": "node_55800f57-1f95-43d7-8e16-c538584f6614",
+      "className": "",
+      "connectable": true,
+      "data": {
+        "class": "aws_cloudtrail",
+        "icon": "CloudTrail",
+        "label": "CloudTrail",
+        "tosca_type": "arcs.nodes.Service.Analytics",
+        "type": "architecture",
+        "data_stored": [],
+        "cardRefKey": ""
+      },
+      "deletable": true,
+      "draggable": true,
+      "dragHandle": "",
+      "expandParent": false,
+      "hidden": false,
+      "parentNode": "node_678faf74-0e84-4d81-8ac0-aea691d6081e",
+      "position": {
+        "x": 240,
+        "y": 70
+      },
+      "positionAbsolute": {
+        "x": 460,
+        "y": 240
+      },
+      "selectable": true,
+      "sourcePosition": "bottom",
+      "style": {
+        "height": 80,
+        "width": 80
+      },
+      "targetPosition": "top",
+      "type": "infoNode",
+      "zIndex": 2
+    },
+    {
+      "id": "node_9ace4771-5b90-40ce-a9f3-7fb6c80f95f0",
+      "className": "",
+      "connectable": true,
+      "data": {
+        "class": "aws_cloudwatch_log_group",
+        "icon": "CloudWatch",
+        "label": "CloudWatch",
+        "tosca_type": "arcs.artifacts.Log.LogGroup",
+        "type": "architecture",
+        "data_stored": [],
+        "cardRefKey": ""
+      },
+      "deletable": true,
+      "draggable": true,
+      "dragHandle": "",
+      "expandParent": false,
+      "hidden": false,
+      "parentNode": "node_678faf74-0e84-4d81-8ac0-aea691d6081e",
+      "position": {
+        "x": 380,
+        "y": 70
+      },
+      "positionAbsolute": {
+        "x": 600,
+        "y": 240
+      },
+      "selectable": true,
+      "sourcePosition": "bottom",
+      "style": {
+        "height": 80,
+        "width": 80
+      },
+      "targetPosition": "top",
+      "type": "infoNode",
+      "zIndex": 2
+    },
+    {
+      "id": "node_f7c22d6d-8445-4cc9-bafb-eb93e1a91aca",
+      "className": "",
+      "connectable": true,
+      "data": {
+        "class": "aws_config_aggregate_authorization",
+        "icon": "Config",
+        "label": "Config",
+        "tosca_type": "arcs.nodes.Service.Analytics",
+        "type": "architecture",
+        "data_stored": [],
+        "cardRefKey": ""
+      },
+      "deletable": true,
+      "draggable": true,
+      "dragHandle": "",
+      "expandParent": false,
+      "hidden": false,
+      "parentNode": "node_678faf74-0e84-4d81-8ac0-aea691d6081e",
+      "position": {
+        "x": 520,
+        "y": 70
+      },
+      "positionAbsolute": {
+        "x": 740,
+        "y": 240
+      },
+      "selectable": true,
+      "sourcePosition": "bottom",
+      "style": {
+        "height": 80,
+        "width": 80
+      },
+      "targetPosition": "top",
+      "type": "infoNode",
+      "zIndex": 2
+    },
+    {
+      "id": "node_4d79f118-7577-4332-98c3-2d4d6b7d0c34",
+      "className": "",
+      "connectable": true,
+      "data": {
+        "class": "aws_guardduty_detector",
+        "icon": "GuardDuty",
+        "label": "GuardDuty",
+        "tosca_type": "arcs.nodes.Service.Analytics",
+        "type": "architecture",
+        "data_stored": [],
+        "cardRefKey": ""
+      },
+      "deletable": true,
+      "draggable": true,
+      "dragHandle": "",
+      "expandParent": false,
+      "hidden": false,
+      "parentNode": "node_678faf74-0e84-4d81-8ac0-aea691d6081e",
+      "position": {
+        "x": 660,
+        "y": 70
+      },
+      "positionAbsolute": {
+        "x": 880,
+        "y": 240
+      },
+      "selectable": true,
+      "sourcePosition": "bottom",
+      "style": {
+        "height": 80,
+        "width": 80
+      },
+      "targetPosition": "top",
+      "type": "infoNode",
+      "zIndex": 2
+    },
+    {
+      "id": "node_353de343-908b-48fb-bada-4a9dfa9f2aeb",
+      "className": "",
+      "connectable": true,
+      "data": {
+        "class": "aws_inspector_assessment_template",
+        "icon": "Inspector",
+        "label": "Inspector",
+        "tosca_type": "arcs.artifacts.Rule",
+        "type": "architecture",
+        "data_stored": [],
+        "cardRefKey": ""
+      },
+      "deletable": true,
+      "draggable": true,
+      "dragHandle": "",
+      "expandParent": false,
+      "hidden": false,
+      "parentNode": "node_678faf74-0e84-4d81-8ac0-aea691d6081e",
+      "position": {
+        "x": 790,
+        "y": 70
+      },
+      "positionAbsolute": {
+        "x": 1010,
+        "y": 240
+      },
+      "selectable": true,
+      "sourcePosition": "bottom",
+      "style": {
+        "height": 80,
+        "width": 80
+      },
+      "targetPosition": "top",
+      "type": "infoNode",
+      "zIndex": 2
+    },
+    {
+      "id": "node_109bc14a-7ea3-4508-9a40-9c10fe379b9b",
+      "className": "",
+      "connectable": true,
+      "data": {
+        "class": "aws_backup_plan",
+        "icon": "Backup",
+        "label": "Backup",
+        "tosca_type": "arcs.nodes.AutomationService.Backup",
+        "type": "architecture",
+        "data_stored": [],
+        "cardRefKey": ""
+      },
+      "deletable": true,
+      "draggable": true,
+      "dragHandle": "",
+      "expandParent": false,
+      "hidden": false,
+      "parentNode": "node_678faf74-0e84-4d81-8ac0-aea691d6081e",
+      "position": {
+        "x": 920,
+        "y": 70
+      },
+      "positionAbsolute": {
+        "x": 1140,
+        "y": 240
+      },
+      "selectable": true,
+      "sourcePosition": "bottom",
+      "style": {
+        "height": 80,
+        "width": 80
+      },
+      "targetPosition": "top",
+      "type": "infoNode",
+      "zIndex": 2
+    },
+    {
+      "id": "node_be0aa835-5b94-4379-aaf7-194b4901a727",
+      "className": "",
+      "connectable": true,
+      "data": {
+        "class": "cluster_node",
+        "clusterNodeType": "internal",
+        "icon": "GenericGroup",
+        "icon_position": "top-left",
+        "label": "Web Tier",
+        "tosca_type": "iarcs.Cloud",
+        "type": "architecture"
+      },
+      "deletable": true,
+      "draggable": true,
+      "dragHandle": "",
+      "expandParent": false,
+      "hidden": false,
+      "parentNode": "node_5224b02c-3415-48de-8298-8d7f989f6e5d",
+      "position": {
+        "x": 20,
+        "y": 390
+      },
+      "positionAbsolute": {
+        "x": -180,
+        "y": 510
+      },
+      "selectable": true,
+      "sourcePosition": "bottom",
+      "style": {
+        "backgroundColor": "unset",
+        "borderColor": "rgba(90, 108, 134, 1)",
+        "borderStyle": "solid",
+        "borderWidth": "2px",
+        "height": 330,
+        "keepAspectRatio": true,
+        "maxHeight": 2000,
+        "maxWidth": 2000,
+        "minHeight": 200,
+        "minWidth": 200,
+        "width": 300
+      },
+      "targetPosition": "top",
+      "type": "clusterNode",
+      "zIndex": 2
+    },
+    {
+      "id": "node_b0a2459f-f979-4d01-937f-21be86378998",
+      "className": "",
+      "connectable": true,
+      "data": {
+        "class": "cluster_node",
+        "clusterNodeType": "internal",
+        "icon": "GenericGroup",
+        "icon_position": "top-left",
+        "label": "Firewall Tier",
+        "tosca_type": "iarcs.Cloud",
+        "type": "architecture"
+      },
+      "deletable": true,
+      "draggable": true,
+      "dragHandle": "",
+      "expandParent": false,
+      "hidden": false,
+      "parentNode": "node_5224b02c-3415-48de-8298-8d7f989f6e5d",
+      "position": {
+        "x": 340,
+        "y": 390
+      },
+      "positionAbsolute": {
+        "x": 140,
+        "y": 510
+      },
+      "selectable": true,
+      "sourcePosition": "bottom",
+      "style": {
+        "backgroundColor": "unset",
+        "borderColor": "rgba(90, 108, 134, 1)",
+        "borderStyle": "solid",
+        "borderWidth": "2px",
+        "height": 330,
+        "keepAspectRatio": true,
+        "maxHeight": 2000,
+        "maxWidth": 2000,
+        "minHeight": 200,
+        "minWidth": 200,
+        "width": 200
+      },
+      "targetPosition": "top",
+      "type": "clusterNode",
+      "zIndex": 2
+    },
+    {
+      "id": "node_c242bf33-7af6-4d0c-b230-787899b2efbc",
+      "className": "",
+      "connectable": true,
+      "data": {
+        "class": "cluster_node",
+        "clusterNodeType": "internal",
+        "icon": "GenericGroup",
+        "icon_position": "top-left",
+        "label": "App Tier",
+        "tosca_type": "iarcs.Cloud",
+        "type": "architecture"
+      },
+      "deletable": true,
+      "draggable": true,
+      "dragHandle": "",
+      "expandParent": false,
+      "hidden": false,
+      "parentNode": "node_5224b02c-3415-48de-8298-8d7f989f6e5d",
+      "position": {
+        "x": 600,
+        "y": 270
+      },
+      "positionAbsolute": {
+        "x": 400,
+        "y": 390
+      },
+      "selectable": true,
+      "sourcePosition": "bottom",
+      "style": {
+        "backgroundColor": "unset",
+        "borderColor": "rgba(90, 108, 134, 1)",
+        "borderStyle": "solid",
+        "borderWidth": "2px",
+        "height": 560,
+        "keepAspectRatio": true,
+        "maxHeight": 2000,
+        "maxWidth": 2000,
+        "minHeight": 200,
+        "minWidth": 200,
+        "width": 630
+      },
+      "targetPosition": "top",
+      "type": "clusterNode",
+      "zIndex": 2
+    },
+    {
+      "id": "node_112e1415-4cfc-4fd8-bdf7-447245c699c1",
+      "className": "",
+      "connectable": true,
+      "data": {
+        "class": "cluster_node",
+        "clusterNodeType": "internal",
+        "icon": "SecurityGroup",
+        "icon_position": "top-left",
+        "label": "Security Group",
+        "tosca_type": "iarcs.Cloud",
+        "type": "architecture"
+      },
+      "deletable": true,
+      "draggable": true,
+      "dragHandle": "",
+      "expandParent": false,
+      "hidden": false,
+      "parentNode": "node_9cffd74f-f008-4780-be2b-ef184799f028",
+      "position": {
+        "x": 20,
+        "y": 70
+      },
+      "positionAbsolute": {
+        "x": 710,
+        "y": 530
+      },
+      "selectable": true,
+      "sourcePosition": "bottom",
+      "style": {
+        "backgroundColor": "unset",
+        "borderColor": "#5a6c86",
+        "borderStyle": "solid",
+        "borderWidth": "2px",
+        "height": 310,
+        "keepAspectRatio": true,
+        "maxHeight": 2000,
+        "maxWidth": 2000,
+        "minHeight": 200,
+        "minWidth": 200,
+        "width": 210
+      },
+      "targetPosition": "top",
+      "type": "clusterNode",
+      "zIndex": 2
+    },
+    {
+      "id": "node_9cffd74f-f008-4780-be2b-ef184799f028",
+      "className": "",
+      "connectable": true,
+      "data": {
+        "class": "cluster_node",
+        "clusterNodeType": "internal",
+        "icon": "AutoScalingGroup",
+        "icon_position": "top-left",
+        "label": "Auto Scaling Group",
+        "tosca_type": "iarcs.Cloud",
+        "type": "architecture"
+      },
+      "deletable": true,
+      "draggable": true,
+      "dragHandle": "",
+      "expandParent": false,
+      "hidden": false,
+      "parentNode": "node_a5829d45-0fb0-4691-aa2c-a04ac3fc2fcd",
+      "position": {
+        "x": 230,
+        "y": 20
+      },
+      "positionAbsolute": {
+        "x": 690,
+        "y": 460
+      },
+      "selectable": true,
+      "sourcePosition": "bottom",
+      "style": {
+        "backgroundColor": "unset",
+        "borderColor": "#d86613",
+        "borderStyle": "dashed",
+        "borderWidth": "2px",
+        "height": 420,
+        "keepAspectRatio": true,
+        "maxHeight": 2000,
+        "maxWidth": 2000,
+        "minHeight": 200,
+        "minWidth": 200,
+        "width": 250
+      },
+      "targetPosition": "top",
+      "type": "clusterNode",
+      "zIndex": 2
+    },
+    {
+      "id": "node_a5829d45-0fb0-4691-aa2c-a04ac3fc2fcd",
+      "className": "",
+      "connectable": true,
+      "data": {
+        "class": "cluster_node",
+        "clusterNodeType": "internal",
+        "icon": "ElasticBeanstalkContainer",
+        "icon_position": "top-left",
+        "label": "Elastic Beanstalk Container",
+        "tosca_type": "iarcs.Cloud",
+        "type": "architecture"
+      },
+      "deletable": true,
+      "draggable": true,
+      "dragHandle": "",
+      "expandParent": false,
+      "hidden": false,
+      "parentNode": "node_c242bf33-7af6-4d0c-b230-787899b2efbc",
+      "position": {
+        "x": 60,
+        "y": 50
+      },
+      "positionAbsolute": {
+        "x": 460,
+        "y": 440
+      },
+      "selectable": true,
+      "sourcePosition": "bottom",
+      "style": {
+        "backgroundColor": "unset",
+        "borderColor": "#d86613",
+        "borderStyle": "solid",
+        "borderWidth": "2px",
+        "height": 470,
+        "keepAspectRatio": true,
+        "maxHeight": 2000,
+        "maxWidth": 2000,
+        "minHeight": 200,
+        "minWidth": 200,
+        "width": 520
+      },
+      "targetPosition": "top",
+      "type": "clusterNode",
+      "zIndex": 2
+    },
+    {
+      "id": "node_76eda6e6-6954-4926-9e8a-9cdbbd734505",
+      "className": "",
+      "connectable": true,
+      "data": {
+        "class": "cluster_node",
+        "clusterNodeType": "internal",
+        "icon": "GenericGroup",
+        "icon_position": "top-left",
+        "label": "Database Tier",
+        "tosca_type": "iarcs.Cloud",
+        "type": "architecture"
+      },
+      "deletable": true,
+      "draggable": true,
+      "dragHandle": "",
+      "expandParent": false,
+      "hidden": false,
+      "parentNode": "node_5224b02c-3415-48de-8298-8d7f989f6e5d",
+      "position": {
+        "x": 1250,
+        "y": 390
+      },
+      "positionAbsolute": {
+        "x": 1050,
+        "y": 510
+      },
+      "selectable": true,
+      "sourcePosition": "bottom",
+      "style": {
+        "backgroundColor": "unset",
+        "borderColor": "rgba(90, 108, 134, 1)",
+        "borderStyle": "solid",
+        "borderWidth": "2px",
+        "height": 330,
+        "keepAspectRatio": true,
+        "maxHeight": 2000,
+        "maxWidth": 2000,
+        "minHeight": 200,
+        "minWidth": 200,
+        "width": 200
+      },
+      "targetPosition": "top",
+      "type": "clusterNode",
+      "zIndex": 2
+    },
+    {
+      "id": "node_678faf74-0e84-4d81-8ac0-aea691d6081e",
+      "className": "",
+      "connectable": true,
+      "data": {
+        "class": "cluster_node",
+        "clusterNodeType": "internal",
+        "icon": "GenericGroup",
+        "icon_position": "top-left",
+        "label": "Governance Tier",
+        "tosca_type": "iarcs.Cloud",
+        "type": "architecture"
+      },
+      "deletable": true,
+      "draggable": true,
+      "dragHandle": "",
+      "expandParent": false,
+      "hidden": false,
+      "parentNode": "node_5224b02c-3415-48de-8298-8d7f989f6e5d",
+      "position": {
+        "x": 420,
+        "y": 50
+      },
+      "positionAbsolute": {
+        "x": 220,
+        "y": 170
+      },
+      "selectable": true,
+      "sourcePosition": "bottom",
+      "style": {
+        "backgroundColor": "unset",
+        "borderColor": "rgba(90, 108, 134, 1)",
+        "borderStyle": "solid",
+        "borderWidth": "2px",
+        "height": 200,
+        "keepAspectRatio": true,
+        "maxHeight": 2000,
+        "maxWidth": 2000,
+        "minHeight": 200,
+        "minWidth": 200,
+        "width": 1040
+      },
+      "targetPosition": "top",
+      "type": "clusterNode",
+      "zIndex": 2
+    },
+    {
+      "id": "node_5224b02c-3415-48de-8298-8d7f989f6e5d",
+      "className": "",
+      "connectable": true,
+      "data": {
+        "class": "cluster_node",
+        "clusterNodeType": "internal",
+        "icon": "Region",
+        "icon_position": "top-left",
+        "label": "Region",
+        "tosca_type": "iarcs.Cloud",
+        "type": "architecture"
+      },
+      "deletable": true,
+      "draggable": true,
+      "dragHandle": "",
+      "expandParent": false,
+      "hidden": false,
+      "parentNode": "node_ecb8eef7-11c6-42f6-a54d-22b701b6aa78",
+      "position": {
+        "x": 40,
+        "y": 50
+      },
+      "positionAbsolute": {
+        "x": -1470,
+        "y": -370
+      },
+      "selectable": true,
+      "sourcePosition": "bottom",
+      "style": {
+        "backgroundColor": "unset",
+        "borderColor": "#00a4a6",
+        "borderStyle": "dashed",
+        "borderWidth": "2px",
+        "height": 850,
+        "keepAspectRatio": true,
+        "maxHeight": 2000,
+        "maxWidth": 2000,
+        "minHeight": 200,
+        "minWidth": 200,
+        "width": 1490
+      },
+      "targetPosition": "top",
+      "type": "clusterNode",
+      "zIndex": 2
+    },
+    {
+      "id": "node_ecb8eef7-11c6-42f6-a54d-22b701b6aa78",
+      "className": "",
+      "connectable": true,
+      "data": {
+        "class": "cluster_node",
+        "clusterNodeType": "internal",
+        "icon": "AWSCloudAlt",
+        "icon_position": "top-left",
+        "label": "AWS Cloud",
+        "tosca_type": "iarcs.Cloud",
+        "type": "architecture"
+      },
+      "deletable": true,
+      "draggable": true,
+      "dragHandle": "",
+      "expandParent": false,
+      "hidden": false,
+      "parentNode": "",
+      "position": {
+        "x": -1510,
+        "y": -420
+      },
+      "positionAbsolute": {
+        "x": -1510,
+        "y": -420
+      },
+      "selectable": true,
+      "sourcePosition": "bottom",
+      "style": {
+        "backgroundColor": "unset",
+        "borderColor": "#232f3e",
+        "borderStyle": "solid",
+        "borderWidth": "2px",
+        "height": 930,
+        "keepAspectRatio": true,
+        "maxHeight": 2000,
+        "maxWidth": 2000,
+        "minHeight": 200,
+        "minWidth": 200,
+        "width": 1580
+      },
+      "targetPosition": "top",
+      "type": "clusterNode",
+      "zIndex": 1
+    }
+  ],
+  "edges": [
+    {
+      "id": "edge_bae437db-a036-475c-84af-125362b0a17b",
+      "source": "node_7e04289a-502f-4427-bc4c-83a12720b30f",
+      "sourceHandle": "source_right",
+      "target": "node_6567ce85-22c8-4012-a6f7-be850b5a74cf",
+      "targetHandle": "target_left",
+      "label": "",
+      "data": {
+        "type": "architecture",
+        "bidirectional": true
+      },
+      "type": "floating",
+      "animated": false,
+      "className": "",
+      "deletable": true,
+      "hidden": false,
+      "interactionWidth": 10,
+      "labelBgPadding": [6, 2],
+      "markerEnd": {
+        "type": "arrowclosed",
+        "color": "#000"
+      },
+      "markerStart": {
+        "type": "arrowclosed",
+        "color": "#000"
+      },
+      "style": {
+        "strokeWidth": 2,
+        "stroke": "#000"
+      },
+      "zIndex": 1
+    },
+    {
+      "id": "edge_70bf962b-fa12-4ce3-8a78-5589175bc002",
+      "source": "node_6567ce85-22c8-4012-a6f7-be850b5a74cf",
+      "sourceHandle": "source_right",
+      "target": "node_ac16535d-7ec8-4ca1-8c00-c6cde90859f5",
+      "targetHandle": "target_left",
+      "label": "",
+      "data": {
+        "type": "architecture",
+        "bidirectional": true
+      },
+      "type": "floating",
+      "animated": false,
+      "className": "",
+      "deletable": true,
+      "hidden": false,
+      "interactionWidth": 10,
+      "labelBgPadding": [6, 2],
+      "markerEnd": {
+        "type": "arrowclosed",
+        "color": "#000"
+      },
+      "markerStart": {
+        "type": "arrowclosed",
+        "color": "#000"
+      },
+      "style": {
+        "strokeWidth": 2,
+        "stroke": "#000"
+      },
+      "zIndex": 1
+    },
+    {
+      "id": "edge_7b7dad31-50be-4e95-a796-73af8598bf93",
+      "source": "node_ac16535d-7ec8-4ca1-8c00-c6cde90859f5",
+      "sourceHandle": "source_right",
+      "target": "node_82e0b683-f80a-4cac-b604-3816530faa0a",
+      "targetHandle": "target_left",
+      "label": "",
+      "data": {
+        "type": "architecture",
+        "bidirectional": true
+      },
+      "type": "floating",
+      "animated": false,
+      "className": "",
+      "deletable": true,
+      "hidden": false,
+      "interactionWidth": 10,
+      "labelBgPadding": [6, 2],
+      "markerEnd": {
+        "type": "arrowclosed",
+        "color": "#000"
+      },
+      "markerStart": {
+        "type": "arrowclosed",
+        "color": "#000"
+      },
+      "style": {
+        "strokeWidth": 2,
+        "stroke": "#000"
+      },
+      "zIndex": 1
+    },
+    {
+      "id": "edge_0fc96018-4f9c-4abe-bbe0-c1b0af2e4c07",
+      "source": "node_82e0b683-f80a-4cac-b604-3816530faa0a",
+      "sourceHandle": "source_right",
+      "target": "node_74d5c25a-e6ea-4ff9-b209-eedee9e44cb9",
+      "targetHandle": "target_left",
+      "label": "",
+      "data": {
+        "type": "architecture",
+        "bidirectional": true
+      },
+      "type": "floating",
+      "animated": false,
+      "className": "",
+      "deletable": true,
+      "hidden": false,
+      "interactionWidth": 10,
+      "labelBgPadding": [6, 2],
+      "markerEnd": {
+        "type": "arrowclosed",
+        "color": "#000"
+      },
+      "markerStart": {
+        "type": "arrowclosed",
+        "color": "#000"
+      },
+      "style": {
+        "strokeWidth": 2,
+        "stroke": "#000"
+      },
+      "zIndex": 1
+    },
+    {
+      "id": "edge_4137c1a3-e0c4-4a5e-8283-8e27a064cbf4",
+      "source": "node_74d5c25a-e6ea-4ff9-b209-eedee9e44cb9",
+      "sourceHandle": "source_bottom",
+      "target": "node_4c37c49f-ce4b-4c2a-a52d-1683a5d601bf",
+      "targetHandle": "target_left",
+      "label": "",
+      "data": {
+        "type": "architecture",
+        "bidirectional": true
+      },
+      "type": "floating",
+      "animated": false,
+      "className": "",
+      "deletable": true,
+      "hidden": false,
+      "interactionWidth": 10,
+      "labelBgPadding": [6, 2],
+      "markerEnd": {
+        "type": "arrowclosed",
+        "color": "#000"
+      },
+      "markerStart": {
+        "type": "arrowclosed",
+        "color": "#000"
+      },
+      "style": {
+        "strokeWidth": 2,
+        "stroke": "#000"
+      },
+      "zIndex": 1
+    },
+    {
+      "id": "edge_1e011351-2054-4b83-8fdd-ea4711adea13",
+      "source": "node_74d5c25a-e6ea-4ff9-b209-eedee9e44cb9",
+      "sourceHandle": "source_top",
+      "target": "node_70b36411-6af3-4d80-941e-93493b0d9245",
+      "targetHandle": "target_left",
+      "label": "",
+      "data": {
+        "type": "architecture",
+        "bidirectional": true
+      },
+      "type": "floating",
+      "animated": false,
+      "className": "",
+      "deletable": true,
+      "hidden": false,
+      "interactionWidth": 10,
+      "labelBgPadding": [6, 2],
+      "markerEnd": {
+        "type": "arrowclosed",
+        "color": "#000"
+      },
+      "markerStart": {
+        "type": "arrowclosed",
+        "color": "#000"
+      },
+      "style": {
+        "strokeWidth": 2,
+        "stroke": "#000"
+      },
+      "zIndex": 1
+    },
+    {
+      "id": "edge_86971df2-723d-447c-a283-e964231da3fa",
+      "source": "node_70b36411-6af3-4d80-941e-93493b0d9245",
+      "sourceHandle": "source_right",
+      "target": "node_da23c34a-d684-42e4-b3c1-3e15f20ac4e0",
+      "targetHandle": "target_top",
+      "label": "",
+      "data": {
+        "type": "architecture",
+        "bidirectional": true
+      },
+      "type": "floating",
+      "animated": false,
+      "className": "",
+      "deletable": true,
+      "hidden": false,
+      "interactionWidth": 10,
+      "labelBgPadding": [6, 2],
+      "markerEnd": {
+        "type": "arrowclosed",
+        "color": "#000"
+      },
+      "markerStart": {
+        "type": "arrowclosed",
+        "color": "#000"
+      },
+      "style": {
+        "strokeWidth": 2,
+        "stroke": "#000"
+      },
+      "zIndex": 1
+    },
+    {
+      "id": "edge_d15eb72a-3387-4a3f-a6c1-a10f43f1cf80",
+      "source": "node_4c37c49f-ce4b-4c2a-a52d-1683a5d601bf",
+      "sourceHandle": "source_right",
+      "target": "node_da23c34a-d684-42e4-b3c1-3e15f20ac4e0",
+      "targetHandle": "target_bottom",
+      "label": "",
+      "data": {
+        "type": "architecture",
+        "bidirectional": true
+      },
+      "type": "floating",
+      "animated": false,
+      "className": "",
+      "deletable": true,
+      "hidden": false,
+      "interactionWidth": 10,
+      "labelBgPadding": [6, 2],
+      "markerEnd": {
+        "type": "arrowclosed",
+        "color": "#000"
+      },
+      "markerStart": {
+        "type": "arrowclosed",
+        "color": "#000"
+      },
+      "style": {
+        "strokeWidth": 2,
+        "stroke": "#000"
+      },
+      "zIndex": 1
+    }
+  ],
+  "viewport": {
+    "x": 0,
+    "y": 0,
+    "zoom": 1
+  }
+}

@@ -1,0 +1,1 @@
+"""Application stores package."""

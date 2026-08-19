@@ -1,0 +1,758 @@
+[
+  {
+    "patchVer_": "patch_550f94b9-3b62-49c5-ac03-9e8947620ca0",
+    "ad_version_id": "",
+    "canvas": [
+      {
+        "patchVer_": "patch_1c3f8b0d-2a4e-4b6c-9f5d-7e2c8f0a1b2c",
+        "nodes": [],
+        "edges": [],
+        "viewport": {
+          "x": 0,
+          "y": 0,
+          "zoom": 1
+        },
+        "canvas_id": "canvas_46e9f3f0-b046-4653-b851-fd5ef90b4f0d",
+        "canvas_name": "Architecture",
+        "canvas_type": "architecture",
+        "llm_generation_status": 0,
+        "ref": {
+          "card_ref": {
+            "card_data": [
+              {
+                "label": "PII",
+                "value": "text_aDMXZhmD5M6qvVEgjNkYvG",
+                "ref": {},
+                "node_id": "node_e6844d7b-894a-44a8-a984-adf3ba189a39",
+                "ref_key": "card_data",
+                "card_id_affliations": ["card_w4EsppFkoS2gNazcVFBLeG"]
+              }
+            ],
+            "card_devices": [
+              {
+                "label": "Personal Device",
+                "value": "option_RCTBx6kKMd0jadBhqEDyCT",
+                "ref": {},
+                "node_id": "node_93e1ac8c-08f7-4209-8baf-54202fda487e",
+                "ref_key": "card_devices",
+                "card_id_affliations": ["card_w4EsppFkoS2gNazcVFBLeG"]
+              }
+            ],
+            "card_feature": [
+              {
+                "label": "Data Export, Analytics and Manipulation/Transformation",
+                "value": "option_bMZBMs4XpaSL5JrMbd4q3e",
+                "domains": ["public", "government"]
+              }
+            ],
+            "card_interface": [
+              {
+                "label": "Web Browser",
+                "value": "option_166808ba42c1459691c29a",
+                "ref": {},
+                "node_id": "",
+                "ref_key": "card_interface",
+                "card_id_affliations": ["card_w4EsppFkoS2gNazcVFBLeG"]
+              }
+            ],
+            "card_users": [
+              {
+                "label": "Public End User",
+                "value": "text_iNCEBAe8LbYwxEegK71nwT",
+                "ref": {},
+                "node_id": "node_449f0f8e-9f25-43db-8a03-e7c297c8c732",
+                "ref_key": "card_users",
+                "card_id_affliations": ["card_w4EsppFkoS2gNazcVFBLeG"]
+              }
+            ]
+          }
+        },
+        "view_only": false,
+        "warnings": []
+      },
+      {
+        "patchVer_": "patch_1c3f8b0d-2a4e-4b6c-9f5d-7e2c8f0a1b2c",
+        "nodes": [
+          {
+            "patchVer_": "patch_b6015aef-91b3-46e0-8638-08e6bd2a24e8",
+            "id": "node_449f0f8e-9f25-43db-8a03-e7c297c8c732",
+            "style": {
+              "height": 80,
+              "width": 80
+            },
+            "className": "",
+            "resizing": true,
+            "focusable": false,
+            "position": {
+              "x": 0,
+              "y": 0
+            },
+            "data": {
+              "cardRefKey": "card_users",
+              "cardFieldOptionId": "text_iNCEBAe8LbYwxEegK71nwT",
+              "cardFieldOptionIdAssoc": "",
+              "card_id": "card_w4EsppFkoS2gNazcVFBLeG",
+              "canvasColumn": "left",
+              "class": "",
+              "icon": "user",
+              "label": "Public End User",
+              "tosca_type": "arcs.nodes.User",
+              "tosca_schema": "1.4.3",
+              "type": "data_flow"
+            },
+            "type": "infoNode",
+            "sourcePosition": "bottom",
+            "targetPosition": "top",
+            "hidden": true,
+            "selected": false,
+            "dragging": false,
+            "draggable": true,
+            "selectable": true,
+            "connectable": true,
+            "deletable": true,
+            "dragHandle": "",
+            "width": 80,
+            "height": 80,
+            "initialWidth": null,
+            "initialHeight": null,
+            "parentId": "",
+            "zIndex": 1,
+            "extent": null,
+            "expandParent": false,
+            "ariaLabel": "",
+            "origin": [0, 0],
+            "handles": null
+          },
+          {
+            "patchVer_": "patch_b6015aef-91b3-46e0-8638-08e6bd2a24e8",
+            "id": "node_93e1ac8c-08f7-4209-8baf-54202fda487e",
+            "style": {
+              "backgroundColor": "unset",
+              "borderStyle": "solid",
+              "borderWidth": "2px",
+              "height": 200,
+              "keepAspectRatio": true,
+              "maxHeight": 2000,
+              "maxWidth": 2000,
+              "minHeight": 100,
+              "minWidth": 100,
+              "width": 200
+            },
+            "className": "",
+            "resizing": true,
+            "focusable": false,
+            "position": {
+              "x": 0,
+              "y": 0
+            },
+            "data": {
+              "cardRefKey": "card_devices",
+              "cardFieldOptionId": "option_RCTBx6kKMd0jadBhqEDyCT",
+              "cardFieldOptionIdAssoc": "",
+              "card_id": "card_w4EsppFkoS2gNazcVFBLeG",
+              "canvasColumn": "left",
+              "class": "",
+              "physicalLocation": "internet",
+              "icon": "client",
+              "icon_position": "top-left",
+              "label": "Personal Device",
+              "tosca_type": "arcs.nodes.Compute",
+              "tosca_schema": "1.4.3",
+              "type": "data_flow"
+            },
+            "type": "clusterNode",
+            "sourcePosition": "bottom",
+            "targetPosition": "top",
+            "hidden": true,
+            "selected": false,
+            "dragging": false,
+            "draggable": true,
+            "selectable": true,
+            "connectable": true,
+            "deletable": true,
+            "dragHandle": ".ClusterNode_DragHandle",
+            "width": 200,
+            "height": 200,
+            "initialWidth": null,
+            "initialHeight": null,
+            "parentId": "",
+            "zIndex": 1,
+            "extent": null,
+            "expandParent": false,
+            "ariaLabel": "",
+            "origin": [0, 0],
+            "handles": null
+          },
+          {
+            "patchVer_": "patch_b6015aef-91b3-46e0-8638-08e6bd2a24e8",
+            "id": "node_93e1ac8c-08f7-4209-8baf-54202fda487e__option_166808ba42c1459691c29a",
+            "style": {
+              "height": 80,
+              "width": 80
+            },
+            "className": "",
+            "resizing": true,
+            "focusable": false,
+            "position": {
+              "x": 0,
+              "y": 0
+            },
+            "data": {
+              "cardRefKey": "card_interface",
+              "cardFieldOptionId": "option_166808ba42c1459691c29a",
+              "cardFieldOptionIdAssoc": "option_RCTBx6kKMd0jadBhqEDyCT",
+              "card_id": "card_w4EsppFkoS2gNazcVFBLeG",
+              "canvasColumn": "left",
+              "class": "",
+              "icon": "forums",
+              "label": "Web Browser",
+              "tosca_type": "arcs.nodes.Interface",
+              "tosca_schema": "1.4.3",
+              "type": "data_flow"
+            },
+            "type": "infoNode",
+            "sourcePosition": "bottom",
+            "targetPosition": "top",
+            "hidden": true,
+            "selected": false,
+            "dragging": false,
+            "draggable": true,
+            "selectable": true,
+            "connectable": true,
+            "deletable": true,
+            "dragHandle": "",
+            "width": 80,
+            "height": 80,
+            "initialWidth": null,
+            "initialHeight": null,
+            "parentId": "node_93e1ac8c-08f7-4209-8baf-54202fda487e",
+            "zIndex": 1,
+            "extent": null,
+            "expandParent": false,
+            "ariaLabel": "",
+            "origin": [0, 0],
+            "handles": null
+          }
+        ],
+        "edges": [],
+        "viewport": {
+          "x": 0,
+          "y": 0,
+          "zoom": 1
+        },
+        "canvas_id": "canvas_72ac491a-e381-49b8-8cea-3b877c476513",
+        "canvas_name": "Create threat model",
+        "canvas_type": "data_flow",
+        "llm_generation_status": 0,
+        "ref": {
+          "card_ref": {
+            "card_id": "card_w4EsppFkoS2gNazcVFBLeG",
+            "card_data": [
+              {
+                "label": "PII",
+                "value": "text_aDMXZhmD5M6qvVEgjNkYvG",
+                "ref": {},
+                "node_id": "node_e6844d7b-894a-44a8-a984-adf3ba189a39",
+                "ref_key": "card_data",
+                "card_id_affliations": ["card_w4EsppFkoS2gNazcVFBLeG"]
+              }
+            ],
+            "card_devices": [
+              {
+                "label": "Personal Device",
+                "value": "option_RCTBx6kKMd0jadBhqEDyCT",
+                "ref": {},
+                "node_id": "node_93e1ac8c-08f7-4209-8baf-54202fda487e",
+                "ref_key": "card_devices",
+                "card_id_affliations": ["card_w4EsppFkoS2gNazcVFBLeG"]
+              }
+            ],
+            "card_feature": {
+              "label": "Data Export, Analytics and Manipulation/Transformation",
+              "value": "option_bMZBMs4XpaSL5JrMbd4q3e",
+              "domains": ["public", "government"]
+            },
+            "card_intent": "threat model my system",
+            "card_interface": [
+              {
+                "label": "Web Browser",
+                "value": "option_166808ba42c1459691c29a",
+                "ref": {},
+                "node_id": "",
+                "ref_key": "card_interface",
+                "card_id_affliations": ["card_w4EsppFkoS2gNazcVFBLeG"]
+              }
+            ],
+            "card_outcome": "comply to security policies",
+            "card_title": "Create threat model",
+            "card_users": [
+              {
+                "label": "Public End User",
+                "value": "text_iNCEBAe8LbYwxEegK71nwT",
+                "ref": {},
+                "node_id": "node_449f0f8e-9f25-43db-8a03-e7c297c8c732",
+                "ref_key": "card_users",
+                "card_id_affliations": ["card_w4EsppFkoS2gNazcVFBLeG"]
+              }
+            ]
+          }
+        },
+        "view_only": false,
+        "warnings": []
+      }
+    ],
+    "card_nodes": [
+      {
+        "label": "Public End User",
+        "value": "text_iNCEBAe8LbYwxEegK71nwT",
+        "ref": {},
+        "node_id": "node_449f0f8e-9f25-43db-8a03-e7c297c8c732",
+        "ref_key": "card_users",
+        "card_id_affliations": ["card_w4EsppFkoS2gNazcVFBLeG"]
+      },
+      {
+        "label": "Personal Device",
+        "value": "option_RCTBx6kKMd0jadBhqEDyCT",
+        "ref": {},
+        "node_id": "node_93e1ac8c-08f7-4209-8baf-54202fda487e",
+        "ref_key": "card_devices",
+        "card_id_affliations": ["card_w4EsppFkoS2gNazcVFBLeG"]
+      },
+      {
+        "label": "Web Browser",
+        "value": "option_166808ba42c1459691c29a",
+        "ref": {},
+        "node_id": "",
+        "ref_key": "card_interface",
+        "card_id_affliations": ["card_w4EsppFkoS2gNazcVFBLeG"]
+      },
+      {
+        "label": "PII",
+        "value": "text_aDMXZhmD5M6qvVEgjNkYvG",
+        "ref": {},
+        "node_id": "node_e6844d7b-894a-44a8-a984-adf3ba189a39",
+        "ref_key": "card_data",
+        "card_id_affliations": ["card_w4EsppFkoS2gNazcVFBLeG"]
+      }
+    ],
+    "isCompleted": false,
+    "lastCompletedBy": {
+      "user_id": "",
+      "username": "",
+      "timestamp": null
+    },
+    "ref": {
+      "selected_cacti_file_id": "",
+      "selected_diagram_file_id": "",
+      "selected_image_file_id": "",
+      "selected_module_file_id_list": [],
+      "selected_template_id": "",
+      "selected_terraform_file_id_list": [],
+      "selected_xml_file_id": "",
+      "llm_generation": {
+        "state": "",
+        "task_id": "",
+        "canvas_id": "",
+        "generation_type": "",
+        "started_at": "",
+        "updated_at": "",
+        "expires_at": "",
+        "completed_at": "",
+        "error": "",
+        "messages": []
+      }
+    },
+    "_id": "6a2ff3a95e1895602263d931",
+    "metadata": {
+      "created_on": {
+        "user_id": "user_9367459e-21ca-48bc-9ca2-73bc7dbb99b3",
+        "username": "admin_user_id",
+        "timestamp": "2026-06-15T12:44:25.831897+00:00"
+      },
+      "modified_on": {
+        "user_id": "user_9367459e-21ca-48bc-9ca2-73bc7dbb99b3",
+        "username": "admin_user_id",
+        "timestamp": "2026-06-15T12:44:54.643501+00:00"
+      }
+    },
+    "project_id": "project_17206c2a-06f8-49f1-b775-0e60adc22a74"
+  },
+  {
+    "patchVer_": "patch_550f94b9-3b62-49c5-ac03-9e8947620ca0",
+    "ad_version_id": "",
+    "canvas": [
+      {
+        "patchVer_": "patch_1c3f8b0d-2a4e-4b6c-9f5d-7e2c8f0a1b2c",
+        "nodes": [],
+        "edges": [],
+        "viewport": {
+          "x": 0,
+          "y": 0,
+          "zoom": 1
+        },
+        "canvas_id": "canvas_46e9f3f0-b046-4653-b851-fd5ef90b4f0d",
+        "canvas_name": "Architecture",
+        "canvas_type": "architecture",
+        "llm_generation_status": 0,
+        "ref": {
+          "card_ref": {
+            "card_data": [
+              {
+                "label": "PII",
+                "value": "text_aDMXZhmD5M6qvVEgjNkYvG",
+                "ref": {},
+                "node_id": "node_e6844d7b-894a-44a8-a984-adf3ba189a39",
+                "ref_key": "card_data",
+                "card_id_affliations": ["card_w4EsppFkoS2gNazcVFBLeG"]
+              }
+            ],
+            "card_devices": [
+              {
+                "label": "Personal Device",
+                "value": "option_RCTBx6kKMd0jadBhqEDyCT",
+                "ref": {},
+                "node_id": "node_93e1ac8c-08f7-4209-8baf-54202fda487e",
+                "ref_key": "card_devices",
+                "card_id_affliations": ["card_w4EsppFkoS2gNazcVFBLeG"]
+              }
+            ],
+            "card_feature": [
+              {
+                "label": "Data Export, Analytics and Manipulation/Transformation",
+                "value": "option_bMZBMs4XpaSL5JrMbd4q3e",
+                "domains": ["public", "government"]
+              }
+            ],
+            "card_interface": [
+              {
+                "label": "Web Browser",
+                "value": "option_166808ba42c1459691c29a",
+                "ref": {},
+                "node_id": "",
+                "ref_key": "card_interface",
+                "card_id_affliations": ["card_w4EsppFkoS2gNazcVFBLeG"]
+              }
+            ],
+            "card_users": [
+              {
+                "label": "Public End User",
+                "value": "text_iNCEBAe8LbYwxEegK71nwT",
+                "ref": {},
+                "node_id": "node_449f0f8e-9f25-43db-8a03-e7c297c8c732",
+                "ref_key": "card_users",
+                "card_id_affliations": ["card_w4EsppFkoS2gNazcVFBLeG"]
+              }
+            ]
+          }
+        },
+        "view_only": false,
+        "warnings": []
+      },
+      {
+        "patchVer_": "patch_1c3f8b0d-2a4e-4b6c-9f5d-7e2c8f0a1b2c",
+        "nodes": [
+          {
+            "patchVer_": "patch_b6015aef-91b3-46e0-8638-08e6bd2a24e8",
+            "id": "node_449f0f8e-9f25-43db-8a03-e7c297c8c732",
+            "style": {
+              "height": 80,
+              "width": 80
+            },
+            "className": "",
+            "resizing": true,
+            "focusable": false,
+            "position": {
+              "x": 0,
+              "y": 0
+            },
+            "data": {
+              "cardRefKey": "card_users",
+              "cardFieldOptionId": "text_iNCEBAe8LbYwxEegK71nwT",
+              "cardFieldOptionIdAssoc": "",
+              "card_id": "card_w4EsppFkoS2gNazcVFBLeG",
+              "canvasColumn": "left",
+              "class": "",
+              "icon": "user",
+              "label": "Public End User",
+              "tosca_type": "arcs.nodes.User",
+              "tosca_schema": "1.4.3",
+              "type": "data_flow"
+            },
+            "type": "infoNode",
+            "sourcePosition": "bottom",
+            "targetPosition": "top",
+            "hidden": true,
+            "selected": false,
+            "dragging": false,
+            "draggable": true,
+            "selectable": true,
+            "connectable": true,
+            "deletable": true,
+            "dragHandle": "",
+            "width": 80,
+            "height": 80,
+            "initialWidth": null,
+            "initialHeight": null,
+            "parentId": "",
+            "zIndex": 1,
+            "extent": null,
+            "expandParent": false,
+            "ariaLabel": "",
+            "origin": [0, 0],
+            "handles": null
+          },
+          {
+            "patchVer_": "patch_b6015aef-91b3-46e0-8638-08e6bd2a24e8",
+            "id": "node_93e1ac8c-08f7-4209-8baf-54202fda487e",
+            "style": {
+              "backgroundColor": "unset",
+              "borderStyle": "solid",
+              "borderWidth": "2px",
+              "height": 200,
+              "keepAspectRatio": true,
+              "maxHeight": 2000,
+              "maxWidth": 2000,
+              "minHeight": 100,
+              "minWidth": 100,
+              "width": 200
+            },
+            "className": "",
+            "resizing": true,
+            "focusable": false,
+            "position": {
+              "x": 0,
+              "y": 0
+            },
+            "data": {
+              "cardRefKey": "card_devices",
+              "cardFieldOptionId": "option_RCTBx6kKMd0jadBhqEDyCT",
+              "cardFieldOptionIdAssoc": "",
+              "card_id": "card_w4EsppFkoS2gNazcVFBLeG",
+              "canvasColumn": "left",
+              "class": "",
+              "physicalLocation": "internet",
+              "icon": "client",
+              "icon_position": "top-left",
+              "label": "Personal Device",
+              "tosca_type": "arcs.nodes.Compute",
+              "tosca_schema": "1.4.3",
+              "type": "data_flow"
+            },
+            "type": "clusterNode",
+            "sourcePosition": "bottom",
+            "targetPosition": "top",
+            "hidden": true,
+            "selected": false,
+            "dragging": false,
+            "draggable": true,
+            "selectable": true,
+            "connectable": true,
+            "deletable": true,
+            "dragHandle": ".ClusterNode_DragHandle",
+            "width": 200,
+            "height": 200,
+            "initialWidth": null,
+            "initialHeight": null,
+            "parentId": "",
+            "zIndex": 1,
+            "extent": null,
+            "expandParent": false,
+            "ariaLabel": "",
+            "origin": [0, 0],
+            "handles": null
+          },
+          {
+            "patchVer_": "patch_b6015aef-91b3-46e0-8638-08e6bd2a24e8",
+            "id": "node_93e1ac8c-08f7-4209-8baf-54202fda487e__option_166808ba42c1459691c29a",
+            "style": {
+              "height": 80,
+              "width": 80
+            },
+            "className": "",
+            "resizing": true,
+            "focusable": false,
+            "position": {
+              "x": 0,
+              "y": 0
+            },
+            "data": {
+              "cardRefKey": "card_interface",
+              "cardFieldOptionId": "option_166808ba42c1459691c29a",
+              "cardFieldOptionIdAssoc": "option_RCTBx6kKMd0jadBhqEDyCT",
+              "card_id": "card_w4EsppFkoS2gNazcVFBLeG",
+              "canvasColumn": "left",
+              "class": "",
+              "icon": "forums",
+              "label": "Web Browser",
+              "tosca_type": "arcs.nodes.Interface",
+              "tosca_schema": "1.4.3",
+              "type": "data_flow"
+            },
+            "type": "infoNode",
+            "sourcePosition": "bottom",
+            "targetPosition": "top",
+            "hidden": true,
+            "selected": false,
+            "dragging": false,
+            "draggable": true,
+            "selectable": true,
+            "connectable": true,
+            "deletable": true,
+            "dragHandle": "",
+            "width": 80,
+            "height": 80,
+            "initialWidth": null,
+            "initialHeight": null,
+            "parentId": "node_93e1ac8c-08f7-4209-8baf-54202fda487e",
+            "zIndex": 1,
+            "extent": null,
+            "expandParent": false,
+            "ariaLabel": "",
+            "origin": [0, 0],
+            "handles": null
+          }
+        ],
+        "edges": [],
+        "viewport": {
+          "x": 0,
+          "y": 0,
+          "zoom": 1
+        },
+        "canvas_id": "canvas_72ac491a-e381-49b8-8cea-3b877c476513",
+        "canvas_name": "Create threat model",
+        "canvas_type": "data_flow",
+        "llm_generation_status": 0,
+        "ref": {
+          "card_ref": {
+            "card_id": "card_w4EsppFkoS2gNazcVFBLeG",
+            "card_data": [
+              {
+                "label": "PII",
+                "value": "text_aDMXZhmD5M6qvVEgjNkYvG",
+                "ref": {},
+                "node_id": "node_e6844d7b-894a-44a8-a984-adf3ba189a39",
+                "ref_key": "card_data",
+                "card_id_affliations": ["card_w4EsppFkoS2gNazcVFBLeG"]
+              }
+            ],
+            "card_devices": [
+              {
+                "label": "Personal Device",
+                "value": "option_RCTBx6kKMd0jadBhqEDyCT",
+                "ref": {},
+                "node_id": "node_93e1ac8c-08f7-4209-8baf-54202fda487e",
+                "ref_key": "card_devices",
+                "card_id_affliations": ["card_w4EsppFkoS2gNazcVFBLeG"]
+              }
+            ],
+            "card_feature": {
+              "label": "Data Export, Analytics and Manipulation/Transformation",
+              "value": "option_bMZBMs4XpaSL5JrMbd4q3e",
+              "domains": ["public", "government"]
+            },
+            "card_intent": "threat model my system",
+            "card_interface": [
+              {
+                "label": "Web Browser",
+                "value": "option_166808ba42c1459691c29a",
+                "ref": {},
+                "node_id": "",
+                "ref_key": "card_interface",
+                "card_id_affliations": ["card_w4EsppFkoS2gNazcVFBLeG"]
+              }
+            ],
+            "card_outcome": "comply to security policies",
+            "card_title": "Create threat model",
+            "card_users": [
+              {
+                "label": "Public End User",
+                "value": "text_iNCEBAe8LbYwxEegK71nwT",
+                "ref": {},
+                "node_id": "node_449f0f8e-9f25-43db-8a03-e7c297c8c732",
+                "ref_key": "card_users",
+                "card_id_affliations": ["card_w4EsppFkoS2gNazcVFBLeG"]
+              }
+            ]
+          }
+        },
+        "view_only": false,
+        "warnings": []
+      }
+    ],
+    "card_nodes": [
+      {
+        "label": "Public End User",
+        "value": "text_iNCEBAe8LbYwxEegK71nwT",
+        "ref": {},
+        "node_id": "node_449f0f8e-9f25-43db-8a03-e7c297c8c732",
+        "ref_key": "card_users",
+        "card_id_affliations": ["card_w4EsppFkoS2gNazcVFBLeG"]
+      },
+      {
+        "label": "Personal Device",
+        "value": "option_RCTBx6kKMd0jadBhqEDyCT",
+        "ref": {},
+        "node_id": "node_93e1ac8c-08f7-4209-8baf-54202fda487e",
+        "ref_key": "card_devices",
+        "card_id_affliations": ["card_w4EsppFkoS2gNazcVFBLeG"]
+      },
+      {
+        "label": "Web Browser",
+        "value": "option_166808ba42c1459691c29a",
+        "ref": {},
+        "node_id": "",
+        "ref_key": "card_interface",
+        "card_id_affliations": ["card_w4EsppFkoS2gNazcVFBLeG"]
+      },
+      {
+        "label": "PII",
+        "value": "text_aDMXZhmD5M6qvVEgjNkYvG",
+        "ref": {},
+        "node_id": "node_e6844d7b-894a-44a8-a984-adf3ba189a39",
+        "ref_key": "card_data",
+        "card_id_affliations": ["card_w4EsppFkoS2gNazcVFBLeG"]
+      }
+    ],
+    "isCompleted": false,
+    "lastCompletedBy": {
+      "user_id": "",
+      "username": "",
+      "timestamp": null
+    },
+    "ref": {
+      "selected_cacti_file_id": "",
+      "selected_diagram_file_id": "",
+      "selected_image_file_id": "",
+      "selected_module_file_id_list": [],
+      "selected_template_id": "",
+      "selected_terraform_file_id_list": [],
+      "selected_xml_file_id": "",
+      "llm_generation": {
+        "state": "",
+        "task_id": "",
+        "canvas_id": "",
+        "generation_type": "",
+        "started_at": "",
+        "updated_at": "",
+        "expires_at": "",
+        "completed_at": "",
+        "error": "",
+        "messages": []
+      }
+    },
+    "_id": "6a2ff3a95e1895602263d930",
+    "metadata": {
+      "created_on": {
+        "user_id": "user_9367459e-21ca-48bc-9ca2-73bc7dbb99b3",
+        "username": "admin_user_id",
+        "timestamp": "2026-06-15T12:44:25.831897+00:00"
+      },
+      "modified_on": {
+        "user_id": "user_9367459e-21ca-48bc-9ca2-73bc7dbb99b3",
+        "username": "admin_user_id",
+        "timestamp": "2026-06-15T12:44:54.643501+00:00"
+      }
+    },
+    "project_id": "project_3769421a-1818-4160-884c-748fb34ce394"
+  }
+]

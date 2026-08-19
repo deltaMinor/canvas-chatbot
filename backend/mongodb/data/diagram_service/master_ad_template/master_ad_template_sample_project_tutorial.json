@@ -1,0 +1,740 @@
+{
+    "templateData": {
+        "nodes": [
+            {
+                "ariaLabel": "",
+                "className": "",
+                "connectable": true,
+                "deletable": true,
+                "draggable": true,
+                "dragHandle": ".ClusterNode_DragHandle",
+                "expandParent": false,
+                "hidden": false,
+                "id": "node_002983d0-7e3f-4461-868f-2f90f43ae0aa",
+                "parentId": "",
+                "position": {
+                    "x": -140,
+                    "y": 290
+                },
+                "origin": [0, 0],
+                "resizing": false,
+                "selectable": true,
+                "sourcePosition": "bottom",
+                "targetPosition": "top",
+                "type": "clusterNode",
+                "zIndex": 1,
+                "patchVer_": "patch_b6015aef-91b3-46e0-8638-08e6bd2a24e8",
+                "focusable": false,
+                "selected": false,
+                "dragging": false,
+                "width": 700,
+                "height": 580,
+                "initialWidth": null,
+                "initialHeight": null,
+                "extent": null,
+                "handles": null,
+                "style": {
+                    "backgroundColor": "#232f3e10",
+                    "borderColor": "#232f3e33",
+                    "borderStyle": "solid",
+                    "borderWidth": "2px",
+                    "height": 580,
+                    "width": 700,
+                    "maxHeight": 2000,
+                    "maxWidth": 2000,
+                    "minHeight": 100,
+                    "minWidth": 100,
+                    "opacity": 1
+                },
+                "data": {
+                    "class": "",
+                    "publiclyAccessible": false,
+                    "icon_position": "top-left",
+                    "icon": "awsCloud",
+                    "label": "AWS Cloud",
+                    "tosca_schema": "1.4.3",
+                    "tosca_type": "",
+                    "type": "architecture",
+                    "allowed_child_nodes": [],
+                    "allowed_parent_nodes": [],
+                    "hostedInGCC": false,
+                    "data_stored": []
+                }
+            },
+            {
+                "ariaLabel": "",
+                "className": "",
+                "connectable": true,
+                "deletable": true,
+                "draggable": true,
+                "dragHandle": "",
+                "expandParent": false,
+                "hidden": false,
+                "id": "node_4006f201-8441-487b-8dc7-b33f10ff97ad",
+                "parentId": "node_002983d0-7e3f-4461-868f-2f90f43ae0aa",
+                "position": {
+                    "x": 40,
+                    "y": 70
+                },
+                "origin": [0, 0],
+                "resizing": true,
+                "selectable": true,
+                "sourcePosition": "bottom",
+                "targetPosition": "top",
+                "type": "infoNode",
+                "zIndex": 1,
+                "patchVer_": "patch_b6015aef-91b3-46e0-8638-08e6bd2a24e8",
+                "focusable": false,
+                "selected": false,
+                "dragging": false,
+                "width": 80,
+                "height": 80,
+                "initialWidth": null,
+                "initialHeight": null,
+                "extent": null,
+                "handles": null,
+                "style": {
+                    "height": 80,
+                    "width": 80,
+                    "opacity": 1
+                },
+                "data": {
+                    "class": "",
+                    "icon": "waf",
+                    "label": "WAF",
+                    "tosca_schema": "1.4.3",
+                    "tosca_type": "",
+                    "type": "architecture",
+                    "runs_vendor_software": false,
+                    "network_functions_5g": [],
+                    "data_stored": []
+                }
+            },
+            {
+                "ariaLabel": "",
+                "className": "",
+                "connectable": true,
+                "deletable": true,
+                "draggable": true,
+                "dragHandle": ".ClusterNode_DragHandle",
+                "expandParent": false,
+                "hidden": false,
+                "id": "node_cf92173e-d7de-43e3-b2ee-0ffac4c88ac4",
+                "parentId": "node_002983d0-7e3f-4461-868f-2f90f43ae0aa",
+                "position": {
+                    "x": 160,
+                    "y": 10
+                },
+                "origin": [0, 0],
+                "resizing": false,
+                "selectable": true,
+                "sourcePosition": "bottom",
+                "targetPosition": "top",
+                "type": "clusterNode",
+                "zIndex": 1,
+                "patchVer_": "patch_b6015aef-91b3-46e0-8638-08e6bd2a24e8",
+                "focusable": false,
+                "selected": false,
+                "dragging": false,
+                "width": 520,
+                "height": 290,
+                "initialWidth": null,
+                "initialHeight": null,
+                "extent": null,
+                "handles": null,
+                "style": {
+                    "backgroundColor": "#24881410",
+                    "borderColor": "#24881433",
+                    "borderStyle": "solid",
+                    "borderWidth": "2px",
+                    "height": 290,
+                    "keepAspectRatio": true,
+                    "maxHeight": 2000,
+                    "maxWidth": 2000,
+                    "minHeight": 200,
+                    "minWidth": 200,
+                    "opacity": 1,
+                    "width": 520
+                },
+                "data": {
+                    "cardRefKey": "",
+                    "class": "unknown",
+                    "publiclyAccessible": false,
+                    "icon": "vpcCluster",
+                    "icon_position": "top-left",
+                    "label": "VPC",
+                    "tosca_type": "arcs.nodes.Network.VPC",
+                    "type": "architecture",
+                    "tosca_schema": "1.4.3",
+                    "data_stored": []
+                }
+            },
+            {
+                "ariaLabel": "",
+                "className": "",
+                "connectable": true,
+                "deletable": true,
+                "draggable": true,
+                "dragHandle": ".ClusterNode_DragHandle",
+                "expandParent": false,
+                "hidden": false,
+                "id": "node_a20f9ca0-8145-4531-abc0-fccd0789cdf4",
+                "parentId": "node_cf92173e-d7de-43e3-b2ee-0ffac4c88ac4",
+                "position": {
+                    "x": 280,
+                    "y": 60
+                },
+                "origin": [0, 0],
+                "resizing": true,
+                "selectable": true,
+                "sourcePosition": "bottom",
+                "targetPosition": "top",
+                "type": "clusterNode",
+                "zIndex": 1,
+                "patchVer_": "patch_b6015aef-91b3-46e0-8638-08e6bd2a24e8",
+                "focusable": false,
+                "selected": false,
+                "dragging": false,
+                "width": 200,
+                "height": 200,
+                "initialWidth": null,
+                "initialHeight": null,
+                "extent": null,
+                "handles": null,
+                "style": {
+                    "backgroundColor": "#00a4a610",
+                    "borderColor": "#00a4a633",
+                    "borderStyle": "solid",
+                    "borderWidth": "2px",
+                    "height": 200,
+                    "keepAspectRatio": true,
+                    "maxHeight": 2000,
+                    "maxWidth": 2000,
+                    "minHeight": 200,
+                    "minWidth": 200,
+                    "opacity": 1,
+                    "width": 200
+                },
+                "data": {
+                    "class": "cluster_node",
+                    "publiclyAccessible": false,
+                    "icon": "privateSubnet",
+                    "icon_position": "top-left",
+                    "label": "Database Subnet",
+                    "tosca_type": "arcs.nodes.Network.Subnet",
+                    "type": "architecture",
+                    "tosca_schema": "1.4.3",
+                    "data_stored": []
+                }
+            },
+            {
+                "ariaLabel": "",
+                "className": "",
+                "connectable": true,
+                "deletable": true,
+                "draggable": true,
+                "dragHandle": ".ClusterNode_DragHandle",
+                "expandParent": false,
+                "hidden": false,
+                "id": "node_965a7814-825a-4ea6-9c12-f872e798aec3",
+                "parentId": "node_cf92173e-d7de-43e3-b2ee-0ffac4c88ac4",
+                "position": {
+                    "x": 20,
+                    "y": 60
+                },
+                "origin": [0, 0],
+                "resizing": true,
+                "selectable": true,
+                "sourcePosition": "bottom",
+                "targetPosition": "top",
+                "type": "clusterNode",
+                "zIndex": 1,
+                "patchVer_": "patch_b6015aef-91b3-46e0-8638-08e6bd2a24e8",
+                "focusable": false,
+                "selected": false,
+                "dragging": false,
+                "width": 200,
+                "height": 200,
+                "initialWidth": null,
+                "initialHeight": null,
+                "extent": null,
+                "handles": null,
+                "style": {
+                    "backgroundColor": "#00a4a610",
+                    "borderColor": "#00a4a633",
+                    "borderStyle": "solid",
+                    "borderWidth": "2px",
+                    "height": 200,
+                    "keepAspectRatio": true,
+                    "maxHeight": 2000,
+                    "maxWidth": 2000,
+                    "minHeight": 200,
+                    "minWidth": 200,
+                    "opacity": 1,
+                    "width": 200
+                },
+                "data": {
+                    "class": "cluster_node",
+                    "publiclyAccessible": false,
+                    "icon": "privateSubnet",
+                    "icon_position": "top-left",
+                    "label": "Web Subnet",
+                    "tosca_type": "arcs.nodes.Network.Subnet",
+                    "type": "architecture",
+                    "tosca_schema": "1.4.3",
+                    "data_stored": []
+                }
+            },
+            {
+                "ariaLabel": "",
+                "className": "",
+                "connectable": true,
+                "deletable": true,
+                "draggable": true,
+                "dragHandle": "",
+                "expandParent": false,
+                "hidden": false,
+                "id": "node_cdc7e5dc-3f05-4391-8d12-6767f1dcacc4",
+                "parentId": "node_965a7814-825a-4ea6-9c12-f872e798aec3",
+                "position": {
+                    "x": 60,
+                    "y": 70
+                },
+                "origin": [0, 0],
+                "resizing": true,
+                "selectable": true,
+                "sourcePosition": "bottom",
+                "targetPosition": "top",
+                "type": "infoNode",
+                "zIndex": 1,
+                "patchVer_": "patch_b6015aef-91b3-46e0-8638-08e6bd2a24e8",
+                "focusable": false,
+                "selected": false,
+                "dragging": false,
+                "width": 80,
+                "height": 80,
+                "initialWidth": null,
+                "initialHeight": null,
+                "extent": null,
+                "handles": null,
+                "style": {
+                    "height": 80,
+                    "opacity": 1,
+                    "width": 80
+                },
+                "data": {
+                    "cardRefKey": "",
+                    "class": "aws_instance",
+                    "data_stored": [],
+                    "icon": "ec2",
+                    "label": "Web Server",
+                    "tosca_type": "arcs.icons.aws.Compute.ec2",
+                    "type": "architecture",
+                    "tosca_schema": "1.4.3"
+                }
+            },
+            {
+                "ariaLabel": "",
+                "className": "",
+                "connectable": true,
+                "deletable": true,
+                "draggable": true,
+                "dragHandle": "",
+                "expandParent": false,
+                "hidden": false,
+                "id": "node_7a990638-90bc-4fc4-b507-12c8e12ea70c",
+                "parentId": "node_a20f9ca0-8145-4531-abc0-fccd0789cdf4",
+                "position": {
+                    "x": 60,
+                    "y": 70
+                },
+                "origin": [0, 0],
+                "resizing": true,
+                "selectable": true,
+                "sourcePosition": "bottom",
+                "targetPosition": "top",
+                "type": "infoNode",
+                "zIndex": 1,
+                "patchVer_": "patch_b6015aef-91b3-46e0-8638-08e6bd2a24e8",
+                "focusable": false,
+                "selected": false,
+                "dragging": false,
+                "width": 80,
+                "height": 80,
+                "initialWidth": null,
+                "initialHeight": null,
+                "extent": null,
+                "handles": null,
+                "style": {
+                    "height": 80,
+                    "opacity": 1,
+                    "width": 80
+                },
+                "data": {
+                    "cardRefKey": "",
+                    "class": "generic_resource",
+                    "data_stored": [],
+                    "icon": "rds",
+                    "label": "Database",
+                    "tosca_type": "arcs.icons.aws.Database.rds",
+                    "type": "architecture",
+                    "tosca_schema": "1.4.3"
+                }
+            },
+            {
+                "ariaLabel": "",
+                "className": "",
+                "connectable": true,
+                "deletable": true,
+                "draggable": true,
+                "dragHandle": ".ClusterNode_DragHandle",
+                "expandParent": false,
+                "hidden": false,
+                "id": "node_1d9d06ce-5fa1-4084-8f18-2aea27efbc0e",
+                "parentId": "node_002983d0-7e3f-4461-868f-2f90f43ae0aa",
+                "position": {
+                    "x": 50,
+                    "y": 360
+                },
+                "origin": [0, 0],
+                "resizing": false,
+                "selectable": true,
+                "sourcePosition": "bottom",
+                "targetPosition": "top",
+                "type": "clusterNode",
+                "zIndex": 1,
+                "patchVer_": "patch_b6015aef-91b3-46e0-8638-08e6bd2a24e8",
+                "focusable": false,
+                "selected": false,
+                "dragging": false,
+                "width": 500,
+                "height": 200,
+                "initialWidth": null,
+                "initialHeight": null,
+                "extent": null,
+                "handles": null,
+                "style": {
+                    "backgroundColor": "#2e27ad10",
+                    "borderColor": "#2e27ad33",
+                    "borderStyle": "solid",
+                    "borderWidth": "2px",
+                    "height": 200,
+                    "keepAspectRatio": true,
+                    "maxHeight": 2000,
+                    "maxWidth": 2000,
+                    "minHeight": 200,
+                    "minWidth": 200,
+                    "opacity": 1,
+                    "width": 500
+                },
+                "data": {
+                    "cardRefKey": "",
+                    "class": "cluster_node",
+                    "publiclyAccessible": false,
+                    "icon": "codePipelineCluster",
+                    "icon_position": "top-left",
+                    "label": "Code Pipeline",
+                    "tosca_type": "arcs.nodes.Orchestration.Workflow",
+                    "type": "architecture",
+                    "tosca_schema": "1.4.3",
+                    "data_stored": []
+                }
+            },
+            {
+                "ariaLabel": "",
+                "className": "",
+                "connectable": true,
+                "deletable": true,
+                "draggable": true,
+                "dragHandle": "",
+                "expandParent": false,
+                "hidden": false,
+                "id": "node_1dcabb1c-9023-4533-94ec-9a2c6246ebf4",
+                "parentId": "node_1d9d06ce-5fa1-4084-8f18-2aea27efbc0e",
+                "position": {
+                    "x": 60,
+                    "y": 60
+                },
+                "origin": [0, 0],
+                "resizing": true,
+                "selectable": true,
+                "sourcePosition": "bottom",
+                "targetPosition": "top",
+                "type": "infoNode",
+                "zIndex": 1,
+                "patchVer_": "patch_b6015aef-91b3-46e0-8638-08e6bd2a24e8",
+                "focusable": false,
+                "selected": false,
+                "dragging": false,
+                "width": 80,
+                "height": 80,
+                "initialWidth": null,
+                "initialHeight": null,
+                "extent": null,
+                "handles": null,
+                "style": {
+                    "height": 80,
+                    "opacity": 1,
+                    "width": 80
+                },
+                "data": {
+                    "cardRefKey": "",
+                    "class": "aws_codecommit_repository",
+                    "data_stored": [],
+                    "icon": "codeCommit",
+                    "label": "CodeCommit",
+                    "tosca_type": "arcs.nodes.DeveloperTools.CodeCommit",
+                    "type": "architecture",
+                    "tosca_schema": "1.4.3"
+                }
+            },
+            {
+                "ariaLabel": "",
+                "className": "",
+                "connectable": true,
+                "deletable": true,
+                "draggable": true,
+                "dragHandle": "",
+                "expandParent": false,
+                "hidden": false,
+                "id": "node_3663f21c-0914-4319-848a-b57f009b87c0",
+                "parentId": "node_1d9d06ce-5fa1-4084-8f18-2aea27efbc0e",
+                "position": {
+                    "x": 210,
+                    "y": 60
+                },
+                "origin": [0, 0],
+                "resizing": true,
+                "selectable": true,
+                "sourcePosition": "bottom",
+                "targetPosition": "top",
+                "type": "infoNode",
+                "zIndex": 1,
+                "patchVer_": "patch_b6015aef-91b3-46e0-8638-08e6bd2a24e8",
+                "focusable": false,
+                "selected": false,
+                "dragging": false,
+                "width": 80,
+                "height": 80,
+                "initialWidth": null,
+                "initialHeight": null,
+                "extent": null,
+                "handles": null,
+                "style": {
+                    "height": 80,
+                    "opacity": 1,
+                    "width": 80
+                },
+                "data": {
+                    "cardRefKey": "",
+                    "class": "aws_codebuild_project",
+                    "data_stored": [],
+                    "icon": "codeBuild",
+                    "label": "CodeBuild",
+                    "tosca_type": "arcs.nodes.DeveloperTools.CodeBuild",
+                    "type": "architecture",
+                    "tosca_schema": "1.4.3"
+                }
+            },
+            {
+                "ariaLabel": "",
+                "className": "",
+                "connectable": true,
+                "deletable": true,
+                "draggable": true,
+                "dragHandle": "",
+                "expandParent": false,
+                "hidden": false,
+                "id": "node_93800842-dc39-4a3f-b267-f0af1ad16c80",
+                "parentId": "node_1d9d06ce-5fa1-4084-8f18-2aea27efbc0e",
+                "position": {
+                    "x": 360,
+                    "y": 60
+                },
+                "origin": [0, 0],
+                "resizing": true,
+                "selectable": true,
+                "sourcePosition": "bottom",
+                "targetPosition": "top",
+                "type": "infoNode",
+                "zIndex": 1,
+                "patchVer_": "patch_b6015aef-91b3-46e0-8638-08e6bd2a24e8",
+                "focusable": false,
+                "selected": false,
+                "dragging": false,
+                "width": 80,
+                "height": 80,
+                "initialWidth": null,
+                "initialHeight": null,
+                "extent": null,
+                "handles": null,
+                "style": {
+                    "height": 80,
+                    "opacity": 1,
+                    "width": 80
+                },
+                "data": {
+                    "cardRefKey": "",
+                    "class": "aws_codedeploy_app",
+                    "data_stored": [],
+                    "icon": "codeDeploy",
+                    "label": "CodeDeploy",
+                    "tosca_type": "arcs.nodes.DeveloperTools.CodeDeploy",
+                    "type": "architecture",
+                    "tosca_schema": "1.4.3"
+                }
+            }
+        ],
+        "edges": [
+            {
+                "id": "edge_6de551bb-ccb8-41b1-9270-c2b660ac70dd",
+                "animated": false,
+                "className": "",
+                "data": {
+                    "type": "architecture",
+                    "bidirectional": false,
+                    "lineSegments": [
+                        {
+                            "lineStart": {
+                                "x": 530,
+                                "y": 480
+                            },
+                            "lineEnd": {
+                                "x": 530,
+                                "y": 480
+                            },
+                            "lineLength": 0,
+                            "handleOffset": 0,
+                            "snappedHandleOffset": 0,
+                            "direction": "vertical",
+                            "id": "line_segment_54a6589b-b3df-46b5-aac8-48d70a814db4"
+                        }
+                    ]
+                },
+                "deletable": true,
+                "hidden": false,
+                "interactionWidth": 20,
+                "label": "",
+                "labelBgPadding": [6, 2],
+                "markerEnd": {
+                    "type": "arrowclosed",
+                    "color": "#000"
+                },
+                "source": "node_cdc7e5dc-3f05-4391-8d12-6767f1dcacc4",
+                "sourceHandle": "source_right",
+                "style": {
+                    "strokeWidth": 2,
+                    "stroke": "#000",
+                    "opacity": 1
+                },
+                "target": "node_7a990638-90bc-4fc4-b507-12c8e12ea70c",
+                "targetHandle": "target_left",
+                "type": "floating",
+                "zIndex": 101,
+                "selected": false
+            },
+            {
+                "id": "edge_bd79eddf-58f4-4498-9dc1-0dd127c8893b",
+                "animated": false,
+                "className": "",
+                "data": {
+                    "type": "architecture",
+                    "bidirectional": false,
+                    "lineSegments": [
+                        {
+                            "lineStart": {
+                                "x": 40,
+                                "y": 470
+                            },
+                            "lineEnd": {
+                                "x": 40,
+                                "y": 470
+                            },
+                            "lineLength": 0,
+                            "handleOffset": 0,
+                            "snappedHandleOffset": 0,
+                            "direction": "vertical",
+                            "id": "line_segment_a7cd775a-5389-4980-b9f8-cc2fb3030607"
+                        }
+                    ]
+                },
+                "deletable": true,
+                "hidden": false,
+                "interactionWidth": 20,
+                "label": "",
+                "labelBgPadding": [6, 2],
+                "markerEnd": {
+                    "type": "arrowclosed",
+                    "color": "#000"
+                },
+                "source": "node_4006f201-8441-487b-8dc7-b33f10ff97ad",
+                "sourceHandle": "source_right",
+                "style": {
+                    "strokeWidth": 2,
+                    "stroke": "#000",
+                    "opacity": 1
+                },
+                "target": "node_cdc7e5dc-3f05-4391-8d12-6767f1dcacc4",
+                "targetHandle": "target_left",
+                "type": "floating",
+                "zIndex": 101,
+                "selected": false
+            },
+            {
+                "id": "edge_e1851714-e04b-4f59-99e3-047a37d57fe4",
+                "animated": false,
+                "className": "",
+                "data": {
+                    "type": "architecture",
+                    "bidirectional": false,
+                    "lineSegments": [
+                        {
+                            "lineStart": {
+                                "x": -60,
+                                "y": 610
+                            },
+                            "lineEnd": {
+                                "x": 10,
+                                "y": 610
+                            },
+                            "lineLength": 0,
+                            "handleOffset": 0,
+                            "snappedHandleOffset": 0,
+                            "direction": "horizontal",
+                            "id": "line_segment_e917a1e7-6261-4913-aeb9-066a6b582571"
+                        }
+                    ]
+                },
+                "deletable": true,
+                "hidden": false,
+                "interactionWidth": 20,
+                "label": "",
+                "labelBgPadding": [6, 2],
+                "markerEnd": {
+                    "type": "arrowclosed",
+                    "color": "#000"
+                },
+                "source": "node_4006f201-8441-487b-8dc7-b33f10ff97ad",
+                "sourceHandle": "source_bottom",
+                "style": {
+                    "strokeWidth": 2,
+                    "stroke": "#000"
+                },
+                "target": "node_1dcabb1c-9023-4533-94ec-9a2c6246ebf4",
+                "targetHandle": "target_top",
+                "type": "floating",
+                "zIndex": 100,
+                "selected": false
+            }
+        ],
+        "viewport": {
+            "x": 516.7758620689656,
+            "y": -294.5,
+            "zoom": 1.153448275862069
+        }
+    },
+    "templateId": "template_c2e218fd-69c2-4e2d-8b18-f7ce05d68ee0",
+    "templateImageName": "sample_project_tutorial",
+    "templateName": "Sample Project Tutorial",
+    "schema_": "1.0.0"
+}

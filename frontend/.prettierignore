@@ -1,0 +1,108 @@
+# Dependencies
+node_modules/
+
+# Build outputs
+dist/
+build/
+dev-dist/
+coverage/
+test-results/
+playwright-report/
+
+# Generated files
+*.min.js
+*.min.css
+*.bundle.js
+*.chunk.js
+*.d.ts
+*.generated.*
+
+# Package manager files
+package-lock.json
+yarn.lock
+pnpm-lock.yaml
+
+# Logs
+*.log
+logs/
+
+# Cache files
+.eslintcache
+.stylelintcache
+.cache/
+.parcel-cache/
+.next/
+.nuxt/
+.vuepress/dist/
+
+# Environment files
+.env*
+
+# Documentation (optional - remove if you want to format docs)
+# *.md
+# docs/
+
+# Configuration files (optional - remove if you want to format configs)
+# *.config.js
+# *.config.ts
+# *.config.mjs
+# *.config.cjs
+
+# Public assets
+public/
+
+# Service worker files
+sw.js
+workbox-*.js
+
+# Temporary files
+tmp/
+temp/
+.tmp/
+
+# IDE files
+.vscode/
+.idea/
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Binary files
+*.png
+*.jpg
+*.jpeg
+*.gif
+*.svg
+*.ico
+*.woff
+*.woff2
+*.ttf
+*.eot
+*.pdf
+*.mp4
+*.mp3
+*.zip
+*.tar
+*.gz
+
+# Lock files
+package-lock.json
+yarn.lock
+pnpm-lock.yaml
+
+# Git files
+.git/
+.gitignore
+.gitattributes
+
+# CI/CD files
+.github/
+.gitlab-ci.yml
+.travis.yml
+.circleci/
+
+# Docker files
+Dockerfile*
+docker-compose*.yml
+.dockerignore

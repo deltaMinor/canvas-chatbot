@@ -1,0 +1,35 @@
+@mixin ripple($duration, $delay, $count) {
+    opacity: 0;
+    position: absolute;
+    left: 0;
+    top: 0;
+    content: "";
+    height: 100%;
+    width: 100%;
+    background: #ff1943;
+    animation-name: ripple;
+    border-radius: 48px;
+    animation-duration: $duration;
+    animation-delay: $delay;
+    animation-iteration-count: $count;
+    animation-timing-function: cubic-bezier(0.4, 0.5, 0.2, 1.2);
+    z-index: -1;
+}
+
+.warningRipple {
+    &::after {
+        @include ripple(2s, 0s, infinite);
+    }
+}
+
+@keyframes ripple {
+    from {
+        opacity: 1;
+        transform: scale3d(1, 1, 1);
+    }
+
+    to {
+        opacity: 0;
+        transform: scale3d(2, 2, 2);
+    }
+}

@@ -1,0 +1,84 @@
+# This demo's default host-side ports are intentionally shifted away from
+# each service's usual default (27017, 6379, 5672/15672, 8006) into the
+# 39xxx range, so they don't collide with a full/original tm-project
+# checkout (or anything else) that might already be using the standard
+# ports on the same machine. Override any of them via env vars (or a
+# `backend/.env` file, which Docker Compose reads automatically) if 39xxx
+# happens to collide with something too, e.g.:
+#   TM_MONGODB_HOST_PORT=27019 docker compose up -d tm-mongodb
+services:
+    tm-mongodb:
+        build:
+            context: .
+            dockerfile: mongodb/Dockerfile
+            args:
+                ENV_FILE: mongodb/.env
+        ports:
+            - "${TM_MONGODB_HOST_PORT:-39017}:27017"
+        volumes:
+            - tm-mongodb-data:/data/db
+
+    tm-redis:
+        image: redis:7-alpine
+        ports:
+            - "${TM_REDIS_HOST_PORT:-39379}:6379"
+
+    # Required: this codebase's data-access layer (Producer/RemoteRepository,
+    # see shared_libs.infrastructure.producer.service) dispatches every Mongo
+    # read/write as a Celery task via `send_task(name, ...)`, which - unlike
+    # `.delay()` on an imported task object - always publishes to a real
+    # broker regardless of Celery's "eager" setting. A real RabbitMQ (and the
+    # tm-worker service below, which actually consumes those tasks) are both
+    # genuine requirements, not legacy scaffolding.
+    tm-rabbitmq:
+        image: rabbitmq:3-management-alpine
+        ports:
+            - "${TM_RABBITMQ_HOST_PORT:-39672}:5672"
+            - "${TM_RABBITMQ_MANAGEMENT_HOST_PORT:-39682}:15672"
+        volumes:
+            - ./rabbitmq/rabbitmq.conf:/etc/rabbitmq/conf.d/10-loopback.conf:ro
+
+    tm-backend:
+        build:
+            context: .
+            dockerfile: diagram_service/Dockerfile.diagram_service
+        env_file:
+            - .backend.local.dev.env
+        environment:
+            # These use the containers' internal Docker-network hostnames and
+            # default ports - unaffected by any TM_*_HOST_PORT overrides
+            # above, which only remap the *host-facing* side of each port.
+            # DJANGO_SERVICE_AD_PORT_EXPOSED must stay 8006 here (the port
+            # this container's own process binds to, matched by the ports:
+            # mapping below) even though .backend.local.dev.env sets it to
+            # 39006 for the non-Docker/`uv run` setup path.
+            DB_URL_MONGODB: mongodb://tm-mongodb:27017
+            REDIS_URL_BASE: redis://tm-redis:6379/
+            MQ_URL_BASE_PRIMARY: amqp://guest:guest@tm-rabbitmq:5672/
+            DJANGO_SERVICE_AD_PORT_EXPOSED: 8006
+        ports:
+            - "${TM_BACKEND_HOST_PORT:-39006}:8006"
+        depends_on:
+            - tm-mongodb
+            - tm-redis
+            - tm-rabbitmq
+
+    tm-worker:
+        build:
+            context: .
+            dockerfile: diagram_service/Dockerfile.diagram_service
+        env_file:
+            - .backend.local.dev.env
+        environment:
+            DB_URL_MONGODB: mongodb://tm-mongodb:27017
+            REDIS_URL_BASE: redis://tm-redis:6379/
+            MQ_URL_BASE_PRIMARY: amqp://guest:guest@tm-rabbitmq:5672/
+        entrypoint: []
+        command: ["celery", "-A", "main", "worker", "-Q", "diagram_queue", "--loglevel=info", "--pool=gevent", "--concurrency=10"]
+        depends_on:
+            - tm-mongodb
+            - tm-redis
+            - tm-rabbitmq
+
+volumes:
+    tm-mongodb-data:

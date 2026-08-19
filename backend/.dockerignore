@@ -1,0 +1,26 @@
+# Python cache and virtual environments
+**/__pycache__/
+**/.pytest_cache/
+**/.ruff_cache/
+**/.venv/
+**/venv/
+
+# Development tools
+**/.git/
+**/.vscode/
+**/node_modules/
+
+# Log files
+**/*.log
+
+# Database directories (not needed in containers)
+**/application_service/database/
+**/diagram_service/database/
+**/authentication_service/database/
+**/risk_register_service/database/
+
+# Attack flow modules (not needed for most services)
+**/modules/attack-flow/
+
+# Docker files
+Dockerfile*

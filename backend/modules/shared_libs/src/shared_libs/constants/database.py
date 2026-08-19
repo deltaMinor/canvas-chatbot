@@ -1,0 +1,3 @@
+RESERVED_DB_KEYS = ["_id"]
+
+MAX_FILE_COUNT = 10

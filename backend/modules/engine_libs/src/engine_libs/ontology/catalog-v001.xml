@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<catalog prefer="public" xmlns="urn:oasis:names:tc:entity:xmlns:xml:catalog">
+    <uri
+        id="User Entered Import Resolution"
+        name="https://www.sodalite.eu/ontologies/sodalite-metamodel"
+        uri="tosca-individuals.rdf"
+    />
+    <group
+        id="Folder Repository, directory=, recursive=true, Auto-Update=true, version=2"
+        prefer="public"
+        xml:base=""
+    >
+        <uri
+            id="Automatically generated entry, Timestamp=1721272799739"
+            name="http://www.loa-cnr.it/ontologies/DUL.owl"
+            uri="import/DUL.rdf"
+        />
+        <uri
+            id="Automatically generated entry, Timestamp=1721272799739"
+            name="https://www.sodalite.eu/ontologies/sodalite-metamodel/"
+            uri="sodalite-metamodel.xml"
+        />
+        <uri
+            id="Automatically generated entry, Timestamp=1721272799739"
+            name="duplicate:https://www.sodalite.eu/ontologies/tosca/"
+            uri="tosca-builtins.xml"
+        />
+        <uri
+            id="Automatically generated entry, Timestamp=1721272799739"
+            name="duplicate:https://www.sodalite.eu/ontologies/tosca/"
+            uri="tosca-builtins_dec2.xml"
+        />
+        <uri
+            id="Automatically generated entry, Timestamp=1721272799739"
+            name="duplicate:https://www.sodalite.eu/ontologies/tosca/"
+            uri="tosca-individuals_2.rdf"
+        />
+    </group>
+</catalog>

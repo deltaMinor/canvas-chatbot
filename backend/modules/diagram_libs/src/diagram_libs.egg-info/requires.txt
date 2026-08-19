@@ -1,0 +1,3 @@
+engine-libs
+pillow>=12.2.0
+shared-libs

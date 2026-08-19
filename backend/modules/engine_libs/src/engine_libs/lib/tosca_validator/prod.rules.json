@@ -1,0 +1,63 @@
+{
+    "data": [
+        {
+            "enforce": "mandatory",
+            "source": ["arcs.nodes.Internet"],
+            "target": "arcs.nodes.Rule.Traffic",
+            "comment": "Rule 1"
+        },
+        {
+            "enforce": "mandatory",
+            "source": ["arcs.nodes.Rule.Traffic"],
+            "target": "arcs.nodes.TrafficManager.Gateway",
+            "comment": "Rule 2"
+        },
+        {
+            "enforce": "optional",
+            "source": ["_arcs.nodes.TrafficManager.Gateway"],
+            "target": "_arcs.nodes.network.NetworkFirewall",
+            "comment": "Rule 3"
+        },
+        {
+            "enforce": "optional",
+            "source": ["arcs.nodes.TrafficManager.DNSZone"],
+            "target": "arcs.nodes.network.NetworkFirewall",
+            "comment": "Rule X"
+        },
+        {
+            "enforce": "mandatory",
+            "source": ["arcs.nodes.network.NetworkFirewall"],
+            "target": "arcs.nodes.TrafficManager.LoadBalancer",
+            "comment": "Rule 4"
+        },
+        {
+            "enforce": "optional",
+            "conditions": [
+                {
+                    "false": ["tosca-type 1", "tosca-type 2"],
+                    "true": ["tosca-type 3", "tosca-type 4"]
+                },
+                {
+                    "false": ["tosca-type 5", "tosca-type 6"],
+                    "true": ["tosca-type 7", "tosca-type 8"]
+                }
+            ],
+            "logical_operators": [],
+            "source": [
+                "tosca.nodes.TrafficManager.LoadBalancer",
+                "arcs.nodes.Abstract.Group"
+            ],
+            "target": "arcs.nodes.Container.Orchestration",
+            "comment": "Rule 5"
+        },
+        {
+            "enforce": "optional",
+            "source": [
+                "arcs.nodes.Container.Orchestration",
+                "arcs.nodes.Rule.Orchestration"
+            ],
+            "target": "tosca.nodes.DBMS",
+            "comment": "Rule 6"
+        }
+    ]
+}
