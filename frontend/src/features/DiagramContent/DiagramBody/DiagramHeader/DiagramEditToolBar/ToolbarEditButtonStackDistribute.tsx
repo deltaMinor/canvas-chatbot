@@ -4,7 +4,7 @@ import ViewDayOutlinedIcon from "@mui/icons-material/ViewDayOutlined";
 import { Stack } from "@mui/material";
 import { useReactFlow } from "@xyflow/react";
 
-import { DiagramToolbarButton } from "#root/components/DiagramToolbarPrimitives";
+import DiagramToolbarButton from "#root/components/DiagramToolbarPrimitives/DiagramToolbarButton";
 import { useDiagramInstanceId } from "#root/contexts/DiagramInstanceContext";
 import {
     useAppendCanvasHistory,

@@ -5,7 +5,7 @@ import ContentPasteIcon from "@mui/icons-material/ContentPaste";
 import DeleteOutlineIcon from "@mui/icons-material/DeleteOutline";
 import { Stack } from "@mui/material";
 
-import { DiagramToolbarButton } from "#root/components/DiagramToolbarPrimitives";
+import DiagramToolbarButton from "#root/components/DiagramToolbarPrimitives/DiagramToolbarButton";
 import {
     useDiagramCapabilitiesState,
     useDiagramClipboardCopyAction,

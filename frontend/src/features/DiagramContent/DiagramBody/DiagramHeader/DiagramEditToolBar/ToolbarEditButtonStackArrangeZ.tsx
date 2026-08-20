@@ -6,7 +6,7 @@ import NavigateBeforeIcon from "@mui/icons-material/NavigateBefore";
 import NavigateNextIcon from "@mui/icons-material/NavigateNext";
 import { Stack } from "@mui/material";
 
-import { DiagramToolbarButton } from "#root/components/DiagramToolbarPrimitives";
+import DiagramToolbarButton from "#root/components/DiagramToolbarPrimitives/DiagramToolbarButton";
 import { useDiagramInstanceId } from "#root/contexts/DiagramInstanceContext";
 import {
     useAppendCanvasHistory,
