@@ -11,17 +11,12 @@ import {
     INFO_NODE_BADGE_BLOCK_CONTAINER_OFFSET_TOP,
     INFO_NODE_TEXT_BLOCK_CONTAINER_OFFSET_BTM,
 } from "#root/constants/diagramConfig";
-import {
-    useDiagramIsConnecting,
-    useDiagramIsConnectingHandleType,
-    useDiagramView,
-} from "#root/hooks/diagram";
+import { useDiagramIsConnecting, useDiagramIsConnectingHandleType } from "#root/hooks/diagram";
 import { EdgeHandleType } from "#root/interfaces/diagram";
 import { getBackgroundColor } from "#root/utils/diagram/diagramStyleUtil";
 
 interface InfoNodeHandlesProps {
     dataType: string;
-    disableHandles?: boolean;
     isConnectable: boolean;
     hasBadgeBox: boolean;
     onHandleHover?: (hovered: boolean) => void;
@@ -29,20 +24,18 @@ interface InfoNodeHandlesProps {
 
 const InfoNodeHandlesComponent = ({
     dataType,
-    disableHandles = false,
     isConnectable,
     hasBadgeBox,
     onHandleHover,
 }: InfoNodeHandlesProps) => {
-    const diagramView = useDiagramView();
     const isConnecting = useDiagramIsConnecting();
     const isConnectingHandleType = useDiagramIsConnectingHandleType() as HandleType;
     const backgroundColor = React.useMemo(() => getBackgroundColor({ type: dataType }), [dataType]);
-    const isThreatScenarioCanvas = React.useMemo(() => diagramView === "visualizer", [diagramView]);
-    const opacity = React.useMemo(
-        () => (disableHandles ? 0 : isThreatScenarioCanvas ? 0 : 1),
-        [disableHandles, isThreatScenarioCanvas]
-    );
+
+    // Info nodes need real handles so edges can attach to them, but the
+    // dots themselves shouldn't be visible or interactive to the user -
+    // manual, mouse-driven connecting of nodes is not supported.
+    const opacity = 0;
 
     const topOffset = hasBadgeBox
         ? HANDLE_STACK_VERTICAL_OFFSET_TOP + INFO_NODE_BADGE_BLOCK_CONTAINER_OFFSET_TOP

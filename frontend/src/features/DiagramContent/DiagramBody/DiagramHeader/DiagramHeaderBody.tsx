@@ -2,16 +2,9 @@ import React from "react";
 
 import { Stack } from "@mui/material";
 
-import DiagramEditToolbar from "./DiagramEditToolBar";
 import DiagramHeaderWrapper from "./DiagramHeaderWrapper";
 
-interface DiagramHeaderBodyProps {
-    showEditToolbar: boolean;
-}
-
-const DiagramHeaderBodyComponent = ({
-    showEditToolbar, //
-}: DiagramHeaderBodyProps) => {
+const DiagramHeaderBodyComponent = () => {
     return (
         <DiagramHeaderWrapper>
             <Stack
@@ -20,21 +13,7 @@ const DiagramHeaderBodyComponent = ({
                 alignItems="center"
                 className="h-full w-full"
             >
-                {!!showEditToolbar ? (
-                    <Stack
-                        direction="column"
-                        style={{
-                            height: "35px",
-                            maxHeight: "35px",
-                        }}
-                        className="h-full w-full"
-                        id="DiagramHeaderBody__Stack__Stack"
-                    >
-                        <DiagramEditToolbar />
-                    </Stack>
-                ) : (
-                    <div></div>
-                )}
+                <div></div>
                 <Stack />
             </Stack>
         </DiagramHeaderWrapper>

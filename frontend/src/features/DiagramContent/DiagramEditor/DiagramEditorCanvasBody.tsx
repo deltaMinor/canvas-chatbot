@@ -3,7 +3,6 @@ import React from "react";
 import { Background, BackgroundVariant, ReactFlow } from "@xyflow/react";
 
 import DiagramBodyShell from "#root/components/DiagramBodyShell";
-import { ConnectionLine } from "#root/components/DiagramEdges";
 import {
     diagram_grid_size_major,
     diagram_grid_size_minor,
@@ -19,25 +18,7 @@ import { diagramEditorEdgeTypes, diagramEditorNodeTypes } from "./diagramEditorR
 const DiagramEditorCanvasBodyComponent = () => {
     const canvasNodes = useCanvasNodes();
     const canvasEdges = useCanvasEdges();
-    const {
-        containerRef,
-        onDragOver,
-        onConnectStart,
-        onReconnectStart,
-        onConnectEnd,
-        onReconnectEnd,
-        onEdgesChange,
-        onNodesChange,
-        onReconnect,
-        onConnect,
-        onInit,
-        onDrop,
-        onNodeClick,
-        onEdgeClick,
-        onNodeDragStart,
-        onNodeDragStop,
-        onPaneClick,
-    } = useDiagramBodyHandlers();
+    const { containerRef, onInit } = useDiagramBodyHandlers();
 
     return (
         <DiagramBodyShell
@@ -46,37 +27,35 @@ const DiagramEditorCanvasBodyComponent = () => {
         >
             <DiagramEditorBodyEffects />
             <ReactFlow
-                deleteKeyCode={[]}
-                connectionLineComponent={ConnectionLine}
+                // Manual, mouse-driven editing of the diagram is disabled. The
+                // diagram can still be created/modified via the chatbot, which
+                // updates the underlying store directly, bypassing these props.
+                connectOnClick={false}
+                deleteKeyCode={null}
                 edges={canvasEdges}
+                edgesFocusable={false}
+                edgesReconnectable={false}
                 edgeTypes={diagramEditorEdgeTypes}
-                elevateEdgesOnSelect={true}
+                elementsSelectable={false}
+                elevateEdgesOnSelect={false}
                 elevateNodesOnSelect={false}
                 fitView
                 fitViewOptions={{ maxZoom: 1 }}
                 maxZoom={diagram_max_zoom}
                 minZoom={diagram_min_zoom}
+                multiSelectionKeyCode={null}
                 nodeClickDistance={4}
                 nodeOrigin={[0, 0]}
                 nodes={canvasNodes}
+                nodesConnectable={false}
+                nodesDraggable={false}
+                nodesFocusable={false}
                 nodeTypes={diagramEditorNodeTypes}
                 onlyRenderVisibleElements
-                onConnect={onConnect}
-                onConnectStart={onConnectStart}
-                onConnectEnd={onConnectEnd}
-                onDragOver={onDragOver}
-                onDrop={onDrop}
-                onEdgeClick={onEdgeClick}
-                onEdgesChange={onEdgesChange}
                 onInit={onInit}
-                onNodeClick={onNodeClick}
-                onNodeDragStart={onNodeDragStart}
-                onNodeDragStop={onNodeDragStop}
-                onNodesChange={onNodesChange}
-                onPaneClick={onPaneClick}
-                onReconnect={onReconnect}
-                onReconnectStart={onReconnectStart}
-                onReconnectEnd={onReconnectEnd}
+                selectionKeyCode={null}
+                selectionOnDrag={false}
+                selectNodesOnDrag={false}
                 snapGrid={[diagram_grid_size_minor, diagram_grid_size_minor]}
                 snapToGrid
                 style={{ backgroundColor: "white" }}

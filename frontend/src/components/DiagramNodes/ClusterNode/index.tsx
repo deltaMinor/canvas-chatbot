@@ -3,7 +3,6 @@ import React from "react";
 import { Box } from "@mui/material";
 import { NodeProps } from "@xyflow/react";
 
-import { MIN_HEIGHT_CLUSTERNODE, MIN_WIDTH_CLUSTERNODE } from "#root/constants/diagram";
 import DiagramClusterNodeEffects from "#root/effects/DiagramClusterNodeEffects";
 import { useIsThreatScenarioCanvas } from "#root/hooks/diagram";
 import { DiagramComponentType, DiagramNode } from "#root/interfaces/diagram";
@@ -11,7 +10,6 @@ import { DiagramComponentType, DiagramNode } from "#root/interfaces/diagram";
 import ClusterNodeAttackHandles from "./ClusterNodeAttackHandles";
 import ClusterNodeHandles from "./ClusterNodeHandles";
 import ClusterNodeIconStack from "./ClusterNodeIconStack";
-import ClusterNodeResizer from "./ClusterNodeResizer";
 
 const ClusterNodeComponent = (props: NodeProps<DiagramNode>) => {
     // Selectors and feature state
@@ -78,11 +76,6 @@ const ClusterNodeComponent = (props: NodeProps<DiagramNode>) => {
                     className="cluster-node-component__pulse cluster-node-component__pulse--single"
                 />
             )}
-            <ClusterNodeResizer
-                min_width={MIN_WIDTH_CLUSTERNODE} //
-                min_height={MIN_HEIGHT_CLUSTERNODE}
-                {...props}
-            />
             {/* Cluster content */}
             <ClusterNodeIconStack //
                 comparableNodeId={comparableNodeId}

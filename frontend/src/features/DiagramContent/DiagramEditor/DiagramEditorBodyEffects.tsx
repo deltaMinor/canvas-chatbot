@@ -4,10 +4,7 @@ import {
     useDiagramCanvasHistorySyncEffect,
     useDiagramCapabilitiesSyncEffect,
     useDiagramDeselectOnDraftCanvasChangeEffect,
-    useDiagramDrawerSyncEffect,
     useDiagramInitDraftCanvasIdEffect,
-    useDiagramKeyboardCopyPasteEffect,
-    useDiagramKeyboardDeleteEffect,
     useDiagramLockedCanvasNoticeEffect,
     useDiagramNodeEdgeMappingSyncEffect,
     useDiagramResizeObserverEffect,
@@ -19,7 +16,6 @@ import {
 } from "#root/hooks/diagram";
 
 const DiagramEditorBodyEffects = () => {
-    useDiagramDrawerSyncEffect();
     useInitDiagramJoyrideEffect();
     useDiagramCapabilitiesSyncEffect();
     useDiagramLockedCanvasNoticeEffect();
@@ -32,8 +28,6 @@ const DiagramEditorBodyEffects = () => {
     useDiagramResizeObserverEffect();
     useDiagramSelectionChangeSync();
     useDiagramCanvasHistorySyncEffect();
-    useDiagramKeyboardCopyPasteEffect();
-    useDiagramKeyboardDeleteEffect();
 
     return null;
 };

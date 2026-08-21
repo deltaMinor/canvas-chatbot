@@ -3,7 +3,6 @@ import React from "react";
 import { Box } from "@mui/material";
 import { NodeProps } from "@xyflow/react";
 
-import { MIN_HEIGHT_INFONODE, MIN_WIDTH_INFONODE } from "#root/constants/diagram";
 import { INFO_NODE_TEXT_BLOCK_CONTAINER_OFFSET_BTM } from "#root/constants/diagramConfig";
 import { useInfoNodeDataStored } from "#root/hooks/diagram";
 import { DiagramComponentType, DiagramNode } from "#root/interfaces/diagram";
@@ -14,7 +13,6 @@ import InfoNodeHandles from "./InfoNodeHandles";
 import InfoNodeIcon from "./InfoNodeIcon";
 import InfoNodeIconText from "./InfoNodeIconText";
 import InfoNodeMainShell from "./InfoNodeMainShell";
-import InfoNodeResizer from "./InfoNodeResizer";
 
 interface InfoNodeProps extends NodeProps<DiagramNode> {}
 
@@ -57,11 +55,6 @@ const InfoNodeComponent = (props: InfoNodeProps) => {
                 draggable={props.draggable}
                 selected={props.selected}
             >
-                <InfoNodeResizer //
-                    min_width={MIN_WIDTH_INFONODE}
-                    min_height={MIN_HEIGHT_INFONODE}
-                    {...props}
-                />
                 {/* Secondary badges */}
                 {!!showDataStoredIcon && dataStored && (
                     <InfoNodeBadgeBox
@@ -100,7 +93,6 @@ const InfoNodeComponent = (props: InfoNodeProps) => {
             />
             <InfoNodeHandles //
                 dataType={props?.data?.["type"] || ""}
-                disableHandles={disableHandles}
                 isConnectable={!!props?.isConnectable}
                 hasBadgeBox={!!showDataStoredIcon && !!dataStored}
                 onHandleHover={handleHandleHover}

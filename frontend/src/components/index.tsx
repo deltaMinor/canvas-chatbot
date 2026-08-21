@@ -1,7 +1,6 @@
 export { default as AppEffects } from "./AppEffects";
 export { default as AppLinearCategoryBar } from "./AppLinearCategoryBar";
 export { default as AppTabs } from "./AppTabs";
-export { default as BiDirectionalArrowFab } from "./BiDirectionalArrowFab";
 export { default as BoxWrapper } from "./BoxWrapper";
 export { default as ChatbotAttachedFileChip } from "./ChatbotAttachedFileChip";
 export { default as ChatbotCommandBox } from "./ChatbotCommandBox";
@@ -23,8 +22,6 @@ export { default as DiagramCanvasBackdrops } from "./DiagramCanvasBackdrops";
 export { default as DiagramCanvasBoxWrapper } from "./DiagramCanvasBoxWrapper";
 export { default as DiagramControls } from "./DiagramControls";
 export { default as DiagramDrawer } from "./DiagramDrawer";
-export { default as ConnectionLine } from "./DiagramEdges/ConnectionLine";
-export { default as DraggableEdge } from "./DiagramEdges/DraggableEdge";
 export { default as FloatingEdge } from "./DiagramEdges/FloatingEdge";
 export { default as DiagramMiniMap } from "./DiagramMiniMap";
 export { default as ClusterNode } from "./DiagramNodes/ClusterNode";
