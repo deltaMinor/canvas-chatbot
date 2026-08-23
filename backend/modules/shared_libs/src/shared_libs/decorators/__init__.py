@@ -1,4 +1,3 @@
-from .authentication import authenticated_only_func
 from .helper import (
     validate_key_and_value_not_none,
     validate_no_none_values_in_args_and_kwargs,
@@ -14,7 +13,6 @@ from .validation import (
 )
 
 __all__ = [
-    "authenticated_only_func",
     "perf_timer",
     "raise_exception",
     "validate_key_and_value_not_none",

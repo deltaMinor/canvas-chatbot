@@ -26,8 +26,4 @@ urlpatterns = [
         "api/v1/application/",
         include("service.application.project.urls"),
     ),
-    path(
-        "api/admin/architecture_diagram/",
-        include("django_admin.app.urls"),
-    ),
 ]

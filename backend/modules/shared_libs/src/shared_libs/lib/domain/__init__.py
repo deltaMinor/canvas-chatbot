@@ -16,11 +16,11 @@ __all__ = [
     "DomainAuditLogService",
     "DomainAuthorizationService",
     "DomainProjectAuthorizationService",
-    "DomainResourceTagAuthorizationService",
-    "DomainUserAuthorizationService",
     "DomainRequestDataPrefilterService",
     "DomainRepositoryService",
+    "DomainResourceTagAuthorizationService",
     "DomainFileRepositoryService",
     "DomainRedisRepositoryService",
+    "DomainUserAuthorizationService",
     "is_projected_query",
 ]

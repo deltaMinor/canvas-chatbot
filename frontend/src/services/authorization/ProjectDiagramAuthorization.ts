@@ -5,18 +5,11 @@ export class ProjectDiagramAuthorization {
 
     get isAuthorized(): IsAuthorized {
         const isAuthorized: IsAuthorized = {
-            create: false,
+            create: true,
             read: true,
             update: true,
-            delete: false,
+            delete: true,
         };
-
-        // authorizationManager.updateIsAuthorizedFields<ProjectDiagram>(
-        //     this.projectDiagram ?? ({} as ProjectDiagram),
-        //     isAuthorized,
-        //     user_permission_doc.project_diagram?.fields ?? {},
-        //     this.projectId ?? ""
-        // );
 
         return isAuthorized;
     }

@@ -7,7 +7,7 @@ export class ProjectDiagramFileTerraformAuthorization {
         const isAuthorized = {
             create: true,
             read: true,
-            update: false,
+            update: true,
             delete: true,
         };
 

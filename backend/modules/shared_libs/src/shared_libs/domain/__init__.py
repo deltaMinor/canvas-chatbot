@@ -40,17 +40,10 @@ from .project_cq import ProjectCQService
 from .project_cq_template import ProjectCQTemplateService
 from .project_register import ProjectRegisterService
 from .project_register_history import ProjectRegisterHistoryService
-from .resource_tag import ResourceTagService
 from .credit_transaction_log import CreditTransactionLogService
-from .token import TokenService
-from .token.service.redis_service import TokenRedisService
 from .tool_history import ToolHistoryService
-from .user import UserService
 from .user_credits import UserCreditsService
-from .user_permission_doc import UserPermissionDocService
 from .user_plan_config import UserPlanConfigService
-from .user_policy_doc import UserPolicyDocService
-from .user_role_doc import UserRoleDocService
 
 __all__ = [
     "AiInvocationLogService",
@@ -95,15 +88,8 @@ __all__ = [
     "ProjectRegisterHistoryService",
     "ProjectRegisterService",
     "ProjectService",
-    "ResourceTagService",
     "CreditTransactionLogService",
-    "TokenRedisService",
-    "TokenService",
     "ToolHistoryService",
     "UserCreditsService",
-    "UserPermissionDocService",
     "UserPlanConfigService",
-    "UserPolicyDocService",
-    "UserRoleDocService",
-    "UserService",
 ]

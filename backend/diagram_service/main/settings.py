@@ -328,15 +328,12 @@ if MQ_TLS_CA_PATH:
 # Order matters: Django processes apps in the order they appear
 INSTALLED_APPS = [
     # Django built-in applications
-    "django.contrib.admin",  # Django admin interface
-    "django.contrib.auth",  # Authentication system
     "django.contrib.contenttypes",  # Content type framework
     "django.contrib.sessions",  # Session framework
     "django.contrib.messages",  # Message framework
     "django.contrib.staticfiles",  # Static file serving
     # Local applications
     "service",  # Main business logic application
-    "django_admin",  # Custom admin interface
     # Third-party applications
     "rest_framework",  # Django REST Framework
     "corsheaders",  # CORS handling
@@ -356,20 +353,16 @@ MIDDLEWARE = [
     "middleware.health_check.health_check_middleware",
     # 3. Security headers (early security measures)
     "django.middleware.security.SecurityMiddleware",
-    # 4. CORS handling (before authentication for preflight requests)
+    # 4. CORS handling
     "corsheaders.middleware.CorsMiddleware",
-    # 5. Session management (needed for authentication)
+    # 5. Session management 
     "django.contrib.sessions.middleware.SessionMiddleware",
     # 6. Common middleware (URL processing, trailing slash handling)
     "django.middleware.common.CommonMiddleware",
-    # 7. Authentication (requires session)
-    "django.contrib.auth.middleware.AuthenticationMiddleware",
-    # 8. Message framework (requires authentication)
+    # 7. Message framework
     "django.contrib.messages.middleware.MessageMiddleware",
-    # 9. Clickjacking protection (final security layer)
+    # 8. Clickjacking protection (final security layer)
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
-    # 10. Session cleanup (handles 401 responses)
-    "shared_libs.middleware.flush_session.FlushSessionOnUnauthorizedMiddleware",
 ]
 
 # =============================================================================
@@ -404,14 +397,18 @@ REST_FRAMEWORK = {
     "PAGE_SIZE": 10,
     # Custom exception handling
     "EXCEPTION_HANDLER": "shared_libs.exceptions.api_exceptions.custom_exception_handler",
-    # Rate limiting configuration
+    "DEFAULT_AUTHENTICATION_CLASSES": [],
+    "DEFAULT_PERMISSION_CLASSES": [
+        "rest_framework.permissions.AllowAny",
+    ],
+    "UNAUTHENTICATED_USER": None,
+    "UNAUTHENTICATED_TOKEN": None,
     "DEFAULT_THROTTLE_CLASSES": [
         "rest_framework.throttling.AnonRateThrottle",
-        "rest_framework.throttling.UserRateThrottle",
     ],
     "DEFAULT_THROTTLE_RATES": {
-        "anon": "60/min",  # Anonymous users: 60 requests per minute
-        "user": "600/min",  # Authenticated users: 600 requests per minute
+        "anon": "60/min",  # 60 requests per minute per client IP
+        "user": "600/min",  # Used only by views with an explicit UserRateThrottle
     },
 }
 
@@ -420,10 +417,7 @@ REST_FRAMEWORK = {
 # =============================================================================
 
 # Static files URL and directories
-STATIC_URL = "/api/admin/architecture_diagram/static/"
-STATICFILES_DIRS = [
-    f"{BASE_DIR}/django_admin/static",
-]
+STATIC_URL = "/static/"
 
 # =============================================================================
 # API DOCUMENTATION CONFIGURATION

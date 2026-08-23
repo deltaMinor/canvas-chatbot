@@ -7,7 +7,7 @@ export class ProjectDiagramFilePdfAuthorization {
         const isAuthorized = {
             create: true,
             read: true,
-            update: false,
+            update: true,
             delete: true,
         };
 

@@ -1,16 +1,12 @@
 from typing import Optional
 
-from pydantic import BaseModel, ConfigDict, Field
+from pydantic import ConfigDict, Field
 
 from .alias import QuestionnaireValue
 from .base_models.ai_invocation_log import AiInvocationLogBaseModel
 from .base_models.app_info import AppInfoBaseModel
 from .base_models.app_tnc import AppTNCBaseModel
 from .base_models.attack_graph_rule import KbAttackGraphRuleBaseModel
-from .base_models.authorization import (
-    UserPolicyDocBaseModel,
-    UserRoleDocBaseModel,
-)
 from .base_models.cacti import ProjectCactiBaseModel
 from .base_models.credit_transaction_log import CreditTransactionLogBaseModel
 from .base_models.csa_ccop import KbCsaCCoPBaseModel
@@ -40,23 +36,13 @@ from .base_models.register import (
     ProjectRiskScenario,
 )
 from .base_models.register_config import KbAssessmentConfigBaseModel
-from .base_models.resource_tag import ResourceTagBaseModel
 from .base_models.shared.mitigation import MitigationMeasure
 from .base_models.shared.shared.database import MetadataModel
-from .base_models.token import JwtDictModel, TokenBaseModel
 from .base_models.tool import ToolHistoryBaseModel
 from .base_models.tosca import KbToscaBaseModel
-from .base_models.user import UserBaseModel
 from .base_models.user_credits import UserCreditsBaseModel
 from .base_models.user_plan_config import UserPlanConfigBaseModel
 from .base_models.xml import ProjectXMLBaseModel
-
-
-class UserModel(
-    DatabaseModel,
-    UserBaseModel,
-):
-    pass
 
 
 class KbAttackGraphRuleModel(
@@ -204,28 +190,6 @@ class ProjectXMLModel(
     project_id: str
 
 
-class ResourceTagAdminModel(
-    DatabaseModel,
-    ResourceTagBaseModel,
-):
-    parent_tag_name: str | None = Field(default="")
-    root_tag_name: str | None = Field(default="")
-
-
-class ResourceTagModel(
-    DatabaseModel,
-    ResourceTagBaseModel,
-):
-    pass
-
-
-class TokenModel(
-    DatabaseModel,
-    TokenBaseModel,
-):
-    pass
-
-
 class KbIM8Model(
     DatabaseModel,
     KbIM8BaseModel,
@@ -275,20 +239,6 @@ class KbAssessmentConfigModel(
     pass
 
 
-class UserRoleDocModel(
-    DatabaseModel,
-    UserRoleDocBaseModel,
-):
-    full_permissions: list[str] | None = Field(default=[])
-
-
-class UserPolicyDocModel(
-    DatabaseModel,
-    UserPolicyDocBaseModel,
-):
-    full_permissions: list[str] | None = Field(default=[])
-
-
 class MasterMitigationModel(
     DatabaseModel,
     MasterMitigationBaseModel,
@@ -329,30 +279,6 @@ class AppTNCModel(
     AppTNCBaseModel,
 ):
     pass
-
-
-class UserAdminModel(UserModel):
-    is_logged_in: bool | None = Field(default=False)
-
-
-class AuthenticationModel(BaseModel):
-    decoded_token: Optional["JwtDictModel"] = Field(
-        default_factory=JwtDictModel,
-    )
-    encoded_token: str | None = Field(default="")
-    unique_permissions: list[str] | None = Field(default=[])
-    user: Optional["UserModel"] = Field(
-        default_factory=UserModel,
-    )
-
-
-class ProjectAdminModel(ProjectModel):
-    resource_tag_names: list[str] | None = Field(default=[])
-
-
-class ResourceTagTreeModel(ResourceTagModel):
-    parent_nodes: list[str] | None = Field(default=[])
-    child_nodes: list[str] | None = Field(default=[])
 
 
 class IntegrationModel(

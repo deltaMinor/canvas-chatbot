@@ -3,7 +3,6 @@ from typing import TYPE_CHECKING
 if TYPE_CHECKING:
     from shared_libs.domain import DatabaseLogService
     from shared_libs.models.base_models import AuditLogModel
-    from shared_libs.producers.authentication_producer import AuthenticationProducer
 
 
 class DomainAuditLogService:

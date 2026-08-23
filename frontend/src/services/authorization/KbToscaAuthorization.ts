@@ -8,10 +8,10 @@ export class KbToscaAuthorization {
 
     get isAuthorized(): IsAuthorized {
         const isAuthorized = {
-            create: false,
+            create: true,
             read: true,
-            update: false,
-            delete: false,
+            update: true,
+            delete: true,
         };
 
         return isAuthorized;

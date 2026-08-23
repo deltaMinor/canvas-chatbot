@@ -7,7 +7,7 @@ export class ProjectDiagramFileModuleAuthorization {
         const isAuthorized = {
             create: true,
             read: true,
-            update: false,
+            update: true,
             delete: true,
         };
         return isAuthorized;

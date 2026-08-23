@@ -6,11 +6,9 @@ from rest_framework.decorators import throttle_classes
 from rest_framework.request import Request
 from rest_framework.response import Response
 from rest_framework.throttling import UserRateThrottle
-from service.lib.decorators import authenticated_only
 
 from shared_libs.decorators import raise_exception, verify_data_params
 from shared_libs.lib.nonblocking_api_view import NonBlockingAPIView
-from shared_libs.producers.authentication_producer import AuthenticationProducer
 from shared_libs.templates.message_template import success
 
 logger = logging.getLogger(__name__)
@@ -44,11 +42,9 @@ class KbToscaAPIView(NonBlockingAPIView):
         "An error occurred while retrieving kb TOSCA.",
         exception_logger=logger,
     )
-    @authenticated_only()
     def get(
         self,
         request: Request,
-        auth_producer: AuthenticationProducer,
     ):
         """Retrieves Kb TOSCA and returns a response.
 
@@ -57,17 +53,11 @@ class KbToscaAPIView(NonBlockingAPIView):
 
         Args:
             request (Request): The request.
-            auth_producer (AuthenticationProducer): The AuthenticationProducer to use for verifying
-            standalone authorization.
 
         Returns:
             Response: A response containing the retrieved Kb TOSCA and a success message.
         """
         kb_tosca_model = self.kb_tosca_service.get_kb_tosca_model(
-            auth_producer=auth_producer,
-            permissions=[
-                auth_producer.permission_model.kb_tosca.read,
-            ],
         )
         return Response(
             success(
@@ -106,8 +96,7 @@ class MasterDiagramTemplatesAPIView(NonBlockingAPIView):
         "An error occurred while retrieving master diagram templates.",
         exception_logger=logger,
     )
-    @authenticated_only()
-    def get(self, request: Request, auth_producer: AuthenticationProducer):
+    def get(self, request: Request):
         """Retrieves master diagram templates and returns a response.
 
         This method retrieves master diagram templates using the MasterADTemplateApplicationService
@@ -115,8 +104,6 @@ class MasterDiagramTemplatesAPIView(NonBlockingAPIView):
 
         Args:
             request (Request): The request.
-            auth_producer (AuthenticationProducer): The AuthenticationProducer to use for verifying
-            standalone authorization.
 
         Returns:
             Response: A response containing the retrieved master diagram templates and a success
@@ -124,10 +111,6 @@ class MasterDiagramTemplatesAPIView(NonBlockingAPIView):
         """
         master_diagram_template_models = (
             self.master_ad_template_service.get_master_diagram_template_models(
-                auth_producer=auth_producer,
-                permissions=[
-                    auth_producer.permission_model.master_diagram_template.read,
-                ],
             )
         )
         return Response(
@@ -159,12 +142,10 @@ class ValidateToscaView(NonBlockingAPIView):
         "An error occurred while validating tosca of diagram",
         exception_logger=logger,
     )
-    @authenticated_only()
     @verify_data_params(key_list=["project_id"])
     def post(
         self,
         request: Request,
-        auth_producer: AuthenticationProducer,
     ):
         """
         Generate a new TOSCA report for each canvas view in the diagram specified in the request.
@@ -182,10 +163,6 @@ class ValidateToscaView(NonBlockingAPIView):
 
         payload = self.project_ad_service.update_tosca_report(
             data=request.data,
-            auth_producer=auth_producer,
-            permissions=[
-                auth_producer.permission_model.project_diagram_tosca_validate.create,
-            ],
         )
         return Response(
             success("TOSCA report has been successfully generated", payload),

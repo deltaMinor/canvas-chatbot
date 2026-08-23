@@ -1,14 +1,3 @@
-producer_data_authentication = {
-    "task_queue": "authentication_queue",
-    "task_mappings": {
-        "task_name_dict": {
-            "verify_token": "auth.create_verify_token_task",
-            "delete_all_tokens": "auth.create_delete_all_tokens_task",
-        },
-        "task_key_dict": {},
-    },
-}
-
 producer_data_kb_attack_graph_rule = {
     "task_queue": "register_queue",
     "task_mappings": {
@@ -714,22 +703,6 @@ producer_data_register_mapping = {
     },
 }
 
-producer_data_resource_tag = {
-    "task_queue": "application_queue",
-    "task_mappings": {
-        "task_name_dict": {
-            "find_single": "application.create_get_resource_tag_task",
-            "find_multiple": "application.create_get_resource_tags_task",
-            "update_single": "application.create_update_resource_tag_task",
-            "delete_multiple": "application.create_delete_resource_tags_task",
-        },
-        "task_key_dict": {
-            "find_single": "resource_tag",
-            "find_multiple": "resource_tags",
-        },
-    },
-}
-
 producer_data_integration = {
     "task_queue": "authentication_queue",
     "task_mappings": {
@@ -742,80 +715,6 @@ producer_data_integration = {
         "task_key_dict": {
             "find_single": "integration",
             "find_multiple": "integrations",
-        },
-    },
-}
-
-producer_data_token = {
-    "task_queue": "authentication_queue",
-    "task_mappings": {
-        "task_name_dict": {
-            "find_single": "auth.create_get_token_task",
-            "find_multiple": "auth.create_get_tokens_task",
-            "update_single": "auth.create_update_token_task",
-            "delete_multiple": "auth.create_delete_tokens_task",
-        },
-        "task_key_dict": {
-            "find_single": "token",
-            "find_multiple": "tokens",
-        },
-    },
-}
-
-producer_data_user = {
-    "task_queue": "authentication_queue",
-    "task_mappings": {
-        "task_name_dict": {
-            "find_single": "auth.create_get_user_task",
-            "find_multiple": "auth.create_get_users_task",
-            "update_single": "auth.create_update_user_task",
-            "delete_multiple": "auth.create_delete_users_task",
-        },
-        "task_key_dict": {
-            "find_single": "user",
-            "find_multiple": "users",
-        },
-    },
-}
-
-producer_data_user_permission_doc = {
-    "task_queue": "authentication_queue",
-    "task_mappings": {
-        "task_name_dict": {
-            "find_single": "auth.create_get_user_permission_doc_task",
-            "find_multiple": "auth.create_get_user_permission_docs_task",
-        },
-        "task_key_dict": {
-            "find_single": "user_permission_doc",
-            "find_multiple": "user_permission_docs",
-        },
-    },
-}
-
-producer_data_user_policy_doc = {
-    "task_queue": "authentication_queue",
-    "task_mappings": {
-        "task_name_dict": {
-            "find_single": "auth.create_get_user_policy_doc_task",
-            "find_multiple": "auth.create_get_user_policy_docs_task",
-        },
-        "task_key_dict": {
-            "find_single": "user_policy_doc",
-            "find_multiple": "user_policy_docs",
-        },
-    },
-}
-
-producer_data_user_role_doc = {
-    "task_queue": "authentication_queue",
-    "task_mappings": {
-        "task_name_dict": {
-            "find_single": "auth.create_get_user_role_doc_task",
-            "find_multiple": "auth.create_get_user_role_docs_task",
-        },
-        "task_key_dict": {
-            "find_single": "user_role_doc",
-            "find_multiple": "user_role_docs",
         },
     },
 }

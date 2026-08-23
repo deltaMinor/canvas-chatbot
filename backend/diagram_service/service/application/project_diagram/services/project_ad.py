@@ -31,7 +31,6 @@ from service.lib.diagram_node_optimizer.diagram_node_optimizer import (
     DiagramNodeOptimizer,
 )
 
-from shared_libs.authorization.authorization_manager import AuthorizationManager
 from shared_libs.constants.architecture_diagram import (
     FALLBACK_IMAGE_CONTENT_TYPE,
     MAX_LLM_DIAGRAM_IMAGE_FILE_COUNT,
@@ -44,7 +43,7 @@ from shared_libs.constants.architecture_diagram import (
     PROJECT_AD_FILE_TYPE_XML,
     PROJECT_AD_LLM_IMAGE_FILE_TYPES,
 )
-from shared_libs.decorators import raise_exception, verify_params
+from shared_libs.decorators import raise_exception
 from shared_libs.domain import (
     DatabaseLogService,
     KbToscaService,
@@ -82,7 +81,6 @@ from shared_libs.models.database_models import (
     ProjectADModel,
     ProjectCQModel,
 )
-from shared_libs.producers.authentication_producer import AuthenticationProducer
 from shared_libs.producers.producer_data import (
     producer_data_database_log_ad,
     producer_data_database_log_app,
@@ -95,6 +93,7 @@ from shared_libs.producers.producer_data import (
 )
 from shared_libs.types.auditLog import AuditLogAction, AuditLogTargetKey
 from shared_libs.types.enum import CanvasType, Collection, Project
+from shared_libs.constants import SYSTEM_USER_INFO
 
 TZINFO = settings.TZINFO
 logger = logging.getLogger(__name__)
@@ -196,7 +195,6 @@ class ProjectADApplicationService(ProjectADService):
         self,
         action: str,
         project_id: str,
-        auth_producer: AuthenticationProducer,
         value: Any,
         file_id_list: list[str] | None = None,
     ) -> AuditLogModel:
@@ -213,20 +211,18 @@ class ProjectADApplicationService(ProjectADService):
                 "value": value,
             },
             targetKey=AuditLogTargetKey.project_ad_file.value,
-            user_id=auth_producer.authentication_model.user.user_id,
-            username=auth_producer.authentication_model.user.username,
+            user_id=SYSTEM_USER_INFO["user_id"],
+            username=SYSTEM_USER_INFO["username"],
             timestamp=datetime.now(TZINFO),
         )
 
     def _insert_project_ad_file_log(
         self,
         audit_log_model: AuditLogModel,
-        auth_producer: AuthenticationProducer,
     ):
         return self.project_ad_file_service.write_audit_log(
             audit_log_service=self.db_log_ad_service,
             audit_log_model=audit_log_model,
-            auth_producer=auth_producer,
             collection_name=Collection.project_ad_file_log.value,
         )
 
@@ -266,7 +262,6 @@ class ProjectADApplicationService(ProjectADService):
         self,
         ref: dict | ProjectADRefBaseModel,
         project_id: str | None = None,
-        auth_producer: AuthenticationProducer | None = None,
     ) -> dict:
         legacy_selected_image_file = (
             ref.get("selected_image_file", {}) if isinstance(ref, dict) else {}
@@ -282,7 +277,7 @@ class ProjectADApplicationService(ProjectADService):
             for image_file in (ref_model.image_files or [])
             if self._get_image_file_source(image_file)
         ]
-        if project_id and auth_producer:
+        if project_id:
             for image_file in normalized_image_files:
                 file_source = self._get_image_file_source(image_file)
                 if not file_source:
@@ -304,7 +299,7 @@ class ProjectADApplicationService(ProjectADService):
                 self.project_ad_file_service.insert_one_file(
                     query_dict=query_dict,
                     decoded_file=decoded_file,
-                    user_info=auth_producer.user_info,
+                    user_info=SYSTEM_USER_INFO,
                 )
                 audit_file_model = ProjectADFileBaseModel(
                     data=decoded_file,
@@ -318,12 +313,10 @@ class ProjectADApplicationService(ProjectADService):
                 audit_log_model = self._build_project_ad_file_audit_model(
                     action=AuditLogAction.create.value,
                     project_id=project_id,
-                    auth_producer=auth_producer,
                     value=audit_file_model.model_dump(exclude={"data"}),
                 )
                 self._insert_project_ad_file_log(
                     audit_log_model=audit_log_model,
-                    auth_producer=auth_producer,
                 )
 
         if len(normalized_image_files) > MAX_LLM_DIAGRAM_IMAGE_FILE_COUNT:
@@ -455,42 +448,31 @@ class ProjectADApplicationService(ProjectADService):
         self,
         project_id: str,
         selected_image_file: ProjectADFileBaseModel,
-        auth_producer: AuthenticationProducer,
     ):
         db_project_ad = self.get_one(
             {"project_id": project_id},
             raise_if_not_found=True,
-            user_info=auth_producer.user_info,
+            user_info=SYSTEM_USER_INFO,
         )
         project_ad_model = ProjectADModel(**db_project_ad)
         project_ad_model.ref.selected_image_file_id = selected_image_file.file_id or ""
         return self.update_one(
             {"project_id": project_id},
             payload={"ref": project_ad_model.ref.model_dump(exclude={"image_files"})},
-            user_info=auth_producer.user_info,
+            user_info=SYSTEM_USER_INFO,
         )
 
     def get_project_ad_image_files(
         self,
         data: dict,
-        auth_producer: AuthenticationProducer,
-        permissions: list[str],
         file_types: list[str] | None = None,
     ) -> dict:
         project_id = data["project_id"]
-        authorization_manager = AuthorizationManager(
-            auth_producer=auth_producer,
-            permissions=permissions,
-        )
-        authorization_manager.verify_project_id(project_id=project_id)
-
         files = self.project_ad_file_service.get_many_files(
             self.get_project_ad_image_files_query(project_id, file_types=file_types),
         )
         project_ad = self.get_project_ad(
             data={"project_id": project_id},
-            auth_producer=auth_producer,
-            permissions=permissions,
         )
         selected_file_id = project_ad.get("ref", {}).get("selected_image_file_id") or ""
         return {
@@ -506,17 +488,9 @@ class ProjectADApplicationService(ProjectADService):
         self,
         data: dict,
         files,
-        auth_producer: AuthenticationProducer,
-        permissions: list[str],
         file_types: list[str] | None = None,
     ) -> list[dict]:
         project_id = data["project_id"]
-        authorization_manager = AuthorizationManager(
-            auth_producer=auth_producer,
-            permissions=permissions,
-        )
-        authorization_manager.verify_project_id(project_id=project_id)
-
         image_files = files.getlist("file")
         db_image_files = self.project_ad_file_service.get_many_files(
             self.get_project_ad_image_files_query(project_id),
@@ -579,17 +553,15 @@ class ProjectADApplicationService(ProjectADService):
                     "content_type": project_ad_file_model.content_type or "",
                 },
                 decoded_file=encoded_file,
-                user_info=auth_producer.user_info,
+                user_info=SYSTEM_USER_INFO,
             )
             audit_log_model = self._build_project_ad_file_audit_model(
                 action=AuditLogAction.create.value,
                 project_id=project_id,
-                auth_producer=auth_producer,
                 value=project_ad_file_model.model_dump(exclude={"data"}),
             )
             res2 = self._insert_project_ad_file_log(
                 audit_log_model=audit_log_model,
-                auth_producer=auth_producer,
             )
             res_arr.extend([res1, res2])
 
@@ -598,7 +570,6 @@ class ProjectADApplicationService(ProjectADService):
                 self.update_project_ad_selected_image_file(
                     project_id=project_id,
                     selected_image_file=selected_image_file,
-                    auth_producer=auth_producer,
                 )
             )
 
@@ -607,18 +578,11 @@ class ProjectADApplicationService(ProjectADService):
     def select_project_ad_image_file(
         self,
         data: dict,
-        auth_producer: AuthenticationProducer,
-        permissions: list[str],
         file_types: list[str] | None = None,
     ) -> dict:
         data = self.filter_request_data(data=data)
         project_id = data["project_id"]
         file_id = data["file_id"]
-        authorization_manager = AuthorizationManager(
-            auth_producer=auth_producer,
-            permissions=permissions,
-        )
-        authorization_manager.verify_project_id(project_id=project_id)
         files = self.project_ad_file_service.get_many_files(
             self.get_project_ad_image_files_query(
                 project_id,
@@ -636,28 +600,18 @@ class ProjectADApplicationService(ProjectADService):
         return self.update_project_ad_selected_image_file(
             project_id=project_id,
             selected_image_file=selected_image_file,
-            auth_producer=auth_producer,
         )
 
     def delete_project_ad_image_files(
         self,
         data: dict,
-        auth_producer: AuthenticationProducer,
-        permissions: list[str],
         file_types: list[str] | None = None,
     ) -> list[dict]:
         project_id = data["project_id"]
         file_id_list = data["file_id_list"]
-        authorization_manager = AuthorizationManager(
-            auth_producer=auth_producer,
-            permissions=permissions,
-        )
-        authorization_manager.verify_project_id(project_id=project_id)
-
         audit_log_model = self._build_project_ad_file_audit_model(
             action=AuditLogAction.delete.value,
             project_id=project_id,
-            auth_producer=auth_producer,
             file_id_list=file_id_list,
             value={"deleted_file_ids": file_id_list},
         )
@@ -670,7 +624,6 @@ class ProjectADApplicationService(ProjectADService):
         )
         res2 = self._insert_project_ad_file_log(
             audit_log_model=audit_log_model,
-            auth_producer=auth_producer,
         )
 
         remaining_files = self.project_ad_file_service.get_many_files(
@@ -684,7 +637,6 @@ class ProjectADApplicationService(ProjectADService):
         res3 = self.update_project_ad_selected_image_file(
             project_id=project_id,
             selected_image_file=selected_image_file,
-            auth_producer=auth_producer,
         )
         return [res1, res2, res3]
 
@@ -831,8 +783,6 @@ class ProjectADApplicationService(ProjectADService):
     def initialize_architecture_canvas_from_cacti(
         self,
         data: dict,
-        auth_producer: AuthenticationProducer,
-        permissions: list[str],
     ) -> dict:
         """Initializes the architecture canvas from CACTi.
 
@@ -844,8 +794,6 @@ class ProjectADApplicationService(ProjectADService):
         Args:
             data (dict): A dictionary containing the data for initializing the
             architecture canvas, including 'project_id' and 'selected_cacti_file_id'.
-            auth_producer (AuthenticationProducer): The authentication producer
-            object used to verify permissions.
             permissions (List[str]): A list of permissions required for the
             operation.
 
@@ -858,20 +806,11 @@ class ProjectADApplicationService(ProjectADService):
         project_id = data["project_id"]
         selected_cacti_file_id = data["selected_cacti_file_id"]
 
-        # Initialize the AuthorizationManager with the provided auth_producer and permissions
         # Verify the project ID
-        authorization_manager = AuthorizationManager(
-            auth_producer=auth_producer,
-            permissions=permissions,
-        )
-        authorization_manager.verify_project_id(
-            project_id=project_id,
-        )
-
         db_project_cq = self.project_cq_service.get_one(
             {"project_id": project_id},
             raise_if_not_found=True,
-            user_info=auth_producer.user_info,
+            user_info=SYSTEM_USER_INFO,
         )
         if not db_project_cq.get("isCompleted"):
             raise BadRequest(
@@ -882,7 +821,7 @@ class ProjectADApplicationService(ProjectADService):
         db_project_ad = self.get_one(
             {"project_id": project_id},
             raise_if_not_found=True,
-            user_info=auth_producer.user_info,
+            user_info=SYSTEM_USER_INFO,
         )
         project_ad_model = ProjectADModel(
             **db_project_ad,
@@ -929,7 +868,7 @@ class ProjectADApplicationService(ProjectADService):
 
         db_kb_tosca = self.kb_tosca_service.get_one(
             {"schema_": self.kb_tosca_service.SCHEMA},
-            user_info=auth_producer.user_info,
+            user_info=SYSTEM_USER_INFO,
             raise_if_not_found=True,
         )
         kb_tosca_model = KbToscaModel(**db_kb_tosca)
@@ -943,7 +882,7 @@ class ProjectADApplicationService(ProjectADService):
         card_node_processor.populate_data_flow_node()
 
         tosca_schema, tosca_mapping = self._retrieve_tosca_information(
-            user_info=auth_producer.user_info,
+            user_info=SYSTEM_USER_INFO,
         )
         for canvas in project_ad_model.canvas:
             if canvas.canvas_type == CanvasType.data_flow.value:
@@ -972,22 +911,22 @@ class ProjectADApplicationService(ProjectADService):
                 "value": field_data,
             },
             targetKey=AuditLogTargetKey.project_ad.value,
-            user_id=auth_producer.authentication_model.user.user_id,
-            username=auth_producer.authentication_model.user.username,
+            user_id=SYSTEM_USER_INFO["user_id"],
+            username=SYSTEM_USER_INFO["username"],
             timestamp=datetime.now(TZINFO),
         )
 
         self.update_one(
             {"project_id": project_id},
             payload=field_data,
-            user_info=auth_producer.user_info,
+            user_info=SYSTEM_USER_INFO,
         )
         self.db_log_ad_service.update_one(
             {"logId": audit_log_model.logId},
             payload={
                 **audit_log_model.model_dump(),
             },
-            user_info=auth_producer.user_info,
+            user_info=SYSTEM_USER_INFO,
             upsert=True,
             collection_name=Collection.project_ad_log.value,
         )
@@ -1003,8 +942,6 @@ class ProjectADApplicationService(ProjectADService):
     def initialize_architecture_canvas_from_diagram_file(
         self,
         data: dict,
-        auth_producer: AuthenticationProducer,
-        permissions: list[str],
     ) -> dict:
         """Initializes the architecture canvas from diagram file.
 
@@ -1016,8 +953,6 @@ class ProjectADApplicationService(ProjectADService):
         Args:
             data (dict): A dictionary containing the data for initializing the
             architecture canvas, including 'project_id' and 'selected_diagram_file_id'.
-            auth_producer (AuthenticationProducer): The authentication producer
-            object used to verify permissions.
             permissions (List[str]): A list of permissions required for the
             operation.
 
@@ -1030,20 +965,11 @@ class ProjectADApplicationService(ProjectADService):
         project_id = data["project_id"]
         selected_diagram_file_id = data["selected_diagram_file_id"]
 
-        # Initialize the AuthorizationManager with the provided auth_producer and permissions
         # Verify the project ID
-        authorization_manager = AuthorizationManager(
-            auth_producer=auth_producer,
-            permissions=permissions,
-        )
-        authorization_manager.verify_project_id(
-            project_id=project_id,
-        )
-
         db_project_cq = self.project_cq_service.get_one(
             {"project_id": project_id},
             raise_if_not_found=True,
-            user_info=auth_producer.user_info,
+            user_info=SYSTEM_USER_INFO,
         )
         if not db_project_cq.get("isCompleted"):
             raise BadRequest(
@@ -1054,7 +980,7 @@ class ProjectADApplicationService(ProjectADService):
         db_project_ad = self.get_one(
             {"project_id": project_id},
             raise_if_not_found=True,
-            user_info=auth_producer.user_info,
+            user_info=SYSTEM_USER_INFO,
         )
         project_ad_model = ProjectADModel(
             **db_project_ad,
@@ -1099,7 +1025,7 @@ class ProjectADApplicationService(ProjectADService):
 
         db_kb_tosca = self.kb_tosca_service.get_one(
             {"schema_": self.kb_tosca_service.SCHEMA},
-            user_info=auth_producer.user_info,
+            user_info=SYSTEM_USER_INFO,
             raise_if_not_found=True,
         )
         kb_tosca_model = KbToscaModel(**db_kb_tosca)
@@ -1113,7 +1039,7 @@ class ProjectADApplicationService(ProjectADService):
         card_node_processor.populate_data_flow_node()
 
         tosca_schema, tosca_mapping = self._retrieve_tosca_information(
-            user_info=auth_producer.user_info,
+            user_info=SYSTEM_USER_INFO,
         )
         for canvas in project_ad_model.canvas:
             if canvas.canvas_type == CanvasType.data_flow.value:
@@ -1144,22 +1070,22 @@ class ProjectADApplicationService(ProjectADService):
                 "value": field_data,
             },
             targetKey=AuditLogTargetKey.project_ad.value,
-            user_id=auth_producer.authentication_model.user.user_id,
-            username=auth_producer.authentication_model.user.username,
+            user_id=SYSTEM_USER_INFO["user_id"],
+            username=SYSTEM_USER_INFO["username"],
             timestamp=datetime.now(TZINFO),
         )
 
         self.update_one(
             {"project_id": project_id},
             payload=field_data,
-            user_info=auth_producer.user_info,
+            user_info=SYSTEM_USER_INFO,
         )
         self.db_log_ad_service.update_one(
             {"logId": audit_log_model.logId},
             payload={
                 **audit_log_model.model_dump(),
             },
-            user_info=auth_producer.user_info,
+            user_info=SYSTEM_USER_INFO,
             upsert=True,
             collection_name=Collection.project_ad_log.value,
         )
@@ -1176,8 +1102,6 @@ class ProjectADApplicationService(ProjectADService):
     def initialize_architecture_canvas_from_template(
         self,
         data: dict,
-        auth_producer: AuthenticationProducer,
-        permissions: list[str],
     ) -> dict:
         """Initializes the architecture canvas from a template.
 
@@ -1188,8 +1112,6 @@ class ProjectADApplicationService(ProjectADService):
         Args:
             data (dict): A dictionary containing the data for initializing the
             architecture canvas, including 'project_id' and 'selected_template_id'.
-            auth_producer (AuthenticationProducer): The authentication producer
-            object used to verify permissions.
             permissions (List[str]): A list of permissions required for the
             operation.
 
@@ -1202,20 +1124,11 @@ class ProjectADApplicationService(ProjectADService):
         project_id = data["project_id"]
         selected_template_id = data["selected_template_id"]
 
-        # Initialize the AuthorizationManager with the provided auth_producer and permissions
         # Verify the project ID
-        authorization_manager = AuthorizationManager(
-            auth_producer=auth_producer,
-            permissions=permissions,
-        )
-        authorization_manager.verify_project_id(
-            project_id=project_id,
-        )
-
         db_project_cq = self.project_cq_service.get_one(
             {"project_id": project_id},
             raise_if_not_found=True,
-            user_info=auth_producer.user_info,
+            user_info=SYSTEM_USER_INFO,
         )
         if not db_project_cq.get("isCompleted"):
             raise BadRequest(
@@ -1226,7 +1139,7 @@ class ProjectADApplicationService(ProjectADService):
         db_project_ad = self.get_one(
             {"project_id": project_id},
             raise_if_not_found=True,
-            user_info=auth_producer.user_info,
+            user_info=SYSTEM_USER_INFO,
         )
         project_ad_model = ProjectADModel(
             **db_project_ad,
@@ -1248,7 +1161,7 @@ class ProjectADApplicationService(ProjectADService):
         # data
         db_master_ad_template = self.master_ad_template_service.get_one(
             {"templateId": selected_template_id},
-            user_info=auth_producer.user_info,
+            user_info=SYSTEM_USER_INFO,
             raise_if_not_found=True,
         )
         master_ad_template_model = MasterADTemplateModel(**db_master_ad_template)
@@ -1271,7 +1184,7 @@ class ProjectADApplicationService(ProjectADService):
 
         db_kb_tosca = self.kb_tosca_service.get_one(
             {"schema_": self.kb_tosca_service.SCHEMA},
-            user_info=auth_producer.user_info,
+            user_info=SYSTEM_USER_INFO,
             raise_if_not_found=True,
         )
         kb_tosca_model = KbToscaModel(**db_kb_tosca)
@@ -1285,7 +1198,7 @@ class ProjectADApplicationService(ProjectADService):
         card_node_processor.populate_data_flow_node()
 
         tosca_schema, tosca_mapping = self._retrieve_tosca_information(
-            user_info=auth_producer.user_info,
+            user_info=SYSTEM_USER_INFO,
         )
         for canvas in project_ad_model.canvas:
             if canvas.canvas_type == CanvasType.data_flow.value:
@@ -1316,22 +1229,22 @@ class ProjectADApplicationService(ProjectADService):
                 "value": field_data,
             },
             targetKey=AuditLogTargetKey.project_ad.value,
-            user_id=auth_producer.authentication_model.user.user_id,
-            username=auth_producer.authentication_model.user.username,
+            user_id=SYSTEM_USER_INFO["user_id"],
+            username=SYSTEM_USER_INFO["username"],
             timestamp=datetime.now(TZINFO),
         )
 
         self.update_one(
             {"project_id": project_id},
             payload=field_data,
-            user_info=auth_producer.user_info,
+            user_info=SYSTEM_USER_INFO,
         )
         self.db_log_ad_service.update_one(
             {"logId": audit_log_model.logId},
             payload={
                 **audit_log_model.model_dump(),
             },
-            user_info=auth_producer.user_info,
+            user_info=SYSTEM_USER_INFO,
             upsert=True,
             collection_name=Collection.project_ad_log.value,
         )
@@ -1347,8 +1260,6 @@ class ProjectADApplicationService(ProjectADService):
     def initialize_architecture_canvas_from_xml(
         self,
         data: dict,
-        auth_producer: AuthenticationProducer,
-        permissions: list[str],
     ) -> dict:
         """Initializes the architecture canvas from XML.
 
@@ -1360,8 +1271,6 @@ class ProjectADApplicationService(ProjectADService):
         Args:
             data (dict): A dictionary containing the data for initializing the
             architecture canvas, including 'project_id' and 'selected_xml_file_id'.
-            auth_producer (AuthenticationProducer): The authentication producer
-            object used to verify permissions.
             permissions (List[str]): A list of permissions required for the
             operation.
 
@@ -1374,20 +1283,11 @@ class ProjectADApplicationService(ProjectADService):
         project_id = data[Project.project_id.value]
         selected_xml_file_id = data["selected_xml_file_id"]
 
-        # Initialize the AuthorizationManager with the provided auth_producer and permissions
         # Verify the project ID
-        authorization_manager = AuthorizationManager(
-            auth_producer=auth_producer,
-            permissions=permissions,
-        )
-        authorization_manager.verify_project_id(
-            project_id=project_id,
-        )
-
         db_project_cq = self.project_cq_service.get_one(
             {Project.project_id.value: project_id},
             raise_if_not_found=True,
-            user_info=auth_producer.user_info,
+            user_info=SYSTEM_USER_INFO,
         )
         if not db_project_cq.get("isCompleted"):
             raise BadRequest(
@@ -1398,7 +1298,7 @@ class ProjectADApplicationService(ProjectADService):
         db_project_ad = self.get_one(
             {Project.project_id.value: project_id},
             raise_if_not_found=True,
-            user_info=auth_producer.user_info,
+            user_info=SYSTEM_USER_INFO,
         )
         project_ad_model = ProjectADModel(
             **db_project_ad,
@@ -1443,7 +1343,7 @@ class ProjectADApplicationService(ProjectADService):
 
         db_kb_tosca = self.kb_tosca_service.get_one(
             {"schema_": self.kb_tosca_service.SCHEMA},
-            user_info=auth_producer.user_info,
+            user_info=SYSTEM_USER_INFO,
             raise_if_not_found=True,
         )
         kb_tosca_model = KbToscaModel(**db_kb_tosca)
@@ -1457,7 +1357,7 @@ class ProjectADApplicationService(ProjectADService):
         card_node_processor.populate_data_flow_node()
 
         tosca_schema, tosca_mapping = self._retrieve_tosca_information(
-            user_info=auth_producer.user_info,
+            user_info=SYSTEM_USER_INFO,
         )
         for canvas in project_ad_model.canvas:
             if canvas.canvas_type == CanvasType.data_flow.value:
@@ -1488,22 +1388,22 @@ class ProjectADApplicationService(ProjectADService):
                 "value": field_data,
             },
             targetKey=AuditLogTargetKey.project_ad.value,
-            user_id=auth_producer.authentication_model.user.user_id,
-            username=auth_producer.authentication_model.user.username,
+            user_id=SYSTEM_USER_INFO["user_id"],
+            username=SYSTEM_USER_INFO["username"],
             timestamp=datetime.now(TZINFO),
         )
 
         self.update_one(
             {Project.project_id.value: project_id},
             payload=field_data,
-            user_info=auth_producer.user_info,
+            user_info=SYSTEM_USER_INFO,
         )
         self.db_log_ad_service.update_one(
             {"logId": audit_log_model.logId},
             payload={
                 **audit_log_model.model_dump(),
             },
-            user_info=auth_producer.user_info,
+            user_info=SYSTEM_USER_INFO,
             upsert=True,
             collection_name=Collection.project_ad_log.value,
         )
@@ -1519,8 +1419,6 @@ class ProjectADApplicationService(ProjectADService):
     def initialize_architecture_canvas_from_iac(
         self,
         data: dict,
-        auth_producer: AuthenticationProducer,
-        permissions: list[str],
     ) -> dict:
         """Initializes the architecture canvas from IaC.
 
@@ -1533,8 +1431,6 @@ class ProjectADApplicationService(ProjectADService):
             data (dict): A dictionary containing the data for initializing the
             architecture canvas, including 'project_id', 'selected_terraform_file_id_list',
             and 'selected_module_file_id_list'.
-            auth_producer (AuthenticationProducer): The authentication producer
-            object used to verify permissions.
             permissions (List[str]): A list of permissions required for the
             operation.
 
@@ -1549,20 +1445,11 @@ class ProjectADApplicationService(ProjectADService):
         selected_module_file_id_list = data["selected_module_file_id_list"]
         # TODO: selected_module_file_id_list not being used. find out why.
 
-        # Initialize the AuthorizationManager with the provided auth_producer and permissions
         # Verify the project ID
-        authorization_manager = AuthorizationManager(
-            auth_producer=auth_producer,
-            permissions=permissions,
-        )
-        authorization_manager.verify_project_id(
-            project_id=project_id,
-        )
-
         db_project_cq = self.project_cq_service.get_one(
             {"project_id": project_id},
             raise_if_not_found=True,
-            user_info=auth_producer.user_info,
+            user_info=SYSTEM_USER_INFO,
         )
         if not db_project_cq.get("isCompleted"):
             raise BadRequest(
@@ -1573,7 +1460,7 @@ class ProjectADApplicationService(ProjectADService):
         db_project_ad = self.get_one(
             {"project_id": project_id},
             raise_if_not_found=True,
-            user_info=auth_producer.user_info,
+            user_info=SYSTEM_USER_INFO,
         )
         project_ad_model = ProjectADModel(
             **db_project_ad,
@@ -1635,7 +1522,7 @@ class ProjectADApplicationService(ProjectADService):
 
         db_kb_tosca = self.kb_tosca_service.get_one(
             {"schema_": self.kb_tosca_service.SCHEMA},
-            user_info=auth_producer.user_info,
+            user_info=SYSTEM_USER_INFO,
             raise_if_not_found=True,
         )
         kb_tosca_model = KbToscaModel(**db_kb_tosca)
@@ -1649,7 +1536,7 @@ class ProjectADApplicationService(ProjectADService):
         card_node_processor.populate_data_flow_node()
 
         tosca_schema, tosca_mapping = self._retrieve_tosca_information(
-            user_info=auth_producer.user_info,
+            user_info=SYSTEM_USER_INFO,
         )
         for canvas in project_ad_model.canvas:
             if canvas.canvas_type == CanvasType.data_flow.value:
@@ -1679,22 +1566,22 @@ class ProjectADApplicationService(ProjectADService):
                 "value": field_data,
             },
             targetKey=AuditLogTargetKey.project_ad.value,
-            user_id=auth_producer.authentication_model.user.user_id,
-            username=auth_producer.authentication_model.user.username,
+            user_id=SYSTEM_USER_INFO["user_id"],
+            username=SYSTEM_USER_INFO["username"],
             timestamp=datetime.now(TZINFO),
         )
 
         self.update_one(
             {"project_id": project_id},
             payload=field_data,
-            user_info=auth_producer.user_info,
+            user_info=SYSTEM_USER_INFO,
         )
         self.db_log_ad_service.update_one(
             {"logId": audit_log_model.logId},
             payload={
                 **audit_log_model.model_dump(),
             },
-            user_info=auth_producer.user_info,
+            user_info=SYSTEM_USER_INFO,
             upsert=True,
             collection_name=Collection.project_ad_log.value,
         )
@@ -1710,8 +1597,6 @@ class ProjectADApplicationService(ProjectADService):
     def initialize_blank_canvas(
         self,
         data: dict,
-        auth_producer: AuthenticationProducer,
-        permissions: list[str],
     ) -> dict:
         """
         Initializes a blank canvas for a specific project.
@@ -1722,8 +1607,6 @@ class ProjectADApplicationService(ProjectADService):
 
         Args:
             data (dict): The dictionary containing the project ID under the key 'project_id'.
-            auth_producer (AuthenticationProducer): The object responsible for handling
-            authentication.
             permissions (List[str]): The list of permissions required to perform the operation.
 
         Raises:
@@ -1734,18 +1617,10 @@ class ProjectADApplicationService(ProjectADService):
         """
         project_id = data["project_id"]
 
-        authorization_manager = AuthorizationManager(
-            auth_producer=auth_producer,
-            permissions=permissions,
-        )
-        authorization_manager.verify_project_id(
-            project_id=project_id,
-        )
-
         db_project_cq = self.project_cq_service.get_one(
             {"project_id": project_id},
             raise_if_not_found=True,
-            user_info=auth_producer.user_info,
+            user_info=SYSTEM_USER_INFO,
         )
         if not db_project_cq.get("isCompleted"):
             raise BadRequest(
@@ -1756,7 +1631,7 @@ class ProjectADApplicationService(ProjectADService):
         db_project_ad = self.get_one(
             {"project_id": project_id},
             raise_if_not_found=True,
-            user_info=auth_producer.user_info,
+            user_info=SYSTEM_USER_INFO,
         )
         project_ad_model = ProjectADModel(
             **db_project_ad,
@@ -1799,22 +1674,22 @@ class ProjectADApplicationService(ProjectADService):
                 "value": field_data,
             },
             targetKey=AuditLogTargetKey.project_ad.value,
-            user_id=auth_producer.authentication_model.user.user_id,
-            username=auth_producer.authentication_model.user.username,
+            user_id=SYSTEM_USER_INFO["user_id"],
+            username=SYSTEM_USER_INFO["username"],
             timestamp=datetime.now(TZINFO),
         )
 
         res1 = self.update_one(
             {"project_id": project_id},
             payload=field_data,
-            user_info=auth_producer.user_info,
+            user_info=SYSTEM_USER_INFO,
         )
         res2 = self.db_log_ad_service.update_one(
             {"logId": audit_log_model.logId},
             payload={
                 **audit_log_model.model_dump(),
             },
-            user_info=auth_producer.user_info,
+            user_info=SYSTEM_USER_INFO,
             upsert=True,
             collection_name=Collection.project_ad_log.value,
         )
@@ -1826,7 +1701,6 @@ class ProjectADApplicationService(ProjectADService):
     )
     def update_project_progress(
         self,
-        auth_producer: AuthenticationProducer,
         project_id: str,
         progress_number: int,
     ):
@@ -1843,22 +1717,22 @@ class ProjectADApplicationService(ProjectADService):
                 "value": field_data,
             },
             targetKey=AuditLogTargetKey.projects.value,
-            user_id=auth_producer.authentication_model.user.user_id,
-            username=auth_producer.authentication_model.user.username,
+            user_id=SYSTEM_USER_INFO["user_id"],
+            username=SYSTEM_USER_INFO["username"],
             timestamp=datetime.now(TZINFO),
         )
 
         res1 = self.project_service.update_one(
             {"project_id": project_id},
             payload=field_data,
-            user_info=auth_producer.user_info,
+            user_info=SYSTEM_USER_INFO,
         )
         res2 = self.db_log_app_service.update_one(
             {"logId": audit_log_model.logId},
             payload={
                 **audit_log_model.model_dump(),
             },
-            user_info=auth_producer.user_info,
+            user_info=SYSTEM_USER_INFO,
             upsert=True,
             collection_name=Collection.project_log.value,
         )
@@ -1871,8 +1745,6 @@ class ProjectADApplicationService(ProjectADService):
     def update_project_ad(
         self,
         data: dict,
-        auth_producer: AuthenticationProducer,
-        permissions: list[str],
         reserved_keys: list[str],
     ) -> dict:
         """
@@ -1884,8 +1756,6 @@ class ProjectADApplicationService(ProjectADService):
 
         Args:
             data (dict): The dictionary containing the project ID, canvas, and card nodes.
-            auth_producer (AuthenticationProducer): The object responsible for handling
-            authentication.
             permissions (List[str]): The list of permissions required to perform the operation.
             reserved_keys (List[str]): The list of keys that should not be updated in the database.
 
@@ -1896,17 +1766,6 @@ class ProjectADApplicationService(ProjectADService):
             dict: The updated data for the project AD.
         """
         project_id = data["project_id"]
-
-        # Create an instance of the AuthorizationManager with the provided auth_producer and
-        # permissions
-        authorization_manager = AuthorizationManager(
-            auth_producer=auth_producer,
-            permissions=permissions,
-        )
-        # Verify the project ID
-        authorization_manager.verify_project_id(
-            project_id=project_id,
-        )
 
         # If a canvas is provided, convert it to a CanvasBaseModel and dump it to a dictionary
         canvas = data.get("canvas")
@@ -1931,23 +1790,20 @@ class ProjectADApplicationService(ProjectADService):
             data["ref"] = self.normalize_project_ad_ref(
                 ref,
                 project_id=project_id,
-                auth_producer=auth_producer,
             )
 
         if data.get("isCompleted") is True:
             lastCompletedBy_model = MetadataModel(
-                **auth_producer.user_info,
+                **SYSTEM_USER_INFO,
                 timestamp=datetime.now(TZINFO),
             )
             data["lastCompletedBy"] = lastCompletedBy_model.model_dump()
             self.update_project_progress(
-                auth_producer=auth_producer,
                 project_id=project_id,
                 progress_number=2,
             )
         if data.get("isCompleted") is False:
             self.update_project_progress(
-                auth_producer=auth_producer,
                 project_id=project_id,
                 progress_number=1,
             )
@@ -1969,22 +1825,22 @@ class ProjectADApplicationService(ProjectADService):
         #         "value": field_data,
         #     },
         #     targetKey=AuditLogTargetKey.project_ad.value,
-        #     user_id=auth_producer.authentication_model.user.user_id,
-        #     username=auth_producer.authentication_model.user.username,
+        #     user_id=SYSTEM_USER_INFO["user_id"],
+        #     username=SYSTEM_USER_INFO["username"],
         #     timestamp=datetime.now(TZINFO),
         # )
 
         res1 = self.update_one(
             {"project_id": project_id},
             payload=field_data,
-            user_info=auth_producer.user_info,
+            user_info=SYSTEM_USER_INFO,
         )
         # res2 = self.db_log_ad_service.update_one(
         #     {"logId": audit_log_model.logId},
         #     payload={
         #         **audit_log_model.model_dump(),
         #     },
-        #     user_info=auth_producer.user_info,
+        #     user_info=SYSTEM_USER_INFO,
         #     upsert=True,
         #     collection_name=Collection.project_ad_log.value,
         # )
@@ -1998,8 +1854,6 @@ class ProjectADApplicationService(ProjectADService):
     def get_project_ad(
         self,
         data: dict,
-        auth_producer: AuthenticationProducer,
-        permissions: list[str],
     ) -> dict:
         """
         Retrieves the architecture diagram for a specific project.
@@ -2009,8 +1863,6 @@ class ProjectADApplicationService(ProjectADService):
 
         Args:
             data (dict): The dictionary containing the project ID under the key 'project_id'.
-            auth_producer (AuthenticationProducer): The object responsible for handling
-            authentication.
             permissions (List[str]): The list of permissions required to perform the operation.
 
         Raises:
@@ -2021,18 +1873,10 @@ class ProjectADApplicationService(ProjectADService):
         """
         project_id = data["project_id"]
 
-        authorization_manager = AuthorizationManager(
-            auth_producer=auth_producer,
-            permissions=permissions,
-        )
-        authorization_manager.verify_project_id(
-            project_id=project_id,
-        )
-
         db_project_ad = self.get_one(
             {"project_id": project_id},
             raise_if_not_found=True,
-            user_info=auth_producer.user_info,
+            user_info=SYSTEM_USER_INFO,
         )
         project_ad_model = ProjectADModel(**db_project_ad)
 
@@ -2040,7 +1884,7 @@ class ProjectADApplicationService(ProjectADService):
             canvases=project_ad_model.canvas,
         )
         tosca_schema, tosca_mapping = self._retrieve_tosca_information(
-            user_info=auth_producer.user_info,
+            user_info=SYSTEM_USER_INFO,
         )
         for canvas in project_ad_model.canvas:
             if canvas.canvas_type == CanvasType.data_flow.value:
@@ -2059,7 +1903,7 @@ class ProjectADApplicationService(ProjectADService):
             self.update_one(
                 {"project_id": project_id},
                 payload=project_ad,
-                user_info=auth_producer.user_info,
+                user_info=SYSTEM_USER_INFO,
             )
 
         return project_ad
@@ -2068,12 +1912,9 @@ class ProjectADApplicationService(ProjectADService):
         "Failed to update tosca report.",
         exception_logger=logger,
     )
-    @verify_params(key_list=["data", "auth_producer", "permissions"])
     def update_tosca_report(
         self,
         data: dict,
-        auth_producer: AuthenticationProducer,
-        permissions: list[str],
     ) -> dict:
         """
         Generate and return the diagram with updated warnings for the diagram specified by the
@@ -2087,21 +1928,10 @@ class ProjectADApplicationService(ProjectADService):
         """
         project_id = data["project_id"]
 
-        # Create an instance of the AuthorizationManager with the provided auth_producer and
-        # permissions
-        authorization_manager = AuthorizationManager(
-            auth_producer=auth_producer,
-            permissions=permissions,
-        )
-        # Verify the project ID
-        authorization_manager.verify_project_id(
-            project_id=project_id,
-        )
-
         db_project_ad = self.get_one(
             {"project_id": project_id},
             raise_if_not_found=True,
-            user_info=auth_producer.user_info,
+            user_info=SYSTEM_USER_INFO,
         )
         project_ad_model = ProjectADModel(
             **db_project_ad,
@@ -2166,22 +1996,22 @@ class ProjectADApplicationService(ProjectADService):
                 "value": field_data,
             },
             targetKey=AuditLogTargetKey.project_ad.value,
-            user_id=auth_producer.authentication_model.user.user_id,
-            username=auth_producer.authentication_model.user.username,
+            user_id=SYSTEM_USER_INFO["user_id"],
+            username=SYSTEM_USER_INFO["username"],
             timestamp=datetime.now(TZINFO),
         )
 
         res1 = self.update_one(
             {"project_id": project_id},
             payload=field_data,
-            user_info=auth_producer.user_info,
+            user_info=SYSTEM_USER_INFO,
         )
         res2 = self.db_log_ad_service.update_one(
             {"logId": audit_log_model.logId},
             payload={
                 **audit_log_model.model_dump(),
             },
-            user_info=auth_producer.user_info,
+            user_info=SYSTEM_USER_INFO,
             upsert=True,
             collection_name=Collection.project_ad_log.value,
         )
@@ -2194,18 +2024,8 @@ class ProjectADApplicationService(ProjectADService):
     def get_project_diagram_logs(
         self,
         data: dict,
-        auth_producer: AuthenticationProducer,
-        permissions: list[str],
     ):
         project_id = data["project_id"]
-
-        authorization_manager = AuthorizationManager(
-            auth_producer=auth_producer,
-            permissions=permissions,
-        )
-        authorization_manager.verify_project_id(
-            project_id=project_id,
-        )
 
         db_audit_logs = self.db_log_ad_service.get_many(
             {
@@ -2219,7 +2039,7 @@ class ProjectADApplicationService(ProjectADService):
                     ]
                 },
             },
-            user_info=auth_producer.user_info,
+            user_info=SYSTEM_USER_INFO,
             collection_name=Collection.project_ad_log.value,
         )
         audit_log_models = [AuditLogModel(**_) for _ in db_audit_logs]
@@ -2233,19 +2053,9 @@ class ProjectADApplicationService(ProjectADService):
     def get_project_diagram_node_logs(
         self,
         data: dict,
-        auth_producer: AuthenticationProducer,
-        permissions: list[str],
     ):
         project_id = data["project_id"]
         node_id = data["node_id"]
-
-        authorization_manager = AuthorizationManager(
-            auth_producer=auth_producer,
-            permissions=permissions,
-        )
-        authorization_manager.verify_project_id(
-            project_id=project_id,
-        )
 
         query = {
             "fieldChanges.identifiers.project_id": project_id,
@@ -2255,7 +2065,7 @@ class ProjectADApplicationService(ProjectADService):
 
         db_audit_logs = self.db_log_ad_service.get_many(
             query,
-            user_info=auth_producer.user_info,
+            user_info=SYSTEM_USER_INFO,
             collection_name=Collection.project_ad_log.value,
         )
         audit_log_models = [AuditLogModel(**_) for _ in db_audit_logs]
@@ -2269,8 +2079,6 @@ class ProjectADApplicationService(ProjectADService):
     def get_llm_generation_status(
         self,
         data: dict,
-        auth_producer: AuthenticationProducer,
-        permissions: list[str],
     ) -> dict:
         """
         Retrieve the llm generation status of a canvas in project diagram
@@ -2280,8 +2088,6 @@ class ProjectADApplicationService(ProjectADService):
 
         Args:
             data (dict): A dictionary containing the request data. Must include the `project_id`.
-            auth_producer (AuthenticationProducer): The authentication producer object
-                containing user authentication and permission details.
             permissions (List[str]): A list of permissions required to access the project.
 
         Returns:
@@ -2293,18 +2099,10 @@ class ProjectADApplicationService(ProjectADService):
         project_id = data["project_id"]
         canvas_id = data["canvas_id"]
 
-        authorization_manager = AuthorizationManager(
-            auth_producer=auth_producer,
-            permissions=permissions,
-        )
-        authorization_manager.verify_project_id(
-            project_id=project_id,
-        )
-
         db_project_ad = self.get_one(
             {"project_id": project_id},
             raise_if_not_found=True,
-            user_info=auth_producer.user_info,
+            user_info=SYSTEM_USER_INFO,
         )
         project_diagram_model = ProjectADModel(**db_project_ad)
 
@@ -2342,7 +2140,7 @@ class ProjectADApplicationService(ProjectADService):
             )
             self.fail_llm_generation(
                 project_id=project_id,
-                user_info=auth_producer.user_info,
+                user_info=SYSTEM_USER_INFO,
                 error=error,
                 canvas_id=canvas_id,
             )
@@ -2552,8 +2350,6 @@ class ProjectADApplicationService(ProjectADService):
     def update_node(
         self,
         data: dict,
-        auth_producer: AuthenticationProducer,
-        permissions: list[str],
         reserved_keys: list[str],
     ) -> list[dict]:
         """Updates a node.
@@ -2565,8 +2361,6 @@ class ProjectADApplicationService(ProjectADService):
         Args:
             data (dict): A dictionary containing the data for updating the node, including
             'project_id', 'canvas_id', 'node' and 'node_id'.
-            auth_producer (AuthenticationProducer): The authentication producer object used to
-            verify permissions.
             permissions (List[str]): A list of permissions required for the operation.
             reserved_keys (List[str]): A list of keys that should not be updated.
 
@@ -2577,14 +2371,6 @@ class ProjectADApplicationService(ProjectADService):
             Exception: If the update of the node fails.
         """
         project_id: str = data["project_id"]
-
-        authorizationManager = AuthorizationManager(
-            auth_producer=auth_producer,
-            permissions=permissions,
-        )
-        authorizationManager.verify_project_id(
-            project_id=project_id,
-        )
 
         canvas_id: str = data["canvas_id"]
         node_id: str = data["node_id"]
@@ -2610,8 +2396,8 @@ class ProjectADApplicationService(ProjectADService):
                 "value": field_data,
             },
             targetKey=AuditLogTargetKey.project_ad_node,
-            user_id=auth_producer.authentication_model.user.user_id,
-            username=auth_producer.authentication_model.user.username,
+            user_id=SYSTEM_USER_INFO["user_id"],
+            username=SYSTEM_USER_INFO["username"],
             timestamp=datetime.now(TZINFO),
         )
 
@@ -2624,14 +2410,14 @@ class ProjectADApplicationService(ProjectADService):
                 {"canvas.canvas_id": canvas_id},
                 {"node.id": node_id},
             ],
-            user_info=auth_producer.user_info,
+            user_info=SYSTEM_USER_INFO,
         )
         res2 = self.db_log_ad_service.update_one(
             {"logId": audit_log_model.logId},
             payload={
                 **audit_log_model.model_dump(),
             },
-            user_info=auth_producer.user_info,
+            user_info=SYSTEM_USER_INFO,
             upsert=True,
             collection_name=Collection.project_ad_log.value,
         )
@@ -2644,8 +2430,6 @@ class ProjectADApplicationService(ProjectADService):
     def update_canvas(
         self,
         data: dict,
-        auth_producer: AuthenticationProducer,
-        permissions: list[str],
         reserved_keys: list[str],
     ) -> list[dict]:
         """Updates a canvas.
@@ -2657,8 +2441,6 @@ class ProjectADApplicationService(ProjectADService):
         Args:
             data (dict): A dictionary containing the data for updating the canvas, including
             'project_id', 'canvas_id', 'canvas' and 'canvas_id'.
-            auth_producer (AuthenticationProducer): The authentication producer object used to
-            verify permissions.
             permissions (List[str]): A list of permissions required for the operation.
             reserved_keys (List[str]): A list of keys that should not be updated.
 
@@ -2669,14 +2451,6 @@ class ProjectADApplicationService(ProjectADService):
             Exception: If the update of the canvas fails.
         """
         project_id: str = data["project_id"]
-
-        authorizationManager = AuthorizationManager(
-            auth_producer=auth_producer,
-            permissions=permissions,
-        )
-        authorizationManager.verify_project_id(
-            project_id=project_id,
-        )
 
         canvas_id: str = data["canvas_id"]
         canvas: dict = data["canvas"]
@@ -2702,8 +2476,8 @@ class ProjectADApplicationService(ProjectADService):
                 "value": field_data,
             },
             targetKey=AuditLogTargetKey.project_ad_canvas,
-            user_id=auth_producer.authentication_model.user.user_id,
-            username=auth_producer.authentication_model.user.username,
+            user_id=SYSTEM_USER_INFO["user_id"],
+            username=SYSTEM_USER_INFO["username"],
             timestamp=datetime.now(TZINFO),
         )
 
@@ -2713,14 +2487,14 @@ class ProjectADApplicationService(ProjectADService):
             array_filters=[
                 {"canvas.canvas_id": canvas_id},
             ],
-            user_info=auth_producer.user_info,
+            user_info=SYSTEM_USER_INFO,
         )
         res2 = self.db_log_ad_service.update_one(
             {"logId": audit_log_model.logId},
             payload={
                 **audit_log_model.model_dump(),
             },
-            user_info=auth_producer.user_info,
+            user_info=SYSTEM_USER_INFO,
             upsert=True,
             collection_name=Collection.project_ad_log.value,
         )
@@ -2733,8 +2507,6 @@ class ProjectADApplicationService(ProjectADService):
     def update_edge(
         self,
         data: dict,
-        auth_producer: AuthenticationProducer,
-        permissions: list[str],
         reserved_keys: list[str],
     ) -> list[dict]:
         """Updates an edge.
@@ -2746,8 +2518,6 @@ class ProjectADApplicationService(ProjectADService):
         Args:
             data (dict): A dictionary containing the data for updating the edge, including
             'project_id', 'canvas_id', 'edge' and 'edge_id'.
-            auth_producer (AuthenticationProducer): The authentication producer object used to
-            verify permissions.
             permissions (List[str]): A list of permissions required for the operation.
             reserved_keys (List[str]): A list of keys that should not be updated.
 
@@ -2758,14 +2528,6 @@ class ProjectADApplicationService(ProjectADService):
             Exception: If the update of the edge fails.
         """
         project_id: str = data["project_id"]
-
-        authorizationManager = AuthorizationManager(
-            auth_producer=auth_producer,
-            permissions=permissions,
-        )
-        authorizationManager.verify_project_id(
-            project_id=project_id,
-        )
 
         canvas_id: str = data["canvas_id"]
         edge_id: str = data["edge_id"]
@@ -2788,8 +2550,8 @@ class ProjectADApplicationService(ProjectADService):
                 "value": field_data,
             },
             targetKey=AuditLogTargetKey.project_ad_edge,
-            user_id=auth_producer.authentication_model.user.user_id,
-            username=auth_producer.authentication_model.user.username,
+            user_id=SYSTEM_USER_INFO["user_id"],
+            username=SYSTEM_USER_INFO["username"],
             timestamp=datetime.now(TZINFO),
         )
 
@@ -2802,14 +2564,14 @@ class ProjectADApplicationService(ProjectADService):
                 {"canvas.canvas_id": canvas_id},
                 {"edge.id": edge_id},
             ],
-            user_info=auth_producer.user_info,
+            user_info=SYSTEM_USER_INFO,
         )
         res2 = self.db_log_ad_service.update_one(
             {"logId": audit_log_model.logId},
             payload={
                 **audit_log_model.model_dump(),
             },
-            user_info=auth_producer.user_info,
+            user_info=SYSTEM_USER_INFO,
             upsert=True,
             collection_name=Collection.project_ad_log.value,
         )

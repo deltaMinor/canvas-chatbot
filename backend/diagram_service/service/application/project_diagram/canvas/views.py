@@ -7,7 +7,6 @@ from rest_framework.exceptions import ValidationError
 from rest_framework.request import Request
 from rest_framework.response import Response
 from rest_framework.throttling import UserRateThrottle
-from service.lib.decorators import authenticated_only
 
 from shared_libs.decorators import (
     raise_exception,
@@ -15,7 +14,6 @@ from shared_libs.decorators import (
     verify_get_params,
 )
 from shared_libs.lib.nonblocking_api_view import NonBlockingAPIView
-from shared_libs.producers.authentication_producer import AuthenticationProducer
 from shared_libs.templates.message_template import success
 
 logger = logging.getLogger(__name__)
@@ -58,8 +56,7 @@ class ProjectDiagramCanvasArchitectureGenerateAPIView(NonBlockingAPIView):
         "An error occurred while generating the project diagram architecture canvas.",
         exception_logger=logger,
     )
-    @authenticated_only()
-    def post(self, request: Request, auth_producer: AuthenticationProducer):
+    def post(self, request: Request):
         project_id = self._require_field(request.data, "project_id")
         file_type = self._require_field(request.data, "file_type")
 
@@ -70,10 +67,6 @@ class ProjectDiagramCanvasArchitectureGenerateAPIView(NonBlockingAPIView):
                     "project_id": project_id,
                     "selected_cacti_file_id": file_id,
                 },
-                auth_producer=auth_producer,
-                permissions=[
-                    auth_producer.permission_model.project_diagram_architecture_generate.create,
-                ],
             )
             return Response(
                 success(
@@ -90,10 +83,6 @@ class ProjectDiagramCanvasArchitectureGenerateAPIView(NonBlockingAPIView):
                     "project_id": project_id,
                     "selected_diagram_file_id": file_id,
                 },
-                auth_producer=auth_producer,
-                permissions=[
-                    auth_producer.permission_model.project_diagram_architecture_generate.create,
-                ],
             )
             return Response(
                 success(
@@ -112,10 +101,6 @@ class ProjectDiagramCanvasArchitectureGenerateAPIView(NonBlockingAPIView):
                     "selected_terraform_file_id_list": terraform_file_id_list,
                     "selected_module_file_id_list": module_file_id_list,
                 },
-                auth_producer=auth_producer,
-                permissions=[
-                    auth_producer.permission_model.project_diagram_architecture_generate.create,
-                ],
             )
             return Response(
                 success(
@@ -132,10 +117,6 @@ class ProjectDiagramCanvasArchitectureGenerateAPIView(NonBlockingAPIView):
                     "project_id": project_id,
                     "selected_template_id": file_id,
                 },
-                auth_producer=auth_producer,
-                permissions=[
-                    auth_producer.permission_model.project_diagram_architecture_generate.create,
-                ],
             )
             return Response(
                 success(
@@ -152,10 +133,6 @@ class ProjectDiagramCanvasArchitectureGenerateAPIView(NonBlockingAPIView):
                     "project_id": project_id,
                     "selected_xml_file_id": file_id,
                 },
-                auth_producer=auth_producer,
-                permissions=[
-                    auth_producer.permission_model.project_diagram_architecture_generate.create,
-                ],
             )
             return Response(
                 success(
@@ -174,10 +151,6 @@ class ProjectDiagramCanvasArchitectureGenerateAPIView(NonBlockingAPIView):
                     "canvas_id": canvas_id,
                     "file_id": file_id,
                 },
-                auth_producer=auth_producer,
-                permissions=[
-                    auth_producer.permission_model.project_diagram_architecture_generate.create,
-                ],
             )
             return Response(
                 success(
@@ -196,10 +169,6 @@ class ProjectDiagramCanvasArchitectureGenerateAPIView(NonBlockingAPIView):
                     "canvas_id": canvas_id,
                     "description": description,
                 },
-                auth_producer=auth_producer,
-                permissions=[
-                    auth_producer.permission_model.project_diagram_architecture_generate.create,
-                ],
             )
             return Response(
                 success(
@@ -221,19 +190,13 @@ class ProjectDiagramCanvasArchitectureGenerateAPIView(NonBlockingAPIView):
         "An error occurred while retrieving architecture generation status.",
         exception_logger=logger,
     )
-    @authenticated_only()
     @verify_get_params(key_list=["project_id", "canvas_id"])
     def get(
         self,
         request: Request,
-        auth_producer: AuthenticationProducer,
     ) -> Response:
         llm_generation_status = self.project_ad_service.get_llm_generation_status(
             data=request.GET,
-            auth_producer=auth_producer,
-            permissions=[
-                auth_producer.permission_model.project_diagram_architecture_generate.read,
-            ],
         )
         return Response(
             success(
@@ -259,7 +222,6 @@ class ProjectDiagramCanvasAPIView(NonBlockingAPIView):
     @raise_exception(
         "An error occurred while updating canvas.", exception_logger=logger
     )
-    @authenticated_only()
     @verify_data_params(
         key_list=[
             "project_id",
@@ -270,7 +232,6 @@ class ProjectDiagramCanvasAPIView(NonBlockingAPIView):
     def patch(
         self,
         request: Request,
-        auth_producer: AuthenticationProducer,
     ) -> Response:
         """Updates a canvas.
 
@@ -280,8 +241,6 @@ class ProjectDiagramCanvasAPIView(NonBlockingAPIView):
 
         Args:
             request (Request): The HTTP request object containing the data for updating the canvas.
-            auth_producer (AuthenticationProducer): The authentication producer object used to
-            verify permissions.
 
         Returns:
             Response: An HTTP response object indicating the success of the update.
@@ -291,10 +250,6 @@ class ProjectDiagramCanvasAPIView(NonBlockingAPIView):
         """
         retval = self.project_ad_service.update_canvas(
             data=request.data,
-            auth_producer=auth_producer,
-            permissions=[
-                auth_producer.permission_model.project_diagram.update,
-            ],
             reserved_keys=[
                 "canvas_id",
             ],
@@ -321,7 +276,6 @@ class ProjectDiagramEdgeAPIView(NonBlockingAPIView):
         )
 
     @raise_exception("An error occurred while updating edge.", exception_logger=logger)
-    @authenticated_only()
     @verify_data_params(
         key_list=[
             "project_id",
@@ -333,7 +287,6 @@ class ProjectDiagramEdgeAPIView(NonBlockingAPIView):
     def patch(
         self,
         request: Request,
-        auth_producer: AuthenticationProducer,
     ) -> Response:
         """Updates an edge.
 
@@ -343,8 +296,6 @@ class ProjectDiagramEdgeAPIView(NonBlockingAPIView):
 
         Args:
             request (Request): The HTTP request object containing the data for updating the edge.
-            auth_producer (AuthenticationProducer): The authentication producer object used to
-            verify permissions.
 
         Returns:
             Response: An HTTP response object indicating the success of the update.
@@ -354,10 +305,6 @@ class ProjectDiagramEdgeAPIView(NonBlockingAPIView):
         """
         retval = self.project_ad_service.update_edge(
             data=request.data,
-            auth_producer=auth_producer,
-            permissions=[
-                auth_producer.permission_model.project_diagram.update,
-            ],
             reserved_keys=[
                 "id",
             ],
@@ -384,7 +331,6 @@ class ProjectDiagramNodeAPIView(NonBlockingAPIView):
         )
 
     @raise_exception("An error occurred while updating node.", exception_logger=logger)
-    @authenticated_only()
     @verify_data_params(
         key_list=[
             "project_id",
@@ -396,7 +342,6 @@ class ProjectDiagramNodeAPIView(NonBlockingAPIView):
     def patch(
         self,
         request: Request,
-        auth_producer: AuthenticationProducer,
     ) -> Response:
         """Updates a node.
 
@@ -406,8 +351,6 @@ class ProjectDiagramNodeAPIView(NonBlockingAPIView):
 
         Args:
             request (Request): The HTTP request object containing the data for updating the node.
-            auth_producer (AuthenticationProducer): The authentication producer object used to
-            verify permissions.
 
         Returns:
             Response: An HTTP response object indicating the success of the update.
@@ -417,10 +360,6 @@ class ProjectDiagramNodeAPIView(NonBlockingAPIView):
         """
         retval = self.project_ad_service.update_node(
             data=request.data,
-            auth_producer=auth_producer,
-            permissions=[
-                auth_producer.permission_model.project_diagram.update,
-            ],
             reserved_keys=[
                 "id",
             ],
@@ -454,22 +393,17 @@ class ProjectDiagramDataFlowGenerationAPIView(NonBlockingAPIView):
 
     @raise_exception("An error occurred while generate dataflow diagram using LLM.")
     @verify_data_params(key_list=["project_id"])
-    @authenticated_only()
-    def post(self, request: Request, auth_producer: AuthenticationProducer):
+    def post(self, request: Request):
         """
         Creates project diagram dataflow canvas using LLM.
 
-        This method retrieves the data from the request and creates an AuthorizationManager
-        with the provided auth_producer and permissions. It verifies standalone field
-        authorization using the AuthorizationManager. It then creates a project dataflow canvas
+        This method retrieves the data from the request. It then creates a project dataflow canvas
         model with the data and updates the project dataflow canvas in the database. It
         returns a response with the created project dataflow canvas model.
 
         Args:
             request (Request): The request containing the data to create the project register
                             scenario with.
-            auth_producer (AuthenticationProducer): The AuthenticationProducer to use for
-                                                    authorization.
 
         Returns:
             Response: A response with the created project dataflow canvas model.
@@ -479,10 +413,6 @@ class ProjectDiagramDataFlowGenerationAPIView(NonBlockingAPIView):
         """
         task_id = self.project_register_service.infer_llm_dataflow(
             data=request.data,
-            auth_producer=auth_producer,
-            permissions=[
-                auth_producer.permission_model.project_diagram_data_flow_generate.create,
-            ],
         )
         return Response(
             success(
@@ -496,19 +426,13 @@ class ProjectDiagramDataFlowGenerationAPIView(NonBlockingAPIView):
         "An error occurred while retrieving data flow generation status.",
         exception_logger=logger,
     )
-    @authenticated_only()
     @verify_get_params(key_list=["project_id", "canvas_id"])
     def get(
         self,
         request: Request,
-        auth_producer: AuthenticationProducer,
     ) -> Response:
         llm_generation_status = self.project_ad_service.get_llm_generation_status(
             data=request.GET,
-            auth_producer=auth_producer,
-            permissions=[
-                auth_producer.permission_model.project_diagram_data_flow_generate.read,
-            ],
         )
         return Response(
             success(

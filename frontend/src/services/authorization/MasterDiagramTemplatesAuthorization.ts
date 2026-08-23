@@ -5,10 +5,10 @@ export class MasterDiagramTemplatesAuthorization {
 
     get isAuthorized(): IsAuthorized {
         const isAuthorized = {
-            create: null,
+            create: true,
             read: true,
-            update: null,
-            delete: null,
+            update: true,
+            delete: true,
         };
 
         return isAuthorized;

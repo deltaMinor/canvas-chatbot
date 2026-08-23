@@ -38,13 +38,13 @@ from shared_libs.models.base_models import (
     CanvasDataBaseModel,
     ProducerDataModel,
 )
-from shared_libs.producers.authentication_producer import AuthenticationProducer
 from shared_libs.producers.producer_data import (
     producer_data_database_log_ad,
     producer_data_project_ad_file,
 )
 from shared_libs.types.auditLog import AuditLogAction, AuditLogTargetKey
 from shared_libs.types.enum import CanvasType, Collection
+from shared_libs.constants import SYSTEM_USER_INFO
 
 TZINFO = settings.TZINFO
 logger = logging.getLogger(__name__)
@@ -111,14 +111,11 @@ class ProjectADFileApplicationService(ProjectADFileService):
     def get_files(
         self,
         data: dict,
-        auth_producer: AuthenticationProducer,
-        permissions: list[str],
         file_type: str,
         *,
         as_response: bool = False,
     ) -> list[dict] | dict:
         project_id = data["project_id"]
-        self.verify_project_permissions(project_id, auth_producer, permissions)
         if as_response:
             return self._build_files_response(project_id, file_type)
 
@@ -149,7 +146,6 @@ class ProjectADFileApplicationService(ProjectADFileService):
         project_id: str,
         file_type: str,
         file_id_list: list[str],
-        auth_producer: AuthenticationProducer,
     ) -> list[dict]:
         audit_log_model = AuditLogModel(
             action=AuditLogAction.delete.value,
@@ -161,8 +157,8 @@ class ProjectADFileApplicationService(ProjectADFileService):
                 "value": {"deleted_file_ids": file_id_list},
             },
             targetKey=AuditLogTargetKey.project_ad_file.value,
-            user_id=auth_producer.authentication_model.user.user_id,
-            username=auth_producer.authentication_model.user.username,
+            user_id=SYSTEM_USER_INFO["user_id"],
+            username=SYSTEM_USER_INFO["username"],
             timestamp=datetime.now(TZINFO),
         )
         res1 = self.delete_many_files(
@@ -177,7 +173,6 @@ class ProjectADFileApplicationService(ProjectADFileService):
         res2 = self.write_audit_log(
             audit_log_service=self.db_log_ad_service,
             audit_log_model=audit_log_model,
-            auth_producer=auth_producer,
         )
         return [res1, res2]
 
@@ -185,17 +180,13 @@ class ProjectADFileApplicationService(ProjectADFileService):
     def delete_files(
         self,
         data: dict,
-        auth_producer: AuthenticationProducer,
-        permissions: list[str],
         file_type: str,
     ) -> list[dict]:
         project_id = data["project_id"]
-        self.verify_project_permissions(project_id, auth_producer, permissions)
         return self._remove_files(
             project_id=project_id,
             file_type=file_type,
             file_id_list=data["file_id_list"],
-            auth_producer=auth_producer,
         )
 
     def _write_file(
@@ -206,7 +197,6 @@ class ProjectADFileApplicationService(ProjectADFileService):
         file_type: str,
         content_type: str,
         decoded_file: str,
-        auth_producer: AuthenticationProducer,
         source: str = PROJECT_AD_FILE_SOURCE_DIRECT,
     ):
         file_metadata = {
@@ -227,8 +217,8 @@ class ProjectADFileApplicationService(ProjectADFileService):
                 "value": file_metadata,
             },
             targetKey=AuditLogTargetKey.project_ad_file.value,
-            user_id=auth_producer.authentication_model.user.user_id,
-            username=auth_producer.authentication_model.user.username,
+            user_id=SYSTEM_USER_INFO["user_id"],
+            username=SYSTEM_USER_INFO["username"],
             timestamp=datetime.now(TZINFO),
         )
         res1 = self.insert_one_file(
@@ -241,12 +231,11 @@ class ProjectADFileApplicationService(ProjectADFileService):
                 "source": source,
             },
             decoded_file=decoded_file,
-            user_info=auth_producer.user_info,
+            user_info=SYSTEM_USER_INFO,
         )
         res2 = self.write_audit_log(
             audit_log_service=self.db_log_ad_service,
             audit_log_model=audit_log_model,
-            auth_producer=auth_producer,
         )
         return [res1, res2]
 
@@ -281,7 +270,6 @@ class ProjectADFileApplicationService(ProjectADFileService):
         data: dict,
         files: MultiValueDict,
         project_id: str,
-        auth_producer: AuthenticationProducer,
     ) -> list[dict]:
         directory_name = data["directory_name"]
         zip_file: UploadedFile = files.get("zip_file")
@@ -298,7 +286,6 @@ class ProjectADFileApplicationService(ProjectADFileService):
             file_type=PROJECT_AD_FILE_TYPE_MODULE,
             content_type=zip_file.content_type or "",
             decoded_file=decoded_file,
-            auth_producer=auth_producer,
         )
 
     def _insert_terraform_files(
@@ -306,7 +293,6 @@ class ProjectADFileApplicationService(ProjectADFileService):
         data: dict,
         files: MultiValueDict,
         project_id: str,
-        auth_producer: AuthenticationProducer,
     ) -> list[dict]:
         terraform_files: list[UploadedFile] = files.getlist("file")
 
@@ -329,7 +315,6 @@ class ProjectADFileApplicationService(ProjectADFileService):
                     file_type=PROJECT_AD_FILE_TYPE_TERRAFORM,
                     content_type=file.content_type or "",
                     decoded_file=decoded_file,
-                    auth_producer=auth_producer,
                 )
             )
         return res_arr
@@ -339,7 +324,6 @@ class ProjectADFileApplicationService(ProjectADFileService):
         data: dict,
         files: MultiValueDict,
         project_id: str,
-        auth_producer: AuthenticationProducer,
     ) -> list[dict]:
         cacti_files: list[UploadedFile] = files.getlist("file")
         self._check_file_count_limit(
@@ -373,7 +357,6 @@ class ProjectADFileApplicationService(ProjectADFileService):
                     file_type=PROJECT_AD_FILE_TYPE_CACTI,
                     content_type=cacti_file_io_buffer.content_type or "",
                     decoded_file=decoded_file,
-                    auth_producer=auth_producer,
                 )
             )
         return res_arr
@@ -400,7 +383,6 @@ class ProjectADFileApplicationService(ProjectADFileService):
         data: dict,
         files: MultiValueDict,
         project_id: str,
-        auth_producer: AuthenticationProducer,
     ) -> list[dict]:
         project_diagram_files: list[UploadedFile] = files.getlist("file")
         self._check_file_count_limit(
@@ -443,7 +425,6 @@ class ProjectADFileApplicationService(ProjectADFileService):
                     file_type=PROJECT_AD_FILE_TYPE_DIAGRAM,
                     content_type=project_diagram_file_io_buffer.content_type or "",
                     decoded_file=decoded_file,
-                    auth_producer=auth_producer,
                 )
             )
         return res_arr
@@ -453,7 +434,6 @@ class ProjectADFileApplicationService(ProjectADFileService):
         data: dict,
         files: MultiValueDict,
         project_id: str,
-        auth_producer: AuthenticationProducer,
     ) -> list[dict]:
         xml_files: list[UploadedFile] = files.getlist("file")
         self._check_file_count_limit(project_id, PROJECT_AD_FILE_TYPE_XML, xml_files)
@@ -472,7 +452,6 @@ class ProjectADFileApplicationService(ProjectADFileService):
                     file_type=PROJECT_AD_FILE_TYPE_XML,
                     content_type=xml_file_io_buffer.content_type or "",
                     decoded_file=decoded_file,
-                    auth_producer=auth_producer,
                 )
             )
         return res_arr
@@ -482,7 +461,6 @@ class ProjectADFileApplicationService(ProjectADFileService):
         data: dict,
         files: MultiValueDict,
         project_id: str,
-        auth_producer: AuthenticationProducer,
     ) -> list[dict]:
         pdf_document_files: list[UploadedFile] = files.getlist("file")
         self._check_file_count_limit(
@@ -511,7 +489,6 @@ class ProjectADFileApplicationService(ProjectADFileService):
                     file_type=PROJECT_AD_FILE_TYPE_PDF_DOCUMENT,
                     content_type=pdf_document_file_io_buffer.content_type or "",
                     decoded_file=decoded_file,
-                    auth_producer=auth_producer,
                     source=source,
                 )
             )
@@ -522,12 +499,9 @@ class ProjectADFileApplicationService(ProjectADFileService):
         self,
         data: dict,
         files: MultiValueDict,
-        auth_producer: AuthenticationProducer,
-        permissions: list[str],
         file_type: str,
     ) -> list[dict]:
         project_id = data["project_id"]
-        self.verify_project_permissions(project_id, auth_producer, permissions)
         insert_handler_map = {
             PROJECT_AD_FILE_TYPE_MODULE: self._insert_module_files,
             PROJECT_AD_FILE_TYPE_TERRAFORM: self._insert_terraform_files,
@@ -542,7 +516,6 @@ class ProjectADFileApplicationService(ProjectADFileService):
                 data=data,
                 files=files,
                 project_id=project_id,
-                auth_producer=auth_producer,
             )
 
         raise BadRequest(f"Unsupported project AD file type {file_type}.")

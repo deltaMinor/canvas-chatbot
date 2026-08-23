@@ -1,7 +1,3 @@
-RESOURCE_TAG_TIER_LEVEL_UPDATE_PERMISSION = "resource_tag.tier_level.update"
-RESOURCE_TAG_TIER_LEVEL_POLICY_KEY = "resource_tag_tier_level_permissions"
-RESOURCE_TAG_TIER_LEVEL_ROLE_KEY = "superAdmin"
-
 TIER_LEVEL_TO_PLAN_TYPE: dict[int, str] = {
     1: "community",
     2: "premium",

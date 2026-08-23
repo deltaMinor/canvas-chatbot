@@ -6,7 +6,6 @@ from rest_framework.decorators import throttle_classes
 from rest_framework.request import Request
 from rest_framework.response import Response
 from rest_framework.throttling import UserRateThrottle
-from service.lib.decorators import authenticated_only
 
 from shared_libs.constants.architecture_diagram import (
     PROJECT_AD_FILE_TYPE_CACTI,
@@ -24,7 +23,6 @@ from shared_libs.decorators import (
     verify_get_params,
 )
 from shared_libs.lib.nonblocking_api_view import NonBlockingAPIView
-from shared_libs.producers.authentication_producer import AuthenticationProducer
 from shared_libs.templates.message_template import success
 
 logger = logging.getLogger(__name__)
@@ -45,23 +43,19 @@ class ProjectDiagramTerraformFilesAPIView(NonBlockingAPIView):
         "An error occurred while retrieving Terraform files.",
         exception_logger=logger,
     )
-    @authenticated_only()
     @verify_get_params(key_list=["project_id"])
     def get(
         self,
         request: Request,
-        auth_producer: AuthenticationProducer,
     ):
         """Retrieves Terraform files for a specific project from the database.
 
         This method retrieves a project ID from the request data, verifies the project ID using the
-        provided AuthenticationProducer, and retrieves the Terraform files for the specified project
+        retrieves the Terraform files for the specified project
         from the database using the file_terraform_service.
 
         Args:
             request (Request): The request containing the project ID.
-            auth_producer (AuthenticationProducer): The AuthenticationProducer to use for verifying
-            the project ID.
 
         Returns:
             Response: A response containing the retrieved Terraform files and a success message. If
@@ -70,10 +64,6 @@ class ProjectDiagramTerraformFilesAPIView(NonBlockingAPIView):
         """
         terraform_files = self.project_ad_file_service.get_files(
             data=request.GET,
-            auth_producer=auth_producer,
-            permissions=[
-                auth_producer.permission_model.project_diagram_file_terraform.read
-            ],
             file_type=PROJECT_AD_FILE_TYPE_TERRAFORM,
         )
         return Response(
@@ -88,24 +78,20 @@ class ProjectDiagramTerraformFilesAPIView(NonBlockingAPIView):
         "An error occurred while inserting Terraform files.",
         exception_logger=logger,
     )
-    @authenticated_only()
     @verify_files_getlist_params(key_list=["file"])
     @verify_data_params(key_list=["project_id"])
     def post(
         self,
         request: Request,
-        auth_producer: AuthenticationProducer,
     ):
         """Uploads Terraform files to the database.
 
         This method retrieves a project ID and a list of files from the request data, verifies the
-        project ID using the provided AuthenticationProducer, and uploads the Terraform files to the
+        project ID and uploads the Terraform files to the
         database using the file_terraform_service.
 
         Args:
             request (Request): The request containing the data of the Terraform files to upload.
-            auth_producer (AuthenticationProducer): The AuthenticationProducer to use for verifying
-            the project ID.
 
         Returns:
             Response: A response containing a success message and the result of the
@@ -114,16 +100,12 @@ class ProjectDiagramTerraformFilesAPIView(NonBlockingAPIView):
         res = self.project_ad_file_service.insert_files(
             data=request.data,
             files=request.FILES,
-            auth_producer=auth_producer,
-            permissions=[
-                auth_producer.permission_model.project_diagram_file_terraform.create
-            ],
             file_type=PROJECT_AD_FILE_TYPE_TERRAFORM,
         )
 
         # db_files = get_ad_terraform_files(
         #     {Project.project_id.value: project_id},
-        #     user_info=auth_producer.user_info,
+        #     user_info=SYSTEM_USER_INFO,
         # )
         # if not db_files or not len(db_files):
         #     raise NotFound(f"No files found for project_id {project_id}")
@@ -139,23 +121,19 @@ class ProjectDiagramTerraformFilesAPIView(NonBlockingAPIView):
         "An error occurred while deleting Terraform files.",
         exception_logger=logger,
     )
-    @authenticated_only()
     @verify_data_params(key_list=["project_id"])
     def delete(
         self,
         request: Request,
-        auth_producer: AuthenticationProducer,
     ):
         """Deletes Terraform files for a specific project from the database.
 
         This method retrieves a project ID from the request data, verifies the project ID using the
-        provided AuthenticationProducer, and deletes the Terraform files for the specified project
+        deletes the Terraform files for the specified project
         from the database using the file_terraform_service.
 
         Args:
             request (Request): The request containing the project ID.
-            auth_producer (AuthenticationProducer): The AuthenticationProducer to use for verifying
-            the project ID.
 
         Returns:
             Response: A response containing a success message and the result of the
@@ -163,10 +141,6 @@ class ProjectDiagramTerraformFilesAPIView(NonBlockingAPIView):
         """
         res = self.project_ad_file_service.delete_files(
             data=request.data,
-            auth_producer=auth_producer,
-            permissions=[
-                auth_producer.permission_model.project_diagram_file_terraform.delete
-            ],
             file_type=PROJECT_AD_FILE_TYPE_TERRAFORM,
         )
         return Response(
@@ -190,23 +164,19 @@ class ProjectDiagramModuleFilesAPIView(NonBlockingAPIView):
         "An error occurred while retrieving the module file.",
         exception_logger=logger,
     )
-    @authenticated_only()
     @verify_get_params(key_list=["project_id"])
     def get(
         self,
         request: Request,
-        auth_producer: AuthenticationProducer,
     ):
         """Retrieves module files for a specific project from the database.
 
         This method retrieves a project ID from the request data, verifies the project ID using the
-        provided AuthenticationProducer, and retrieves the module files for the specified project
+        retrieves the module files for the specified project
         from the database using the file_module_service.
 
         Args:
             request (Request): The request containing the project ID.
-            auth_producer (AuthenticationProducer): The AuthenticationProducer to use for verifying
-            the project ID.
 
         Returns:
             Response: A response containing the retrieved module files and a success message. If no
@@ -215,10 +185,6 @@ class ProjectDiagramModuleFilesAPIView(NonBlockingAPIView):
         """
         module_files = self.project_ad_file_service.get_files(
             data=request.GET,
-            auth_producer=auth_producer,
-            permissions=[
-                auth_producer.permission_model.project_diagram_file_module.read,
-            ],
             file_type=PROJECT_AD_FILE_TYPE_MODULE,
         )
         return Response(
@@ -233,24 +199,20 @@ class ProjectDiagramModuleFilesAPIView(NonBlockingAPIView):
         "An error occurred while saving new module file.",
         exception_logger=logger,
     )
-    @authenticated_only()
     @verify_files_get_params(key_list=["zip_file"])
     @verify_data_params(key_list=["project_id", "directory_name"])
     def post(
         self,
         request: Request,
-        auth_producer: AuthenticationProducer,
     ):
         """Uploads a module directory to the database.
 
         This method retrieves a project ID, directory name, and zip file from the request data,
-        verifies the project ID using the provided AuthenticationProducer, and uploads the zip file
+        verifies the project ID and uploads the zip file
         to the database as a module directory.
 
         Args:
             request (Request): The request containing the data of the module directory to upload.
-            auth_producer (AuthenticationProducer): The AuthenticationProducer to use for verifying
-            the project ID.
 
         Returns:
             Response: A response containing a success message.
@@ -258,17 +220,13 @@ class ProjectDiagramModuleFilesAPIView(NonBlockingAPIView):
         res = self.project_ad_file_service.insert_files(
             data=request.data,
             files=request.FILES,
-            auth_producer=auth_producer,
-            permissions=[
-                auth_producer.permission_model.project_diagram_file_module.create,
-            ],
             file_type=PROJECT_AD_FILE_TYPE_MODULE,
         )
 
         # Fetch module files from database
         # db_files = get_ad_module_files(
         #     {Project.project_id.value: project_id},
-        #     user_info=auth_producer.user_info,
+        #     user_info=SYSTEM_USER_INFO,
         # )
         # if not db_files or not len(db_files):
         #     raise NotFound(f"No files found for project_id {project_id}")
@@ -285,23 +243,19 @@ class ProjectDiagramModuleFilesAPIView(NonBlockingAPIView):
         "An error occurred while deleting module file.",
         exception_logger=logger,
     )
-    @authenticated_only()
     @verify_data_params(key_list=["project_id"])
     def delete(
         self,
         request: Request,
-        auth_producer: AuthenticationProducer,
     ):
         """Deletes module files for a specific project from the database.
 
         This method retrieves a project ID from the request data, verifies the project ID using the
-        provided AuthenticationProducer, and deletes the module files for the specified project from
+        deletes the module files for the specified project from
         the database using the file_module_service.
 
         Args:
             request (Request): The request containing the project ID.
-            auth_producer (AuthenticationProducer): The AuthenticationProducer to use for verifying
-            the project ID.
 
         Returns:
             Response: A response containing a success message and the result of the
@@ -309,10 +263,6 @@ class ProjectDiagramModuleFilesAPIView(NonBlockingAPIView):
         """
         res = self.project_ad_file_service.delete_files(
             data=request.data,
-            auth_producer=auth_producer,
-            permissions=[
-                auth_producer.permission_model.project_diagram_file_module.delete,
-            ],
             file_type=PROJECT_AD_FILE_TYPE_MODULE,
         )
         return Response(
@@ -349,19 +299,13 @@ class ProjectDiagramCactiFilesAPIView(NonBlockingAPIView):
         "An error occurred while retrieving project cacti files.",
         exception_logger=logger,
     )
-    @authenticated_only()
     @verify_get_params(key_list=["project_id"])
     def get(
         self,
         request: Request,
-        auth_producer: AuthenticationProducer,
     ):
         project_cacti = self.project_ad_file_service.get_files(
             data=request.GET,
-            auth_producer=auth_producer,
-            permissions=[
-                auth_producer.permission_model.project_diagram_file_cacti.read,
-            ],
             file_type=PROJECT_AD_FILE_TYPE_CACTI,
             as_response=True,
         )
@@ -377,12 +321,10 @@ class ProjectDiagramCactiFilesAPIView(NonBlockingAPIView):
         "An error occurred while inserting project cacti files.",
         exception_logger=logger,
     )
-    @authenticated_only()
     @verify_data_params(key_list=["project_id"])
     def post(
         self,
         request: Request,
-        auth_producer: AuthenticationProducer,
     ):
         """Inserts project cacti files.
 
@@ -393,8 +335,6 @@ class ProjectDiagramCactiFilesAPIView(NonBlockingAPIView):
         Args:
             request (Request): The HTTP request object containing the data for
             inserting the project cacti file.
-            auth_producer (AuthenticationProducer): The authentication producer
-            object used to verify permissions.
 
         Returns:
             Response: An HTTP response object indicating the success of the
@@ -406,10 +346,6 @@ class ProjectDiagramCactiFilesAPIView(NonBlockingAPIView):
         payload = self.project_ad_file_service.insert_files(
             data=request.data,
             files=request.FILES,
-            auth_producer=auth_producer,
-            permissions=[
-                auth_producer.permission_model.project_diagram_file_cacti.create,
-            ],
             file_type=PROJECT_AD_FILE_TYPE_CACTI,
         )
         return Response(
@@ -424,12 +360,10 @@ class ProjectDiagramCactiFilesAPIView(NonBlockingAPIView):
         "An error occurred while deleting project cacti files.",
         exception_logger=logger,
     )
-    @authenticated_only()
     @verify_data_params(key_list=["project_id"])
     def delete(
         self,
         request: Request,
-        auth_producer: AuthenticationProducer,
     ):
         """Deletes project cacti files.
 
@@ -440,8 +374,6 @@ class ProjectDiagramCactiFilesAPIView(NonBlockingAPIView):
         Args:
             request (Request): The HTTP request object containing the data for
             deleting the project cacti files.
-            auth_producer (AuthenticationProducer): The authentication producer
-            object used to verify permissions.
 
         Returns:
             Response: An HTTP response object indicating the success of the
@@ -452,10 +384,6 @@ class ProjectDiagramCactiFilesAPIView(NonBlockingAPIView):
         """
         retval = self.project_ad_file_service.delete_files(
             data=request.data,
-            auth_producer=auth_producer,
-            permissions=[
-                auth_producer.permission_model.project_diagram_file_cacti.delete,
-            ],
             file_type=PROJECT_AD_FILE_TYPE_CACTI,
         )
         return Response(
@@ -495,17 +423,13 @@ class ProjectDiagramJSONFilesAPIView(NonBlockingAPIView):
         "An error occurred while retrieving project diagram files.",
         exception_logger=logger,
     )
-    @authenticated_only()
     @verify_get_params(key_list=["project_id"])
     def get(
         self,
         request: Request,
-        auth_producer: AuthenticationProducer,
     ):
         project_diagram_file = self.project_ad_file_service.get_files(
             data=request.GET,
-            auth_producer=auth_producer,
-            permissions=[auth_producer.permission_model.project_diagram_file_json.read],
             file_type=PROJECT_AD_FILE_TYPE_DIAGRAM,
             as_response=True,
         )
@@ -521,12 +445,10 @@ class ProjectDiagramJSONFilesAPIView(NonBlockingAPIView):
         "An error occurred while inserting project diagram files.",
         exception_logger=logger,
     )
-    @authenticated_only()
     @verify_data_params(key_list=["project_id"])
     def post(
         self,
         request: Request,
-        auth_producer: AuthenticationProducer,
     ):
         """Insert project diagram files.
 
@@ -537,8 +459,6 @@ class ProjectDiagramJSONFilesAPIView(NonBlockingAPIView):
         Args:
             request (Request): The HTTP request object containing the data for
             inserting the project diagram files.
-            auth_producer (AuthenticationProducer): The authentication producer
-            object used to verify permissions.
 
         Returns:
             Response: An HTTP response object indicating the success of the
@@ -550,10 +470,6 @@ class ProjectDiagramJSONFilesAPIView(NonBlockingAPIView):
         payload = self.project_ad_file_service.insert_files(
             data=request.data,
             files=request.FILES,
-            auth_producer=auth_producer,
-            permissions=[
-                auth_producer.permission_model.project_diagram_file_json.create,
-            ],
             file_type=PROJECT_AD_FILE_TYPE_DIAGRAM,
         )
         return Response(
@@ -568,12 +484,10 @@ class ProjectDiagramJSONFilesAPIView(NonBlockingAPIView):
         "An error occurred while deleting project diagram files.",
         exception_logger=logger,
     )
-    @authenticated_only()
     @verify_data_params(key_list=["project_id"])
     def delete(
         self,
         request: Request,
-        auth_producer: AuthenticationProducer,
     ):
         """Deletes project diagram files.
 
@@ -584,8 +498,6 @@ class ProjectDiagramJSONFilesAPIView(NonBlockingAPIView):
         Args:
             request (Request): The HTTP request object containing the data for
             deleting the project diagram files.
-            auth_producer (AuthenticationProducer): The authentication producer
-            object used to verify permissions.
 
         Returns:
             Response: An HTTP response object indicating the success of the
@@ -596,10 +508,6 @@ class ProjectDiagramJSONFilesAPIView(NonBlockingAPIView):
         """
         retval = self.project_ad_file_service.delete_files(
             data=request.data,
-            auth_producer=auth_producer,
-            permissions=[
-                auth_producer.permission_model.project_diagram_file_json.delete,
-            ],
             file_type=PROJECT_AD_FILE_TYPE_DIAGRAM,
         )
         return Response(
@@ -635,17 +543,13 @@ class ProjectDiagramPDFDocumentFilesAPIView(NonBlockingAPIView):
         "An error occurred while retrieving project PDF document files.",
         exception_logger=logger,
     )
-    @authenticated_only()
     @verify_get_params(key_list=["project_id"])
     def get(
         self,
         request: Request,
-        auth_producer: AuthenticationProducer,
     ):
         project_pdf_document_file = self.project_ad_file_service.get_files(
             data=request.GET,
-            auth_producer=auth_producer,
-            permissions=[auth_producer.permission_model.project_diagram_file_pdf_document.read],
             file_type=PROJECT_AD_FILE_TYPE_PDF_DOCUMENT,
             as_response=True,
         )
@@ -661,12 +565,10 @@ class ProjectDiagramPDFDocumentFilesAPIView(NonBlockingAPIView):
         "An error occurred while inserting project PDF document files.",
         exception_logger=logger,
     )
-    @authenticated_only()
     @verify_data_params(key_list=["project_id"])
     def post(
         self,
         request: Request,
-        auth_producer: AuthenticationProducer,
     ):
         """Insert project PDF document files.
 
@@ -677,8 +579,6 @@ class ProjectDiagramPDFDocumentFilesAPIView(NonBlockingAPIView):
         Args:
             request (Request): The HTTP request object containing the data for
             inserting the project PDF document files.
-            auth_producer (AuthenticationProducer): The authentication producer
-            object used to verify permissions.
 
         Returns:
             Response: An HTTP response object indicating the success of the
@@ -690,10 +590,6 @@ class ProjectDiagramPDFDocumentFilesAPIView(NonBlockingAPIView):
         payload = self.project_ad_file_service.insert_files(
             data=request.data,
             files=request.FILES,
-            auth_producer=auth_producer,
-            permissions=[
-                auth_producer.permission_model.project_diagram_file_pdf_document.create,
-            ],
             file_type=PROJECT_AD_FILE_TYPE_PDF_DOCUMENT,
         )
         return Response(
@@ -708,12 +604,10 @@ class ProjectDiagramPDFDocumentFilesAPIView(NonBlockingAPIView):
         "An error occurred while deleting project PDF document files.",
         exception_logger=logger,
     )
-    @authenticated_only()
     @verify_data_params(key_list=["project_id"])
     def delete(
         self,
         request: Request,
-        auth_producer: AuthenticationProducer,
     ):
         """Deletes project PDF document files.
 
@@ -724,8 +618,6 @@ class ProjectDiagramPDFDocumentFilesAPIView(NonBlockingAPIView):
         Args:
             request (Request): The HTTP request object containing the data for
             deleting the project PDF document files.
-            auth_producer (AuthenticationProducer): The authentication producer
-            object used to verify permissions.
 
         Returns:
             Response: An HTTP response object indicating the success of the
@@ -736,10 +628,6 @@ class ProjectDiagramPDFDocumentFilesAPIView(NonBlockingAPIView):
         """
         retval = self.project_ad_file_service.delete_files(
             data=request.data,
-            auth_producer=auth_producer,
-            permissions=[
-                auth_producer.permission_model.project_diagram_file_pdf_document.delete,
-            ],
             file_type=PROJECT_AD_FILE_TYPE_PDF_DOCUMENT,
         )
         return Response(
@@ -773,15 +661,10 @@ class ProjectDiagramMediaFilesAPIView(NonBlockingAPIView):
         "An error occurred while retrieving project diagram media files.",
         exception_logger=logger,
     )
-    @authenticated_only()
     @verify_get_params(key_list=["project_id"])
-    def get(self, request: Request, auth_producer: AuthenticationProducer):
+    def get(self, request: Request):
         payload = self.project_ad_service.get_project_ad_image_files(
             data=request.GET,
-            auth_producer=auth_producer,
-            permissions=[
-                auth_producer.permission_model.project_diagram_file_image.read
-            ],
             file_types=self.file_types,
         )
         return Response(
@@ -796,16 +679,11 @@ class ProjectDiagramMediaFilesAPIView(NonBlockingAPIView):
         "An error occurred while inserting project diagram media files.",
         exception_logger=logger,
     )
-    @authenticated_only()
     @verify_data_params(key_list=["project_id"])
-    def post(self, request: Request, auth_producer: AuthenticationProducer):
+    def post(self, request: Request):
         payload = self.project_ad_service.insert_project_ad_image_files(
             data=request.data,
             files=request.FILES,
-            auth_producer=auth_producer,
-            permissions=[
-                auth_producer.permission_model.project_diagram_file_image.create
-            ],
             file_types=self.file_types,
         )
         return Response(
@@ -820,15 +698,10 @@ class ProjectDiagramMediaFilesAPIView(NonBlockingAPIView):
         "An error occurred while selecting project diagram media file.",
         exception_logger=logger,
     )
-    @authenticated_only()
     @verify_data_params(key_list=["project_id", "file_id"])
-    def patch(self, request: Request, auth_producer: AuthenticationProducer):
+    def patch(self, request: Request):
         payload = self.project_ad_service.select_project_ad_image_file(
             data=request.data,
-            auth_producer=auth_producer,
-            permissions=[
-                auth_producer.permission_model.project_diagram_file_image.update
-            ],
             file_types=self.file_types,
         )
         return Response(
@@ -843,15 +716,10 @@ class ProjectDiagramMediaFilesAPIView(NonBlockingAPIView):
         "An error occurred while deleting project diagram media files.",
         exception_logger=logger,
     )
-    @authenticated_only()
     @verify_data_params(key_list=["project_id", "file_id_list"])
-    def delete(self, request: Request, auth_producer: AuthenticationProducer):
+    def delete(self, request: Request):
         payload = self.project_ad_service.delete_project_ad_image_files(
             data=request.data,
-            auth_producer=auth_producer,
-            permissions=[
-                auth_producer.permission_model.project_diagram_file_image.delete
-            ],
             file_types=self.file_types,
         )
         return Response(
@@ -897,19 +765,13 @@ class ProjectDiagramXMLFilesAPIView(NonBlockingAPIView):
         "An error occurred while retrieving project XML files.",
         exception_logger=logger,
     )
-    @authenticated_only()
     @verify_get_params(key_list=["project_id"])
     def get(
         self,
         request: Request,
-        auth_producer: AuthenticationProducer,
     ):
         project_xml = self.project_ad_file_service.get_files(
             data=request.GET,
-            auth_producer=auth_producer,
-            permissions=[
-                auth_producer.permission_model.project_diagram_file_xml.read,
-            ],
             file_type=PROJECT_AD_FILE_TYPE_XML,
             as_response=True,
         )
@@ -925,12 +787,10 @@ class ProjectDiagramXMLFilesAPIView(NonBlockingAPIView):
         "An error occurred while inserting project XML files.",
         exception_logger=logger,
     )
-    @authenticated_only()
     @verify_data_params(key_list=["project_id"])
     def post(
         self,
         request: Request,
-        auth_producer: AuthenticationProducer,
     ):
         """Inserts project XML files.
 
@@ -941,8 +801,6 @@ class ProjectDiagramXMLFilesAPIView(NonBlockingAPIView):
         Args:
             request (Request): The HTTP request object containing the data for
             inserting the project XML file.
-            auth_producer (AuthenticationProducer): The authentication producer
-            object used to verify permissions.
 
         Returns:
             Response: An HTTP response object indicating the success of the
@@ -954,10 +812,6 @@ class ProjectDiagramXMLFilesAPIView(NonBlockingAPIView):
         payload = self.project_ad_file_service.insert_files(
             data=request.data,
             files=request.FILES,
-            auth_producer=auth_producer,
-            permissions=[
-                auth_producer.permission_model.project_diagram_file_xml.create,
-            ],
             file_type=PROJECT_AD_FILE_TYPE_XML,
         )
         return Response(
@@ -972,12 +826,10 @@ class ProjectDiagramXMLFilesAPIView(NonBlockingAPIView):
         "An error occurred while deleting project XML files.",
         exception_logger=logger,
     )
-    @authenticated_only()
     @verify_data_params(key_list=["project_id"])
     def delete(
         self,
         request: Request,
-        auth_producer: AuthenticationProducer,
     ):
         """Deletes project XML files.
 
@@ -988,8 +840,6 @@ class ProjectDiagramXMLFilesAPIView(NonBlockingAPIView):
         Args:
             request (Request): The HTTP request object containing the data for
             deleting the project XML files.
-            auth_producer (AuthenticationProducer): The authentication producer
-            object used to verify permissions.
 
         Returns:
             Response: An HTTP response object indicating the success of the
@@ -1000,10 +850,6 @@ class ProjectDiagramXMLFilesAPIView(NonBlockingAPIView):
         """
         retval = self.project_ad_file_service.delete_files(
             data=request.data,
-            auth_producer=auth_producer,
-            permissions=[
-                auth_producer.permission_model.project_diagram_file_xml.delete,
-            ],
             file_type=PROJECT_AD_FILE_TYPE_XML,
         )
         return Response(

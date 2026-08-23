@@ -8,19 +8,11 @@ export class ProjectAuthorization {
 
     get isAuthorized(): IsAuthorized {
         const isAuthorized: IsAuthorized = {
-            create: false,
+            create: true,
             read: true,
-            update: false,
-            delete: false,
+            update: true,
+            delete: true,
         };
-
-        // authorizationManager.updateIsAuthorizedFields<Project>(
-        //     // Field-level permissions only make sense once a concrete project document exists.
-        //     this.project ?? ({} as Project), //
-        //     isAuthorized,
-        //     user_permission_doc.project?.fields ?? {},
-        //     this.projectId ?? ""
-        // );
 
         return isAuthorized;
     }

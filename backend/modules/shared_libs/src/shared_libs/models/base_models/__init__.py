@@ -12,31 +12,6 @@ from .attack_flow import (
     GeneralThreatContext,
     PossiblePathObject,
 )
-from .authorization import (
-    CRUDModel,
-    FieldsBaseModel,
-    MasterMitigationFieldsModel,
-    MasterMitigationMeasureModel,
-    MasterMitigationPermissionModel,
-    MasterRegisterPermissionFieldsModel,
-    MasterRegisterPermissionModel,
-    MasterRegisterRiskScenarioFieldsModel,
-    MasterRegisterRiskScenarioPermissionModel,
-    MitigationFieldsModel,
-    PermissionModel,
-    ProjectPermissionFieldsModel,
-    ProjectPermissionModel,
-    ProjectRegisterPermissionFieldsModel,
-    ProjectRegisterPermissionModel,
-    ProjectRegisterRiskScenarioFieldsModel,
-    ProjectRegisterRiskScenarioPermissionModel,
-    ResourceTagFieldsModel,
-    ResourceTagPermissionModel,
-    UserPermissionFieldsModel,
-    UserPermissionModel,
-    UserPolicyDocBaseModel,
-    UserRoleDocBaseModel,
-)
 from .cacti import ProjectCactiBaseModel
 from .chatbot import (
     ChatFileAttachmentBaseModel,
@@ -162,7 +137,6 @@ from .register import (
     ScenarioLocationParentNodeBaseModel,
     SolutionDetail,
 )
-from .resource_tag import ResourceTagBaseModel
 from .shared.attack import (
     AttackAction,
     AttackFlowRuleExplanation,
@@ -245,7 +219,6 @@ from .stix import (
     StixSDOModels,
     StixSROModel,
 )
-from .token import JwtDictModel, RedisTokenBaseModel, TokenBaseModel
 from .tool import ToolHistoryBaseModel
 from .tosca import KbToscaBaseModel, ToscaMappingEnumeratedModel, ToscaMappingModel
 from .ai_invocation_log import AiInvocationLogBaseModel
@@ -255,7 +228,6 @@ from .credit_transaction_log import (
     CreditTransactionLogPatchModel,
     ReportingTransactionFields,
 )
-from .user import UserBaseModel, UserEntitlement
 from .user_credits import UserCreditsBaseModel
 from .user_plan_config import (
     AiSpec,

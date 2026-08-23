@@ -11,7 +11,6 @@ from shared_libs.exceptions.api_exceptions import BadRequest
 from shared_libs.infrastructure.producer.service import Producer
 from shared_libs.infrastructure.remote_repository.service import RemoteRepository
 from shared_libs.models.base_models import ProducerDataModel
-from shared_libs.producers.authentication_producer import AuthenticationProducer
 from shared_libs.producers.llm_producer import LLMProducer
 from shared_libs.producers.producer_data import (
     producer_data_diagram_pipeline_architecture,
@@ -19,6 +18,7 @@ from shared_libs.producers.producer_data import (
     producer_data_diagram_pipeline_topology,
     producer_data_project_register,
 )
+from shared_libs.constants import SYSTEM_USER_INFO
 
 TZINFO = settings.TZINFO
 logger = logging.getLogger(__name__)
@@ -109,22 +109,14 @@ class ProjectRegisterApplicationService(ProjectRegisterService):
     def infer_llm_topology_architecture(
         self,
         data: dict,
-        auth_producer: AuthenticationProducer,
-        permissions: list[str],
     ) -> str:
         project_id: str = data["project_id"]
         canvas_id: str = data["canvas_id"]
         file_id: str = data["file_id"]
 
-        self.verify_project_permissions(
-            project_id=project_id,
-            auth_producer=auth_producer,
-            permissions=permissions,
-        )
-
         self._ensure_no_active_llm_generation(
             project_id=project_id,
-            user_info=auth_producer.user_info,
+            user_info=SYSTEM_USER_INFO,
         )
 
         generation_id = str(uuid.uuid4())
@@ -152,14 +144,14 @@ class ProjectRegisterApplicationService(ProjectRegisterService):
             canvas_id=canvas_id,
             file_id=file_id,
             job_id=generation_id,
-            user_info=auth_producer.user_info,
+            user_info=SYSTEM_USER_INFO,
         )
         self.project_ad_service.start_llm_generation(
             project_id=project_id,
             canvas_id=canvas_id,
             task_id=task_id,
             generation_type="topology",
-            user_info=auth_producer.user_info,
+            user_info=SYSTEM_USER_INFO,
         )
         return task_id
 
@@ -170,21 +162,13 @@ class ProjectRegisterApplicationService(ProjectRegisterService):
     def infer_llm_dataflow(
         self,
         data: dict,
-        auth_producer: AuthenticationProducer,
-        permissions: list[str],
     ) -> str:
         project_id: str = data["project_id"]
         canvas_id: str = data["canvas_id"]
 
-        self.verify_project_permissions(
-            project_id=project_id,
-            auth_producer=auth_producer,
-            permissions=permissions,
-        )
-
         self._ensure_no_active_llm_generation(
             project_id=project_id,
-            user_info=auth_producer.user_info,
+            user_info=SYSTEM_USER_INFO,
         )
 
         generation_id = str(uuid.uuid4())
@@ -211,14 +195,14 @@ class ProjectRegisterApplicationService(ProjectRegisterService):
             project_id=project_id,
             canvas_id=canvas_id,
             job_id=generation_id,
-            user_info=auth_producer.user_info,
+            user_info=SYSTEM_USER_INFO,
         )
         self.project_ad_service.start_llm_generation(
             project_id=project_id,
             canvas_id=canvas_id,
             task_id=task_id,
             generation_type="dataflow",
-            user_info=auth_producer.user_info,
+            user_info=SYSTEM_USER_INFO,
         )
         return task_id
 
@@ -229,22 +213,14 @@ class ProjectRegisterApplicationService(ProjectRegisterService):
     def infer_llm_architecture(
         self,
         data: dict,
-        auth_producer: AuthenticationProducer,
-        permissions: list[str],
     ) -> str:
         project_id: str = data["project_id"]
         canvas_id: str = data["canvas_id"]
         description: str = data["description"]
 
-        self.verify_project_permissions(
-            project_id=project_id,
-            auth_producer=auth_producer,
-            permissions=permissions,
-        )
-
         self._ensure_no_active_llm_generation(
             project_id=project_id,
-            user_info=auth_producer.user_info,
+            user_info=SYSTEM_USER_INFO,
         )
 
         generation_id = str(uuid.uuid4())
@@ -272,13 +248,13 @@ class ProjectRegisterApplicationService(ProjectRegisterService):
             canvas_id=canvas_id,
             description=description,
             job_id=generation_id,
-            user_info=auth_producer.user_info,
+            user_info=SYSTEM_USER_INFO,
         )
         self.project_ad_service.start_llm_generation(
             project_id=project_id,
             canvas_id=canvas_id,
             task_id=task_id,
             generation_type="architecture",
-            user_info=auth_producer.user_info,
+            user_info=SYSTEM_USER_INFO,
         )
         return task_id
