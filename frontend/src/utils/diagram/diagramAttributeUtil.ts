@@ -220,30 +220,6 @@ export const getDefaultAttributeValue = (type?: string) => {
     }
 };
 
-/**
- * Gets available attribute options for adding new attributes.
- * Filters attributes that are not already present in the existing data and are deletable.
- *
- * @param attributes - Array of BaseFieldAttribute objects to filter
- * @param existingData - Object containing existing data keys to exclude from options
- * @returns Array of SelectableValue objects with label and value set to the attribute key
- */
-export const getAvailableAttributeOptions = (
-    attributes: BaseFieldAttribute[],
-    existingData: Record<string, unknown>
-): SelectableValue<string>[] => {
-    return (
-        attributes
-            ?.filter(
-                ({ key, ...attr }) =>
-                    !Object.keys(existingData || {})?.includes(key) && !!attr?.deletable
-            )
-            ?.map(({ key }) => {
-                return { label: key, value: key };
-            }) || []
-    );
-};
-
 export const stripAttributeValidation = (
     attributes: BaseFieldAttribute[] = []
 ): BaseFieldAttribute[] => {
@@ -251,21 +227,6 @@ export const stripAttributeValidation = (
         void validation;
         return attribute;
     });
-};
-
-export const stripDiagramElementAttributes = (
-    attributes: DiagramElementAttributes | null
-): DiagramElementAttributes | null => {
-    if (!attributes) {
-        return attributes;
-    }
-
-    return Object.fromEntries(
-        Object.entries(attributes).map(([key, value]) => [
-            key,
-            stripAttributeValidation(value ?? []),
-        ])
-    ) as unknown as DiagramElementAttributes;
 };
 
 export const hydrateAttributeValidation = (
@@ -296,19 +257,3 @@ export const hydrateDiagramElementAttributes = (
         ])
     ) as unknown as DiagramElementAttributes;
 };
-
-// const getSubnetOptions = (nodes: DiagramNode[]) => {
-//     const subnet_options = nodes
-//         ?.filter(
-//             (node) =>
-//                 node?.data?.icon === AWSClusterNodeIconKey.privateSubnet ||
-//                 node?.data?.icon === AWSClusterNodeIconKey.publicSubnet
-//         )
-//         ?.map((node) => {
-//             return {
-//                 label: node?.id, //
-//                 value: node?.id,
-//             } as OptionLabel;
-//         });
-//     return subnet_options;
-// };

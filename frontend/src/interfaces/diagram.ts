@@ -1,5 +1,5 @@
-import { Edge as ReactFlowEdge, Node as ReactFlowNode, Viewport, XYPosition } from "@xyflow/react";
 import { DatabaseProps, MetadataObject, SelectableValue } from ".";
+import { Edge as ReactFlowEdge, Node as ReactFlowNode, Viewport, XYPosition } from "@xyflow/react";
 
 import { ProjectDiagramFile, ProjectProps } from "./common";
 import { AttackPath, ProjectRegisterFields } from "./register";
@@ -9,7 +9,7 @@ export enum CanvasType {
     data_flow = "data_flow",
     llm = "llm",
     threat_scenario = "threat_scenario",
-    summary = "summary"
+    summary = "summary",
 }
 
 export enum CanvasColumn {
@@ -34,7 +34,7 @@ export enum CanvasEdgeType {
     architecture = "architecture",
     data_flow = "data_flow",
     threat_scenario = "threat_scenario",
-    llm = "llm"
+    llm = "llm",
 }
 
 export enum CanvasNodeType {
@@ -290,12 +290,7 @@ export type UserStoryCardRefKeys = keyof UserStoryCardRef;
 export type StackDirection = "row" | "row-reverse" | "column" | "column-reverse";
 
 export type StackJustifyContent =
-    | "flex-start"
-    | "center"
-    | "flex-end"
-    | "space-between"
-    | "space-around"
-    | "space-evenly";
+    "flex-start" | "center" | "flex-end" | "space-between" | "space-around" | "space-evenly";
 
 export type StackAlignItems = "flex-start" | "center" | "flex-end" | "stretch" | "baseline";
 
