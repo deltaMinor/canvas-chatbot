@@ -9,8 +9,6 @@ import DiagramCanvasDialogConfirm from "./DiagramCanvasDialogConfirm";
 import DiagramEditorCanvasBody from "./DiagramEditorCanvasBody";
 import DiagramEditorChatbot from "./DiagramEditorChatbot";
 
-// import DiagramLockedCQDialog from "./DiagramLockedCQDialog";
-
 const DiagramEditorComponent = () => {
     return (
         <Stack className="diagram-canvas-root">
