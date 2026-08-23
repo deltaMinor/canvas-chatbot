@@ -66,8 +66,6 @@ export interface UserPermissionDoc {
     kb_mitre_parsed: IsAuthorized<string>;
     kb_owasp_register: IsAuthorized<string>;
     kb_tosca: IsAuthorized<string>;
-    master_cq: IsAuthorized<string>;
-    master_cq_template: IsAuthorized<string>;
     master_diagram_template: IsAuthorized<string>;
     master_mitigation: IsAuthorized<string>;
     master_mitigation_log: IsAuthorized<string>;
@@ -78,14 +76,6 @@ export interface UserPermissionDoc {
     project_duplicate: IsAuthorized<string>;
     project_export: IsAuthorized<string>;
     project_import: IsAuthorized<string>;
-    project_cq: IsAuthorized<string>;
-    project_cq_clear: IsAuthorized<string>;
-    project_cq_log: IsAuthorized<string>;
-    project_cq_resume: IsAuthorized<string>;
-    project_cq_start_from_blank: IsAuthorized<string>;
-    project_cq_start_from_template: IsAuthorized<string>;
-    project_cq_submit: IsAuthorized<string>;
-    project_cq_template: IsAuthorized<string>;
     project_diagram: IsAuthorized<string>;
     project_diagram_architecture_generate: IsAuthorized<string>;
     project_diagram_data_flow_generate: IsAuthorized<string>;

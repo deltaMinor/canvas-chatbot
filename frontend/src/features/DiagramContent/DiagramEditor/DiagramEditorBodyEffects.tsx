@@ -5,7 +5,6 @@ import {
     useDiagramCapabilitiesSyncEffect,
     useDiagramDeselectOnDraftCanvasChangeEffect,
     useDiagramInitDraftCanvasIdEffect,
-    useDiagramLockedCanvasNoticeEffect,
     useDiagramNodeEdgeMappingSyncEffect,
     useDiagramResizeObserverEffect,
     useDiagramSelectionChangeSync,
@@ -18,7 +17,6 @@ import {
 const DiagramEditorBodyEffects = () => {
     useInitDiagramJoyrideEffect();
     useDiagramCapabilitiesSyncEffect();
-    useDiagramLockedCanvasNoticeEffect();
     useDiagramDeselectOnDraftCanvasChangeEffect();
     useDiagramInitDraftCanvasIdEffect();
     useDiagramViewDraftCanvasEffect();

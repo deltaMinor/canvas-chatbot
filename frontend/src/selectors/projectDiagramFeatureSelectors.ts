@@ -285,14 +285,6 @@ export const selectBackendSaveEnabled = (
     return diagramInstanceState.backendSaveEnabled ?? true;
 };
 
-export const selectCanvasViewOnlyLocked = (
-    state: RootState, //
-    instanceId?: string
-) => {
-    const diagramInstanceState = selectDiagramInstanceState(state, instanceId);
-    return diagramInstanceState.canvasViewOnlyLocked ?? true;
-};
-
 export const selectInTransition = (
     state: RootState, //
     _instanceId?: string

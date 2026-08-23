@@ -47,7 +47,6 @@ export enum DialogStateEnum {
     attackFlowDatabase = "attackFlowDatabase",
     diagramExport = "diagramExport",
     diagramImport = "diagramImport",
-    diagramLockedCQ = "diagramLockedCQ",
     diagramSetup = "diagramSetup",
     editMasterRegisterScenario = "editMasterRegisterScenario",
     editProjectRegisterScenario = "editProjectRegisterScenario",

@@ -3,7 +3,6 @@ import { FormikValues } from "formik";
 
 import { ProjectProps } from "#root/interfaces/common";
 import { CanvasProps, DiagramCanvas, DiagramEdge, DiagramNode } from "#root/interfaces/diagram";
-import { MasterCQ, QuestionOption, QuestionOptionGroup } from "#root/interfaces/questionnaire";
 import {
     BaseRegisterFields,
     MasterRegister,
@@ -64,10 +63,6 @@ export interface PostCreateNewProjectBody {
 
 export interface PostGenerateDiagramFromTemplateBody extends ProjectProps {
     templateId: string;
-}
-
-export interface PostQuestionnaireBody {
-    master_cq: MasterCQ<QuestionOption, QuestionOptionGroup>;
 }
 
 export interface PostUpdateProjectGroupBody extends ProjectProps {

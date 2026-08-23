@@ -27,7 +27,6 @@ import {
     selectPendingDrawerKey,
     selectRequestedThreatScenarioDrawerKey,
 } from "#root/selectors/projectDiagramFeatureSelectors";
-import { getProjectDiagramIsAuthorizedFromStore } from "#root/stores/backendAuthStore";
 import { getSelectedCanvas } from "#root/utils/diagram/backendDiagramUtil";
 import {
     getDiagramDraftCanvasEdges,
@@ -64,26 +63,8 @@ export const getDiagramDraftCanvasTypeFromStore = (
     return selectDiagramDraftCanvasType(getRootStateFromStore(), instanceId);
 };
 
-/**
- * Returns true when the project's Conception Questionnaire has been submitted
- * (isCompleted is truthy).  Positive-semantic counterpart to the deprecated
- * getIsDiagramLockedFromStore.
- *
- * The hook-level equivalent is useIsProjectCqCompleted (useIsProjectCqCompleted.ts).
- */
-export const getIsProjectCqCompletedFromStore = (): boolean => true;
-
-/**
- * @deprecated Use getIsProjectCqCompletedFromStore (positive semantic) instead.
- */
-export const getIsDiagramLockedFromStore = (): boolean => !getIsProjectCqCompletedFromStore();
-
 export const getDiagramDraftCanvasViewOnlyFromStore = (instanceId: string): boolean => {
-    return (
-        !!selectDiagramDraftCanvasViewOnly(getRootStateFromStore(), instanceId) ||
-        !getIsProjectCqCompletedFromStore() ||
-        !getProjectDiagramIsAuthorizedFromStore()?.update
-    );
+    return !!selectDiagramDraftCanvasViewOnly(getRootStateFromStore(), instanceId);
 };
 
 export const getDiagramDraftCanvasRefFromStore = (

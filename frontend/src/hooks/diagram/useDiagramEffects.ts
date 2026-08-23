@@ -2,7 +2,6 @@ export * from "./effects/useDiagramCanvasHistorySyncEffect";
 export * from "./effects/useDiagramDeselectOnDraftCanvasChangeEffect";
 export * from "./effects/useDiagramInitDraftCanvasIdEffect";
 export * from "./effects/useDiagramCapabilitiesSyncEffect";
-export * from "./effects/useDiagramLockedCanvasNoticeEffect";
 export * from "./effects/useDiagramNodeEdgeMappingSyncEffect";
 export * from "./effects/useDiagramResizeObserverEffect";
 export * from "./effects/useDiagramSetupFileSelectionEffect";

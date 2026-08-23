@@ -49,7 +49,6 @@ import {
     getChatStateFromStore,
     getConversationsFromStore,
     getDiagramBackendSaveEnabledFromStore,
-    getDiagramDraftCanvasViewOnlyFromStore,
     removeConversationFromStore,
     setChatHistoryInStore,
     setChatPendingInStore,
@@ -156,9 +155,6 @@ export const useDiagramChatbotProps = (chatbotRef: RefObject<ChatbotHandle | nul
     const initialSpecialInputs: SpecialInput[] = [INPUT_HELP];
 
     const performClearDiagram = React.useCallback(async () => {
-        if (getDiagramDraftCanvasViewOnlyFromStore(instanceId)) {
-            throw new Error("Unable to clear diagram as canvas is locked.");
-        }
         await runWithHeavyExecutionGuard(async () => {
             await CallApiWithTransition({
                 async_func: async () => {

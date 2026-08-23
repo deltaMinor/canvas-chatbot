@@ -14,7 +14,6 @@ import {
     useDiagramView,
     useDiagramWarningListMapping,
 } from "./projectDiagramFeatureHooks";
-import { useIsProjectCqCompleted } from "./useIsProjectCqCompleted";
 
 const EMPTY_BUTTON = { show: false, enabled: false };
 
@@ -72,8 +71,8 @@ const VISUALIZER_CAPABILITIES: DiagramCapabilitiesState = {
 /**
  * Computes the final combined editing capabilities for the current diagram
  * instance.  All contributing factors are baked in here -- canvas type,
- * canvas.view_only (diagram submitted), isCqCompleted (CQ submitted),
- * authorization, completion state, warning checks, and history availability.
+ * canvas.view_only (diagram submitted), authorization, completion state,
+ * warning checks, and history availability.
  *
  * Returns the computed capabilities directly (no Redux round-trip lag) and
  * keeps Redux in sync as a side-effect so store-level access via
@@ -94,12 +93,11 @@ const VISUALIZER_CAPABILITIES: DiagramCapabilitiesState = {
  * what actions are available in principle.
  *
  * canvases -> { [canvasId]: boolean }
- *   true when editing is allowed on that canvas (incorporates auth + CQ + view_only).
+ *   true when editing is allowed on that canvas (incorporates auth + view_only).
  */
 export const useDiagramCapabilities = (): DiagramCapabilitiesState => {
     const instanceId = useDiagramInstanceId();
     const projectDiagram = useProjectDiagram();
-    const isCqCompleted = useIsProjectCqCompleted();
     const selectedCanvas = useDiagramDraftCanvas();
     const canvasType = useDiagramDraftCanvasType();
     const diagramView = useDiagramView();
@@ -145,10 +143,10 @@ export const useDiagramCapabilities = (): DiagramCapabilitiesState => {
             return VISUALIZER_CAPABILITIES;
         }
 
-        // "soft" view-only: canvas submitted OR CQ not yet submitted.
+        // "soft" view-only: canvas submitted (view_only).
         // Authorization is intentionally NOT included here -- unauthorized users
         // still see buttons (just disabled) so they know what actions exist.
-        const softViewOnly = !!selectedCanvas?.view_only || !isCqCompleted;
+        const softViewOnly = !!selectedCanvas?.view_only;
 
         const isArch = canvasType === CanvasType.architecture;
         const isDf = canvasType === CanvasType.data_flow;
@@ -173,22 +171,23 @@ export const useDiagramCapabilities = (): DiagramCapabilitiesState => {
                     show: isArchDfOrSummary && !softViewOnly && !isCompleted,
                     enabled: canUpdate && !isMarkCompleteDisabledByCheck,
                 },
-                // shown whenever diagram is completed (visible even when CQ not done so
-                // users can see the Edit button); disabled by soft view-only or auth
+                // shown whenever diagram is completed (visible even when locked so
+                // users can see the Edit button); disabled by auth
                 unsetComplete: {
                     show: isCompleted,
-                    enabled: isCqCompleted && canUpdate,
+                    enabled: canUpdate,
                 },
                 // arch/df only; hidden when locked/submitted; no auth gate
                 tutorial: { show: isArchOrDf && !softViewOnly, enabled: true },
-                // undo/redo: not shown on df canvas; enabled only when history is available
+                // undo/redo: not shown on df canvas; enabled only when history is available.
+                // Not gated by canvas lock state - these buttons are always available.
                 undo: {
                     show: !isDf && canvasType !== undefined,
-                    enabled: !isDf && !softViewOnly && canUpdate && canUndo,
+                    enabled: !isDf && canUpdate && canUndo,
                 },
                 redo: {
                     show: !isDf && canvasType !== undefined,
-                    enabled: !isDf && !softViewOnly && canUpdate && canRedo,
+                    enabled: !isDf && canUpdate && canRedo,
                 },
                 // bidirectional arrow FAB: shown on arch/df; enabled when canvas is editable
                 biDirectionalArrow: {
@@ -200,8 +199,9 @@ export const useDiagramCapabilities = (): DiagramCapabilitiesState => {
                 edgeDrawerSave: { show: true, enabled: !softViewOnly && canUpdate },
                 // data flow drawer editable fields
                 dataFlowDrawerEdit: { show: isDf, enabled: !softViewOnly && canUpdate },
-                // all edit-toolbar stacks (align, layer, distribute, copy/paste/delete)
-                editToolbar: { show: true, enabled: !softViewOnly && canUpdate },
+                // all edit-toolbar stacks (align, layer, distribute, copy/paste/delete).
+                // Not gated by canvas lock state - always available.
+                editToolbar: { show: true, enabled: canUpdate },
                 // delete actions in attribute drawer headers
                 nodeDrawerDelete: { show: true, enabled: !softViewOnly && canUpdate },
                 edgeDrawerDelete: { show: true, enabled: !softViewOnly && canUpdate },
@@ -245,7 +245,7 @@ export const useDiagramCapabilities = (): DiagramCapabilitiesState => {
                 (projectDiagram?.canvas ?? []).map((c) => [
                     c.canvas_id,
                     // "hard" view-only for canvas interaction: includes auth
-                    !c.view_only && isCqCompleted && canUpdate,
+                    !c.view_only && canUpdate,
                 ])
             ),
         };
@@ -272,7 +272,6 @@ export const useDiagramCapabilities = (): DiagramCapabilitiesState => {
         canUpdateImageFile,
         canvasType,
         diagramView,
-        isCqCompleted,
         isCompleted,
         isMarkCompleteDisabledByCheck,
         projectDiagram?.canvas,

@@ -1,6 +1,5 @@
 import { defaultViewport } from "#root/constants/diagramConfig";
 import { CanvasType, DiagramCanvas, DiagramEdge, DiagramNode } from "#root/interfaces/diagram";
-import { getDiagramDraftCanvasViewOnlyFromStore } from "#root/stores/projectDiagram/canvas";
 import { getUpdatedDFCanvas } from "#root/utils/diagram/diagramCanvasUtil";
 import { getProcessedEdges } from "#root/utils/diagram/diagramEdgeUtil";
 import { getProcessedNodes } from "#root/utils/diagram/diagramNodeUtil";
@@ -94,16 +93,12 @@ export class DiagramViewCanvasResolver {
             return undefined;
         }
 
-        const selectedCanvasViewOnly = getDiagramDraftCanvasViewOnlyFromStore(
-            this.context.instanceId
-        );
-
         const processedNodes = this.clearSelectedState<DiagramNode>(
             getProcessedNodes({
                 projectDiagram: this.context.projectDiagram,
                 canvasNodes: draftCanvas.nodes ?? [],
                 selectedCanvas: draftCanvas,
-                selectedCanvasViewOnly,
+                selectedCanvasViewOnly: undefined,
                 threatOverviewScenarioScope: this.getEffectiveThreatOverviewScenarioScope(),
                 visibleThreatScenarioCanvasIds: this.context.visibleThreatScenarioCanvasIds,
                 architectureNodes: [],
@@ -119,7 +114,7 @@ export class DiagramViewCanvasResolver {
                 projectDiagram: this.context.projectDiagram,
                 canvasEdges: draftCanvas.edges ?? [],
                 selectedCanvas: draftCanvas,
-                selectedCanvasViewOnly,
+                selectedCanvasViewOnly: undefined,
                 threatOverviewScenarioScope: this.getEffectiveThreatOverviewScenarioScope(),
                 visibleThreatScenarioCanvasIds: this.context.visibleThreatScenarioCanvasIds,
                 architectureEdges: [],
@@ -156,16 +151,12 @@ export class DiagramViewCanvasResolver {
                 break;
         }
 
-        const selectedCanvasViewOnly = getDiagramDraftCanvasViewOnlyFromStore(
-            this.context.instanceId
-        );
-
         const processedOverlayNodes = this.clearSelectedState<DiagramNode>(
             getProcessedNodes({
                 projectDiagram: this.context.projectDiagram,
                 canvasNodes: overlayNodes,
                 selectedCanvas: processedDraftCanvas,
-                selectedCanvasViewOnly,
+                selectedCanvasViewOnly: undefined,
                 visibleThreatScenarioCanvasIds: this.context.visibleThreatScenarioCanvasIds,
                 threatOverviewScenarioScope: this.getEffectiveThreatOverviewScenarioScope(),
                 architectureNodes: [],
@@ -202,17 +193,13 @@ export class DiagramViewCanvasResolver {
                 break;
         }
 
-        const selectedCanvasViewOnly = getDiagramDraftCanvasViewOnlyFromStore(
-            this.context.instanceId
-        );
-
         const processedOverlayEdges = this.clearSelectedState<DiagramEdge>(
             getProcessedEdges({
                 projectDiagram__isAuthorized: this.context.projectDiagramIsAuthorized,
                 projectDiagram: this.context.projectDiagram,
                 canvasEdges: overlayEdges,
                 selectedCanvas: processedDraftCanvas,
-                selectedCanvasViewOnly,
+                selectedCanvasViewOnly: undefined,
                 threatOverviewScenarioScope: this.getEffectiveThreatOverviewScenarioScope(),
                 visibleThreatScenarioCanvasIds: this.context.visibleThreatScenarioCanvasIds,
                 architectureEdges: [],

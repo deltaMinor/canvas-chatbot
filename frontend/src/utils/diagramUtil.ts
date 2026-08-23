@@ -6,7 +6,6 @@ export * from "./diagram/diagramCanvasHistoryUtil";
 export * from "./diagram/diagramCanvasInteractionUtil";
 export * from "./diagram/diagramCanvasNodeFactoryUtil";
 export * from "./diagram/diagramCanvasNodeGroupUtil";
-export * from "./diagram/diagramCanvasStyleUtil";
 export * from "./diagram/diagramCanvasThreatMappingUtil";
 export * from "./diagram/diagramCanvasUtil";
 export * from "./diagram/diagramContentUtil";

@@ -9,12 +9,10 @@ import {
 } from "#root/hooks/diagram";
 import { OptionLabel, SelectableValue } from "#root/interfaces";
 import { DiagramCanvas, DiagramNode } from "#root/interfaces/diagram";
-import { getProjectDiagramIsAuthorizedFromStore } from "#root/stores/backendAuthStore";
 import { getProjectDiagramFromStore } from "#root/stores/backendStore";
 import {
     getDiagramDraftCanvasFromStore,
     getDiagramDraftCanvasTypeFromStore,
-    getDiagramDraftCanvasViewOnlyFromStore,
     setDiagramOverlayNodes,
 } from "#root/stores/projectDiagram/canvas";
 import { updateCanvas } from "#root/stores/projectDiagramFeaturePersistenceStore";
@@ -68,16 +66,10 @@ export const useUpdateNodeDataStored = () => {
             const architectureCanvas = architectureCanvasFromHook;
             const architectureNodes = architectureNodesFromHook;
             const projectDiagram = getProjectDiagramFromStore();
-            const projectDiagramIsAuthorized = getProjectDiagramIsAuthorizedFromStore();
             const selectedCanvas = getDiagramDraftCanvasFromStore(instanceId);
             const selectedCanvasType = getDiagramDraftCanvasTypeFromStore(instanceId);
-            const selectedCanvasViewOnly = getDiagramDraftCanvasViewOnlyFromStore(instanceId);
 
             if (!selectedCanvasType || !projectDiagram || !selectedCanvas) {
-                return;
-            }
-
-            if (!projectDiagramIsAuthorized?.update || selectedCanvasViewOnly) {
                 return;
             }
 
@@ -109,7 +101,7 @@ export const useUpdateNodeDataStored = () => {
                     projectDiagram,
                     canvasNodes: updatedArchitectureNodes,
                     selectedCanvas,
-                    selectedCanvasViewOnly,
+                    selectedCanvasViewOnly: undefined,
                     architectureNodes: [],
                     filterAuthorizedNodes: true,
                     filterSelectedViewNodes: true,

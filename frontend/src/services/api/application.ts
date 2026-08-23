@@ -12,12 +12,6 @@ import {
     ProjectProgress,
     ProjectSettingsData,
 } from "#root/interfaces/project";
-import {
-    ProjectCQ,
-    ProjectCQTemplate,
-    QuestionOption,
-    QuestionOptionGroup,
-} from "#root/interfaces/questionnaire";
 import { ResourceTagFields } from "#root/interfaces/resource_tag";
 import {
     GetIntegrationBody,
@@ -106,69 +100,6 @@ export class ApplicationService {
         obj: { project_id_list?: string[] } //
     ): Promise<AxiosApiResponse> {
         return await axios_api.delete("projects", { data: obj });
-    }
-
-    // project_cq
-    async getProjectCQ({
-        project_id, //
-    }: ProjectProps): Promise<
-        AxiosApiResponse<{ project_cq: ProjectCQ<QuestionOption, QuestionOptionGroup> }>
-    > {
-        return await axios_api.get("project_cq", { params: { project_id } });
-    }
-
-    async saveProjectCQ(
-        body: Partial<ProjectCQ> //
-    ): Promise<AxiosApiResponse> {
-        return await axios_api.patch("project_cq", body);
-    }
-
-    async saveProjectCQWithTemplate(
-        body: ProjectProps & { template_id: string } //
-    ) {
-        return await axios_api.post("project_cq/start/from_template", body);
-    }
-
-    async startProjectCQFromBlank(
-        body: ProjectProps //
-    ): Promise<AxiosApiResponse> {
-        return await axios_api.post("project_cq/start/from_blank", body);
-    }
-
-    async clearProjectCQ(
-        body: ProjectProps //
-    ): Promise<AxiosApiResponse> {
-        return await axios_api.post("project_cq/clear", body);
-    }
-
-    async resumeProjectCQ(
-        body: ProjectProps //
-    ): Promise<AxiosApiResponse> {
-        return await axios_api.post("project_cq/resume", body);
-    }
-
-    // project_cq logs
-    async getProjectCQLogs({
-        project_id, //
-    }: ProjectProps): Promise<AxiosApiResponse<{ logs: AuditLog[] }>> {
-        return await axios_api.get("project_cq/logs", {
-            params: { project_id },
-        });
-    }
-
-    async submitProjectCQ(
-        body: Partial<ProjectCQ> //
-    ): Promise<AxiosApiResponse> {
-        return await axios_api.patch("project_cq/submit", body);
-    }
-
-    // project_cq_template
-    async getProjectCQTemplate(
-        { project_id }: ProjectProps //
-    ): Promise<AxiosApiResponse<{ project_cq_template: ProjectCQTemplate }>> {
-        return await axios_api.get("project_cq/template", {
-            params: { project_id },
-        });
     }
 
     // resource_tags

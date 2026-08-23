@@ -21,7 +21,6 @@ import {
     selectAttackPathSelectionFieldContentHeights,
     selectBackendSaveEnabled,
     selectBiDirectionalArrow,
-    selectCanvasViewOnlyLocked,
     selectDiagramCanvasHistory,
     selectDiagramCanvasHistoryIndex,
     selectDiagramCanvasInit,
@@ -188,8 +187,6 @@ import {
     getNextWarningSortDirection,
 } from "#root/utils/diagram/diagramWarningUtil";
 import { resolveNextStateAction } from "#root/utils/diagramUtil";
-
-import { useIsProjectCqCompleted } from "./useIsProjectCqCompleted";
 
 // ==============================
 // useSelector Hooks
@@ -458,18 +455,11 @@ export const useDiagramDraftCanvasType = () => {
 
 export const useDiagramDraftCanvasViewOnly = () => {
     const instanceId = useDiagramInstanceId();
-    const isCqCompleted = useIsProjectCqCompleted();
     const selectedCanvasViewOnly = useSelector(
         (state: RootState) => selectDiagramDraftCanvasViewOnly(state, instanceId) //
     );
-    const canvasViewOnlyLocked = useSelector(
-        (state: RootState) => selectCanvasViewOnlyLocked(state, instanceId) //
-    );
 
-    return React.useMemo(
-        () => !!selectedCanvasViewOnly || !isCqCompleted || canvasViewOnlyLocked,
-        [canvasViewOnlyLocked, isCqCompleted, selectedCanvasViewOnly]
-    );
+    return !!selectedCanvasViewOnly;
 };
 
 export const useDiagramDraftCanvasRef = () => {

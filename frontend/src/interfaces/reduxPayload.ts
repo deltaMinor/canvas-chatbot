@@ -2,7 +2,6 @@ import type { PayloadAction } from "@reduxjs/toolkit";
 import type { HandleType } from "@xyflow/react";
 
 import type { OptionLabel } from "#root/interfaces";
-import type { CQFormContentView, WizardStep } from "#root/interfaces/cqForm";
 import type {
     CanvasColumn,
     CanvasType,
@@ -23,7 +22,6 @@ import type { NodeAttackPathMapping } from "#root/interfaces/mitre";
 import type { TableRowParams } from "#root/interfaces/questionnaire";
 import type {
     AssessmentSetupFeatureInstanceState,
-    CQFormInstanceState,
     DiagramEditToolbarState,
     DiagramInstanceState,
     DiagramPendingDrawerKey,
@@ -111,23 +109,6 @@ export interface UpdateMuiDataGridExternalStatePayload {
     externalState?: Partial<Pick<MuiDataGridInstanceState, "defaultVisibleFields" | "refRows">>;
     instanceId: string;
 }
-
-export interface CQFormInstancePayload<T> {
-    instanceId?: string;
-    value: T;
-}
-
-export interface InitializeCQFormInstancePayload {
-    initialState?: Partial<CQFormInstanceState>;
-    instanceId: string;
-}
-
-export type CQFormCurrentViewPayload =
-    | CQFormContentView
-    | null
-    | CQFormInstancePayload<CQFormContentView | null>;
-
-export type CQFormWizardStepPayload = WizardStep | CQFormInstancePayload<WizardStep>;
 
 export interface ProjectDashboardInstancePayload<T> {
     instanceId?: string;

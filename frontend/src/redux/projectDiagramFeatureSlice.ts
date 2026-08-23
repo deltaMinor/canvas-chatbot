@@ -117,7 +117,6 @@ export const createInitialDiagramInstanceState = (): DiagramInstanceState => ({
     isEdgeDrawerDirty: false,
     viewSelectDisabled: false,
     backendSaveEnabled: true,
-    canvasViewOnlyLocked: false,
     pendingDrawerKey: null,
     requestedThreatScenarioDrawerKey: "attackPath",
     biDirectionalArrow: false,
@@ -580,13 +579,6 @@ const projectDiagramFeatureSliceInternal = createSlice({
         ) {
             const { instanceId, value } = getDiagramPayload(action.payload);
             ensureDiagramInstance(state, instanceId).backendSaveEnabled = value;
-        },
-        setCanvasViewOnlyLocked(
-            state, //
-            action: PayloadAction<boolean | DiagramInstancePayload<boolean>>
-        ) {
-            const { instanceId, value } = getDiagramPayload(action.payload);
-            ensureDiagramInstance(state, instanceId).canvasViewOnlyLocked = value;
         },
         setInTransition(
             state, //
@@ -1060,10 +1052,6 @@ const projectDiagramFeatureSlice: {
         setBackendSaveEnabled: ActionCreatorWithPayload<
             SetDiagramBooleanPayload,
             "diagram/setBackendSaveEnabled"
-        >;
-        setCanvasViewOnlyLocked: ActionCreatorWithPayload<
-            SetDiagramBooleanPayload,
-            "diagram/setCanvasViewOnlyLocked"
         >;
         setInTransition: ActionCreatorWithPayload<
             boolean, //

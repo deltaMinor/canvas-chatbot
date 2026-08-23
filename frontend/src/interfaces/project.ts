@@ -4,7 +4,6 @@ import { ProjectSettings, ProjectSettingsSection } from "#root/enums/project";
 
 import { ProjectProps } from "./common";
 import { ProjectDiagram } from "./diagram";
-import { ProjectCQ, ProjectCQTemplate, QuestionOption, QuestionOptionGroup } from "./questionnaire";
 import {
     FrameworkCategoryEnum,
     MitigationMeasure,
@@ -174,7 +173,7 @@ export interface ImportProject {
     resource_tags?: string[];
 }
 
-export type ProjectFieldTypes = ProjectCQ | RiskRegister | Progress;
+export type ProjectFieldTypes = RiskRegister | Progress;
 
 export enum ProjectStatusEnum {
     ACTIVE = "active",
@@ -182,8 +181,6 @@ export enum ProjectStatusEnum {
 }
 
 export interface ProjectExportData {
-    project_cq_template: ProjectCQTemplate;
-    project_cq: ProjectCQ<QuestionOption, QuestionOptionGroup>;
     project_diagram: ProjectDiagram;
     project_assessment_history: ProjectAssessmentHistory;
     project_register: ProjectRegister;

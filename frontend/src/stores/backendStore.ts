@@ -251,26 +251,6 @@ export const setProjectAssessmentConfig = createProjectSetter(
     {} as NonNullable<ProjectScopedState["projectAssessmentConfig"]>
 );
 
-export const getMasterCQFromStore = createBackendGetter(
-    "masterCQ",
-    {} as NonNullable<BackendState["masterCQ"]>
-);
-export const setMasterCQ = createBackendSetter(
-    "masterCQ",
-    app_actions.backend.setMasterCQ,
-    {} as NonNullable<BackendState["masterCQ"]>
-);
-
-export const getMasterCQTemplateFromStore = createBackendGetter(
-    "masterCQTemplate",
-    {} as NonNullable<BackendState["masterCQTemplate"]>
-);
-export const setMasterCQTemplate = createBackendSetter(
-    "masterCQTemplate",
-    app_actions.backend.setMasterCQTemplate,
-    {} as NonNullable<BackendState["masterCQTemplate"]>
-);
-
 export const getMasterDiagramTemplatesFromStore = createBackendGetter(
     "masterDiagramTemplates",
     [] as NonNullable<BackendState["masterDiagramTemplates"]>
@@ -365,36 +345,6 @@ export const setProjectDiagramFileCacti = createProjectSetter(
     "projectDiagramFileCacti",
     app_actions.backend.setProjectDiagramFileCacti,
     {} as NonNullable<ProjectScopedState["projectDiagramFileCacti"]>
-);
-
-export const getProjectCQFromStore = createProjectGetter(
-    "projectCQ",
-    {} as NonNullable<ProjectScopedState["projectCQ"]>
-);
-export const setProjectCQ = createProjectSetter(
-    "projectCQ",
-    app_actions.backend.setProjectCQ,
-    {} as NonNullable<ProjectScopedState["projectCQ"]>
-);
-
-export const getProjectCQLogsFromStore = createProjectGetter(
-    "projectCQLogs",
-    [] as NonNullable<ProjectScopedState["projectCQLogs"]>
-);
-export const setProjectCQLogs = createProjectSetter(
-    "projectCQLogs",
-    app_actions.backend.setProjectCQLogs,
-    [] as NonNullable<ProjectScopedState["projectCQLogs"]>
-);
-
-export const getProjectCQTemplateFromStore = createProjectGetter(
-    "projectCQTemplate",
-    {} as NonNullable<ProjectScopedState["projectCQTemplate"]>
-);
-export const setProjectCQTemplate = createProjectSetter(
-    "projectCQTemplate",
-    app_actions.backend.setProjectCQTemplate,
-    {} as NonNullable<ProjectScopedState["projectCQTemplate"]>
 );
 
 export const getProjectDiagramFromStore = createProjectGetter(
@@ -628,14 +578,6 @@ export const getKbToscaLoadedFromStore = createBackendGetter(
     "kbToscaLoaded",
     false //
 );
-export const getMasterCQLoadedFromStore = createBackendGetter(
-    "masterCQLoaded",
-    false //
-);
-export const getMasterCQTemplateLoadedFromStore = createBackendGetter(
-    "masterCQTemplateLoaded",
-    false
-);
 export const getMasterDiagramTemplatesLoadedFromStore = createBackendGetter(
     "masterDiagramTemplatesLoaded",
     false
@@ -671,18 +613,6 @@ export const getPreAuthLoadedFromStore = createBackendGetter(
 export const getProjectCactiLoadedFromStore = createProjectGetter(
     "projectDiagramFileCactiLoaded",
     false //
-);
-export const getProjectCQLoadedFromStore = createProjectGetter(
-    "projectCQLoaded",
-    false //
-);
-export const getProjectCQLogsLoadedFromStore = createProjectGetter(
-    "projectCQLogsLoaded",
-    false //
-);
-export const getProjectCQTemplateLoadedFromStore = createProjectGetter(
-    "projectCQTemplateLoaded",
-    false
 );
 export const getProjectDiagramFileJsonLoadedFromStore = createProjectGetter(
     "projectDiagramFileJsonLoaded",

@@ -10,7 +10,6 @@ import { getProjectDiagramFromStore } from "#root/stores/backendStore";
 import {
     getDiagramDraftCanvasFromStore,
     getDiagramDraftCanvasNodesFromStore,
-    getDiagramDraftCanvasViewOnlyFromStore,
     setDiagramDraftCanvasEdges,
 } from "#root/stores/projectDiagram/canvas";
 import { getArchitectureEdges } from "#root/utils/diagram/backendDiagramUtil";
@@ -40,7 +39,6 @@ export const useHandleSetProcessedEdges = () => {
                 const projectDiagramArchitectureEdges = getArchitectureEdges(projectDiagram);
                 const projectDiagramIsAuthorized = getProjectDiagramIsAuthorizedFromStore();
                 const selectedCanvas = getDiagramDraftCanvasFromStore(instanceId);
-                const selectedCanvasViewOnly = !!getDiagramDraftCanvasViewOnlyFromStore(instanceId);
                 const nodes = getDiagramDraftCanvasNodesFromStore(instanceId);
 
                 if (!selectedCanvas || !projectDiagram) return [];
@@ -52,7 +50,7 @@ export const useHandleSetProcessedEdges = () => {
                     projectDiagram,
                     canvasEdges,
                     selectedCanvas,
-                    selectedCanvasViewOnly,
+                    selectedCanvasViewOnly: undefined,
                     architectureEdges,
                     filterAuthorizedEdges,
                     filterSelectedViewEdges,

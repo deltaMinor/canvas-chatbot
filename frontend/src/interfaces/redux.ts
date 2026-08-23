@@ -16,7 +16,6 @@ import type { PreAuthFields } from "#root/interfaces/authentication";
 import type { UserAuthorization, UserPolicyDoc, UserRoleDoc } from "#root/interfaces/authorization";
 import type { ProjectCacti } from "#root/interfaces/cacti";
 import type { ProjectDiagramFile } from "#root/interfaces/common";
-import type { CQFormContentView, WizardStep } from "#root/interfaces/cqForm";
 import type { KbCsaCCoP } from "#root/interfaces/csa_ccop";
 import type {
     CanvasColumn,
@@ -70,11 +69,7 @@ import type {
 import type {
     CQFormQuestion,
     ExtendedFieldConfig,
-    MasterCQ,
-    MasterCQTemplate,
     ProjectAssessmentConfigObject,
-    ProjectCQ,
-    ProjectCQTemplate,
     Question,
     QuestionOption,
     QuestionOptionGroup,
@@ -236,12 +231,6 @@ export interface LegacyBackendState {
     projectAssessmentConfig: ProjectAssessmentConfigObject | null;
     projectAssessmentConfigLoaded: boolean;
     projectAssessmentConfigLoadError: boolean;
-    masterCQ: MasterCQ<QuestionOption, QuestionOptionGroup> | null;
-    masterCQLoaded: boolean;
-    masterCQLoadError: boolean;
-    masterCQTemplate: MasterCQTemplate | null;
-    masterCQTemplateLoaded: boolean;
-    masterCQTemplateLoadError: boolean;
     masterDiagramTemplates: MasterDiagramTemplate[];
     masterDiagramTemplatesLoaded: boolean;
     masterDiagramTemplatesLoadError: boolean;
@@ -272,15 +261,6 @@ export interface LegacyBackendState {
     projectAssessmentHistory: ProjectAssessmentHistory | null;
     projectAssessmentHistoryLoaded: boolean;
     projectAssessmentHistoryLoadError: boolean;
-    projectCQ: ProjectCQ | null;
-    projectCQLoaded: boolean;
-    projectCQLoadError: boolean;
-    projectCQLogs: AuditLog[];
-    projectCQLogsLoaded: boolean;
-    projectCQLogsLoadError: boolean;
-    projectCQTemplate: ProjectCQTemplate | null;
-    projectCQTemplateLoaded: boolean;
-    projectCQTemplateLoadError: boolean;
     projectDiagram: ProjectDiagram | null;
     projectDiagramLoaded: boolean;
     projectDiagramLoadError: boolean;
@@ -351,15 +331,6 @@ export type ProjectStateKey =
     | "projectAssessmentHistory"
     | "projectAssessmentHistoryLoaded"
     | "projectAssessmentHistoryLoadError"
-    | "projectCQ"
-    | "projectCQLoaded"
-    | "projectCQLoadError"
-    | "projectCQLogs"
-    | "projectCQLogsLoaded"
-    | "projectCQLogsLoadError"
-    | "projectCQTemplate"
-    | "projectCQTemplateLoaded"
-    | "projectCQTemplateLoadError"
     | "projectDiagram"
     | "projectDiagramLoaded"
     | "projectDiagramLoadError"
@@ -545,34 +516,6 @@ export interface ProjectAssessmentInstanceState {
 
 export interface ProjectAssessmentState {
     instances: Record<string, ProjectAssessmentInstanceState>;
-}
-
-export interface CQFormInstanceState {
-    hasCompletedInitialLoad: boolean;
-    inTransition: boolean;
-    isSaving: boolean;
-    currentView: CQFormContentView | null;
-    previousView: CQFormContentView | null;
-    transitionTargetView: CQFormContentView | null;
-    currentFormValues: FormikValues;
-    displayedSectionIndex: number;
-    displayedSubsectionIndex: number;
-    formDefaultValues: FormikValues;
-    openInfoDrawer: boolean;
-    savedBaseline: FormikValues;
-    savedFormValues: FormikValues;
-    sectionIndex: number;
-    sectionInTransition: boolean;
-    selectedQuestion: Question;
-    selectedScenarioId: string;
-    subsectionIndex: number;
-    subsectionInTransition: boolean;
-    wizardSelectedTemplateId: string;
-    wizardStep: WizardStep;
-}
-
-export interface CQFormFeatureState {
-    instances: Record<string, CQFormInstanceState>;
 }
 
 export interface ProjectDashboardFeatureInstanceState {
@@ -773,7 +716,6 @@ export interface DiagramInstanceState {
     isEdgeDrawerDirty: boolean;
     viewSelectDisabled: boolean;
     backendSaveEnabled: boolean;
-    canvasViewOnlyLocked: boolean;
     pendingDrawerKey: DiagramPendingDrawerKey;
     requestedThreatScenarioDrawerKey: DiagramRequestedThreatScenarioDrawerKey;
     biDirectionalArrow: boolean;
@@ -898,7 +840,6 @@ export interface RootState {
     mitreFeature: MitreFeatureState;
     muiDataGridFeature: MuiDataGridFeatureState;
     projectAssessment: ProjectAssessmentState;
-    projectCQFeature: CQFormFeatureState;
     projectDashboardFeature: ProjectDashboardFeatureState;
     projectMitigationFeature: ProjectMitigationFeatureState;
     projectRegisterFeature: ProjectRegisterFeatureState;

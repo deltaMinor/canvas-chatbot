@@ -55,10 +55,6 @@ export const formatTargetKey = (targetKey: string): string => {
 
         // Application section
         feedback_form: "Feedback Form",
-        master_cq: "Master Questionnaire",
-        master_cq_template: "Master Questionnaire Template",
-        project_cq: "Project Questionnaire",
-        project_cq_template: "Project Questionnaire Template",
         projects: "Projects",
         resource_tag: "Resource Tag",
 

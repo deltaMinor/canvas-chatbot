@@ -21,7 +21,6 @@ import { ChatMessage, ChatbotHandle, HandleInputFnOutput } from "#root/interface
 import { getProjectDiagramFilePdfFromApi } from "#root/services/domain/diagram_pdf_file";
 import { sendIntentRXMessage } from "#root/services/domain/intentrx";
 import { stringsToHandleInputFnOutput } from "#root/utils/chatbot/formatOutput";
-import { guardCanvasUnlocked } from "#root/utils/diagramChatbot/canvas";
 import { formatSetupTopologyPanels } from "#root/utils/diagramChatbot/formatIntentRX";
 import {
     IntentRXContext,
@@ -134,8 +133,6 @@ export const handleNeutralState = async (
             return startIntentRXSession("intent", ChatbotState.LlmIntent, intentContext);
         }
         case "/start topology": {
-            const locked = guardCanvasUnlocked(intentContext.instanceId, "start TopologyGenerator");
-            if (locked) return locked;
             const [response, state] = await startIntentRXSession(
                 "topology",
                 ChatbotState.LlmTopologySetup,
@@ -150,11 +147,6 @@ export const handleNeutralState = async (
                 ChatbotState.ConfirmClearChat,
             ];
         case "/clear diagram": {
-            const locked = guardCanvasUnlocked(
-                intentContext.instanceId,
-                "execute clear diagram operation"
-            );
-            if (locked) return locked;
             return [
                 stringsToHandleInputFnOutput(MSG_CONFIRM_CLEAR_DIAGRAM),
                 ChatbotState.ConfirmClearDiagram,
@@ -166,11 +158,6 @@ export const handleNeutralState = async (
                 ChatbotState.ConfirmClearRuns,
             ];
         case "/clear all": {
-            const locked = guardCanvasUnlocked(
-                intentContext.instanceId,
-                "execute clear diagram operation"
-            );
-            if (locked) return locked;
             return [
                 stringsToHandleInputFnOutput(MSG_CONFIRM_CLEAR_ALL),
                 ChatbotState.ConfirmClearAll,

@@ -115,15 +115,6 @@ export interface FormStates {
     localContext: FormikContext;
 }
 
-export interface MasterCQ<T = SelectableValue, U = SelectableValueGroup> extends DatabaseProps {
-    defaultOptions?: { [key: string]: QuestionOption[] };
-    defaultOptionsGroup?: { [key: string]: QuestionOptionGroup[] };
-    dependentFields?: DependentFields;
-    initialValues?: FormikValues;
-    schema_: number;
-    sections: Section<T, U>[];
-}
-
 export interface MatrixInput {
     row: string;
     columns: {
@@ -176,55 +167,6 @@ export type FormBaseValue =
     | UploadedFileValue[];
 
 export type FormValue = FormBaseValue | { [key: string]: FormBaseValue }[];
-
-export interface ProjectCQ<T = SelectableValue, U = SelectableValueGroup>
-    extends DatabaseProps, ProjectProps {
-    dependentFields: DependentFields;
-    initialValues: FormikValues;
-    isCompleted: boolean;
-    cq_version_id?: string;
-    lastCompletedBy?: MetadataObject;
-    schema_: number;
-    sections: Section<T, U>[];
-    values: { [key: string]: FormValue };
-}
-
-export interface CQTemplateFieldTemplateValue {
-    [key: string]: FormValue;
-    type: QuestionFieldType;
-}
-
-export interface CQTemplateFieldTemplate {
-    template_id: string;
-    template_name: string;
-    domains: string[];
-    values: CQTemplateFieldTemplateValue[];
-}
-
-export interface CQTemplateFieldTemplateMapping {
-    fieldId: string;
-    templates: CQTemplateFieldTemplate[];
-}
-
-export interface CQTemplateFormTemplateMapping {
-    template_id: string;
-    template_name: string;
-    domains: string[];
-    description: string;
-    use_cases: string[];
-    tags: string[];
-    values: { [key: string]: FormValue };
-}
-
-export interface MasterCQTemplate extends DatabaseProps {
-    schema_: number;
-    field_templates: CQTemplateFieldTemplateMapping[];
-    form_templates: CQTemplateFormTemplateMapping[];
-}
-
-export interface ProjectCQTemplate extends MasterCQTemplate, ProjectProps {
-    //
-}
 
 export type CardContentItemType = "string" | "string_list" | "chips";
 

@@ -23,8 +23,6 @@ export * from "./useHandleSetProcessedNodesAndEdges";
 export * from "./useInfoNodeDataStored";
 export * from "./useInitDraftCanvasId";
 export * from "./useIsCanvasReady";
-export * from "./useIsDiagramLocked";
-export * from "./useIsProjectCqCompleted";
 export * from "./useIsDiagramThreatDrawerEdgesOpen";
 export * from "./useIsDiagramThreatDrawerNodesOpen";
 export * from "./useIsThreatMappedEdgeHidden";
