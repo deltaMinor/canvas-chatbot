@@ -20,6 +20,7 @@ import {
     selectDiagramMiniMapExpanded,
     selectDiagramOverlayEdges,
     selectDiagramOverlayNodes,
+    selectDiagramSelectedDataflowCanvasId,
     selectDiagramSelectedTabGroup,
     selectInTransition,
     selectNodeHandleEdgeMapping,
@@ -101,6 +102,24 @@ export const setDiagramSelectedTabGroup = (
 
     app_store.dispatch(
         app_actions.diagram.setSelectedTabGroup(
+            getInstanceValuePayloadFromStore(nextValue, instanceId)
+        )
+    );
+};
+
+export const getDiagramSelectedDataflowCanvasIdFromStore = (instanceId: string): string => {
+    return selectDiagramSelectedDataflowCanvasId(getRootStateFromStore(), instanceId);
+};
+
+export const setDiagramSelectedDataflowCanvasId = (
+    value: React.SetStateAction<string>,
+    instanceId: string
+) => {
+    const currentValue = getDiagramSelectedDataflowCanvasIdFromStore(instanceId);
+    const nextValue = resolveNextStateAction(value, currentValue);
+
+    app_store.dispatch(
+        app_actions.diagram.setSelectedDataflowCanvasId(
             getInstanceValuePayloadFromStore(nextValue, instanceId)
         )
     );

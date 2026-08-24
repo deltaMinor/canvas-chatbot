@@ -23,5 +23,13 @@ export const getDraftCanvasDrawerState = ({
         };
     }
 
+    if (draftCanvas.canvas_type === CanvasType.data_flow) {
+        return {
+            ...currentDrawerState,
+            diagram_user_story: true,
+            diagram_resource: false,
+        };
+    }
+
     return undefined;
 };

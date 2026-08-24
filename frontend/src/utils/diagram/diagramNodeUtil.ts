@@ -251,6 +251,171 @@ export const getArchitectureCanvasNodeProps = ({
     };
 };
 
+export const getDataFlowCanvasNodeProps = ({
+    selectedCanvasViewOnly, //
+    node,
+}: NodeVisibilityFuncProps) => {
+    if (
+        node?.data?.type === CanvasNodeType.architecture.toString() //
+    ) {
+        return {
+            connectable: !selectedCanvasViewOnly,
+            deletable: false,
+            draggable: false,
+            selectable: false,
+            style: {
+                opacity: SELECTED_NODE_EDGE_OPACITY, //
+            },
+        };
+    } else if (
+        node?.data?.type === CanvasNodeType.data_flow.toString() //
+    ) {
+        return {
+            connectable: !selectedCanvasViewOnly,
+            deletable: false,
+            draggable: false,
+            selectable: !selectedCanvasViewOnly,
+            style: {
+                opacity: SELECTED_NODE_EDGE_OPACITY, //
+            },
+        };
+    }
+    return {
+        selected: false,
+        connectable: false,
+        deletable: false,
+        draggable: false,
+        selectable: false,
+        style: {
+            opacity: DESELECTED_NODE_OPACITY, //
+        },
+    };
+};
+
+export const getSummaryCanvasNodeProps = (_props: NodeVisibilityFuncProps) => {
+    return {
+        selected: false,
+        connectable: false,
+        deletable: false,
+        draggable: false,
+        selectable: false,
+        style: {
+            opacity: SELECTED_NODE_EDGE_OPACITY, //
+        },
+    };
+};
+
+export const getThreatScenarioCanvasNodeProps = ({
+    canvas,
+    selectedPath, //
+    selectedCanvas,
+    node,
+    viewAllPaths,
+}: NodeVisibilityFuncProps) => {
+    const comparableNodeId = getComparableNodeId(node);
+    const comparableNodeLookup = getThreatScenarioComparableNodeLookup({
+        canvas,
+        ...(selectedCanvas ? { selectedCanvas } : {}),
+    });
+    const comparableAncestorNodeIds = getComparableAncestorNodeIds({
+        node,
+        lookup: comparableNodeLookup,
+    });
+
+    if (!!viewAllPaths) {
+        const pathNodeIds = getAllPathNodeIds(canvas);
+        const isPathNode =
+            !!pathNodeIds?.includes(comparableNodeId) ||
+            comparableAncestorNodeIds.some((ancestorComparableNodeId) =>
+                pathNodeIds.includes(ancestorComparableNodeId)
+            );
+        if (isPathNode) {
+            return {
+                connectable: false,
+                deletable: false,
+                draggable: false,
+                selectable: false,
+                style: {
+                    ...node?.style, //
+                    opacity: SELECTED_NODE_EDGE_OPACITY,
+                },
+            };
+        }
+    } else {
+        const selectedPathNodeIds = selectedPath?.nodes ?? [];
+        const isSelectedPathNode =
+            !!selectedPathNodeIds?.includes(comparableNodeId) ||
+            comparableAncestorNodeIds.some((ancestorComparableNodeId) =>
+                selectedPathNodeIds.includes(ancestorComparableNodeId)
+            );
+        if (isSelectedPathNode) {
+            return {
+                connectable: false,
+                deletable: false,
+                draggable: false,
+                selectable: false,
+                style: {
+                    opacity: SELECTED_NODE_EDGE_OPACITY, //
+                },
+            };
+        }
+    }
+    return {
+        selected: false,
+        connectable: false,
+        deletable: false,
+        draggable: false,
+        selectable: false,
+        style: {
+            opacity: DESELECTED_NODE_OPACITY, //
+        },
+    };
+};
+
+export const getLLMCanvasNodeProps = ({
+    canvas,
+    selectedPath, //
+    selectedCanvas,
+    node,
+}: NodeVisibilityFuncProps) => {
+    const comparableNodeId = getComparableNodeId(node);
+    const comparableNodeLookup = getThreatScenarioComparableNodeLookup({
+        canvas,
+        ...(selectedCanvas ? { selectedCanvas } : {}),
+    });
+    const comparableAncestorNodeIds = getComparableAncestorNodeIds({
+        node,
+        lookup: comparableNodeLookup,
+    });
+    const selectedPathNodeIds = selectedPath?.nodes ?? [];
+    const isSelectedPathNode =
+        !!selectedPathNodeIds?.includes(comparableNodeId) ||
+        comparableAncestorNodeIds.some((ancestorComparableNodeId) =>
+            selectedPathNodeIds.includes(ancestorComparableNodeId)
+        );
+    if (isSelectedPathNode) {
+        return {
+            connectable: false,
+            deletable: false,
+            draggable: false,
+            selectable: false,
+            style: {
+                opacity: SELECTED_NODE_EDGE_OPACITY, //
+            },
+        };
+    }
+
+    return {
+        connectable: false,
+        deletable: false,
+        draggable: false,
+        selectable: false,
+        style: {
+            opacity: DESELECTED_NODE_OPACITY, //
+        },
+    };
+};
+
 export const checkIfChildNodeWithinParentNode = ({
     parent_info,
     params,
@@ -455,6 +620,14 @@ export const evalGetNodePropsFunc = (
     switch (canvas_type) {
         case CanvasType.architecture:
             return getArchitectureCanvasNodeProps;
+        case CanvasType.data_flow:
+            return getDataFlowCanvasNodeProps;
+        case CanvasType.summary:
+            return getSummaryCanvasNodeProps;
+        case CanvasType.threat_scenario:
+            return getThreatScenarioCanvasNodeProps;
+        case CanvasType.llm:
+            return getLLMCanvasNodeProps;
         default:
             return () => {
                 return {};

@@ -36,6 +36,21 @@ import { AttackPath } from "#root/interfaces/register";
 import { getNodePositionAbsolute } from "./diagramNodePositionUtil";
 import { getPositionFromHandleId } from "./diagramNodeUtil";
 
+export const getAllPathEdgeIds = (
+    canvas: DiagramCanvas[] //
+) => {
+    const pathEdges =
+        canvas?.flatMap((c) => {
+            const attackPaths = c.ref?.threat_scenario_ref?.attackPaths || [];
+            return attackPaths.flatMap((p) => p.edges) || [];
+        }) || [];
+    return Array.from(new Set(pathEdges));
+};
+
+const getComparableEdgeId = (edge: DiagramEdge) => {
+    return `${edge?.data?.["originalEdgeId"] || edge?.id || ""}`;
+};
+
 export const getAuthorizedEdges = (
     _edges: DiagramEdge[], //
     _isAuthorized?: IsAuthorized
@@ -130,12 +145,179 @@ export const getArchitectureCanvasEdgeProps = ({
     };
 };
 
+export const getDataFlowCanvasEdgeProps = ({
+    selectedCanvasViewOnly, //
+    // selectedPath,
+    // viewAllPaths,
+    edge,
+    // canvas,
+}: EdgeVisibilityFuncProps) => {
+    if (
+        edge?.data?.type === CanvasNodeType.architecture.toString() //
+    ) {
+        return {
+            animated: false,
+            //
+            deletable: false,
+            focusable: false,
+            reconnectable: false,
+            selectable: false,
+            //
+            zIndex: DEFAULT_ZINDEX_EDGE + 1,
+            style: {
+                opacity: DESELECTED_EDGE_OPACITY, //
+            },
+        };
+    } else if (
+        edge?.data?.type === CanvasNodeType.data_flow.toString() //
+    ) {
+        return {
+            animated: false,
+            //
+            deletable: !selectedCanvasViewOnly,
+            focusable: !selectedCanvasViewOnly,
+            reconnectable: !selectedCanvasViewOnly,
+            selectable: !selectedCanvasViewOnly,
+            //
+            zIndex: DEFAULT_ZINDEX_EDGE + 1,
+            style: {
+                opacity: SELECTED_NODE_EDGE_OPACITY, //
+            },
+        };
+    }
+    return {
+        animated: false,
+        selected: false,
+        //
+        deletable: false,
+        focusable: false,
+        reconnectable: false,
+        selectable: false,
+        //
+        zIndex: DEFAULT_ZINDEX_EDGE,
+        style: {
+            opacity: DESELECTED_EDGE_OPACITY, //
+        },
+    };
+};
+
+export const getSummaryCanvasEdgeProps = (_props: EdgeVisibilityFuncProps) => {
+    return {
+        animated: false,
+        selected: false,
+        //
+        deletable: false,
+        focusable: false,
+        reconnectable: false,
+        selectable: false,
+        //
+        zIndex: DEFAULT_ZINDEX_EDGE,
+        style: {
+            opacity: SELECTED_NODE_EDGE_OPACITY, //
+        },
+    };
+};
+
+export const getThreatScenarioCanvasEdgeProps = ({
+    canvas,
+    selectedPath,
+    viewAllPaths,
+    edge,
+}: EdgeVisibilityFuncProps) => {
+    const allPathEdgeIds = !!viewAllPaths ? getAllPathEdgeIds(canvas) : [];
+    const comparableEdgeId = getComparableEdgeId(edge);
+    const isSelectedPathEdge = !!selectedPath?.edges?.includes(comparableEdgeId);
+    const isViewAllPathEdge = !!allPathEdgeIds.includes(comparableEdgeId);
+    const isActiveThreatScenarioEdge = !!viewAllPaths ? isViewAllPathEdge : isSelectedPathEdge;
+
+    const baseProps = {
+        animated: false,
+        selected: false,
+        //
+        deletable: false,
+        focusable: false,
+        reconnectable: false,
+        selectable: false,
+    };
+
+    if (isActiveThreatScenarioEdge) {
+        return {
+            ...baseProps,
+            zIndex:
+                edge?.data?.type === CanvasEdgeType.threat_scenario.toString()
+                    ? DEFAULT_ZINDEX_EDGE
+                    : DEFAULT_ZINDEX_EDGE + 1,
+            style: {
+                opacity: SELECTED_NODE_EDGE_OPACITY, //
+            },
+        };
+    }
+
+    return {
+        ...baseProps,
+        zIndex:
+            edge?.data?.type === CanvasNodeType.architecture.toString()
+                ? DEFAULT_ZINDEX_EDGE + 1
+                : DEFAULT_ZINDEX_EDGE,
+        style: {
+            opacity: DESELECTED_EDGE_OPACITY, //
+        },
+    };
+};
+
+export const getLLMCanvasEdgeProps = ({ selectedPath, edge }: EdgeVisibilityFuncProps) => {
+    const comparableEdgeId = getComparableEdgeId(edge);
+    const isSelectedPathEdge = !!selectedPath?.edges?.includes(comparableEdgeId);
+
+    const baseProps = {
+        animated: false,
+        selected: false,
+        //
+        deletable: false,
+        focusable: false,
+        reconnectable: false,
+        selectable: false,
+    };
+
+    if (isSelectedPathEdge) {
+        return {
+            ...baseProps,
+            zIndex:
+                edge?.data?.type === CanvasEdgeType.llm.toString()
+                    ? DEFAULT_ZINDEX_EDGE
+                    : DEFAULT_ZINDEX_EDGE + 1,
+            style: {
+                opacity: SELECTED_NODE_EDGE_OPACITY, //
+            },
+        };
+    }
+
+    return {
+        ...baseProps,
+        zIndex:
+            edge?.data?.type === CanvasNodeType.architecture.toString()
+                ? DEFAULT_ZINDEX_EDGE + 1
+                : DEFAULT_ZINDEX_EDGE,
+        style: {
+            opacity: DESELECTED_EDGE_OPACITY, //
+        },
+    };
+};
+
 export const evalGetEdgePropsFunc = (
     canvas_type?: string //
 ) => {
     switch (canvas_type) {
         case CanvasType.architecture:
             return getArchitectureCanvasEdgeProps;
+        case CanvasType.data_flow:
+            return getDataFlowCanvasEdgeProps;
+        case CanvasType.summary:
+            return getSummaryCanvasEdgeProps;
+        case CanvasType.threat_scenario:
+            return getThreatScenarioCanvasEdgeProps;
+        case CanvasType.llm:
+            return getLLMCanvasEdgeProps;
         default:
             return () => {
                 return {};

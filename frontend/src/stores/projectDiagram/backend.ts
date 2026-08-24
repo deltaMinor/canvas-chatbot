@@ -83,6 +83,7 @@ export const getInitialDiagramCanvasStateFromStore = (): DiagramInstanceState =>
         setupSelectedTemplateCanvasId: "",
         userStoryPendingSelectedDataNodesMapping: {},
         userStoryNodesPositionApplyToAll: false,
+        userStoryCanvasColumnButtonSelectedPositionMapping: {},
         hiddenEdgeIds: [],
         warningListMapping: {},
         toscaReportMapping: {} as { [id: string]: WarningReport[] },
@@ -126,6 +127,7 @@ export const getInitialDiagramCanvasStateFromStore = (): DiagramInstanceState =>
         viewNodeDetails: false,
         viewEdgeDetails: false,
         selectedTabGroup: CanvasType.architecture,
+        selectedDataflowCanvasId: "",
         editToolbarState: {
             general: false,
             delete: false,

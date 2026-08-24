@@ -149,9 +149,10 @@ export const useDiagramCapabilities = (): DiagramCapabilitiesState => {
         const softViewOnly = !!selectedCanvas?.view_only;
 
         const isArch = canvasType === CanvasType.architecture;
-        const isDf = false;
-        const isArchOrDf = isArch;
-        const isArchDfOrSummary = isArchOrDf;
+        const isDf = canvasType === CanvasType.data_flow;
+        const isSummary = canvasType === CanvasType.summary;
+        const isArchOrDf = isArch || isDf;
+        const isArchDfOrSummary = isArchOrDf || isSummary;
 
         return {
             toolbar: {

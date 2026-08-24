@@ -21,7 +21,12 @@ export const useRetrieveStage = () => {
             const selectedCanvasType = getDiagramDraftCanvasTypeFromStore(instanceId);
             const draftCanvasId = getDraftCanvasIdFromStore(instanceId) ?? "";
 
-            if (selectedCanvasType !== CanvasType.architecture.toString()) {
+            if (
+                ![
+                    CanvasType.architecture.toString(), //
+                    CanvasType.data_flow.toString(),
+                ]?.includes(selectedCanvasType || "")
+            ) {
                 return;
             }
 

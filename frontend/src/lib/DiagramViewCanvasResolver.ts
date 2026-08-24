@@ -1,4 +1,6 @@
-import { DiagramCanvas, DiagramEdge, DiagramNode } from "#root/interfaces/diagram";
+import { defaultViewport } from "#root/constants/diagramConfig";
+import { CanvasType, DiagramCanvas, DiagramEdge, DiagramNode } from "#root/interfaces/diagram";
+import { getUpdatedDFCanvas } from "#root/utils/diagram/diagramCanvasUtil";
 import { getProcessedEdges } from "#root/utils/diagram/diagramEdgeUtil";
 import { getProcessedNodes } from "#root/utils/diagram/diagramNodeUtil";
 
@@ -11,7 +13,26 @@ export class DiagramViewCanvasResolver {
         this.context = context;
     }
 
+    private createVirtualDraftCanvas(canvasType: CanvasType.summary): DiagramCanvas {
+        return {
+            canvas_id: canvasType.toString(),
+            canvas_name: "Summary",
+            canvas_type: canvasType,
+            llm_generation_status: 0,
+            ref: null as unknown as DiagramCanvas["ref"],
+            view_only: true,
+            warnings: [],
+            nodes: [],
+            edges: [],
+            viewport: defaultViewport,
+        };
+    }
+
     private resolveSourceDraftCanvas() {
+        if (this.context.currentDraftCanvasId === CanvasType.summary.toString()) {
+            return this.createVirtualDraftCanvas(CanvasType.summary);
+        }
+
         return this.context.projectDiagram?.canvas.find(
             (canvas) => canvas.canvas_id === this.context.currentDraftCanvasId
         );
@@ -37,6 +58,29 @@ export class DiagramViewCanvasResolver {
 
         if (!sourceDraftCanvas || !this.context.projectDiagram) {
             return undefined;
+        }
+
+        if (sourceDraftCanvas.canvas_type === CanvasType.architecture) {
+            return sourceDraftCanvas;
+        }
+
+        if (sourceDraftCanvas.canvas_type === CanvasType.data_flow) {
+            const renderedDataFlowCanvas =
+                getUpdatedDFCanvas(
+                    this.context.projectDiagram,
+                    this.context.architectureCanvas ?? ({} as DiagramCanvas),
+                    sourceDraftCanvas.canvas_id
+                ) ?? sourceDraftCanvas;
+
+            return renderedDataFlowCanvas;
+        }
+
+        if (sourceDraftCanvas.canvas_type === CanvasType.summary) {
+            const renderedSummaryCanvas = {
+                ...(this.context.summaryData?.summary_canvas ?? sourceDraftCanvas),
+            };
+
+            return renderedSummaryCanvas;
         }
 
         return sourceDraftCanvas;
@@ -95,11 +139,19 @@ export class DiagramViewCanvasResolver {
             return [];
         }
 
-        // With only the architecture canvas type remaining, there is no separate
-        // canvas whose nodes should be overlaid onto the draft canvas.
-        const overlayNodes: DiagramCanvas["nodes"] = [];
+        let overlayNodes: DiagramCanvas["nodes"] = [];
+        switch (processedDraftCanvas.canvas_type) {
+            case CanvasType.summary:
+            case CanvasType.data_flow:
+                overlayNodes = this.context.architectureCanvas?.nodes ?? [];
+                break;
+            case CanvasType.architecture:
+            default:
+                overlayNodes = [];
+                break;
+        }
 
-        return this.clearSelectedState<DiagramNode>(
+        const processedOverlayNodes = this.clearSelectedState<DiagramNode>(
             getProcessedNodes({
                 projectDiagram: this.context.projectDiagram,
                 canvasNodes: overlayNodes,
@@ -114,6 +166,14 @@ export class DiagramViewCanvasResolver {
                 viewAllPaths: this.context.diagramState.viewAllPaths,
             })
         );
+
+        switch (processedDraftCanvas.canvas_type) {
+            case CanvasType.summary:
+            case CanvasType.data_flow:
+            case CanvasType.architecture:
+            default:
+                return processedOverlayNodes;
+        }
     }
 
     getOverlayEdges(processedDraftCanvas?: DiagramCanvas) {
@@ -121,11 +181,19 @@ export class DiagramViewCanvasResolver {
             return [];
         }
 
-        // With only the architecture canvas type remaining, there is no separate
-        // canvas whose edges should be overlaid onto the draft canvas.
-        const overlayEdges: DiagramEdge[] = [];
+        let overlayEdges: DiagramEdge[] = [];
+        switch (processedDraftCanvas.canvas_type) {
+            case CanvasType.summary:
+            case CanvasType.data_flow:
+                overlayEdges = this.context.architectureCanvas?.edges ?? [];
+                break;
+            case CanvasType.architecture:
+            default:
+                overlayEdges = [];
+                break;
+        }
 
-        return this.clearSelectedState<DiagramEdge>(
+        const processedOverlayEdges = this.clearSelectedState<DiagramEdge>(
             getProcessedEdges({
                 projectDiagram__isAuthorized: this.context.projectDiagramIsAuthorized,
                 projectDiagram: this.context.projectDiagram,
@@ -141,5 +209,7 @@ export class DiagramViewCanvasResolver {
                 viewAllPaths: this.context.diagramState.viewAllPaths,
             })
         );
+
+        return processedOverlayEdges;
     }
 }

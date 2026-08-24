@@ -131,6 +131,14 @@ export const selectDiagramUserStoryNodesPositionApplyToAll = (
     return diagramInstanceState.userStoryNodesPositionApplyToAll;
 };
 
+export const selectDiagramUserStoryCanvasColumnButtonSelectedPositionMapping = (
+    state: RootState,
+    instanceId?: string
+) => {
+    const diagramInstanceState = selectDiagramInstanceState(state, instanceId);
+    return diagramInstanceState.userStoryCanvasColumnButtonSelectedPositionMapping;
+};
+
 export const selectHiddenEdgeIds = (
     state: RootState, //
     instanceId?: string
@@ -431,6 +439,11 @@ export const selectViewEdgeDetails = (
 export const selectDiagramSelectedTabGroup = (state: RootState, instanceId?: string) => {
     const diagramInstanceState = selectDiagramInstanceState(state, instanceId);
     return diagramInstanceState.selectedTabGroup;
+};
+
+export const selectDiagramSelectedDataflowCanvasId = (state: RootState, instanceId?: string) => {
+    const diagramInstanceState = selectDiagramInstanceState(state, instanceId);
+    return diagramInstanceState.selectedDataflowCanvasId;
 };
 
 export const selectDiagramEditToolbarState = (state: RootState, instanceId?: string) => {

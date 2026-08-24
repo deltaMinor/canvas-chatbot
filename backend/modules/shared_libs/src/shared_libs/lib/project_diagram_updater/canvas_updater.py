@@ -71,7 +71,7 @@ class CanvasUpdater:
 
     @raise_exception("Failed to init canvases.", exception_logger=logger)
     def get_base_canvases(self) -> None:
-        filter_types = [CanvasType.architecture.value]
+        filter_types = [CanvasType.architecture.value, CanvasType.data_flow.value]
 
         return [
             _ for _ in self.project_ad_model.canvas if _.canvas_type in filter_types
@@ -101,10 +101,32 @@ class CanvasUpdater:
     def convert_scenario_models_to_canvases(
         self, scenario_models: list["ProjectRiskScenario"]
     ) -> None:
-        # With only the architecture canvas type remaining, there is no longer
-        # a dedicated threat-scenario or LLM canvas to render risk scenarios
-        # onto, so no canvases are generated here.
-        return []
+        canvases_to_add: list[CanvasBaseModel] = []
+        canvas_type_mapping = {
+            KnowledgebaseSource.threatScenario.value: CanvasType.threat_scenario.value,
+            KnowledgebaseSource.llm.value: CanvasType.llm.value,
+        }
+
+        for scenario in scenario_models:
+            scenario_dict = scenario.model_dump()
+            threat_scenario_ref = {
+                k:v for k,v in scenario_dict.items() 
+                if k not in THREAT_SCENARIO_REF_REMOVE_KEYS
+            }
+            canvas_model = CanvasBaseModel(
+                canvas_id=f"canvas_{uuid.uuid4()}",
+                canvas_name=scenario.keyRisk,
+                canvas_type=canvas_type_mapping.get(
+                    scenario.knowledgebaseSource, "unknown"
+                ),
+                edges=[],
+                nodes=[],
+                ref={"threat_scenario_ref": threat_scenario_ref},
+                viewport={"x": 0, "y": 0, "zoom": 1},
+                view_only=True,
+            )
+            canvases_to_add.append(canvas_model)
+        return canvases_to_add
 
     # =======================================================================
     # Run

@@ -1,3 +1,4 @@
+import { CanvasType } from "#root/interfaces/diagram";
 import { ListenerApiLike } from "#root/interfaces/diagramViewInstanceResolver";
 import { RootState } from "#root/redux/store";
 import {
@@ -7,11 +8,12 @@ import {
 import { getArchitectureCanvas } from "#root/utils/diagram/backendDiagramUtil";
 import { getDiagramInstanceState } from "#root/utils/diagram/diagramInstanceUtil";
 import { getActiveThreatScenarioSelection } from "#root/utils/diagram/diagramSelectionUtil";
+import { getSummaryCanvas } from "#root/utils/diagram/diagramSummaryUtil";
 
 export class DiagramViewInstanceContext {
     readonly listenerApi: ListenerApiLike;
     readonly instanceId: string;
-    private _summaryData: undefined = undefined;
+    private _summaryData: ReturnType<typeof getSummaryCanvas> | undefined = undefined;
     private _summaryDataCacheKey = "";
 
     constructor({
@@ -62,6 +64,10 @@ export class DiagramViewInstanceContext {
     }
 
     get currentDraftCanvasType() {
+        if (this.currentDraftCanvasId === CanvasType.summary.toString()) {
+            return CanvasType.summary;
+        }
+
         return this.projectDiagram?.canvas.find(
             (canvas) => canvas.canvas_id === this.currentDraftCanvasId
         )?.canvas_type;
@@ -83,7 +89,13 @@ export class DiagramViewInstanceContext {
         ].join("|");
 
         if (this._summaryDataCacheKey !== cacheKey) {
-            this._summaryData = undefined;
+            this._summaryData =
+                this.projectDiagram &&
+                [CanvasType.summary, CanvasType.threat_scenario].includes(
+                    this.currentDraftCanvasType as CanvasType
+                )
+                    ? getSummaryCanvas({ projectDiagram: this.projectDiagram })
+                    : undefined;
             this._summaryDataCacheKey = cacheKey;
         }
 

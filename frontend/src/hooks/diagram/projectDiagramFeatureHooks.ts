@@ -5,6 +5,7 @@ import { useDiagramInstanceId } from "#root/contexts/DiagramInstanceContext";
 import { useProjectDiagram } from "#root/hooks/backendHooks";
 import { OptionLabel } from "#root/interfaces";
 import {
+    CanvasColumn,
     DeviceToInterfaceMappingSingle,
     DiagramCanvas,
     DiagramEdge,
@@ -46,12 +47,14 @@ import {
     selectDiagramMiniMapExpanded,
     selectDiagramOverlayEdges,
     selectDiagramOverlayNodes,
+    selectDiagramSelectedDataflowCanvasId,
     selectDiagramSelectedTabGroup,
     selectDiagramSetupNaturalLanguageDescription,
     selectDiagramSetupPendingSelectedOption,
     selectDiagramSetupSelectedOption,
     selectDiagramSetupSelectedTemplateCanvasId,
     selectDiagramToscaReportMapping,
+    selectDiagramUserStoryCanvasColumnButtonSelectedPositionMapping,
     selectDiagramUserStoryNodesPositionApplyToAll,
     selectDiagramUserStoryPendingSelectedDataNodesMapping,
     selectDiagramView,
@@ -100,6 +103,7 @@ import {
 } from "#root/selectors/projectDiagramFeatureSelectors";
 import {
     setDiagramMiniMapExpanded,
+    setDiagramSelectedDataflowCanvasId,
     setDiagramSelectedTabGroup,
 } from "#root/stores/projectDiagram/canvas";
 import {
@@ -146,6 +150,7 @@ import {
 } from "#root/stores/projectDiagram/setup";
 import { setDiagramToscaReportMapping } from "#root/stores/projectDiagram/toscaValidation";
 import {
+    setDiagramUserStoryCanvasColumnButtonSelectedPositionMapping,
     setDiagramUserStoryNodesPositionApplyToAll,
     setDiagramUserStoryPendingSelectedDataNodesMapping,
 } from "#root/stores/projectDiagram/userStory";
@@ -301,6 +306,30 @@ export const useDiagramUserStoryNodesPositionApplyToAll = () => {
 
     return useSelector(
         (state: RootState) => selectDiagramUserStoryNodesPositionApplyToAll(state, instanceId) //
+    );
+};
+
+export const useDiagramUserStoryCanvasColumnButtonSelectedPositionMapping = () => {
+    const instanceId = useDiagramInstanceId();
+
+    return useSelector(
+        (state: RootState) =>
+            selectDiagramUserStoryCanvasColumnButtonSelectedPositionMapping(state, instanceId) //
+    );
+};
+
+const USER_STORY_CANVAS_COLUMN_ALL_KEY = "__all__";
+
+export const useDiagramUserStoryCanvasColumnButtonSelectedPosition = (
+    nodeId: string | undefined,
+    fallbackValue: CanvasColumn | undefined
+) => {
+    const selectedPositionMapping = useDiagramUserStoryCanvasColumnButtonSelectedPositionMapping();
+    const key = nodeId ?? USER_STORY_CANVAS_COLUMN_ALL_KEY;
+
+    return React.useMemo(
+        () => selectedPositionMapping[key] ?? fallbackValue,
+        [fallbackValue, key, selectedPositionMapping]
     );
 };
 
@@ -813,6 +842,14 @@ export const useDiagramSelectedTabGroup = () => {
 
     return useSelector(
         (state: RootState) => selectDiagramSelectedTabGroup(state, instanceId) //
+    );
+};
+
+export const useDiagramSelectedDataflowCanvasId = () => {
+    const instanceId = useDiagramInstanceId();
+
+    return useSelector(
+        (state: RootState) => selectDiagramSelectedDataflowCanvasId(state, instanceId) //
     );
 };
 
@@ -1462,12 +1499,56 @@ export const useSetDiagramUserStoryNodesPositionApplyToAll = () => {
     );
 };
 
+export const useSetDiagramUserStoryCanvasColumnButtonSelectedPositionMapping = () => {
+    const instanceId = useDiagramInstanceId();
+
+    return React.useCallback(
+        (
+            value: Parameters<
+                typeof setDiagramUserStoryCanvasColumnButtonSelectedPositionMapping
+            >[0]
+        ) => {
+            setDiagramUserStoryCanvasColumnButtonSelectedPositionMapping(value, instanceId); //
+        },
+        [instanceId]
+    );
+};
+
+export const useSetDiagramUserStoryCanvasColumnButtonSelectedPosition = (
+    nodeId: string | undefined
+) => {
+    const setSelectedPositionMapping =
+        useSetDiagramUserStoryCanvasColumnButtonSelectedPositionMapping();
+    const key = nodeId ?? USER_STORY_CANVAS_COLUMN_ALL_KEY;
+
+    return React.useCallback(
+        (value: React.SetStateAction<CanvasColumn | undefined>) => {
+            setSelectedPositionMapping((prev) => ({
+                ...prev,
+                [key]: resolveNextStateAction(value, prev[key]),
+            }));
+        },
+        [key, setSelectedPositionMapping]
+    );
+};
+
 export const useSetDiagramSelectedTabGroup = () => {
     const instanceId = useDiagramInstanceId();
 
     return React.useCallback(
         (value: Parameters<typeof setDiagramSelectedTabGroup>[0]) => {
             setDiagramSelectedTabGroup(value, instanceId); //
+        },
+        [instanceId]
+    );
+};
+
+export const useSetDiagramSelectedDataflowCanvasId = () => {
+    const instanceId = useDiagramInstanceId();
+
+    return React.useCallback(
+        (value: Parameters<typeof setDiagramSelectedDataflowCanvasId>[0]) => {
+            setDiagramSelectedDataflowCanvasId(value, instanceId); //
         },
         [instanceId]
     );

@@ -5,6 +5,10 @@ from shared_libs.types.node import (
     AWSNodeIconDisplayKey,
 )
 
+DATA_FLOW_USER_NODE_TOSCA_TYPE = "arcs.nodes.User"
+DATA_FLOW_DEVICE_NODE_TOSCA_TYPE = "arcs.nodes.Compute"
+DATA_FLOW_INTERFACE_NODE_TOSCA_TYPE = "arcs.nodes.Interface"
+
 DEFAULT_ICON_NODE_WIDTH = 80
 DEFAULT_ICON_NODE_HEIGHT = 80
 

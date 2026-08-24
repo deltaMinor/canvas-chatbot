@@ -6,6 +6,23 @@ import { AttackPath, ProjectRegisterFields } from "./register";
 
 export enum CanvasType {
     architecture = "architecture",
+    data_flow = "data_flow",
+    llm = "llm",
+    threat_scenario = "threat_scenario",
+    summary = "summary",
+}
+
+export enum CanvasColumn {
+    left = "left",
+    right = "right",
+    top = "top",
+    bottom = "bottom",
+}
+
+export enum CanvasDataflowNodeType {
+    users = "users",
+    interface = "interface",
+    devices = "devices",
 }
 
 export enum CanvasAxis {
@@ -492,6 +509,35 @@ export interface NodeHandleEdgeMapping {
 
 export interface NodeHandleEdgeMappingDict {
     [node_id: string]: NodeHandleEdgeMapping;
+}
+
+export type SummaryCanvasColumn = "left" | "right" | "top" | "bottom";
+
+export type ColumnOffsetType = "device" | "interface" | "user";
+
+export interface SummaryCanvasColumnPositionAttr {
+    defaultX: number;
+    defaultY: number;
+    x: number;
+    y: number;
+    incrementOffsetRelative: {
+        [key in ColumnOffsetType]: (p: { width: number; height: number }) => {
+            x: number;
+            y: number;
+        };
+    };
+    columnOffsetRelative: {
+        [key in ColumnOffsetType]: {
+            x: number;
+            y: number;
+        };
+    };
+    columnOffsetAbsolute: {
+        [key in ColumnOffsetType]: {
+            x?: number;
+            y?: number;
+        };
+    };
 }
 
 export type NodeAttackStepCountMapping = { [key: string]: number };

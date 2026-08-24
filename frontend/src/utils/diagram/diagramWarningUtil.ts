@@ -1,4 +1,5 @@
 import {
+    CanvasType,
     DiagramNode,
     ProjectDiagram,
     SortDirection,
@@ -8,18 +9,29 @@ import {
     warningFilterKeys,
 } from "#root/interfaces/diagram";
 
+import { getDataFlowWarningMessages } from "./diagramContentUtil";
+
 export const getWarningListMapping = ({
     projectDiagram,
-    architectureNodes: _architectureNodes,
+    architectureNodes,
 }: {
     projectDiagram?: ProjectDiagram | null;
     architectureNodes: DiagramNode[];
 }): WarningMessageMapping => {
     if (!projectDiagram) return {} as WarningMessageMapping;
 
-    // With only the architecture canvas type remaining, there is no longer a
-    // dedicated dataflow canvas to derive warnings from.
-    return {} as WarningMessageMapping;
+    return (projectDiagram.canvas ?? []).reduce((acc, canvas) => {
+        if (canvas.canvas_type === CanvasType.data_flow) {
+            acc[canvas.canvas_id] = getDataFlowWarningMessages(
+                canvas.ref?.card_ref ?? {},
+                canvas.nodes,
+                canvas.edges,
+                architectureNodes
+            );
+        }
+
+        return acc;
+    }, {} as WarningMessageMapping);
 };
 
 export const getWarningListFromMapping = ({

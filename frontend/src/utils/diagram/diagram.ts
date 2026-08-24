@@ -16,7 +16,7 @@ import { UuidIdentifierKey } from "#root/interfaces/identifier";
 import { getNodeInfo } from "../diagramUtil";
 import { generateUUID } from "../identifierUtil";
 
-import { getSelectedCanvasFromId, updateCanvasViewOnly } from "./diagramCanvasUtil";
+import { getSelectedCanvasFromId, updateCanvasViewOnly, updateDFCanvas } from "./diagramCanvasUtil";
 import { checkIfEdgeCanBeDeleted, getInitializedDiagramEdges } from "./diagramEdgeUtil";
 import {
     checkIfChildNodeWithinParentNode,
@@ -419,6 +419,20 @@ export const getUpdatedDiagramPostDeleteNodesOps = ({
                 });
             });
             c.nodes = c.nodes.filter((n) => !selectedNodeIdList?.includes(n.id));
+        } else if (
+            c.canvas_type === CanvasType.data_flow.toString() //
+        ) {
+            c.nodes.forEach((n) => {
+                if (!selectedNodeIdList?.includes(n.id)) return;
+                checkIfNodeCanBeDeleted({
+                    allowDeleteNodeInAnyCanvas,
+                    node: n, //
+                    nodes: context__nodes,
+                    selectedCanvas,
+                    selectedNodeIdList,
+                });
+                n.hidden = true;
+            });
         }
     });
 
@@ -573,11 +587,37 @@ export const processDeleteCanvasNodesAndEdges = async ({
         selectedEdgeIdList,
     });
 
-    const updatedSelectedCanvas = getSelectedCanvasFromId({
+    // For dataflow canvases, recalculate node positions after deletion
+    let updatedSelectedCanvas = getSelectedCanvasFromId({
         projectDiagram: updatedProjectDiagram,
         draftCanvasId: resolvedSelectedCanvasId,
     });
     if (!updatedSelectedCanvas) throw new Error("Canvas not found.");
+
+    // If it's a dataflow canvas and nodes/edges were deleted, recalculate node positions
+    if (
+        updatedSelectedCanvas.canvas_type === CanvasType.data_flow.toString() &&
+        (selectedNodeIdList.length > 0 || selectedEdgeIdList.length > 0)
+    ) {
+        const architectureCanvas = updatedProjectDiagram.canvas.find(
+            (c) => c.canvas_type === CanvasType.architecture
+        );
+        if (architectureCanvas) {
+            // Recalculate node positions using updateDFCanvas
+            const { __projectDiagram: recalculatedProjectDiagram } = updateDFCanvas(
+                updatedProjectDiagram,
+                architectureCanvas,
+                true
+            );
+            updatedProjectDiagram = recalculatedProjectDiagram;
+            // Get the updated canvas with recalculated positions
+            updatedSelectedCanvas =
+                getSelectedCanvasFromId({
+                    projectDiagram: updatedProjectDiagram,
+                    draftCanvasId: resolvedSelectedCanvasId,
+                }) || updatedSelectedCanvas;
+        }
+    }
 
     if (selectedNodeIdList.length > 0) {
         await updateProjectDiagram?.({
@@ -606,9 +646,18 @@ export const processProjectDiagram = ({ projectDiagram }: { projectDiagram: Proj
     const clonedProjectDiagram = structuredClone(projectDiagram);
 
     const updateDB = false;
-    const updatedProjectDiagram = getProcessedProjectDiagram(
+    const __projectDiagram = getProcessedProjectDiagram(
         clonedProjectDiagram, //
         updateDB
+    );
+
+    const architectureCanvas = __projectDiagram.canvas.find(
+        (c) => c.canvas_type === CanvasType.architecture
+    );
+
+    const { __projectDiagram: updatedProjectDiagram } = updateDFCanvas(
+        __projectDiagram,
+        architectureCanvas ?? ({} as DiagramCanvas)
     );
 
     updatedProjectDiagram.canvas.forEach((c) => {

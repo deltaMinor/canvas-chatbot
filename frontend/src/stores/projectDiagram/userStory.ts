@@ -1,8 +1,10 @@
 import React from "react";
 
 import { OptionLabel } from "#root/interfaces";
+import { CanvasColumn } from "#root/interfaces/diagram";
 import app_store, { app_actions } from "#root/redux/store";
 import {
+    selectDiagramUserStoryCanvasColumnButtonSelectedPositionMapping,
     selectDiagramUserStoryNodesPositionApplyToAll,
     selectDiagramUserStoryPendingSelectedDataNodesMapping,
 } from "#root/selectors/projectDiagramFeatureSelectors";
@@ -51,6 +53,30 @@ export const setDiagramUserStoryNodesPositionApplyToAll = (
 
     app_store.dispatch(
         app_actions.diagram.setUserStoryNodesPositionApplyToAll(
+            getInstanceValuePayloadFromStore(nextValue, instanceId)
+        )
+    );
+};
+
+export const getDiagramUserStoryCanvasColumnButtonSelectedPositionMappingFromStore = (
+    instanceId: string
+): Record<string, CanvasColumn | undefined> => {
+    return selectDiagramUserStoryCanvasColumnButtonSelectedPositionMapping(
+        getRootStateFromStore(),
+        instanceId
+    );
+};
+
+export const setDiagramUserStoryCanvasColumnButtonSelectedPositionMapping = (
+    value: React.SetStateAction<Record<string, CanvasColumn | undefined>>,
+    instanceId: string
+) => {
+    const currentValue =
+        getDiagramUserStoryCanvasColumnButtonSelectedPositionMappingFromStore(instanceId);
+    const nextValue = resolveNextStateAction(value, currentValue);
+
+    app_store.dispatch(
+        app_actions.diagram.setUserStoryCanvasColumnButtonSelectedPositionMapping(
             getInstanceValuePayloadFromStore(nextValue, instanceId)
         )
     );

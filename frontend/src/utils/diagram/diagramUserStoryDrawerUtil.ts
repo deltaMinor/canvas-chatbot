@@ -1,6 +1,7 @@
 import { Node } from "@xyflow/react";
 
 import {
+    CanvasNodeType,
     CanvasNodeVariantType,
     DiagramNode,
     NodeToDataMappingSingle,
@@ -9,7 +10,10 @@ import {
 const getNonDataFlowInfoNodes = (nodes: DiagramNode[]) => {
     return (
         nodes?.filter((node: Node) => {
-            return node?.type === CanvasNodeVariantType.infoNode;
+            return (
+                node?.type === CanvasNodeVariantType.infoNode &&
+                node?.data?.["type"] !== CanvasNodeType.data_flow
+            );
         }) || []
     );
 };
