@@ -18,7 +18,6 @@ import type { ProjectCacti } from "#root/interfaces/cacti";
 import type { ProjectDiagramFile } from "#root/interfaces/common";
 import type { KbCsaCCoP } from "#root/interfaces/csa_ccop";
 import type {
-    CanvasColumn,
     CanvasType,
     DiagramCanvas,
     DiagramEdge,
@@ -691,7 +690,6 @@ export interface DiagramInstanceState {
     setupNaturalLanguageDescription: string;
     userStoryPendingSelectedDataNodesMapping: Record<string, OptionLabel[]>;
     userStoryNodesPositionApplyToAll: boolean;
-    userStoryCanvasColumnButtonSelectedPositionMapping: Record<string, CanvasColumn | undefined>;
     hiddenEdgeIds: string[];
     warningListMapping: WarningMessageMapping;
     toscaReportMapping: { [id: string]: WarningReport[] };
@@ -735,7 +733,6 @@ export interface DiagramInstanceState {
     viewNodeDetails: boolean;
     viewEdgeDetails: boolean;
     selectedTabGroup: string;
-    selectedDataflowCanvasId: string;
     editToolbarState: DiagramEditToolbarState;
     drawerState: DrawerState;
     resourceDrawerSelected: OptionLabel;

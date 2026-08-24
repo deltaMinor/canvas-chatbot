@@ -48,19 +48,14 @@ class MitreTypeLabel(Enum):
 
 class CanvasType(Enum):
     architecture = "architecture"
-    data_flow = "data_flow"
-    threat_scenario = "threat_scenario"
-    llm = "llm"
 
 
 class CanvasNodeType(Enum):
     architecture = "architecture"
-    data_flow = "data_flow"
 
 
 class CanvasEdgeType(Enum):
     architecture = "architecture"
-    data_flow = "data_flow"
 
 
 class CanvasNodeVariantType(Enum):

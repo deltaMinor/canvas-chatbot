@@ -8,16 +8,13 @@ import {
     useHandleSetProcessedNodes,
 } from "#root/hooks/diagram";
 import { OptionLabel, SelectableValue } from "#root/interfaces";
-import { DiagramCanvas, DiagramNode } from "#root/interfaces/diagram";
+import { DiagramNode } from "#root/interfaces/diagram";
 import { getProjectDiagramFromStore } from "#root/stores/backendStore";
 import {
     getDiagramDraftCanvasFromStore,
     getDiagramDraftCanvasTypeFromStore,
-    setDiagramOverlayNodes,
 } from "#root/stores/projectDiagram/canvas";
 import { updateCanvas } from "#root/stores/projectDiagramFeaturePersistenceStore";
-import { getUpdatedDFCanvas } from "#root/utils/diagram/diagramCanvasUtil";
-import { getProcessedNodes } from "#root/utils/diagram/diagramNodeUtil";
 import { updateArchitectureNodesDataStored } from "#root/utils/userStoryDrawerUtil";
 
 const getComparableNodeId = (node: DiagramNode) => {
@@ -73,10 +70,8 @@ export const useUpdateNodeDataStored = () => {
                 return;
             }
 
-            const nextSelectedCanvas = getUpdatedDFCanvas(
-                projectDiagram,
-                architectureCanvas ?? ({} as DiagramCanvas),
-                selectedCanvas.canvas_id
+            const nextSelectedCanvas = projectDiagram?.canvas?.find(
+                (c) => c.canvas_id === selectedCanvas.canvas_id
             );
             const selectedCanvasNodes = nextSelectedCanvas?.nodes || [];
             const selectedNodeIds = values.map((node) => String(node.value));
@@ -96,18 +91,6 @@ export const useUpdateNodeDataStored = () => {
                 funcRef: "handleUpdateNodeDataStored",
             });
 
-            if (selectedCanvasType === "data_flow") {
-                const processedOverlayNodes = getProcessedNodes({
-                    projectDiagram,
-                    canvasNodes: updatedArchitectureNodes,
-                    selectedCanvas,
-                    selectedCanvasViewOnly: undefined,
-                    architectureNodes: [],
-                    filterAuthorizedNodes: true,
-                    filterSelectedViewNodes: true,
-                });
-                setDiagramOverlayNodes(processedOverlayNodes, instanceId);
-            }
             updateCanvas({
                 instanceId,
                 canvasNodes: updatedArchitectureNodes,

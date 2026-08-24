@@ -3,9 +3,6 @@ import logging
 import uuid
 
 from shared_libs.constants.diagram import (
-    DATA_FLOW_DEVICE_NODE_TOSCA_TYPE,
-    DATA_FLOW_INTERFACE_NODE_TOSCA_TYPE,
-    DATA_FLOW_USER_NODE_TOSCA_TYPE,
     DEFAULT_CLUSTER_NODE_HEIGHT,
     DEFAULT_CLUSTER_NODE_WIDTH,
     DEFAULT_EDGE,
@@ -390,120 +387,16 @@ class DiagramOutputParser:
         return diagram_results
 
     @raise_exception(
-        "Failed to infer node while parsing llm output.",
-        exception_logger=logger,
-    )
-    def infer_node(
-        self, currentValue: str, infer_key: str, nodes: list[dict], card: dict
-    ):
-        tosca = {
-            "users": DATA_FLOW_USER_NODE_TOSCA_TYPE,
-            "devices": DATA_FLOW_DEVICE_NODE_TOSCA_TYPE,
-            "interfaces": DATA_FLOW_INTERFACE_NODE_TOSCA_TYPE,
-        }
-
-        infered_nodes = {
-            n["value"]: n["id"] for n in nodes if n["tosca_type"] == tosca[infer_key]
-        }
-        inferred_values = infered_nodes.keys()
-
-        card_values = card[infer_key]
-
-        found_user_value = next((v for v in inferred_values if v in card_values), None)
-        if found_user_value:
-            source = infered_nodes[found_user_value]
-            return source
-        return currentValue
-
-    @raise_exception(
-        "Failed to parse llm dataflow generation output.",
-        exception_logger=logger,
-    )
-    def infer_key_from_value(self, value: str) -> str:
-        if "user" in value:
-            return "users"
-        if "device" in value:
-            return "devices"
-        if "interface" in value:
-            return "interfaces"
-        return ""
-
-    @raise_exception(
         "Failed to parse llm dataflow generation output.",
         exception_logger=logger,
     )
     def parse_dataflow_output(
         self, llm_output: dict, project_input_model: dict, card_id: str
     ):
-        logger.info("[ RR-LLM ] Parsing llm dataflow generation output...")
-
-        result = {"nodes_data_stored": {}, "edges": []}
-
-        card = next(
-            (c for c in project_input_model["user_stories"] if c["id"] == card_id), {}
+        # With only the architecture canvas type remaining, there is no
+        # dataflow canvas to parse LLM-generated dataflow output onto.
+        logger.info(
+            "[ RR-LLM ] Skipping dataflow generation output parsing: "
+            "dataflow canvases are no longer supported."
         )
-
-        vertices = project_input_model["dataflow"]["vertices"]
-        vertices_id = [_["id"] for _ in vertices]
-        all_data = [_["name"] for _ in project_input_model["data"] if "name" in _]
-
-        _nodes = llm_output.get("nodes", [])
-        _edges = llm_output.get("edges", [])
-
-        if not len(_edges):
-            return result
-
-        for _node in _nodes:
-            data_stored = _node.get("data", {}).get("data_stored", [])
-            data_stored = [_ for _ in data_stored if _ in all_data]
-            if _node["id"] not in vertices_id or len(data_stored) == 0:
-                continue
-            result["nodes_data_stored"][_node["id"]] = data_stored
-
-        for edge in _edges:
-            data = edge["data"]
-            source = data["source"]
-            target = data["target"]
-
-            source_infer_key = self.infer_key_from_value(source)
-            target_infer_key = self.infer_key_from_value(target)
-
-            if source_infer_key:
-                source = self.infer_node(
-                    currentValue=source,
-                    infer_key=source_infer_key,
-                    nodes=vertices,
-                    card=card,
-                )
-            if target_infer_key:
-                target = self.infer_node(
-                    currentValue=source,
-                    infer_key=target_infer_key,
-                    nodes=vertices,
-                    card=card,
-                )
-
-            if source in vertices_id and target in vertices_id:
-                edge = copy.deepcopy(DEFAULT_EDGE)
-                edge.update(
-                    {
-                        "id": f"edge_{str(uuid.uuid4())}",
-                        "source": source,
-                        "target": target,
-                        "sourceHandle": Handle.SOURCE_RIGHT.value,
-                        "targetHandle": Handle.TARGET_LEFT.value,
-                        "data": {
-                            "type": CanvasEdgeType.data_flow.value,
-                            "bidirectional": False,
-                            "card_id": card_id,
-                        },
-                        "style": {
-                            "strokeWidth": 2,
-                            "stroke": "#e91e63",
-                        },
-                        "markerEnd": {"type": "arrowclosed", "color": "#e91e63"},
-                    }
-                )
-                result["edges"].append(edge)
-
-        return result
+        return {"nodes_data_stored": {}, "edges": []}

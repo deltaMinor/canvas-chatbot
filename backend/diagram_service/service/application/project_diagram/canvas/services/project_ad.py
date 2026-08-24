@@ -740,13 +740,6 @@ class ProjectADApplicationService(ProjectADService):
         )
         canvas_models.append(architecture_canvas_model)
 
-        # Get data flow canvas models
-        data_flow_canvas_models = diagram_canvas_factory.get_data_flow_canvas_models(
-            card_nodes=card_nodes,
-            user_story_cards=user_story_cards,
-        )
-        canvas_models.extend(data_flow_canvas_models)
-
         return canvas_models
 
     @staticmethod
@@ -868,8 +861,6 @@ class ProjectADApplicationService(ProjectADService):
             user_info=SYSTEM_USER_INFO,
         )
         for canvas in project_ad_model.canvas:
-            if canvas.canvas_type == CanvasType.data_flow.value:
-                continue
             self._update_nodes_tosca_type_by_icon_key(
                 nodes=canvas.nodes,
                 tosca_schema=tosca_schema,
@@ -1021,8 +1012,6 @@ class ProjectADApplicationService(ProjectADService):
             user_info=SYSTEM_USER_INFO,
         )
         for canvas in project_ad_model.canvas:
-            if canvas.canvas_type == CanvasType.data_flow.value:
-                continue
             self._update_nodes_tosca_type_by_icon_key(
                 nodes=canvas.nodes,
                 tosca_schema=tosca_schema,
@@ -1175,8 +1164,6 @@ class ProjectADApplicationService(ProjectADService):
             user_info=SYSTEM_USER_INFO,
         )
         for canvas in project_ad_model.canvas:
-            if canvas.canvas_type == CanvasType.data_flow.value:
-                continue
             self._update_nodes_tosca_type_by_icon_key(
                 nodes=canvas.nodes,
                 tosca_schema=tosca_schema,
@@ -1329,8 +1316,6 @@ class ProjectADApplicationService(ProjectADService):
             user_info=SYSTEM_USER_INFO,
         )
         for canvas in project_ad_model.canvas:
-            if canvas.canvas_type == CanvasType.data_flow.value:
-                continue
             self._update_nodes_tosca_type_by_icon_key(
                 nodes=canvas.nodes,
                 tosca_schema=tosca_schema,
@@ -1503,8 +1488,6 @@ class ProjectADApplicationService(ProjectADService):
             user_info=SYSTEM_USER_INFO,
         )
         for canvas in project_ad_model.canvas:
-            if canvas.canvas_type == CanvasType.data_flow.value:
-                continue
             self._update_nodes_tosca_type_by_icon_key(
                 nodes=canvas.nodes,
                 tosca_schema=tosca_schema,
@@ -1846,8 +1829,6 @@ class ProjectADApplicationService(ProjectADService):
             user_info=SYSTEM_USER_INFO,
         )
         for canvas in project_ad_model.canvas:
-            if canvas.canvas_type == CanvasType.data_flow.value:
-                continue
             update_flag |= self._update_nodes_tosca_type_by_icon_key(
                 nodes=canvas.nodes,
                 tosca_schema=tosca_schema,
@@ -1898,26 +1879,12 @@ class ProjectADApplicationService(ProjectADService):
         self.normalize_project_ad_nested_models(project_ad_model)
         project_ad = project_ad_model.model_dump()
 
-        nodes, edges = [], []
-        for canvas in project_ad["canvas"]:
-            if canvas["canvas_type"] != CanvasType.architecture.value:
-                continue
-            nodes.extend(canvas["nodes"])
-            edges.extend(canvas["edges"])
-            break
-
         for i, canvas in enumerate(project_ad["canvas"]):
-            if canvas.get("canvas_type") not in [
-                CanvasType.architecture.value,
-                CanvasType.data_flow.value,
-            ]:
+            if canvas.get("canvas_type") != CanvasType.architecture.value:
                 continue
 
             # Deep copy to prevent unintentionally modify original canvas
             _canvas = copy.deepcopy(canvas)
-            if _canvas.get("canvas_type") == CanvasType.data_flow.value:
-                _canvas["nodes"].extend(nodes)
-                _canvas["edges"].extend(edges)
 
             new_warning_list = []
             new_edge_warning_list = ToscaEdgeValidator().check_diagram_validity(_canvas)

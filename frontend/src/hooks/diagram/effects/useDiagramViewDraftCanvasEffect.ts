@@ -13,10 +13,6 @@ const getTargetCanvasType = (diagramView: DiagramView) => {
         return CanvasType.architecture;
     }
 
-    if (diagramView === "visualizer") {
-        return CanvasType.threat_scenario;
-    }
-
     return null;
 };
 
@@ -28,11 +24,7 @@ const getCanvasMatchesDiagramView = ({
     diagramView: DiagramView;
 }) => {
     if (diagramView === "editor") {
-        return canvasType === CanvasType.architecture || canvasType === CanvasType.data_flow;
-    }
-
-    if (diagramView === "visualizer") {
-        return canvasType === CanvasType.threat_scenario;
+        return canvasType === CanvasType.architecture;
     }
 
     return false;

@@ -1,4 +1,3 @@
-import { deepOrange, indigo, pink } from "@mui/material/colors";
 import { MarkerType, Position } from "@xyflow/react";
 
 import {
@@ -126,9 +125,6 @@ export const DATAFLOW_EDGES_HANDLES = {
 
 export const CanvasEdgeColor = {
     [CanvasEdgeType.architecture]: "#000",
-    [CanvasEdgeType.data_flow]: pink[500],
-    [CanvasEdgeType.threat_scenario]: deepOrange[500],
-    [CanvasEdgeType.llm]: indigo[500],
 };
 
 export const default_marker_props = {
@@ -263,19 +259,6 @@ export const ALLOWED_PARENT_NODE_CARD_REF_KEYS = {
 export const HIDDEN_RESOURCE_DRAWER_NODE_ICON_KEY = [
     GenericSystemNodeIconKey.forums.toString(), //
 ];
-
-export const summary_canvas_template = {
-    canvas_id: "summary",
-    canvas_name: "Summary",
-    canvas_type: CanvasType.summary,
-    ref: {},
-    view_only: true,
-    warnings: [],
-    nodes: [],
-    edges: [],
-    viewport: { x: 0, y: 0, zoom: 1 },
-    llm_generation_status: 0,
-} as DiagramCanvas;
 
 export const CLUSTER_NODE_BORDER_COLOR = {
     // AWS

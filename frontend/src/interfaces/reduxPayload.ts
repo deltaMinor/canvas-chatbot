@@ -3,7 +3,6 @@ import type { HandleType } from "@xyflow/react";
 
 import type { OptionLabel } from "#root/interfaces";
 import type {
-    CanvasColumn,
     CanvasType,
     DiagramCanvas,
     DiagramEdge,
@@ -216,9 +215,6 @@ export type SetDiagramOptionLabelPayload = OptionLabel | DiagramInstancePayload<
 export type SetDiagramOptionLabelArrayMappingPayload =
     | Record<string, OptionLabel[]>
     | DiagramInstancePayload<Record<string, OptionLabel[]>>;
-export type SetDiagramCanvasColumnMappingPayload =
-    | Record<string, CanvasColumn | undefined>
-    | DiagramInstancePayload<Record<string, CanvasColumn | undefined>>;
 export type SetDiagramBooleanPayload = boolean | DiagramInstancePayload<boolean>;
 export type SetDiagramStringPayload = string | DiagramInstancePayload<string>;
 export type SetDiagramNumberPayload = number | DiagramInstancePayload<number>;
