@@ -52,18 +52,6 @@ export const selectBackendProjectDiagram = (
 export const selectBackendProject = (
     state: RootState //
 ) => selectBackendProjectState(state).project;
-export const selectBackendProjectCQLoaded = (
-    state: RootState //
-) => selectBackendProjectState(state).projectCQLoaded;
-export const selectBackendProjectCQLoadError = (
-    state: RootState //
-) => selectBackendProjectState(state).projectCQLoadError;
-export const selectBackendProjectCQTemplateLoaded = (
-    state: RootState //
-) => selectBackendProjectState(state).projectCQTemplateLoaded;
-export const selectBackendProjectCQTemplateLoadError = (
-    state: RootState //
-) => selectBackendProjectState(state).projectCQTemplateLoadError;
 export const selectBackendIntegration = (
     state: RootState //
 ) => selectBackendState(state).integration;
