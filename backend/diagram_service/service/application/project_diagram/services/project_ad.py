@@ -3,6 +3,7 @@ import copy
 import json
 import logging
 import os
+import threading
 import uuid
 from datetime import datetime, timedelta
 from typing import Any
@@ -53,7 +54,7 @@ from shared_libs.domain import (
     ProjectCQService,
     ProjectService,
 )
-from shared_libs.exceptions.api_exceptions import BadRequest
+from shared_libs.exceptions.api_exceptions import BadRequest, InternalServerError
 from shared_libs.infrastructure.producer.service import Producer
 from shared_libs.infrastructure.remote_file_repository.service import (
     RemoteFileRepository,
@@ -1738,6 +1739,31 @@ class ProjectADApplicationService(ProjectADService):
         )
         return [res1, res2]
 
+    def _try_update_project_progress(
+        self,
+        project_id: str,
+        progress_number: int,
+    ) -> None:
+
+        def _run() -> None:
+            try:
+                self.update_project_progress(
+                    project_id=project_id,
+                    progress_number=progress_number,
+                )
+            except InternalServerError:
+                logger.warning(
+                    "Skipping project progress update for project_id="
+                    f"{project_id!r} (progress_number={progress_number}): "
+                    "the call failed or timed out, which usually means "
+                    "nothing is consuming the 'application_queue' task in "
+                    "this environment. This does not affect the diagram "
+                    "save itself.",
+                    exc_info=True,
+                )
+
+        threading.Thread(target=_run, daemon=True).start()
+
     @raise_exception(
         "Failed to update project ad model.",
         exception_logger=logger,
@@ -1798,12 +1824,12 @@ class ProjectADApplicationService(ProjectADService):
                 timestamp=datetime.now(TZINFO),
             )
             data["lastCompletedBy"] = lastCompletedBy_model.model_dump()
-            self.update_project_progress(
+            self._try_update_project_progress(
                 project_id=project_id,
                 progress_number=2,
             )
         if data.get("isCompleted") is False:
-            self.update_project_progress(
+            self._try_update_project_progress(
                 project_id=project_id,
                 progress_number=1,
             )

@@ -1,10 +1,12 @@
 import json
 import logging
+import time
 import uuid
 from collections.abc import Mapping
 from typing import TYPE_CHECKING, Any
 
 from celery import Celery
+from celery.exceptions import TimeoutError as CeleryTimeoutError
 
 from shared_libs import lib_config
 from shared_libs.decorators import raise_exception, verify_params
@@ -158,6 +160,12 @@ class Producer:
         """
         task_name, task_key = self.get_task_attributes_from_mappings(task_type)
         try:
+            # --- TEMPORARY DIAGNOSTIC INSTRUMENTATION ---
+            # Logged at WARNING so it shows up under this codebase's logging
+            # config even though it's on the `shared_libs.infrastructure`
+            # logger (which is otherwise capped to WARNING). Safe to remove
+            # once the hang is diagnosed - these lines don't change behavior.
+            _publish_start = time.monotonic()
             job = self.celery_app.send_task(
                 name=task_name,
                 args=[task_body],
@@ -167,8 +175,30 @@ class Producer:
                     queue=queue,
                 ),
             )
+            _publish_elapsed = time.monotonic() - _publish_start
+            logger.warning(
+                f"[TIMING] send_task({task_name}) returned in "
+                f"{_publish_elapsed:.3f}s - task_id={job.id}"
+            )
+            _wait_start = time.monotonic()
             res = job.get(timeout=TIMEOUT)
-        except TimeoutError:
+            _wait_elapsed = time.monotonic() - _wait_start
+            logger.warning(
+                f"[TIMING] job.get({task_name}, task_id={job.id}) returned in "
+                f"{_wait_elapsed:.3f}s"
+            )
+            # --- END TEMPORARY DIAGNOSTIC INSTRUMENTATION ---
+        except (TimeoutError, CeleryTimeoutError):
+            # NOTE: `job.get(timeout=...)` raises `celery.exceptions.TimeoutError`,
+            # which is its own standalone `Exception` subclass and NOT the same
+            # class as the builtin `TimeoutError` - so this branch must catch both
+            # explicitly, or every real Celery timeout falls through to the
+            # `except Exception` branch below and gets misreported as a broker/
+            # connection problem instead of "the task didn't finish in time".
+            logger.error(
+                f"celery[task] : {task_name} timed out after {TIMEOUT}s "
+                f"waiting for a result (queue={queue!r})."
+            )
             if not raise_if_timeout:
                 return None
             raise
@@ -404,7 +434,7 @@ class Producer:
             res = self.celery_app.AsyncResult(task_id).get(
                 timeout=lib_config.TASK_WAIT_RESULT_TIMEOUT,
             )
-        except TimeoutError:
+        except (TimeoutError, CeleryTimeoutError):
             if not raise_if_timeout:
                 return None
             raise

@@ -78,7 +78,6 @@ class DatabaseClientManager:
 
         mongoClient = MongoClient(
             self.DB_URL,
-            fsync=True,
             connectTimeoutMS=CONNECT_TIMEOUT_MS,
             serverSelectionTimeoutMS=SERVER_SELECTION_TIMEOUT_MS,
         )

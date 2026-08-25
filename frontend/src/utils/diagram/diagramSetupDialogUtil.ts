@@ -4,7 +4,7 @@ import app_store, { app_actions } from "#root/redux/store";
 import { postGenerateDiagramFromCacti } from "#root/services/domain/diagram";
 import { refreshProjectDiagram } from "#root/stores/backendRefreshStore";
 import { getProjectCactiFromStore, getProjectIdFromStore } from "#root/stores/backendStore";
-import { setDiagramDraftCanvas } from "#root/stores/projectDiagram/canvas";
+import { setDiagramDraftCanvas, setDiagramDraftCanvasId } from "#root/stores/projectDiagram/canvas";
 import { updateProjectDiagram } from "#root/stores/projectDiagramFeaturePersistenceStore";
 import { getInitCanvasId, reloadCanvas } from "#root/utils/diagram/diagramCanvasUtil";
 
@@ -33,7 +33,18 @@ export const processImportDiagram = async ({
     const draftCanvasId = getInitCanvasId({
         canvas: projectDiagram.canvas,
     });
-    app_store.dispatch(app_actions.diagram.setDraftCanvasId(draftCanvasId));
+    // NOTE: previously dispatched `app_actions.diagram.setDraftCanvasId(draftCanvasId)`
+    // directly with a bare string. That reducer scopes its state per diagram
+    // instance, and a bare (non-`{instanceId, value}`) payload resolves to a
+    // *default* instance id rather than this specific `instanceId` - so the
+    // real editor instance's `draftCanvasId` was silently left pointing at
+    // whatever canvas was selected before the import (which import had just
+    // replaced with a freshly generated canvas_id). That's why the canvas
+    // never actually swapped to the imported one, and why looking up that
+    // stale canvas's viewport afterward failed with "No canvas viewport."
+    // `setDiagramDraftCanvasId` is the existing helper that correctly scopes
+    // the update to `instanceId`, matching `setSelectedCanvas` above.
+    setDiagramDraftCanvasId(draftCanvasId, instanceId);
 
     const selectedCanvas = projectDiagram.canvas?.find((canvas) => {
         return canvas?.canvas_id === draftCanvasId;
