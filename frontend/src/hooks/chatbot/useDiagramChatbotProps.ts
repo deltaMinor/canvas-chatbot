@@ -85,7 +85,7 @@ import { resetTopologyFileTrackingState } from "#root/utils/diagramChatbot/topol
 
 export const useDiagramChatbotProps = (chatbotRef: RefObject<ChatbotHandle | null>) => {
     const instanceId = useDiagramInstanceId();
-    const reactFlow = useReactFlow<DiagramNode, DiagramEdge>();
+    useReactFlow<DiagramNode, DiagramEdge>();
     const { resetOverlappingLineSegments } = useDraggableEdgeActions();
     const handleSetProcessedNodesAndEdges = useHandleSetProcessedNodesAndEdges();
 

@@ -126,7 +126,4 @@ export type GenericDictType<K extends PropertyKey, T> = {
 
 export * from "./dialogConfirm";
 export * from "./dialogField";
-export * from "./muiDataGridActionItem";
 export * from "./reactSelect";
-export * from "./sideMenu";
-export * from "./viewRegisterDialog";
