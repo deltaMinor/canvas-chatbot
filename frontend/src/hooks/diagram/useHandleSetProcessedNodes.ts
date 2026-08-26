@@ -47,7 +47,6 @@ export const useHandleSetProcessedNodes = () => {
                     projectDiagram,
                     canvasNodes,
                     selectedCanvas,
-                    selectedCanvasViewOnly: undefined,
                     architectureNodes,
                     filterAuthorizedNodes,
                     filterSelectedViewNodes,

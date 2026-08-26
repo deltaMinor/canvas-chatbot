@@ -192,7 +192,6 @@ export const getSelectedViewNodes = (
         return {};
     },
     selectedCanvas?: DiagramCanvas,
-    selectedCanvasViewOnly?: boolean,
     selectedPath?: AttackPath,
     viewAllPaths?: boolean
 ) => {
@@ -200,7 +199,6 @@ export const getSelectedViewNodes = (
         const props: NodeVisibilityFuncProps = {
             node,
             canvas,
-            selectedCanvasViewOnly,
         };
         if (selectedCanvas) props.selectedCanvas = selectedCanvas;
         if (selectedPath) props.selectedPath = selectedPath;
@@ -223,17 +221,16 @@ export const getSelectedViewNodes = (
 };
 
 export const getArchitectureCanvasNodeProps = ({
-    selectedCanvasViewOnly, //
     node,
 }: NodeVisibilityFuncProps) => {
     if (
         node?.data?.type === CanvasNodeType.architecture.toString() //
     ) {
         return {
-            connectable: !selectedCanvasViewOnly,
-            deletable: !selectedCanvasViewOnly,
-            draggable: !selectedCanvasViewOnly,
-            selectable: !selectedCanvasViewOnly,
+            connectable: false,
+            deletable: false,
+            draggable: false,
+            selectable: false,
             style: {
                 opacity: SELECTED_NODE_EDGE_OPACITY, //
             },
@@ -252,14 +249,13 @@ export const getArchitectureCanvasNodeProps = ({
 };
 
 export const getDataFlowCanvasNodeProps = ({
-    selectedCanvasViewOnly, //
     node,
 }: NodeVisibilityFuncProps) => {
     if (
         node?.data?.type === CanvasNodeType.architecture.toString() //
     ) {
         return {
-            connectable: !selectedCanvasViewOnly,
+            connectable: false,
             deletable: false,
             draggable: false,
             selectable: false,
@@ -271,10 +267,10 @@ export const getDataFlowCanvasNodeProps = ({
         node?.data?.type === CanvasNodeType.data_flow.toString() //
     ) {
         return {
-            connectable: !selectedCanvasViewOnly,
+            connectable: false,
             deletable: false,
             draggable: false,
-            selectable: !selectedCanvasViewOnly,
+            selectable: false,
             style: {
                 opacity: SELECTED_NODE_EDGE_OPACITY, //
             },
@@ -639,7 +635,6 @@ export const getProcessedNodes = ({
     projectDiagram,
     canvasNodes,
     selectedCanvas,
-    selectedCanvasViewOnly,
     //
     filterAuthorizedNodes,
     filterSelectedViewNodes,
@@ -651,7 +646,6 @@ export const getProcessedNodes = ({
     projectDiagram: ProjectDiagram;
     canvasNodes: DiagramNode[];
     selectedCanvas: DiagramCanvas;
-    selectedCanvasViewOnly: boolean | undefined;
     //
     architectureNodes?: DiagramNode[];
     filterAuthorizedNodes?: boolean;
@@ -685,7 +679,6 @@ export const getProcessedNodes = ({
             visibilityCanvas,
             getNodePropsFunc,
             selectedCanvas,
-            selectedCanvasViewOnly,
             selectedPath,
             viewAllPaths
         );

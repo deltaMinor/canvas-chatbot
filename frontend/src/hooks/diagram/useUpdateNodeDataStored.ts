@@ -101,7 +101,6 @@ export const useUpdateNodeDataStored = () => {
                     projectDiagram,
                     canvasNodes: updatedArchitectureNodes,
                     selectedCanvas,
-                    selectedCanvasViewOnly: undefined,
                     architectureNodes: [],
                     filterAuthorizedNodes: true,
                     filterSelectedViewNodes: true,

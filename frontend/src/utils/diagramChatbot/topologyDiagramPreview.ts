@@ -20,7 +20,6 @@ export const getPrimaryCanvasPreviewNodesAndEdges = (
         projectDiagram: previewProjectDiagram,
         canvasNodes: primaryCanvas.nodes,
         selectedCanvas: primaryCanvas,
-        selectedCanvasViewOnly: !!primaryCanvas.view_only,
         filterAuthorizedNodes: false,
         filterSelectedViewNodes: false,
     }) as DiagramNode[];
@@ -30,7 +29,6 @@ export const getPrimaryCanvasPreviewNodesAndEdges = (
         projectDiagram: previewProjectDiagram,
         canvasEdges: primaryCanvas.edges,
         selectedCanvas: primaryCanvas,
-        selectedCanvasViewOnly: !!primaryCanvas.view_only,
         filterAuthorizedEdges: false,
         filterSelectedViewEdges: false,
     }) as DiagramEdge[];

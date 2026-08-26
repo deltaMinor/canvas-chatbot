@@ -50,7 +50,6 @@ export const useHandleSetProcessedEdges = () => {
                     projectDiagram,
                     canvasEdges,
                     selectedCanvas,
-                    selectedCanvasViewOnly: undefined,
                     architectureEdges,
                     filterAuthorizedEdges,
                     filterSelectedViewEdges,

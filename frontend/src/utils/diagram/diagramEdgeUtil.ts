@@ -75,7 +75,6 @@ export const getSelectedViewEdges = (
         return {};
     },
     selectedCanvas?: DiagramCanvas,
-    selectedCanvasViewOnly?: boolean,
     selectedPath?: AttackPath,
     viewAllPaths?: boolean
 ) => {
@@ -83,7 +82,6 @@ export const getSelectedViewEdges = (
         const props: EdgeVisibilityFuncProps = {
             edge,
             canvas,
-            selectedCanvasViewOnly,
         };
         if (selectedCanvas) props.selectedCanvas = selectedCanvas;
         if (selectedPath) props.selectedPath = selectedPath;
@@ -106,7 +104,6 @@ export const getSelectedViewEdges = (
 };
 
 export const getArchitectureCanvasEdgeProps = ({
-    selectedCanvasViewOnly, //
     // selectedPath,
     // viewAllPaths,
     edge,
@@ -118,10 +115,10 @@ export const getArchitectureCanvasEdgeProps = ({
         return {
             animated: false,
             //
-            deletable: !selectedCanvasViewOnly,
-            focusable: !selectedCanvasViewOnly,
-            reconnectable: !selectedCanvasViewOnly,
-            selectable: !selectedCanvasViewOnly,
+            deletable: false,
+            focusable: false,
+            reconnectable: false,
+            selectable: false,
             //
             zIndex: DEFAULT_ZINDEX_EDGE + 1,
             style: {
@@ -146,7 +143,6 @@ export const getArchitectureCanvasEdgeProps = ({
 };
 
 export const getDataFlowCanvasEdgeProps = ({
-    selectedCanvasViewOnly, //
     // selectedPath,
     // viewAllPaths,
     edge,
@@ -174,10 +170,10 @@ export const getDataFlowCanvasEdgeProps = ({
         return {
             animated: false,
             //
-            deletable: !selectedCanvasViewOnly,
-            focusable: !selectedCanvasViewOnly,
-            reconnectable: !selectedCanvasViewOnly,
-            selectable: !selectedCanvasViewOnly,
+            deletable: false,
+            focusable: false,
+            reconnectable: false,
+            selectable: false,
             //
             zIndex: DEFAULT_ZINDEX_EDGE + 1,
             style: {
@@ -330,7 +326,6 @@ export const getProcessedEdges = ({
     projectDiagram,
     canvasEdges,
     selectedCanvas,
-    selectedCanvasViewOnly,
     //
     filterAuthorizedEdges,
     filterSelectedViewEdges,
@@ -343,7 +338,6 @@ export const getProcessedEdges = ({
     projectDiagram: ProjectDiagram;
     canvasEdges: DiagramEdge[];
     selectedCanvas: DiagramCanvas;
-    selectedCanvasViewOnly: boolean | undefined;
     //
     architectureEdges?: DiagramEdge[];
     filterAuthorizedEdges?: boolean;
@@ -385,7 +379,6 @@ export const getProcessedEdges = ({
             visibilityCanvas,
             getEdgePropsFunc,
             selectedCanvas,
-            selectedCanvasViewOnly,
             selectedPath,
             viewAllPaths
         );
