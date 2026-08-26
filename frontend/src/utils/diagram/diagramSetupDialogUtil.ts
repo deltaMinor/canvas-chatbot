@@ -4,8 +4,16 @@ import app_store, { app_actions } from "#root/redux/store";
 import { postGenerateDiagramFromCacti } from "#root/services/domain/diagram";
 import { refreshProjectDiagram } from "#root/stores/backendRefreshStore";
 import { getProjectCactiFromStore, getProjectIdFromStore } from "#root/stores/backendStore";
-import { setDiagramDraftCanvas, setDiagramDraftCanvasId } from "#root/stores/projectDiagram/canvas";
+import {
+    getDiagramDraftCanvasFromStore,
+    setDiagramDraftCanvas,
+    setDiagramDraftCanvasId,
+} from "#root/stores/projectDiagram/canvas";
 import { updateProjectDiagram } from "#root/stores/projectDiagramFeaturePersistenceStore";
+import {
+    appendCanvasHistory,
+    getCanvasHistory,
+} from "#root/utils/diagram/diagramCanvasHistoryUtil";
 import { getInitCanvasId, reloadCanvas } from "#root/utils/diagram/diagramCanvasUtil";
 
 export const handleUpdateCanvas = async ({
@@ -25,6 +33,14 @@ export const processImportDiagram = async ({
     projectDiagram: ProjectDiagram;
     handleSetProcessedNodesAndEdges: HandleSetProcessedNodesAndEdges;
 }) => {
+    // Snapshot whatever is on the canvas right before the import is applied.
+    // File/address-based imports (the chatbot "/import" command and the
+    // "Import Diagram" chat button) assign the imported canvas a brand-new
+    // canvas_id - see `parseImportedDiagramCanvas` - so without this, the new
+    // id's undo/redo history would start out completely empty and undo would
+    // have nothing to revert to, even though a snapshot was appended below.
+    const priorCanvas = getDiagramDraftCanvasFromStore(instanceId);
+
     const setSelectedCanvas = (value: React.SetStateAction<DiagramCanvas | undefined>) =>
         setDiagramDraftCanvas(value, instanceId);
 
@@ -33,17 +49,6 @@ export const processImportDiagram = async ({
     const draftCanvasId = getInitCanvasId({
         canvas: projectDiagram.canvas,
     });
-    // NOTE: previously dispatched `app_actions.diagram.setDraftCanvasId(draftCanvasId)`
-    // directly with a bare string. That reducer scopes its state per diagram
-    // instance, and a bare (non-`{instanceId, value}`) payload resolves to a
-    // *default* instance id rather than this specific `instanceId` - so the
-    // real editor instance's `draftCanvasId` was silently left pointing at
-    // whatever canvas was selected before the import (which import had just
-    // replaced with a freshly generated canvas_id). That's why the canvas
-    // never actually swapped to the imported one, and why looking up that
-    // stale canvas's viewport afterward failed with "No canvas viewport."
-    // `setDiagramDraftCanvasId` is the existing helper that correctly scopes
-    // the update to `instanceId`, matching `setSelectedCanvas` above.
     setDiagramDraftCanvasId(draftCanvasId, instanceId);
 
     const selectedCanvas = projectDiagram.canvas?.find((canvas) => {
@@ -60,6 +65,32 @@ export const processImportDiagram = async ({
         selectedCanvasType: selectedCanvas.canvas_type,
         projectDiagram,
         handleSetProcessedNodesAndEdges,
+    });
+    const project_id = getProjectIdFromStore();
+    if (!project_id) {
+        return;
+    }
+
+    const { canvas_data_history: existingHistoryForImportedCanvas } = getCanvasHistory(
+        project_id,
+        selectedCanvas.canvas_id
+    );
+    if (
+        existingHistoryForImportedCanvas.length === 0 &&
+        priorCanvas &&
+        priorCanvas.canvas_id !== selectedCanvas.canvas_id
+    ) {
+        appendCanvasHistory({
+            instanceId,
+            project_id,
+            selectedCanvas: { ...priorCanvas, canvas_id: selectedCanvas.canvas_id },
+        });
+    }
+
+    appendCanvasHistory({
+        instanceId,
+        project_id,
+        selectedCanvas,
     });
 };
 

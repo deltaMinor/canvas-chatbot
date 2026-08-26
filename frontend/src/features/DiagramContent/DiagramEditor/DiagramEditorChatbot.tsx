@@ -22,7 +22,6 @@ const DiagramEditorChatbotComponent = () => {
         onDiagramUploadFiles,
         onDiagramDownloadFile,
         onImportTopologyDiagram,
-        onDiagramFullscreenChange,
         activeConversationId,
         conversationsPanel,
     } = useDiagramChatbotProps(chatbotRef);
@@ -45,7 +44,6 @@ const DiagramEditorChatbotComponent = () => {
                 onUploadFiles={onDiagramUploadFiles}
                 onDownloadFile={onDiagramDownloadFile}
                 onImportTopologyDiagram={onImportTopologyDiagram}
-                onFullscreenChange={onDiagramFullscreenChange}
                 conversationsPanel={conversationsPanel}
             />
             <TopologyGeneratorDialogConfirm />

@@ -481,17 +481,6 @@ export const useDiagramChatbotProps = (chatbotRef: RefObject<ChatbotHandle | nul
         void fileName;
     }, []);
 
-    const onDiagramFullscreenChange = useCallback(
-        (isFullscreen: boolean) => {
-            if (isFullscreen) return;
-            reactFlow.fitView({
-                duration: 250,
-                padding: 0.12,
-            });
-        },
-        [reactFlow]
-    );
-
     const getCommandDisabledCause = (): string => {
         switch (getChatbotState(activeConversationId)) {
             case ChatbotState.LlmOnto:
@@ -621,7 +610,6 @@ export const useDiagramChatbotProps = (chatbotRef: RefObject<ChatbotHandle | nul
         onWaitingChange,
         onDiagramUploadFiles,
         onDiagramDownloadFile,
-        onDiagramFullscreenChange,
         onImportTopologyDiagram: handleImportTopologyDiagram,
         activeConversationId,
         conversationsPanel,

@@ -110,7 +110,5 @@ export interface ChatbotProps {
 
     onImportTopologyDiagram?: (address: string) => void;
 
-    onFullscreenChange?: (isFullscreen: boolean) => void;
-
     conversationsPanel?: ConversationsPanelProps;
 }

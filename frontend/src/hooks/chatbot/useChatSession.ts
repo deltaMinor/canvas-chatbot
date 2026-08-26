@@ -41,7 +41,6 @@ interface UseChatSessionParams {
           ) => void | Promise<void>)
         | undefined;
     onUploadFiles?: ((files: File[]) => Promise<ChatFileAttachment[]>) | undefined;
-    onFullscreenChange?: ((isFullscreen: boolean) => void) | undefined;
     onSelectConversation?: ((conversationId: string) => void) | undefined;
     onCommandDisabled: (cause: string) => void;
 }
@@ -57,7 +56,6 @@ export const useChatSession = ({
     onSave,
     onWaitingChange,
     onUploadFiles,
-    onFullscreenChange,
     onSelectConversation,
     onCommandDisabled,
 }: UseChatSessionParams) => {
@@ -77,11 +75,9 @@ export const useChatSession = ({
     );
 
     const isOpen = openState !== ChatbotOpenState.Closed;
-    const isFullscreen = openState === ChatbotOpenState.Fullscreen;
 
     const scrollRef = useRef<HTMLDivElement>(null);
     const inputRef = useRef<HTMLInputElement>(null);
-    const previousIsFullscreenRef = useRef(isFullscreen);
     const activeRequestRef = useRef<{ aborted: boolean } | null>(null);
 
     const { pendingFiles, stageFiles, removeFile, clearFiles } = useFileAttachments();
@@ -131,26 +127,6 @@ export const useChatSession = ({
         // value and `messages`/`pushMessage` are stable across it.
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
-
-    useEffect(() => {
-        const didFullscreenChange = isFullscreen !== previousIsFullscreenRef.current;
-        previousIsFullscreenRef.current = isFullscreen;
-
-        if (!didFullscreenChange || !onFullscreenChange) {
-            return;
-        }
-
-        const timeoutId = window.setTimeout(() => {
-            onFullscreenChange(isFullscreen);
-            window.requestAnimationFrame(() => {
-                window.dispatchEvent(new Event("resize"));
-            });
-        }, 200);
-
-        return () => {
-            window.clearTimeout(timeoutId);
-        };
-    }, [isFullscreen, onFullscreenChange]);
 
     const submitCommand = async (overrideText?: string) => {
         const text = (overrideText ?? commandString).trim();
@@ -265,18 +241,6 @@ export const useChatSession = ({
         });
     };
 
-    const handleFullscreenToggle = (e: React.MouseEvent<HTMLButtonElement>) => {
-        e.stopPropagation();
-        setOpenState((prev) => {
-            const next =
-                prev === ChatbotOpenState.Fullscreen
-                    ? ChatbotOpenState.Open
-                    : ChatbotOpenState.Fullscreen;
-            setChatbotOpenStateInStore(next);
-            return next;
-        });
-    };
-
     const handleToggleConversationList = (e: React.MouseEvent<HTMLButtonElement>) => {
         e.stopPropagation();
         setShowConversationList((prev) => !prev);
@@ -288,13 +252,11 @@ export const useChatSession = ({
     };
 
     return {
-        // open / fullscreen / conversation-list state
+        // open / conversation-list state
         openState,
         isOpen,
-        isFullscreen,
         showConversationList,
         handleToggle,
-        handleFullscreenToggle,
         handleToggleConversationList,
         handleSelectConversation,
 

@@ -5,7 +5,7 @@ const CHATBOT_OPEN_STATE_KEY = "chatbot_panel_state";
 export const getChatbotOpenStateFromStore = (): ChatbotOpenState => {
     try {
         const stored = localStorage.getItem(CHATBOT_OPEN_STATE_KEY);
-        if (stored === ChatbotOpenState.Open || stored === ChatbotOpenState.Fullscreen) {
+        if (stored === ChatbotOpenState.Open) {
             return stored;
         }
         return ChatbotOpenState.Closed;

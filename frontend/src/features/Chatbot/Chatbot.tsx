@@ -1,6 +1,7 @@
 import { forwardRef, useImperativeHandle, useRef } from "react";
 
-import SmartToyRoundedIcon from "@mui/icons-material/SmartToyRounded";
+import ChevronLeftRoundedIcon from "@mui/icons-material/ChevronLeftRounded";
+import ChevronRightRoundedIcon from "@mui/icons-material/ChevronRightRounded";
 import { enqueueSnackbar } from "notistack";
 
 import ChatbotCommandBox from "#root/components/ChatbotCommandBox";
@@ -45,17 +46,14 @@ export const Chatbot = forwardRef<ChatbotHandle, ChatbotProps>(
             onUploadFiles,
             onDownloadFile,
             onImportTopologyDiagram,
-            onFullscreenChange,
             conversationsPanel,
         },
         ref
     ) => {
         const {
             isOpen,
-            isFullscreen,
             showConversationList,
             handleToggle,
-            handleFullscreenToggle,
             handleToggleConversationList,
             handleSelectConversation,
             messages,
@@ -86,7 +84,6 @@ export const Chatbot = forwardRef<ChatbotHandle, ChatbotProps>(
             onSave,
             onWaitingChange,
             onUploadFiles,
-            onFullscreenChange,
             onSelectConversation: conversationsPanel?.onSelect,
             onCommandDisabled: (cause) => enqueueSnackbar(cause, { variant: "error" }),
         });
@@ -114,7 +111,7 @@ export const Chatbot = forwardRef<ChatbotHandle, ChatbotProps>(
 
         // ── Render ──────────────────────────────────────────────────────────
         return (
-            <div className="chat-root">
+            <div className="chat-sidebar-root">
                 {/* Hidden file input */}
                 <input
                     ref={fileInputRef}
@@ -124,76 +121,80 @@ export const Chatbot = forwardRef<ChatbotHandle, ChatbotProps>(
                     onChange={(e) => stageFiles(e.target.files)}
                 />
 
-                {isOpen && (
-                    <div
-                        className={`chat-panel ${isDraggingOver ? "chat-panel--dragging" : ""} ${isFullscreen ? "chat-panel--fullscreen" : ""}`}
-                        onDragEnter={handleDragEnter}
-                        onDragLeave={handleDragLeave}
-                        onDragOver={handleDragOver}
-                        onDrop={handleDrop}
-                    >
-                        {/* Drag-over overlay */}
-                        {isDraggingOver && <ChatbotFileDropOverlay />}
+                <div
+                    className={`chat-panel ${isOpen ? "chat-panel--open" : ""} ${isDraggingOver ? "chat-panel--dragging" : ""}`}
+                    onDragEnter={handleDragEnter}
+                    onDragLeave={handleDragLeave}
+                    onDragOver={handleDragOver}
+                    onDrop={handleDrop}
+                >
+                    {isOpen && (
+                        <div className="chat-panel__inner">
+                            {/* Drag-over overlay */}
+                            {isDraggingOver && <ChatbotFileDropOverlay />}
 
-                        <ChatbotHeader
-                            title={headerTitle}
-                            isFullscreen={isFullscreen}
-                            showConversationList={showConversationList}
-                            hasConversationsPanel={!!conversationsPanel}
-                            onHeaderClick={handleToggle}
-                            onToggleConversationList={handleToggleConversationList}
-                            onFullscreenToggle={handleFullscreenToggle}
-                        />
-
-                        {showConversationList && conversationsPanel ? (
-                            <ConversationList
-                                {...conversationsPanel}
-                                onSelect={handleSelectConversation}
+                            <ChatbotHeader
+                                title={headerTitle}
+                                showConversationList={showConversationList}
+                                hasConversationsPanel={!!conversationsPanel}
+                                onHeaderClick={handleToggle}
+                                onToggleConversationList={handleToggleConversationList}
                             />
-                        ) : (
-                            <>
-                                <ChatbotConversationBody
-                                    scrollRef={scrollRef}
-                                    messages={messages}
-                                    emptyStateText={emptyStateText}
-                                    onDownloadFile={onDownloadFile ?? (() => undefined)}
-                                    onImportTopologyDiagram={
-                                        onImportTopologyDiagram ?? (() => undefined)
-                                    }
-                                    isNewMessage={isNewMessage}
-                                    isWaiting={isWaiting}
-                                    progressText={progressText}
-                                    specialInputs={specialInputs}
-                                    onSpecialInputClick={handleSpecialInputClick}
-                                />
 
-                                <ChatbotCommandBox
-                                    inputRef={inputRef}
-                                    pendingFiles={pendingFiles}
-                                    removeFile={removeFile}
-                                    commandString={commandString}
-                                    setCommandString={setCommandString}
-                                    onKeyDown={handleKeyDown}
-                                    onSubmit={() => void submitCommand()}
-                                    onAttachClick={() => fileInputRef.current?.click()}
-                                    onAbortClick={() => void handleAbort()}
-                                    isWaiting={isWaiting}
+                            {showConversationList && conversationsPanel ? (
+                                <ConversationList
+                                    {...conversationsPanel}
+                                    onSelect={handleSelectConversation}
                                 />
-                            </>
-                        )}
-                    </div>
-                )}
+                            ) : (
+                                <>
+                                    <ChatbotConversationBody
+                                        scrollRef={scrollRef}
+                                        messages={messages}
+                                        emptyStateText={emptyStateText}
+                                        onDownloadFile={onDownloadFile ?? (() => undefined)}
+                                        onImportTopologyDiagram={
+                                            onImportTopologyDiagram ?? (() => undefined)
+                                        }
+                                        isNewMessage={isNewMessage}
+                                        isWaiting={isWaiting}
+                                        progressText={progressText}
+                                        specialInputs={specialInputs}
+                                        onSpecialInputClick={handleSpecialInputClick}
+                                    />
 
-                {/* Collapsed toggle */}
-                {!isOpen && (
+                                    <ChatbotCommandBox
+                                        inputRef={inputRef}
+                                        pendingFiles={pendingFiles}
+                                        removeFile={removeFile}
+                                        commandString={commandString}
+                                        setCommandString={setCommandString}
+                                        onKeyDown={handleKeyDown}
+                                        onSubmit={() => void submitCommand()}
+                                        onAttachClick={() => fileInputRef.current?.click()}
+                                        onAbortClick={() => void handleAbort()}
+                                        isWaiting={isWaiting}
+                                    />
+                                </>
+                            )}
+                        </div>
+                    )}
+                </div>
+
+                {/* Edge toggle tab — stays attached to the panel's trailing edge */}
+                {
                     <button
-                        className="chat-toggle-btn"
+                        className="chat-toggle-tab"
                         onClick={handleToggle}
-                        title="Open AI Assistant"
+                        title={isOpen ? "Collapse AI Assistant" : "Open AI Assistant"}
                     >
-                        <SmartToyRoundedIcon sx={{ fontSize: 22 }} />
+                        {isOpen ? (
+                            <ChevronLeftRoundedIcon sx={{ fontSize: 18 }} />
+                        ) : (
+                            <ChevronRightRoundedIcon sx={{ fontSize: 18 }} />
+                        )}
                     </button>
-                )}
+                }
             </div>
         );
     }

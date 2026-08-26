@@ -14,11 +14,13 @@ const DiagramEditorComponent = () => {
         <Stack className="diagram-canvas-root">
             <DiagramCanvasDialogConfirm />
             {/* <DiagramLockedCQDialog /> */}
-            <DiagramCanvasBoxWrapper>
-                <DiagramEditorCanvasBody />
-                <DiagramCanvasBackdrops />
+            <Stack direction="row" className="diagram-canvas-row">
                 <DiagramEditorChatbot />
-            </DiagramCanvasBoxWrapper>
+                <DiagramCanvasBoxWrapper>
+                    <DiagramEditorCanvasBody />
+                    <DiagramCanvasBackdrops />
+                </DiagramCanvasBoxWrapper>
+            </Stack>
         </Stack>
     );
 };
