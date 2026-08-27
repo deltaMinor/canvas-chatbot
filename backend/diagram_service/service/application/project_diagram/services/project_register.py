@@ -13,7 +13,6 @@ from shared_libs.infrastructure.remote_repository.service import RemoteRepositor
 from shared_libs.models.base_models import ProducerDataModel
 from shared_libs.producers.llm_producer import LLMProducer
 from shared_libs.producers.producer_data import (
-    producer_data_diagram_pipeline_dataflow,
     producer_data_diagram_pipeline_topology,
     producer_data_project_register,
 )
@@ -154,53 +153,3 @@ class ProjectRegisterApplicationService(ProjectRegisterService):
         )
         return task_id
 
-    @raise_exception(
-        "Failed to infer data flow diagram using LLM.",
-        exception_logger=logger,
-    )
-    def infer_llm_dataflow(
-        self,
-        data: dict,
-    ) -> str:
-        project_id: str = data["project_id"]
-        canvas_id: str = data["canvas_id"]
-
-        self._ensure_no_active_llm_generation(
-            project_id=project_id,
-            user_info=SYSTEM_USER_INFO,
-        )
-
-        generation_id = str(uuid.uuid4())
-        reserved = DiagramLLMJobUtil.reserve_start(
-            project_id=project_id,
-            job_id=generation_id,
-        )
-        if not reserved:
-            raise BadRequest(
-                "An LLM generation is already starting for this project. "
-                "Please wait for completion."
-            )
-
-        diagram_pipeline_producer = LLMProducer(
-            producer=Producer(
-                producer_data_model=ProducerDataModel(
-                    **producer_data_diagram_pipeline_dataflow,
-                ),
-                celery_app=self.celery_app,
-            )
-        )
-        task_id = diagram_pipeline_producer.run_async(
-            task_type="run_pipeline",
-            project_id=project_id,
-            canvas_id=canvas_id,
-            job_id=generation_id,
-            user_info=SYSTEM_USER_INFO,
-        )
-        self.project_ad_service.start_llm_generation(
-            project_id=project_id,
-            canvas_id=canvas_id,
-            task_id=task_id,
-            generation_type="dataflow",
-            user_info=SYSTEM_USER_INFO,
-        )
-        return task_id

@@ -30,16 +30,6 @@ producer_data_diagram_pipeline_architecture = {
     },
 }
 
-producer_data_diagram_pipeline_dataflow = {
-    "task_queue": "diagram_pipeline_queue",
-    "task_mappings": {
-        "task_name_dict": {
-            "run_pipeline": "diagram_pipeline.generate_dataflow",
-        },
-        "task_key_dict": {},
-    },
-}
-
 producer_data_diagram_pipeline_topology = {
     "task_queue": "diagram_pipeline_queue",
     "task_mappings": {

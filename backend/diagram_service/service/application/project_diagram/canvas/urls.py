@@ -3,7 +3,6 @@ from django.urls import path
 from .views import (
     ProjectDiagramCanvasAPIView,
     ProjectDiagramCanvasArchitectureGenerateAPIView,
-    ProjectDiagramDataFlowGenerationAPIView,
     ProjectDiagramEdgeAPIView,
     ProjectDiagramNodeAPIView,
 )
@@ -16,10 +15,6 @@ urlpatterns = [
     path(
         "canvas/architecture/generate",
         ProjectDiagramCanvasArchitectureGenerateAPIView.as_view(),
-    ),
-    path(
-        "canvas/data_flow/generate",
-        ProjectDiagramDataFlowGenerationAPIView.as_view(),
     ),
     path(
         "canvas/edge",
