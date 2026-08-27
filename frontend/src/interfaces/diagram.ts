@@ -6,10 +6,6 @@ import { AttackPath, ProjectRegisterFields } from "./register";
 
 export enum CanvasType {
     architecture = "architecture",
-    data_flow = "data_flow",
-    llm = "llm",
-    threat_scenario = "threat_scenario",
-    summary = "summary"
 }
 
 export enum CanvasColumn {
@@ -19,12 +15,6 @@ export enum CanvasColumn {
     bottom = "bottom",
 }
 
-export enum CanvasDataflowNodeType {
-    users = "users",
-    interface = "interface",
-    devices = "devices",
-}
-
 export enum CanvasAxis {
     horizontal = "x",
     vertical = "y",
@@ -32,14 +22,10 @@ export enum CanvasAxis {
 
 export enum CanvasEdgeType {
     architecture = "architecture",
-    data_flow = "data_flow",
-    threat_scenario = "threat_scenario",
-    llm = "llm"
 }
 
 export enum CanvasNodeType {
     architecture = "architecture",
-    data_flow = "data_flow",
 }
 
 export enum CanvasNodeVariantType {
@@ -49,7 +35,6 @@ export enum CanvasNodeVariantType {
 
 export enum DiagramComponentType {
     architecture = "architecture",
-    data_flow = "data_flow",
     custom = "custom",
 }
 
@@ -245,7 +230,6 @@ export interface DiagramDataCore {
 
 export interface DiagramDataExist {
     architecture: boolean;
-    data_flow: boolean;
     example: boolean;
     template: boolean;
 }

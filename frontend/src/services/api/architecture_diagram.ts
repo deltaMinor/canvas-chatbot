@@ -371,26 +371,6 @@ export class ArchitectureDiagramService {
         });
     }
 
-    async getLLMDataFlowGenerationStatus(
-        project_id: string,
-        canvas_id: string
-    ): Promise<AxiosApiResponse<{ status: number }>> {
-        const params = { project_id, canvas_id };
-        return await axios_json_api.get("project_diagram/canvas/data_flow/generate", {
-            params,
-        });
-    }
-
-    async postGenerateLLMDataflow(body: {
-        project_id: string;
-        canvas_id: string;
-    }): Promise<AxiosApiResponse<{ generation: { task_id: string } }>> {
-        return await axios_json_api.post(
-            "project_diagram/canvas/data_flow/generate", //
-            body
-        );
-    }
-
     async postGenerateLLMDiagram(body: {
         project_id: string;
         canvas_id: string;

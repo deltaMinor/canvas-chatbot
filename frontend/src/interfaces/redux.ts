@@ -578,7 +578,6 @@ export interface DiagramToolbarCapabilities {
     export: DiagramButtonState;
     clear: DiagramButtonState;
     logs: DiagramButtonState;
-    llmDataflow: DiagramButtonState;
     setComplete: DiagramButtonState;
     unsetComplete: DiagramButtonState;
     tutorial: DiagramButtonState;
@@ -592,8 +591,6 @@ export interface DiagramToolbarCapabilities {
     nodeDrawerSave: DiagramButtonState;
     /** Save button in edge attribute drawer. */
     edgeDrawerSave: DiagramButtonState;
-    /** Editable fields in data flow (user story) drawer. */
-    dataFlowDrawerEdit: DiagramButtonState;
     /** All edit-toolbar action buttons (align, layer, distribute, copy/paste/delete). */
     editToolbar: DiagramButtonState;
     /** Delete-node button in the node attribute drawer header. */

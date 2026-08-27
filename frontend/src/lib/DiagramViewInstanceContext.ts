@@ -1,4 +1,3 @@
-import { CanvasType } from "#root/interfaces/diagram";
 import { ListenerApiLike } from "#root/interfaces/diagramViewInstanceResolver";
 import { RootState } from "#root/redux/store";
 import {
@@ -8,13 +7,10 @@ import {
 import { getArchitectureCanvas } from "#root/utils/diagram/backendDiagramUtil";
 import { getDiagramInstanceState } from "#root/utils/diagram/diagramInstanceUtil";
 import { getActiveThreatScenarioSelection } from "#root/utils/diagram/diagramSelectionUtil";
-import { getSummaryCanvas } from "#root/utils/diagram/diagramSummaryUtil";
 
 export class DiagramViewInstanceContext {
     readonly listenerApi: ListenerApiLike;
     readonly instanceId: string;
-    private _summaryData: ReturnType<typeof getSummaryCanvas> | undefined = undefined;
-    private _summaryDataCacheKey = "";
 
     constructor({
         listenerApi, //
@@ -64,10 +60,6 @@ export class DiagramViewInstanceContext {
     }
 
     get currentDraftCanvasType() {
-        if (this.currentDraftCanvasId === CanvasType.summary.toString()) {
-            return CanvasType.summary;
-        }
-
         return this.projectDiagram?.canvas.find(
             (canvas) => canvas.canvas_id === this.currentDraftCanvasId
         )?.canvas_type;
@@ -79,27 +71,6 @@ export class DiagramViewInstanceContext {
 
     get threatOverviewScenarioScope() {
         return this.diagramState.threatOverviewScenarioScope ?? "top5";
-    }
-
-    get summaryData() {
-        const cacheKey = [
-            this.currentDraftCanvasId,
-            this.currentDraftCanvasType ?? "",
-            this.projectDiagram?.["project_id"] ?? "no-project-diagram",
-        ].join("|");
-
-        if (this._summaryDataCacheKey !== cacheKey) {
-            this._summaryData =
-                this.projectDiagram &&
-                [CanvasType.summary, CanvasType.threat_scenario].includes(
-                    this.currentDraftCanvasType as CanvasType
-                )
-                    ? getSummaryCanvas({ projectDiagram: this.projectDiagram })
-                    : undefined;
-            this._summaryDataCacheKey = cacheKey;
-        }
-
-        return this._summaryData;
     }
 
     hasCanvas() {

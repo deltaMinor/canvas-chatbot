@@ -1,8 +1,6 @@
-import { deepOrange, indigo, pink } from "@mui/material/colors";
 import { MarkerType, Position } from "@xyflow/react";
 
 import {
-    CanvasColumn,
     CanvasEdgeType,
     CanvasType,
     DiagramCanvas,
@@ -32,8 +30,6 @@ export const DEFAULT_ZINDEX_CANVAS_BACKDROP = 1;
 export const DEFAULT_ZINDEX_HANDLE_TOP = 19;
 export const DEFAULT_ZINDEX_HANDLE_BTM = 18;
 
-export const DEFAULT_DATAFLOW_CANVAS_COLUMN = CanvasColumn.left;
-//
 export const DEFAULT_DRAG_INTERVAL = 5;
 export const DEFAULT_LINE_SEGMENT_THICKNESS = 5;
 export const DEFAULT_BADGE_ZINDEX = 1050;
@@ -104,31 +100,8 @@ export const MIN_HEIGHT_CLUSTERNODE = 100;
 export const MAX_WIDTH_CLUSTERNODE = 2000;
 export const MAX_HEIGHT_CLUSTERNODE = 2000;
 
-export const DATAFLOW_USERS_COL_OFFSET_VALUES = {
-    [CanvasColumn.left]: -500,
-    [CanvasColumn.right]: 400,
-    [CanvasColumn.top]: -400,
-    [CanvasColumn.bottom]: 300,
-};
-export const DATAFLOW_DEVICES_COL_OFFSET_VALUES = {
-    [CanvasColumn.left]: -300,
-    [CanvasColumn.right]: 100,
-    [CanvasColumn.top]: -250,
-    [CanvasColumn.bottom]: 70,
-};
-
-export const DATAFLOW_EDGES_HANDLES = {
-    [CanvasColumn.left]: [EdgeHandleType.source_right, EdgeHandleType.target_left],
-    [CanvasColumn.right]: [EdgeHandleType.source_left, EdgeHandleType.target_right],
-    [CanvasColumn.top]: [EdgeHandleType.source_bottom, EdgeHandleType.target_top],
-    [CanvasColumn.bottom]: [EdgeHandleType.source_top, EdgeHandleType.target_bottom],
-};
-
 export const CanvasEdgeColor = {
     [CanvasEdgeType.architecture]: "#000",
-    [CanvasEdgeType.data_flow]: pink[500],
-    [CanvasEdgeType.threat_scenario]: deepOrange[500],
-    [CanvasEdgeType.llm]: indigo[500],
 };
 
 export const default_marker_props = {
@@ -263,19 +236,6 @@ export const ALLOWED_PARENT_NODE_CARD_REF_KEYS = {
 export const HIDDEN_RESOURCE_DRAWER_NODE_ICON_KEY = [
     GenericSystemNodeIconKey.forums.toString(), //
 ];
-
-export const summary_canvas_template = {
-    canvas_id: "summary",
-    canvas_name: "Summary",
-    canvas_type: CanvasType.summary,
-    ref: {},
-    view_only: true,
-    warnings: [],
-    nodes: [],
-    edges: [],
-    viewport: { x: 0, y: 0, zoom: 1 },
-    llm_generation_status: 0,
-} as DiagramCanvas;
 
 export const CLUSTER_NODE_BORDER_COLOR = {
     // AWS

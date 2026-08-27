@@ -149,26 +149,20 @@ export const useDiagramCapabilities = (): DiagramCapabilitiesState => {
         const softViewOnly = !!selectedCanvas?.view_only;
 
         const isArch = canvasType === CanvasType.architecture;
-        const isDf = canvasType === CanvasType.data_flow;
-        const isSummary = canvasType === CanvasType.summary;
-        const isArchOrDf = isArch || isDf;
-        const isArchDfOrSummary = isArchOrDf || isSummary;
 
         return {
             toolbar: {
                 // architecture only; hidden when locked/submitted; disabled when unauthorized
                 import: { show: isArch && !softViewOnly, enabled: canUpdate },
                 // read-only action; always shown on valid canvas types; disabled when unauthorized
-                export: { show: isArchDfOrSummary, enabled: canRead },
-                // arch/df; hidden when locked/submitted; disabled when unauthorized
-                clear: { show: isArchOrDf && !softViewOnly, enabled: canUpdate },
+                export: { show: isArch, enabled: canRead },
+                // architecture only; hidden when locked/submitted; disabled when unauthorized
+                clear: { show: isArch && !softViewOnly, enabled: canUpdate },
                 // always shown on valid canvas types; disabled when unauthorized
-                logs: { show: isArchDfOrSummary, enabled: canReadLogs },
-                // data_flow only; hidden when locked/submitted; disabled when unauthorized
-                llmDataflow: { show: isDf && !softViewOnly, enabled: canUpdate },
-                // arch/df/summary; hidden when locked/submitted or already complete
+                logs: { show: isArch, enabled: canReadLogs },
+                // architecture only; hidden when locked/submitted or already complete
                 setComplete: {
-                    show: isArchDfOrSummary && !softViewOnly && !isCompleted,
+                    show: isArch && !softViewOnly && !isCompleted,
                     enabled: canUpdate && !isMarkCompleteDisabledByCheck,
                 },
                 // shown whenever diagram is completed (visible even when locked so
@@ -177,28 +171,26 @@ export const useDiagramCapabilities = (): DiagramCapabilitiesState => {
                     show: isCompleted,
                     enabled: canUpdate,
                 },
-                // arch/df only; hidden when locked/submitted; no auth gate
-                tutorial: { show: isArchOrDf && !softViewOnly, enabled: true },
-                // undo/redo: not shown on df canvas; enabled only when history is available.
+                // architecture only; hidden when locked/submitted; no auth gate
+                tutorial: { show: isArch && !softViewOnly, enabled: true },
+                // undo/redo: enabled only when history is available.
                 // Not gated by canvas lock state - these buttons are always available.
                 undo: {
-                    show: !isDf && canvasType !== undefined,
-                    enabled: !isDf && canUpdate && canUndo,
+                    show: canvasType !== undefined,
+                    enabled: canUpdate && canUndo,
                 },
                 redo: {
-                    show: !isDf && canvasType !== undefined,
-                    enabled: !isDf && canUpdate && canRedo,
+                    show: canvasType !== undefined,
+                    enabled: canUpdate && canRedo,
                 },
-                // bidirectional arrow FAB: shown on arch/df; enabled when canvas is editable
+                // bidirectional arrow FAB: shown on architecture; enabled when canvas is editable
                 biDirectionalArrow: {
-                    show: isArchOrDf,
+                    show: isArch,
                     enabled: !softViewOnly && canUpdate,
                 },
                 // drawer save buttons: enabled when canvas is editable
                 nodeDrawerSave: { show: true, enabled: !softViewOnly && canUpdate },
                 edgeDrawerSave: { show: true, enabled: !softViewOnly && canUpdate },
-                // data flow drawer editable fields
-                dataFlowDrawerEdit: { show: isDf, enabled: !softViewOnly && canUpdate },
                 // all edit-toolbar stacks (align, layer, distribute, copy/paste/delete).
                 // Not gated by canvas lock state - always available.
                 editToolbar: { show: true, enabled: canUpdate },

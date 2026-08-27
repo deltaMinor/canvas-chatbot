@@ -321,20 +321,14 @@ export const deleteLLMImageFiles = async (
         });
 };
 
-type LLMGenerationCanvasType = "architecture" | "data_flow";
-
 export const getLLMGenerationStatusFromApi = async (
     project_id: string,
     canvas_id: string,
-    serviceDomainProps: ServiceDomainProps = {},
-    canvasType: LLMGenerationCanvasType = "architecture"
+    serviceDomainProps: ServiceDomainProps = {}
 ) => {
     const { hideSnackbar = true } = serviceDomainProps;
     const ADApi = new ArchitectureDiagramService();
-    const statusRequest =
-        canvasType === "data_flow"
-            ? ADApi.getLLMDataFlowGenerationStatus(project_id, canvas_id)
-            : ADApi.getLLMArchitectureGenerationStatus(project_id, canvas_id);
+    const statusRequest = ADApi.getLLMArchitectureGenerationStatus(project_id, canvas_id);
 
     return await statusRequest
         .then((res) => {
@@ -343,31 +337,6 @@ export const getLLMGenerationStatusFromApi = async (
                     variant: "success",
                 });
             return res?.data?.data || {};
-        })
-        .catch((reason) => {
-            processDomainFailure(reason, serviceDomainProps);
-            return Promise.reject(reason);
-        });
-};
-
-export const postGenerateLLMDataflow = async (
-    project_id: string,
-    canvas_id: string,
-    serviceDomainProps: ServiceDomainProps = {}
-) => {
-    const body = {
-        project_id: project_id,
-        canvas_id: canvas_id,
-    };
-    const { hideSnackbar = true } = serviceDomainProps;
-    const ADApi = new ArchitectureDiagramService();
-    return await ADApi.postGenerateLLMDataflow(body)
-        .then((res) => {
-            if (!hideSnackbar)
-                enqueueSnackbar("Dataflow has been generated using LLM successfully.", {
-                    variant: "success",
-                });
-            return res?.data?.data;
         })
         .catch((reason) => {
             processDomainFailure(reason, serviceDomainProps);

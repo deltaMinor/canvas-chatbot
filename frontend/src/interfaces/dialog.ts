@@ -225,7 +225,6 @@ export enum DialogConfirmStateEnum {
     confirmGenerateDiagramFromTopologyGenerator = "confirmGenerateDiagramFromTopologyGenerator",
     confirmGenerateDiagramFromXML = "confirmGenerateDiagramFromXML",
     // llm
-    confirmGenerateLLMDataflow = "confirmGenerateLLMDataflow",
     confirmGenerateLLMDiagram = "confirmGenerateLLMDiagram",
     // admin
     confirmDeleteGroup = "confirmDeleteGroup",

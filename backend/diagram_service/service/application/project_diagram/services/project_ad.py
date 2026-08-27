@@ -62,7 +62,6 @@ from shared_libs.infrastructure.remote_file_repository.service import (
 from shared_libs.infrastructure.remote_repository.service import RemoteRepository
 from shared_libs.lib.diagram_util.card_node_builder import CardNodeBuilder
 from shared_libs.lib.file_validator import FileValidator
-from shared_libs.lib.diagram_util.card_node_processor import CardNodeProcessor
 from shared_libs.lib.diagram_util.diagram_canvas_factory import DiagramCanvasFactory
 from shared_libs.models.base_models import (
     AuditLogModel,
@@ -874,19 +873,12 @@ class ProjectADApplicationService(ProjectADService):
         )
         kb_tosca_model = KbToscaModel(**db_kb_tosca)
 
-        # Populate data flow nodes
-        card_node_processor = CardNodeProcessor(
-            values=project_cq_model.values,
-            project_ad_model=project_ad_model,
-            kb_tosca_model=kb_tosca_model,
-        )
-        card_node_processor.populate_data_flow_node()
 
         tosca_schema, tosca_mapping = self._retrieve_tosca_information(
             user_info=SYSTEM_USER_INFO,
         )
         for canvas in project_ad_model.canvas:
-            if canvas.canvas_type == CanvasType.data_flow.value:
+            if canvas.canvas_type == "data_flow":
                 continue
             self._update_nodes_tosca_type_by_icon_key(
                 nodes=canvas.nodes,
@@ -1031,19 +1023,12 @@ class ProjectADApplicationService(ProjectADService):
         )
         kb_tosca_model = KbToscaModel(**db_kb_tosca)
 
-        # Populate data flow nodes
-        card_node_processor = CardNodeProcessor(
-            values=project_cq_model.values,
-            project_ad_model=project_ad_model,
-            kb_tosca_model=kb_tosca_model,
-        )
-        card_node_processor.populate_data_flow_node()
 
         tosca_schema, tosca_mapping = self._retrieve_tosca_information(
             user_info=SYSTEM_USER_INFO,
         )
         for canvas in project_ad_model.canvas:
-            if canvas.canvas_type == CanvasType.data_flow.value:
+            if canvas.canvas_type == "data_flow":
                 continue
             self._update_nodes_tosca_type_by_icon_key(
                 nodes=canvas.nodes,
@@ -1190,19 +1175,12 @@ class ProjectADApplicationService(ProjectADService):
         )
         kb_tosca_model = KbToscaModel(**db_kb_tosca)
 
-        # Populate data flow nodes
-        card_node_processor = CardNodeProcessor(
-            values=project_cq_model.values,
-            project_ad_model=project_ad_model,
-            kb_tosca_model=kb_tosca_model,
-        )
-        card_node_processor.populate_data_flow_node()
 
         tosca_schema, tosca_mapping = self._retrieve_tosca_information(
             user_info=SYSTEM_USER_INFO,
         )
         for canvas in project_ad_model.canvas:
-            if canvas.canvas_type == CanvasType.data_flow.value:
+            if canvas.canvas_type == "data_flow":
                 continue
             self._update_nodes_tosca_type_by_icon_key(
                 nodes=canvas.nodes,
@@ -1349,19 +1327,12 @@ class ProjectADApplicationService(ProjectADService):
         )
         kb_tosca_model = KbToscaModel(**db_kb_tosca)
 
-        # Populate data flow nodes
-        card_node_processor = CardNodeProcessor(
-            values=project_cq_model.values,
-            project_ad_model=project_ad_model,
-            kb_tosca_model=kb_tosca_model,
-        )
-        card_node_processor.populate_data_flow_node()
 
         tosca_schema, tosca_mapping = self._retrieve_tosca_information(
             user_info=SYSTEM_USER_INFO,
         )
         for canvas in project_ad_model.canvas:
-            if canvas.canvas_type == CanvasType.data_flow.value:
+            if canvas.canvas_type == "data_flow":
                 continue
             self._update_nodes_tosca_type_by_icon_key(
                 nodes=canvas.nodes,
@@ -1528,19 +1499,12 @@ class ProjectADApplicationService(ProjectADService):
         )
         kb_tosca_model = KbToscaModel(**db_kb_tosca)
 
-        # Populate data flow nodes
-        card_node_processor = CardNodeProcessor(
-            values=project_cq_model.values,
-            project_ad_model=project_ad_model,
-            kb_tosca_model=kb_tosca_model,
-        )
-        card_node_processor.populate_data_flow_node()
 
         tosca_schema, tosca_mapping = self._retrieve_tosca_information(
             user_info=SYSTEM_USER_INFO,
         )
         for canvas in project_ad_model.canvas:
-            if canvas.canvas_type == CanvasType.data_flow.value:
+            if canvas.canvas_type == "data_flow":
                 continue
             self._update_nodes_tosca_type_by_icon_key(
                 nodes=canvas.nodes,
@@ -1913,7 +1877,7 @@ class ProjectADApplicationService(ProjectADService):
             user_info=SYSTEM_USER_INFO,
         )
         for canvas in project_ad_model.canvas:
-            if canvas.canvas_type == CanvasType.data_flow.value:
+            if canvas.canvas_type == "data_flow":
                 continue
             update_flag |= self._update_nodes_tosca_type_by_icon_key(
                 nodes=canvas.nodes,
@@ -1976,13 +1940,13 @@ class ProjectADApplicationService(ProjectADService):
         for i, canvas in enumerate(project_ad["canvas"]):
             if canvas.get("canvas_type") not in [
                 CanvasType.architecture.value,
-                CanvasType.data_flow.value,
+                "data_flow",
             ]:
                 continue
 
             # Deep copy to prevent unintentionally modify original canvas
             _canvas = copy.deepcopy(canvas)
-            if _canvas.get("canvas_type") == CanvasType.data_flow.value:
+            if _canvas.get("canvas_type") == "data_flow":
                 _canvas["nodes"].extend(nodes)
                 _canvas["edges"].extend(edges)
 

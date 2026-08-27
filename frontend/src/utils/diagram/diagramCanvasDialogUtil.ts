@@ -1,9 +1,6 @@
 import { Viewport } from "@xyflow/react";
 
-import { useProjectLoader } from "#root/hooks/backendLoaderHooks";
 import { DiagramCanvas, DiagramEdge, DiagramNode } from "#root/interfaces/diagram";
-import { postGenerateLLMDataflow } from "#root/services/domain/diagram";
-import { refreshProjectDiagram } from "#root/stores/backendRefreshStore";
 import { getProjectDiagramFromStore } from "#root/stores/backendStore";
 import { getDraftCanvasIdFromStore } from "#root/stores/projectDiagram/backend";
 import {
@@ -11,7 +8,6 @@ import {
     getDiagramDraftCanvasFromStore,
     getDiagramDraftCanvasNodesFromStore,
     getDiagramDraftCanvasTypeFromStore,
-    setDiagramDraftCanvas,
 } from "#root/stores/projectDiagram/canvas";
 import {
     getDiagramSelectedEdgeIdListFromStore,
@@ -22,7 +18,6 @@ import {
     updateProjectDiagram,
 } from "#root/stores/projectDiagramFeaturePersistenceStore";
 import { processDeleteCanvasNodesAndEdges } from "#root/utils/diagram";
-import { handleInitPolling } from "#root/utils/diagram/diagramContentUtil";
 
 export const processConfirmDeleteSelectedNodesAndEdges = async ({
     instanceId,
@@ -79,45 +74,4 @@ export const processConfirmDeleteSelectedNodesAndEdges = async ({
     });
 };
 
-export const handleGenerateLLMDataflow = async ({
-    instanceId,
-    project_id,
-    canvas_id,
-    polling_interval,
-}: {
-    instanceId: string;
-    project_id: string;
-    canvas_id: string;
-    polling_interval: number;
-}) => {
-    const setSelectedCanvas = (value: React.SetStateAction<DiagramCanvas | undefined>) =>
-        setDiagramDraftCanvas(value, instanceId);
 
-    setSelectedCanvas((prev) => {
-        if (prev) {
-            return {
-                ...prev,
-                llm_generation_status: 1,
-            };
-        }
-        return undefined;
-    });
-
-    await postGenerateLLMDataflow(project_id, canvas_id, {});
-    await handleInitPolling({
-        project_id,
-        canvas_id,
-        polling_interval,
-    });
-};
-
-export const refreshDataOnCompletePolling = async ({
-    projectLoader,
-}: {
-    projectLoader: ReturnType<typeof useProjectLoader>;
-}) => {
-    await Promise.all([
-        projectLoader.refresh(), //
-        refreshProjectDiagram(),
-    ]);
-};

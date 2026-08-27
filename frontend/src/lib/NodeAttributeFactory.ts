@@ -87,7 +87,6 @@ export class NodeAttributeFactory {
      *    current state and the project's current configuration
      */
     private getDataAttributes(): BaseFieldAttribute[] {
-        const isDataFlowNode = this.draftNode?.data?.type === CanvasNodeType.data_flow.toString();
         const isInfoNode = this.draftNode.type === CanvasNodeVariantType.infoNode;
         const hasCardRefKey = !!this.draftNode?.data?.cardRefKey;
 
@@ -96,11 +95,6 @@ export class NodeAttributeFactory {
 
         return default_node_data_attributes.map((attr) => {
             const updatedAttr = { ...attr };
-
-            // Apply data_flow node restrictions
-            if (isDataFlowNode && (updatedAttr.key === "icon" || updatedAttr.key === "label")) {
-                updatedAttr.disabled = true;
-            }
 
             // Configure data_stored attribute
             if (updatedAttr.key === "data_stored") {
@@ -135,7 +129,6 @@ export class NodeAttributeFactory {
      *    BaseFieldAttribute objects, making it suitable for advanced attribute configurations
      */
     private getDataAdvancedAttributes(): BaseFieldAttribute[] {
-        const isDataFlowNode = this.draftNode?.data?.type === CanvasNodeType.data_flow.toString();
         const isInfoNode = this.draftNode.type === CanvasNodeVariantType.infoNode;
         const hasCardRefKey = !!this.draftNode?.data?.cardRefKey;
 
@@ -144,11 +137,6 @@ export class NodeAttributeFactory {
 
         return default_node_data_advanced_attributes.map((attr) => {
             const updatedAttr = { ...attr };
-
-            // Apply data_flow node restrictions
-            if (isDataFlowNode && (updatedAttr.key === "icon" || updatedAttr.key === "label")) {
-                updatedAttr.disabled = true;
-            }
 
             // Configure data_stored attribute
             if (updatedAttr.key === "data_stored") {
@@ -182,8 +170,6 @@ export class NodeAttributeFactory {
      *    project/diagram context for style attribute calculations
      */
     private getStyleAttributes(): BaseFieldAttribute[] {
-        const isDataFlowNode = this.draftNode?.data?.type === CanvasNodeType.data_flow.toString();
-
         const disabledKeys =
             NodeAttributeFactory.DISABLED_KEYS_BY_NODE_TYPE[this.draftNode?.type ?? ""] ??
             new Set();
@@ -191,7 +177,7 @@ export class NodeAttributeFactory {
         return default_node_style_attributes.map((attr) => {
             return {
                 ...attr,
-                disabled: attr.disabled || isDataFlowNode || disabledKeys.has(attr.key),
+                disabled: attr.disabled || disabledKeys.has(attr.key),
             };
         });
     }

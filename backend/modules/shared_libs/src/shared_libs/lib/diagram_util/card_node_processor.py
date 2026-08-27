@@ -134,7 +134,7 @@ class CardNodeProcessor:
         """
         consolidated_card_ref = defaultdict(list)
         for canvas in self.project_ad_model.canvas:
-            if canvas.canvas_type != CanvasType.data_flow.value:
+            if canvas.canvas_type != "data_flow":
                 continue
             card_ref = canvas.ref.get("card_ref", {})
 
@@ -205,7 +205,7 @@ class CardNodeProcessor:
         decides how to surface them.
         """
         for canvas in self.project_ad_model.canvas or []:
-            if canvas.canvas_type != CanvasType.data_flow.value:
+            if canvas.canvas_type != "data_flow":
                 continue
             card_ref = canvas.ref.get("card_ref", {})
             card_id = card_ref["card_id"]
@@ -432,7 +432,7 @@ class CardNodeProcessor:
                     "label": node_label,
                     "tosca_type": tosca_type,
                     "tosca_schema": self.tosca_schema,
-                    "type": CanvasType.data_flow.value,
+                    "type": "data_flow",
                 },
                 "hidden": True,
                 "id": node_id,
@@ -490,7 +490,7 @@ class CardNodeProcessor:
                     "label": node_label,
                     "tosca_type": DATA_FLOW_DEVICE_NODE_TOSCA_TYPE,
                     "tosca_schema": self.tosca_schema,
-                    "type": CanvasType.data_flow.value,
+                    "type": "data_flow",
                 },
                 "dragHandle": ".ClusterNode_DragHandle",
                 "hidden": True,
@@ -537,7 +537,7 @@ class CardNodeProcessor:
         canvas_list = []
         architecture_node_id_list = []
         for canvas in self.project_ad_model.canvas or []:
-            if canvas.canvas_type != CanvasType.data_flow.value:
+            if canvas.canvas_type != "data_flow":
                 architecture_node_id_list = [node.id for node in (canvas.nodes or [])]
                 canvas_list.append(canvas)
                 continue
@@ -604,9 +604,9 @@ class CardNodeProcessor:
         self.project_ad_model.canvas = [
             _
             for _ in (self.project_ad_model.canvas or [])
-            if _.canvas_type != CanvasType.data_flow.value
+            if _.canvas_type != "data_flow"
             or (
-                _.canvas_type == CanvasType.data_flow.value
+                _.canvas_type == "data_flow"
                 and _.ref.get("card_ref", {}).get("card_id") in card_id_list
             )
         ]
@@ -662,7 +662,7 @@ class CardNodeProcessor:
             cards: Current submitted user story cards.
         """
         for canvas_model in self.project_ad_model.canvas or []:
-            if canvas_model.canvas_type != CanvasType.data_flow.value:
+            if canvas_model.canvas_type != "data_flow":
                 continue
 
             card = self.get_canvas_model_card(
@@ -703,7 +703,7 @@ class CardNodeProcessor:
         existing_model_card_id_list = [
             canvas_model.ref.get("card_ref", {}).get("card_id")
             for canvas_model in (self.project_ad_model.canvas or [])
-            if canvas_model.canvas_type == CanvasType.data_flow.value
+            if canvas_model.canvas_type == "data_flow"
         ]
         return [
             card for card in cards if card["card_id"] not in existing_model_card_id_list

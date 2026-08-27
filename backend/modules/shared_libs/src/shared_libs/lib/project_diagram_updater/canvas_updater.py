@@ -71,7 +71,7 @@ class CanvasUpdater:
 
     @raise_exception("Failed to init canvases.", exception_logger=logger)
     def get_base_canvases(self) -> None:
-        filter_types = [CanvasType.architecture.value, CanvasType.data_flow.value]
+        filter_types = [CanvasType.architecture.value, "data_flow"]
 
         return [
             _ for _ in self.project_ad_model.canvas if _.canvas_type in filter_types
@@ -103,8 +103,8 @@ class CanvasUpdater:
     ) -> None:
         canvases_to_add: list[CanvasBaseModel] = []
         canvas_type_mapping = {
-            KnowledgebaseSource.threatScenario.value: CanvasType.threat_scenario.value,
-            KnowledgebaseSource.llm.value: CanvasType.llm.value,
+            KnowledgebaseSource.threatScenario.value: "threat_scenario",
+            KnowledgebaseSource.llm.value: "llm",
         }
 
         for scenario in scenario_models:

@@ -493,7 +493,7 @@ class DiagramOutputParser:
                         "sourceHandle": Handle.SOURCE_RIGHT.value,
                         "targetHandle": Handle.TARGET_LEFT.value,
                         "data": {
-                            "type": CanvasEdgeType.data_flow.value,
+                            "type": "data_flow",
                             "bidirectional": False,
                             "card_id": card_id,
                         },

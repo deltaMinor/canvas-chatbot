@@ -1,45 +1,6 @@
 import { XYPosition } from "@xyflow/react";
 
-import { CanvasColumn, DiagramCanvas, DiagramNode } from "#root/interfaces/diagram";
-
-export const getDFRefPosition = (canvas: DiagramCanvas): Record<CanvasColumn, number[]> => {
-    const nodes = canvas.nodes;
-
-    const options: Record<CanvasColumn, number[]> = {
-        [CanvasColumn.left]: [0, 0],
-        [CanvasColumn.right]: [0, 0],
-        [CanvasColumn.top]: [0, 0],
-        [CanvasColumn.bottom]: [0, 0],
-    };
-
-    if (!nodes || nodes.length === 0) return options; // ✅ early return
-
-    const filtered_nodes = nodes.filter((n) => n.parentId === "");
-    if (filtered_nodes.length === 0) return options; // ✅ no root nodes
-
-    const x_values: number[] = filtered_nodes.map((n) => n.position.x) || [];
-    const y_values: number[] = filtered_nodes.map((n) => n.position.y) || [];
-    //
-    const min_x = Math.min(...x_values);
-    const max_x = Math.max(
-        ...(filtered_nodes.map((node) => node.position.x + (node.width || 0)) || [])
-    );
-    //
-    const min_y = Math.min(...y_values);
-    const max_y = Math.max(
-        ...(filtered_nodes.map((node) => node.position.y + (node.height || 0)) || [])
-    );
-
-    const mid_y = (min_y + max_y) / 2;
-    const mid_x = (min_x + max_x) / 2;
-
-    options[CanvasColumn.left] = [min_x, mid_y];
-    options[CanvasColumn.right] = [max_x, mid_y];
-    options[CanvasColumn.top] = [mid_x, min_y];
-    options[CanvasColumn.bottom] = [mid_x, max_y];
-
-    return options;
-};
+import { DiagramNode } from "#root/interfaces/diagram";
 
 export const getRelativePosition = ({
     allNodes,

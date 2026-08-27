@@ -1,8 +1,5 @@
 export enum CanvasType {
     architecture = "architecture",
-    data_flow = "data_flow",
-    threat_scenario = "threat_scenario",
-    summary = "summary",
 }
 export enum CanvasColumn {
     left = "left",
@@ -10,23 +7,15 @@ export enum CanvasColumn {
     top = "top",
     bottom = "bottom",
 }
-export enum CanvasDataflowNodeType {
-    users = "users",
-    interface = "interface",
-    devices = "devices",
-}
 export enum CanvasAxis {
     horizontal = "x",
     vertical = "y",
 }
 export enum CanvasEdgeType {
     architecture = "architecture",
-    data_flow = "data_flow",
-    threat_scenario = "threat_scenario",
 }
 export enum CanvasNodeType {
     architecture = "architecture",
-    data_flow = "data_flow",
 }
 export enum CanvasNodeVariantType {
     infoNode = "infoNode",
@@ -34,13 +23,10 @@ export enum CanvasNodeVariantType {
 }
 export enum CanvasTabGroup {
     architecture = "architecture",
-    data_flow = "data_flow",
-    summary = "summary",
 }
 
 export enum DiagramComponentType {
     architecture = "architecture",
-    data_flow = "data_flow",
     custom = "custom",
 }
 export enum DiagramExportFormat {
