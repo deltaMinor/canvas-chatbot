@@ -7,6 +7,10 @@ import { DialogStateEnum } from "#root/enums/dialog";
 import { useProject, useProjectId } from "#root/hooks/backendHooks";
 import { handleOpenDialog } from "#root/stores/dialogStore";
 
+import ClearButton from "./ClearButton";
+import ExportButton from "./ExportButton";
+import ImportButton from "./ImportButton";
+
 const BRAND_NAME = import.meta.env.VITE_BRAND_NAME || "Integrative Threat Modelling Platform";
 
 const HeaderBodyComponent = () => {
@@ -76,6 +80,9 @@ const HeaderBodyComponent = () => {
                                         />
                                     )}
                                 </Stack>
+                                <ImportButton />
+                                <ExportButton />
+                                <ClearButton />
                                 <Button
                                     onClick={handleClickImport}
                                     startIcon={<FileUploadOutlinedIcon />}
