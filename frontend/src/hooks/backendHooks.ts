@@ -227,15 +227,6 @@ export const useKbOwaspRegisterLoaded = createBackendStateHook(
 export const useKbOwaspRegisterLoadError = createBackendStateHook(
     "kbOwaspRegisterLoadError" //
 );
-export const useProjectAssessmentConfig = createProjectStateHook(
-    "projectAssessmentConfig" //
-);
-export const useProjectAssessmentConfigLoaded = createProjectStateHook(
-    "projectAssessmentConfigLoaded" //
-);
-export const useProjectAssessmentConfigLoadError = createProjectStateHook(
-    "projectAssessmentConfigLoadError" //
-);
 export const useMasterCQ = createBackendStateHook(
     "masterCQ" //
 );
@@ -334,14 +325,6 @@ export const useProjectId = () => {
     return React.useMemo(
         () => new URLSearchParams(location.search).get("project_id") ?? "",
         [location.search]
-    );
-};
-export const useProjectCQProgress = () => {
-    const project = useProject();
-
-    return React.useMemo(
-        () => project?.project_progress?.conception_questionnaire ?? null,
-        [project?.project_progress?.conception_questionnaire]
     );
 };
 export const useProjectDiagramProgress = () => {

@@ -13,9 +13,8 @@ from engine_libs.llm_runtime.resolver import LlmExecutionResolver
 from engine_libs.struc import LLMReturnStructDataflow
 
 from shared_libs.decorators import raise_exception
-from shared_libs.domain import ProjectADService, ProjectCQService
-from shared_libs.exceptions.api_exceptions import BadRequest
-from shared_libs.models.database_models import ProjectADModel, ProjectCQModel
+from shared_libs.domain import ProjectADService
+from shared_libs.models.database_models import ProjectADModel
 from shared_libs.models.llm_generator_context import (
     GeneratorConfiguration,
     LLMGeneratorRuntimeContext,
@@ -123,7 +122,6 @@ class LLMDataflowGenerator:
         user_info: dict,
         configuration: dict,
         project_ad_service: ProjectADService,
-        project_cq_service: ProjectCQService,
         register_data_store,
         task_context: LlmTaskContext | None = None,
         *,
@@ -133,7 +131,6 @@ class LLMDataflowGenerator:
         self.canvas_id = canvas_id
         self.user_info = user_info
         self.project_ad_service = project_ad_service
-        self.project_cq_service = project_cq_service
         self.task_context = task_context
         self.mongo_store = mongo_store
         self.register_data_store = register_data_store
@@ -141,7 +138,6 @@ class LLMDataflowGenerator:
 
         self.project_input_model_extractor = ProjectInputModelExtractor(
             question_to_model=question_to_model,
-            project_cq=self.project_cq_model.model_dump(),
             project_ad=self.project_ad_model.model_dump(),
         )
         project_input_model = (
@@ -159,29 +155,6 @@ class LLMDataflowGenerator:
             task_context=self.task_context,
             mongo_store=self.mongo_store,
         )
-
-    @cached_property
-    @raise_exception("Failed to retrieve project cq model cache.")
-    def project_cq_model(self) -> ProjectCQModel:
-        return self.get_project_cq_model()
-
-    @raise_exception(
-        "Failed to retrieve project cq for register generation.",
-        exception_logger=logger,
-    )
-    def get_project_cq_model(self) -> ProjectCQModel:
-        project_cq: dict = self.project_cq_service.get_one(
-            {"project_id": self.project_id},
-            raise_if_not_found=True,
-            user_info=self.user_info,
-        )
-        if not project_cq.get("isCompleted"):
-            raise BadRequest(
-                "The Conception Questionnaire must be submitted before this operation can proceed."
-            )
-        if not project_cq.get("values"):
-            raise BadRequest("Project conception questionnaire values not found.")
-        return ProjectCQModel(**project_cq)
 
     @cached_property
     @raise_exception(

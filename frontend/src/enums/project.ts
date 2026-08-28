@@ -61,30 +61,6 @@ export enum GenerationSettingsEnum {
     allowMasterRegisterGeneration = "allowMasterRegisterGeneration",
 }
 
-export enum ProjectStep {
-    architecture_diagram = "architecture_diagram",
-    conception_questionnaire = "conception_questionnaire",
-    review_questionnaire = "review_questionnaire",
-    run_assessment = "run_assessment",
-    resolve_conflicts = "resolve_conflicts",
-    view_threat_scenarios = "view_threat_scenarios",
-    resolve_issues = "resolve_issues",
-}
-
-export enum ProjectStepLabel {
-    aborted = "Aborted",
-    new = "New",
-    inProgress = "In Progress",
-    completed = "Completed",
-}
-
-export enum ProjectStepStatus {
-    aborted = -1,
-    new = 0,
-    inProgress = 1,
-    complete = 2,
-}
-
 export enum ProjectCactiFileField {
     data = "data",
     file_id = "file_id",
@@ -105,12 +81,6 @@ export enum ProjectXMLFileField {
     metadata = "metadata",
     select = "select",
     delete = "delete",
-}
-
-export enum ProjectDescTemplateKey {
-    purpose = "purpose",
-    method = "method",
-    goal = "goal",
 }
 
 export enum ProjectDiagramFileField {

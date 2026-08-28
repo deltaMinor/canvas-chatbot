@@ -11,7 +11,6 @@ export enum DetailsSectionType {
     MITIGATION = "mitigation",
     REGISTER = "register",
     VISUALIZER = "threat_scenario",
-    CONCEPTION = "conception_questionnaire",
     DIAGRAM = "architecture",
     SETTINGS = "settings",
 }

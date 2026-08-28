@@ -29,7 +29,6 @@ from .ontology_protocol import OntologyProtocol
 from .pipeline_benchmark_recorder_protocol import PipelineBenchmarkRecorderProtocol
 from .pipeline_tracker_protocol import PipelineTrackerProtocol
 from .project_input_model_protocol import ProjectInputModelProtocol
-from .questionnaire_extractor_protocol import QuestionnaireExtractorProtocol
 from .threat_quality_checker_protocol import ThreatQualityCheckerProtocol
 
 __all__ = [
@@ -60,6 +59,5 @@ __all__ = [
     "OpenAIPollingLLMProtocol",
     "ProjectInputModelProtocol",
     "ProjectRegisterUpdaterProtocol",
-    "QuestionnaireExtractorProtocol",
     "ThreatQualityCheckerProtocol",
 ]

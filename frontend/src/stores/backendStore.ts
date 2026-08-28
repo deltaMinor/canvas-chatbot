@@ -241,16 +241,6 @@ export const setKbOwaspRegister = createBackendSetter(
     {} as NonNullable<BackendState["kbOwaspRegister"]>
 );
 
-export const getProjectAssessmentConfigFromStore = createProjectGetter(
-    "projectAssessmentConfig",
-    {} as NonNullable<ProjectScopedState["projectAssessmentConfig"]>
-);
-export const setProjectAssessmentConfig = createProjectSetter(
-    "projectAssessmentConfig",
-    app_actions.backend.setProjectAssessmentConfig,
-    {} as NonNullable<ProjectScopedState["projectAssessmentConfig"]>
-);
-
 export const getMasterDiagramTemplatesFromStore = createBackendGetter(
     "masterDiagramTemplates",
     [] as NonNullable<BackendState["masterDiagramTemplates"]>

@@ -1,10 +1,3 @@
-import {
-    compliance_csa_ccop_optionId,
-    compliance_im8_optionId,
-    compliance_isoiec_27001_optionId,
-    compliance_nist_csf_optionId,
-} from "#root/constants/questionnaire";
-
 //////////////////////////////////////////////////
 // ProgressChart
 //////////////////////////////////////////////////
@@ -28,13 +21,6 @@ export const CompliancePolicyKeyToLabel = {
     [CompliancePolicyEnum.ccop]: "CSA CCoP Compliance",
     [CompliancePolicyEnum.csf]: "Nist CSF Compliance",
     [CompliancePolicyEnum.iso]: "ISO/IEC 27001 Compliance",
-};
-
-export const CompliancePolicyKeyToQID = {
-    [CompliancePolicyEnum.im8]: compliance_im8_optionId,
-    [CompliancePolicyEnum.ccop]: compliance_csa_ccop_optionId,
-    [CompliancePolicyEnum.csf]: compliance_nist_csf_optionId,
-    [CompliancePolicyEnum.iso]: compliance_isoiec_27001_optionId,
 };
 
 export interface ProgressChartStats {

@@ -74,7 +74,6 @@ export enum DialogStateEnum {
     mitigationMappingRecGrouped = "mitigationMappingRecGrouped",
     mitigationMeasure = "mitigationMeasure",
     mitreDatabase = "mitreDatabase",
-    questionnaire = "questionnaire",
     runAssessment = "runAssessment",
     uploadCactiFile = "uploadCactiFile",
     uploadDiagramFile = "uploadDiagramFile",
@@ -266,13 +265,6 @@ export enum DialogConfirmStateEnum {
     confirmIgnoreAllConflicts = "confirmIgnoreAllConflicts",
     // register llm
     confirmAddLLMScenarioToProjectRegister = "confirmAddLLMScenarioToProjectRegister",
-    // questionnaire
-    confirmClearForm = "confirmClearForm",
-    confirmRestartForm = "confirmRestartForm",
-    confirmEditForm = "confirmEditForm",
-    confirmSaveTable = "confirmSaveTable",
-    confirmSaveUserStoryCard = "confirmSaveUserStoryCard",
-    confirmSaveSystemProcessCard = "confirmSaveSystemProcessCard",
     // feedback
     confirmDeleteFeedback = "confirmDeleteFeedback",
     // rec mitigations

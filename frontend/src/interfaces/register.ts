@@ -713,7 +713,6 @@ export const ProjectRegisterTableFieldKeys = Object.keys(ProjectRegisterTableFie
 // Scenario Tag
 //////////////////////////////////////////////////
 export enum ScenarioAssignedTagKey {
-    questionnaireUpdate = "questionnaireUpdate",
     masterScenarioUpdate = "masterScenarioUpdate",
     deprecated = "deprecated",
 }

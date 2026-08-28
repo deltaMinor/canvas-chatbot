@@ -5,7 +5,6 @@ from typing import Any
 
 from engine_libs.config.path_config import (
     ARCHITECTURE_DIAGRAM_FILE,
-    CONCEPTION_QUESTIONNAIRE_FILE,
     KB_LLM,
     KB_QUESTION_TO_MODEL_FILE,
 )
@@ -59,9 +58,6 @@ def _build_dataflow_configuration() -> GeneratorConfiguration:
 def main() -> None:
     setup_loggers()
 
-    project_cq_dict = GlobalSharedUtil.read_data_from_json(
-        str(CONCEPTION_QUESTIONNAIRE_FILE)
-    )
     project_ad_dict = GlobalSharedUtil.read_data_from_json(
         str(ARCHITECTURE_DIAGRAM_FILE)
     )
@@ -76,7 +72,6 @@ def main() -> None:
         llm_prompt_template_lines=prompts_dict,
     )
     project_ad_service = _InMemoryService(payload=project_ad_dict or {})
-    project_cq_service = _InMemoryService(payload=project_cq_dict or {})
 
     project_id = str(project_ad_dict.get("project_id", "local-project"))
     canvas_id = ""
@@ -91,7 +86,6 @@ def main() -> None:
         user_info={},
         configuration=_build_dataflow_configuration().model_dump(),
         project_ad_service=project_ad_service,  # type: ignore[arg-type]
-        project_cq_service=project_cq_service,  # type: ignore[arg-type]
         register_data_store=register_data_store,
         task_context=None,
         mongo_store=None,  # type: ignore[arg-type]

@@ -10,7 +10,6 @@ import {
     ProjectRegister,
     ProjectRegisterAssessment,
     ProjectRegisterFields,
-    RiskRegister,
 } from "./register";
 
 export enum ProjectResourceTag {
@@ -53,14 +52,6 @@ export enum ProjectEnum {
     project_id_list = "project_id_list",
     resource_tag_names = "resource_tag_names",
     user_count = "user_count",
-}
-
-export interface Progress {
-    design: number;
-    dfd: number;
-    iteration: number;
-    questionnaire: number;
-    upload: number;
 }
 
 export interface MasterCTSchemaProps {
@@ -136,8 +127,6 @@ export interface ProjectSettingsData {
 
 export interface ProjectProgress {
     architecture_diagram: number;
-    conception_questionnaire: number;
-    review_questionnaire: number;
     run_assessment: number;
 }
 
@@ -172,8 +161,6 @@ export interface ImportProject {
     project_data?: ProjectExportData;
     resource_tags?: string[];
 }
-
-export type ProjectFieldTypes = RiskRegister | Progress;
 
 export enum ProjectStatusEnum {
     ACTIVE = "active",

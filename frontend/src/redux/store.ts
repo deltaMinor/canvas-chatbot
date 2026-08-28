@@ -8,13 +8,6 @@ import appSlice from "./appSlice";
 import appVersionFeatureSlice from "./appVersionFeatureSlice";
 import backendSlice from "./backendSlice";
 import dialogSlice from "./dialogSlice";
-import formFieldFeatureReducer, {
-    initializeInstance as initializeFormFieldInstanceAction,
-    removeInstance as removeFormFieldInstanceAction,
-    setLoaded as setFormFieldLoadedAction,
-    setUseTemplate as setFormFieldUseTemplateAction,
-    updateExternalState as updateFormFieldExternalStateAction,
-} from "./formFieldSlice";
 import layoutSlice from "./layoutSlice";
 import logDialogFeatureReducer, {
     initializeInstance as initializeLogDialogInstanceAction,
@@ -43,16 +36,6 @@ import muiDataGridFeatureReducer, {
     updateExternalState as updateMuiDataGridExternalStateAction,
 } from "./muiDataGridSlice";
 import projectDiagramFeatureSlice from "./projectDiagramFeatureSlice";
-import tableFieldFeatureReducer, {
-    initializeInstance as initializeTableFieldInstanceAction,
-    removeInstance as removeTableFieldInstanceAction,
-    setEditTable as setTableFieldEditTableAction,
-    setLoaded as setTableFieldLoadedAction,
-    setRows as setTableFieldRowsAction,
-    setSavedRows as setTableFieldSavedRowsAction,
-    setSelectedTemplateIdList as setTableFieldSelectedTemplateIdListAction,
-    updateExternalState as updateTableFieldExternalStateAction,
-} from "./tableFieldSlice";
 
 export type { AppDispatch, RootState } from "#root/interfaces/redux";
 
@@ -62,11 +45,9 @@ const app_reducer = {
     backend: backendSlice.reducer,
     logDialogFeature: logDialogFeatureReducer,
     dialog: dialogSlice.reducer,
-    formFieldFeature: formFieldFeatureReducer,
     diagram: projectDiagramFeatureSlice.reducer,
     layout: layoutSlice.reducer,
     muiDataGridFeature: muiDataGridFeatureReducer,
-    tableFieldFeature: tableFieldFeatureReducer,
 };
 
 const appReducer = combineReducers(app_reducer);
@@ -89,13 +70,6 @@ export const app_actions = {
         setSelectedAuditLogId: setLogDialogSelectedAuditLogIdAction,
     },
     dialog: dialogSlice.actions,
-    formFieldFeature: {
-        initializeInstance: initializeFormFieldInstanceAction,
-        removeInstance: removeFormFieldInstanceAction,
-        setLoaded: setFormFieldLoadedAction,
-        setUseTemplate: setFormFieldUseTemplateAction,
-        updateExternalState: updateFormFieldExternalStateAction,
-    },
     diagram: projectDiagramFeatureSlice.actions,
     layout: layoutSlice.actions,
     muiDataGridFeature: {
@@ -114,16 +88,6 @@ export const app_actions = {
         setSelectedRowId: setMuiDataGridSelectedRowIdAction,
         setSelectedRows: setMuiDataGridSelectedRowsAction,
         updateExternalState: updateMuiDataGridExternalStateAction,
-    },
-    tableFieldFeature: {
-        initializeInstance: initializeTableFieldInstanceAction,
-        removeInstance: removeTableFieldInstanceAction,
-        setEditTable: setTableFieldEditTableAction,
-        setLoaded: setTableFieldLoadedAction,
-        setRows: setTableFieldRowsAction,
-        setSavedRows: setTableFieldSavedRowsAction,
-        setSelectedTemplateIdList: setTableFieldSelectedTemplateIdListAction,
-        updateExternalState: updateTableFieldExternalStateAction,
     },
 };
 

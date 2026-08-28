@@ -46,7 +46,6 @@ import type {
 } from "#root/interfaces/dialog";
 import type { ErrorDetails } from "#root/interfaces/error";
 import type { FeedbackFormFields } from "#root/interfaces/feedback_form";
-import type { FormFieldConfig, FormValueMap } from "#root/interfaces/formField";
 import type { KbIM8 } from "#root/interfaces/im8";
 import type { AuditLog, OptionLabel } from "#root/interfaces/index";
 import type { Integration, JiraIssue, JiraIssueOptions } from "#root/interfaces/integration";
@@ -66,15 +65,6 @@ import type {
     ProjectAssessment,
     ProjectAssessmentHistory,
 } from "#root/interfaces/project";
-import type {
-    CQFormQuestion,
-    ExtendedFieldConfig,
-    ProjectAssessmentConfigObject,
-    Question,
-    QuestionOption,
-    QuestionOptionGroup,
-    TableRowParams,
-} from "#root/interfaces/questionnaire";
 import type {
     AttackStep,
     CheckboxFilterState,
@@ -228,9 +218,6 @@ export interface LegacyBackendState {
     kbTosca: KBTosca | null;
     kbToscaLoaded: boolean;
     kbToscaLoadError: boolean;
-    projectAssessmentConfig: ProjectAssessmentConfigObject | null;
-    projectAssessmentConfigLoaded: boolean;
-    projectAssessmentConfigLoadError: boolean;
     masterDiagramTemplates: MasterDiagramTemplate[];
     masterDiagramTemplatesLoaded: boolean;
     masterDiagramTemplatesLoadError: boolean;
@@ -288,7 +275,6 @@ export interface LegacyBackendState {
     projectDiagramLogs: AuditLog[];
     projectDiagramLogsLoaded: boolean;
     projectDiagramLogsLoadError: boolean;
-    // projectAssessmentConfig fields are declared above (from TP2-858-AK block)
     projectLogs: AuditLog[];
     projectLogsLoaded: boolean;
     projectLogsLoadError: boolean;
@@ -364,9 +350,6 @@ export type ProjectStateKey =
     | "projectLogs"
     | "projectLogsLoaded"
     | "projectLogsLoadError"
-    | "projectAssessmentConfig"
-    | "projectAssessmentConfigLoaded"
-    | "projectAssessmentConfigLoadError"
     | "projectStatistics"
     | "projectStatisticsLoaded"
     | "projectStatisticsLoadError";
@@ -404,24 +387,6 @@ export interface DialogReducer {
     closeDialog: (state: DialogStoreState, action: PayloadAction<DialogStateKey>) => void;
     setDialogState: (state: DialogStoreState, action: PayloadAction<DialogStatePayload>) => void;
     closeAllDialogs: (state: DialogStoreState) => void;
-}
-
-export interface FormFieldExternalState {
-    hideInfoDrawer: boolean;
-    hideUsefulness: boolean;
-    isFieldDisabled: boolean;
-    isInfoDrawerDisabled: boolean;
-    isScenarioDialogDisabled: boolean;
-    questionFromSource: CQFormQuestion | undefined;
-    useTemplate: boolean;
-}
-
-export interface FormFieldInstanceState extends FormFieldExternalState {
-    loaded: boolean;
-}
-
-export interface FormFieldFeatureState {
-    instances: Record<string, FormFieldInstanceState>;
 }
 
 export interface LayoutState {
@@ -798,30 +763,6 @@ export interface ProjectRegisterFeatureState {
     instances: Record<string, ProjectRegisterFeatureInstanceState>;
 }
 
-export interface TableFieldExternalState {
-    isFieldDisabled: boolean;
-    isFieldTracked: boolean;
-    extendedFieldConfig: ExtendedFieldConfig;
-    fieldConfig: FormFieldConfig | undefined;
-    formValues: FormValueMap;
-    immutableFieldIdList: string[];
-    question: Question | undefined;
-    tableType: string;
-    uniqueFieldIdList: string[];
-}
-
-export interface TableFieldInstanceState extends TableFieldExternalState {
-    editTable: boolean;
-    loaded: boolean;
-    rows: TableRowParams[];
-    savedRows: TableRowParams[];
-    selectedTemplateIdList: string[];
-}
-
-export interface TableFieldFeatureState {
-    instances: Record<string, TableFieldInstanceState>;
-}
-
 export interface RootState {
     adminConsole: AdminConsoleState;
     app: AppState;
@@ -831,7 +772,6 @@ export interface RootState {
     backend: BackendState;
     diagram: DiagramState;
     dialog: DialogStoreState;
-    formFieldFeature: FormFieldFeatureState;
     layout: LayoutState;
     logDialogFeature: LogDialogFeatureState;
     mitreFeature: MitreFeatureState;
@@ -843,7 +783,6 @@ export interface RootState {
     signInContentFeature: SignInContentFeatureState;
     signUpContentFeature: SignUpContentFeatureState;
     signUpSuperuserContentFeature: SignUpSuperuserContentFeatureState;
-    tableFieldFeature: TableFieldFeatureState;
 }
 
 export type AppDispatch = Store<RootState>["dispatch"];

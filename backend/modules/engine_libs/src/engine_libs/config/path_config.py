@@ -90,7 +90,6 @@ KB_MITRE = RR_DATA_DIR / "kb_mitre.json"
 KB_QUESTION_TO_MODEL_FILE = RR_DATA_DIR / "kb_question_to_model.json"
 DATAFLOW_PROMPT = DATA_TEST_DIR / "dataflow_prompt.json"
 ARCHITECTURE_DIAGRAM_FILE = DATA_TEST_DIR / "project_ad.json"
-CONCEPTION_QUESTIONNAIRE_FILE = DATA_TEST_DIR / "project_cq.json"
 
 __all__ = [
     "ENGINE_LIBS_ROOT",
@@ -108,5 +107,4 @@ __all__ = [
     "KB_QUESTION_TO_MODEL_FILE",
     "DATAFLOW_PROMPT",
     "ARCHITECTURE_DIAGRAM_FILE",
-    "CONCEPTION_QUESTIONNAIRE_FILE",
 ]

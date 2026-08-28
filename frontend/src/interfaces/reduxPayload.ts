@@ -19,14 +19,12 @@ import type {
 import type { DiagramElementAttributes } from "#root/interfaces/diagramAttributes";
 import type { DrawerState } from "#root/interfaces/diagramContent";
 import type { NodeAttackPathMapping } from "#root/interfaces/mitre";
-import type { TableRowParams } from "#root/interfaces/questionnaire";
 import type {
     AssessmentSetupFeatureInstanceState,
     DiagramEditToolbarState,
     DiagramInstanceState,
     DiagramPendingDrawerKey,
     DiagramRequestedThreatScenarioDrawerKey,
-    FormFieldExternalState,
     LegacyBackendState,
     LogDialogInstanceState,
     MuiDataGridInstanceState,
@@ -35,7 +33,6 @@ import type {
     SignInContentFeatureInstanceState,
     SignUpContentFeatureInstanceState,
     SignUpSuperuserContentFeatureInstanceState,
-    TableFieldExternalState,
 } from "#root/interfaces/redux";
 import type { AttackStep } from "#root/interfaces/register";
 
@@ -74,21 +71,6 @@ export type BackendReducerMap = {
         ) => { payload: { projectId: string; value: ProjectScopedState[K] } };
     };
 };
-
-export interface FormFieldInstancePayload<T> {
-    instanceId?: string;
-    value: T;
-}
-
-export interface InitializeFormFieldInstancePayload {
-    externalState?: Partial<FormFieldExternalState>;
-    instanceId: string;
-}
-
-export interface UpdateFormFieldExternalStatePayload {
-    externalState?: Partial<FormFieldExternalState>;
-    instanceId: string;
-}
 
 export interface LogDialogInstancePayload<T> {
     instanceId?: string;
@@ -251,24 +233,4 @@ export interface InitializeProjectMitigationInstancePayload {
 export interface ProjectRegisterInstancePayload<T> {
     instanceId?: string;
     value: T;
-}
-
-export interface ProjectRegisterScenariosPayload {
-    instanceId?: string;
-    value: TableRowParams[];
-}
-
-export interface TableFieldInstancePayload<T> {
-    instanceId?: string;
-    value: T;
-}
-
-export interface InitializeTableFieldInstancePayload {
-    externalState?: Partial<TableFieldExternalState>;
-    instanceId: string;
-}
-
-export interface UpdateTableFieldExternalStatePayload {
-    externalState?: Partial<TableFieldExternalState>;
-    instanceId: string;
 }

@@ -1,5 +1,4 @@
 import { OptionLabel, SelectableValue, SelectableValueGroup } from "#root/interfaces";
-import { QuestionOption } from "#root/interfaces/questionnaire";
 import { GroupLabel } from "#root/interfaces/reactSelect";
 
 // Helper functions to convert between SelectableValue/SelectableValueGroup and OptionLabel/GroupLabel
@@ -11,19 +10,6 @@ export const convertSelectableValueToOptionLabel = (sv: SelectableValue): Option
     const result: OptionLabel = {
         label: typeof sv.label === "string" ? sv.label : String(sv.label || ""),
         value: sv.value ?? fallbackValue,
-        domains: sv?.domains || [],
-        tags: sv?.tags || [],
-    };
-    if (sv.disabled !== undefined) {
-        result.isDisabled = sv.disabled;
-    }
-    return result;
-};
-
-export const convertQuestionOptionToOptionLabel = (sv: QuestionOption): OptionLabel => {
-    const result: OptionLabel = {
-        label: typeof sv.label === "string" ? sv.label : String(sv.label || ""),
-        value: sv.optionId,
         domains: sv?.domains || [],
         tags: sv?.tags || [],
     };

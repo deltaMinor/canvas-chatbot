@@ -53,7 +53,6 @@ from .llm import (
 )
 from .onboarding import STEP_TYPE_MAPPING
 from .project import cq_field_id_mapping
-from .questionnaire import cq_field_id_mapping as questionnaire_cq_field_id_mapping
 from .redis import REDIS_APP_PREFLIGHT_EXPIRY
 from .register_pipeline import (
     ENGINE_GRAPH_REASONING_JOB_TYPE,
@@ -115,7 +114,6 @@ __all__ = [
     "SYSTEM_USER_INFO",
     "ValidityInfo",
     "cq_field_id_mapping",
-    "questionnaire_cq_field_id_mapping",
     "resolve_bedrock_model_id",
     "resolve_llm_label",
     "resolve_ollama_model",

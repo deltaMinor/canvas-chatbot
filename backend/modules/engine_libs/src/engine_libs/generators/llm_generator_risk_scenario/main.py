@@ -4,7 +4,6 @@ from datetime import datetime
 
 from engine_libs.config.path_config import (
     ARCHITECTURE_DIAGRAM_FILE,
-    CONCEPTION_QUESTIONNAIRE_FILE,
     KB_LLM_PROMPT,
     KB_MITRE,
     KB_QUESTION_TO_MODEL_FILE,
@@ -56,9 +55,6 @@ def main() -> None:
     setup_loggers()
     logger.info("[ RR-LLM ] Running LLM risk scenario generator...")
 
-    project_cq_dict = GlobalSharedUtil.read_data_from_json(
-        str(CONCEPTION_QUESTIONNAIRE_FILE)
-    )
     project_ad_dict = GlobalSharedUtil.read_data_from_json(
         str(ARCHITECTURE_DIAGRAM_FILE)
     )
@@ -70,7 +66,6 @@ def main() -> None:
 
     project_input_model_extractor = ProjectInputModelExtractor(
         project_ad=project_ad_dict,
-        project_cq=project_cq_dict,
         question_to_model=question_to_model,
     )
     project_input_model = (

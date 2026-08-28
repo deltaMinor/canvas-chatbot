@@ -45,7 +45,6 @@ class LLMUtil:
         kb_llm_model: "KbLLMPromptModel | None" = None,
         kb_assessment_config_model: "KbAssessmentConfigModel | None" = None,
         question_to_model: dict[str, Any] | None = None,
-        project_cq: dict[str, Any] | None = None,
         project_ad: dict[str, Any] | None = None,
         display_frameworks: "DisplayFrameworksSettings | None" = None,
     ):
@@ -56,7 +55,6 @@ class LLMUtil:
             project_register_model.llm if project_register_model else None
         )
         self.question_to_model = question_to_model
-        self.project_cq = project_cq
         self.project_ad = project_ad
         self.display_frameworks = display_frameworks or DisplayFrameworksSettings()
         self.allowed_llm_models = self._get_allowed_llm_models_from_env()
@@ -490,7 +488,6 @@ class LLMUtil:
     def get_project_input_model(self) -> None:
         self.project_input_model_extractor = ProjectInputModelExtractor(
             question_to_model=self.question_to_model,
-            project_cq=self.project_cq,
             project_ad=self.project_ad,
         )
         project_input_model = (
