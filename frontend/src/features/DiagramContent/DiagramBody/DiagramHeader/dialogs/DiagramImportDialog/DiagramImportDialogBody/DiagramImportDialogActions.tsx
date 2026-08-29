@@ -4,20 +4,20 @@ import { DialogActions } from "@mui/material";
 
 import MuiButton from "#root/components/MuiButton";
 
-interface DiagramSetupDialogActionsProps {
+interface DiagramImportDialogActionsProps {
     noButtonText: string;
     handleCloseDialog: () => Promise<void>;
 }
 
 /**
- * The PDF-upload flow (the only setup option kept in this demo) manages its
+ * The PDF-upload flow (the only import option kept in this demo) manages its
  * own confirmation inside `ImportPdfOptionBody`, so this footer only offers
- * a way to skip/close the setup dialog and start with a blank canvas.
+ * a way to skip/close the import dialog and start with a blank canvas.
  */
-const DiagramSetupDialogActionsComponent = ({
+const DiagramImportDialogActionsComponent = ({
     noButtonText,
     handleCloseDialog,
-}: DiagramSetupDialogActionsProps) => {
+}: DiagramImportDialogActionsProps) => {
     const handleClickClose = React.useCallback(() => {
         void handleCloseDialog();
     }, [handleCloseDialog]);
@@ -29,4 +29,4 @@ const DiagramSetupDialogActionsComponent = ({
     );
 };
 
-export default DiagramSetupDialogActionsComponent;
+export default DiagramImportDialogActionsComponent;

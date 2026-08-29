@@ -3,7 +3,7 @@ import React from "react";
 import FeatureGate from "#root/components/FeatureGate";
 import { useProjectDiagramLoadError, useProjectDiagramLoaded } from "#root/hooks/backendHooks";
 
-const DiagramSetupDialogFeatureGate = ({ children }: { children?: React.ReactNode }) => {
+const DiagramImportDialogFeatureGate = ({ children }: { children?: React.ReactNode }) => {
     const loaded = useProjectDiagramLoaded();
     const loadError = useProjectDiagramLoadError();
 
@@ -11,7 +11,7 @@ const DiagramSetupDialogFeatureGate = ({ children }: { children?: React.ReactNod
         <FeatureGate
             loaded={loaded}
             loadError={loadError}
-            title="Failed to load diagram setup"
+            title="Failed to load diagram import"
             message="The current project diagram could not be loaded."
         >
             {children}
@@ -19,4 +19,4 @@ const DiagramSetupDialogFeatureGate = ({ children }: { children?: React.ReactNod
     );
 };
 
-export default React.memo(DiagramSetupDialogFeatureGate);
+export default React.memo(DiagramImportDialogFeatureGate);

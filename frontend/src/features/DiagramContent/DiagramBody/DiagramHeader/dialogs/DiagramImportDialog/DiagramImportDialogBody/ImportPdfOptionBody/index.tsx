@@ -2,7 +2,7 @@ import React from "react";
 
 import InPageFeatureGate from "#root/components/InPageFeatureGate";
 import MuiSkeleton from "#root/components/MuiSkeleton";
-import { options_dict } from "#root/constants/diagramSetupDialog";
+import { options_dict } from "#root/constants/diagramImportDialog";
 import {
     useProjectDiagramFilePdfLoadError,
     useProjectDiagramFilePdfLoaded,

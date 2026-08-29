@@ -5,20 +5,20 @@ import { DialogStateEnum } from "#root/enums/dialog";
 import { useDialogState } from "#root/hooks/dialogHooks";
 import { handleCloseDialogAsync } from "#root/stores/dialogStore";
 
-import DiagramSetupDialogBody from "./DiagramSetupDialogBody";
-import DiagramSetupDialogFeatureGate from "./DiagramSetupDialogFeatureGate";
+import DiagramImportDialogBody from "./DiagramImportDialogBody";
+import DiagramImportDialogFeatureGate from "./DiagramImportDialogFeatureGate";
 
-interface DiagramSetupProps {
+interface DiagramImportProps {
     dialogKey: DialogStateEnum;
     dialogTitle: string;
     noButtonText: string;
 }
 
-const DiagramSetupComponent = ({
+const DiagramImportComponent = ({
     dialogKey, //
     dialogTitle,
     noButtonText,
-}: DiagramSetupProps) => {
+}: DiagramImportProps) => {
     const dialogState = useDialogState();
 
     const handleCloseDialog = React.useCallback(async () => {
@@ -33,15 +33,15 @@ const DiagramSetupComponent = ({
             fullWidth
             maxWidth="md"
         >
-            <DiagramSetupDialogFeatureGate>
-                <DiagramSetupDialogBody //
+            <DiagramImportDialogFeatureGate>
+                <DiagramImportDialogBody //
                     dialogTitle={dialogTitle}
                     noButtonText={noButtonText}
                     handleCloseDialog={handleCloseDialog}
                 />
-            </DiagramSetupDialogFeatureGate>
+            </DiagramImportDialogFeatureGate>
         </MuiDialog>
     );
 };
 
-export default React.memo(DiagramSetupComponent) as typeof DiagramSetupComponent;
+export default React.memo(DiagramImportComponent) as typeof DiagramImportComponent;

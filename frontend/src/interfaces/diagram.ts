@@ -480,11 +480,13 @@ export interface DiagramEdge extends ReactFlowEdge<DiagramEdgeData> {}
 export enum DiagramExportFormat {
     json = "json",
     png = "png",
+    drawio = "drawio",
 }
 
 export const DiagramExportFormatLabel: Record<DiagramExportFormat, string> = {
     [DiagramExportFormat.json]: "JSON",
     [DiagramExportFormat.png]: "PNG",
+    [DiagramExportFormat.drawio]: "drawio (XML)",
 };
 
 export interface NodeHandleEdgeMapping {

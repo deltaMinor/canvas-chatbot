@@ -2,7 +2,7 @@ import { HandleSetProcessedNodesAndEdges } from "#root/interfaces/diagramContent
 import { readIntentRXFile } from "#root/services/domain/intentrx";
 import { updateProjectDiagram } from "#root/stores/projectDiagramFeaturePersistenceStore";
 import { getBackendProjectDiagramFromStore } from "#root/stores/projectDiagramFeatureStore";
-import { processImportDiagram } from "#root/utils/diagram/diagramSetupDialogUtil";
+import { processImportDiagram } from "#root/utils/diagram/diagramImportDialogUtil";
 import { parseImportedDiagramCanvas } from "#root/utils/diagramChatbot/importDiagram";
 
 export const importDiagramFromFile = async ({

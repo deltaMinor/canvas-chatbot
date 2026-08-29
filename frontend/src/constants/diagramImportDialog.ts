@@ -2,21 +2,6 @@ import { DialogConfirmStateEnum } from "#root/interfaces/dialog";
 import { DiagramFileOption } from "#root/interfaces/tab";
 
 export const options_dict = {
-    cacti: {
-        key: DiagramFileOption.cacti,
-        title: "Import from CACTi",
-        dialogKey: DialogConfirmStateEnum.confirmGenerateDiagramFromCacti,
-    },
-    description: {
-        key: DiagramFileOption.description,
-        title: "Generate from Natural Language Description",
-        dialogKey: DialogConfirmStateEnum.confirmGenerateDiagramFromLLMWithDescription,
-    },
-    iac: {
-        key: DiagramFileOption.iac,
-        title: "Import from IaC",
-        dialogKey: DialogConfirmStateEnum.confirmGenerateDiagramFromIAC,
-    },
     image: {
         key: DiagramFileOption.image,
         title: "Import from Image (PNG / JPG / WEBP / GIF / BMP / PDF)",

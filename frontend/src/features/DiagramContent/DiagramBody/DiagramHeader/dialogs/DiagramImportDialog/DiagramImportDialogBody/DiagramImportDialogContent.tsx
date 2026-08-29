@@ -9,7 +9,7 @@ import {
     RadioGroup,
 } from "@mui/material";
 
-import { options_dict } from "#root/constants/diagramSetupDialog";
+import { options_dict } from "#root/constants/diagramImportDialog";
 import {
     useDiagramCapabilitiesState,
     useDiagramSetupPendingSelectedOption,
@@ -21,19 +21,13 @@ import useDebouncedCallbackHook from "#root/hooks/useDebouncedCallback";
 
 import ImportPdfOptionBody from "./ImportPdfOptionBody";
 
-interface DiagramSetupDialogContentProps {
+interface DiagramImportDialogContentProps {
     handleCloseDialog: () => Promise<void>;
 }
 
-/**
- * This demo only wires up the chatbot's PDF-driven setup flow. The full
- * application also offers XML/IaC/image/JSON/Cacti/template/natural-language
- * import options, which have been removed here as out of scope for
- * demonstrating the diagram canvas chatbot.
- */
-const DiagramSetupDialogContentComponent = ({
+const DiagramImportDialogContentComponent = ({
     handleCloseDialog,
-}: DiagramSetupDialogContentProps) => {
+}: DiagramImportDialogContentProps) => {
     const capabilities = useDiagramCapabilitiesState();
     const selectedOption = useDiagramSetupSelectedOption();
     const pendingSelectedOption = useDiagramSetupPendingSelectedOption();
@@ -85,4 +79,4 @@ const DiagramSetupDialogContentComponent = ({
     );
 };
 
-export default DiagramSetupDialogContentComponent;
+export default DiagramImportDialogContentComponent;

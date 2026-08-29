@@ -2,25 +2,25 @@ import React from "react";
 
 import MuiDialogTitle from "#root/components/MuiDialogTitle";
 
-import DiagramSetupDialogActions from "./DiagramSetupDialogActions";
-import DiagramSetupDialogContent from "./DiagramSetupDialogContent";
+import DiagramImportDialogActions from "./DiagramImportDialogActions";
+import DiagramImportDialogContent from "./DiagramImportDialogContent";
 
-interface DiagramSetupDialogBodyProps {
+interface DiagramImportDialogBodyProps {
     dialogTitle: string;
     noButtonText: string;
     handleCloseDialog: () => Promise<void>;
 }
 
-const DiagramSetupDialogBodyComponent = ({
+const DiagramImportDialogBodyComponent = ({
     dialogTitle,
     noButtonText,
     handleCloseDialog,
-}: DiagramSetupDialogBodyProps) => {
+}: DiagramImportDialogBodyProps) => {
     return (
         <>
             <MuiDialogTitle title={dialogTitle} />
-            <DiagramSetupDialogContent handleCloseDialog={handleCloseDialog} />
-            <DiagramSetupDialogActions
+            <DiagramImportDialogContent handleCloseDialog={handleCloseDialog} />
+            <DiagramImportDialogActions
                 noButtonText={noButtonText}
                 handleCloseDialog={handleCloseDialog}
             />
@@ -29,5 +29,5 @@ const DiagramSetupDialogBodyComponent = ({
 };
 
 export default React.memo(
-    DiagramSetupDialogBodyComponent
-) as typeof DiagramSetupDialogBodyComponent;
+    DiagramImportDialogBodyComponent
+) as typeof DiagramImportDialogBodyComponent;

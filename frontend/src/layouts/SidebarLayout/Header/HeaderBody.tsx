@@ -1,11 +1,8 @@
 import React from "react";
 
-import FileUploadOutlinedIcon from "@mui/icons-material/FileUploadOutlined";
-import { AppBar, Box, Button, Chip, Grid, Stack, Typography } from "@mui/material";
+import { AppBar, Box, Chip, Grid, Stack, Typography } from "@mui/material";
 
-import { DialogStateEnum } from "#root/enums/dialog";
 import { useProject, useProjectId } from "#root/hooks/backendHooks";
-import { handleOpenDialog } from "#root/stores/dialogStore";
 
 import ClearButton from "./ClearButton";
 import ExportButton from "./ExportButton";
@@ -20,10 +17,6 @@ const HeaderBodyComponent = () => {
         if (!projectId) return "";
         return `${project?.project_name || ""}`;
     }, [project?.project_name, projectId]);
-
-    const handleClickImport = React.useCallback(() => {
-        handleOpenDialog(DialogStateEnum.diagramSetup);
-    }, []);
 
     return (
         <Box>
@@ -80,26 +73,18 @@ const HeaderBodyComponent = () => {
                                         />
                                     )}
                                 </Stack>
-                                <ImportButton />
-                                <ExportButton />
-                                <ClearButton />
-                                <Button
-                                    onClick={handleClickImport}
-                                    startIcon={<FileUploadOutlinedIcon />}
-                                    variant="outlined"
-                                    size="small"
+                                <Stack
+                                    direction="row"
                                     sx={{
-                                        color: "#fff",
-                                        borderColor: "rgba(255, 255, 255, 0.5)",
-                                        whiteSpace: "nowrap",
-                                        "&:hover": {
-                                            borderColor: "#fff",
-                                            backgroundColor: "rgba(255, 255, 255, 0.08)",
-                                        },
+                                        justifyContent: "flex-end",
+                                        alignItems: "center",
                                     }}
+                                    spacing={1}
                                 >
-                                    Import
-                                </Button>
+                                    <ImportButton />
+                                    <ExportButton />
+                                    <ClearButton />
+                                </Stack>
                             </Stack>
                         </Box>
                     </Grid>

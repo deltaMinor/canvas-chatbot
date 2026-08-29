@@ -15,6 +15,21 @@ export const downloadJson = (
     document.body.removeChild(link);
 };
 
+export const downloadDrawioXml = (
+    xmlContent: string, //
+    fileName: string
+) => {
+    const blob = new Blob([xmlContent], { type: "application/vnd.jgraph.mxfile" });
+    const url = URL.createObjectURL(blob);
+    const link = document.createElement("a");
+    link.href = url;
+    link.download = `${fileName}.drawio`;
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+    URL.revokeObjectURL(url);
+};
+
 export const getFileFromFiles = (
     files: FileList, //
     MAX_FILE_SIZE_MB = DEFAULT_MAX_FILE_SIZE_MB

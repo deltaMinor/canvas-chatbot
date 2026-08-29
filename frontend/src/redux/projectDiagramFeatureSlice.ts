@@ -1,7 +1,7 @@
 import { ActionCreatorWithPayload, PayloadAction, Reducer, createSlice } from "@reduxjs/toolkit";
 import { HandleType } from "@xyflow/react";
 
-import { options_dict } from "#root/constants/diagramSetupDialog";
+import { options_dict } from "#root/constants/diagramImportDialog";
 import { OptionLabel } from "#root/interfaces";
 import {
     CanvasColumn,
