@@ -47,18 +47,13 @@ from .database import (
     _FileCollectionCommonModel,
 )
 from .diagram import (
-    AttackEdgeModel,
-    AttackNodeMappingModel,
-    AttackNodeModel,
     CanvasBaseModel,
-    CanvasCardNodeBaseModel,
     CanvasDataBaseModel,
     CanvasDataViewportBaseModel,
     CanvasEdgeBaseModel,
     CanvasNodeBaseModel,
     CanvasNodeHandle,
     CanvasNodeMeasured,
-    CanvasViewRefAttackMappingModel,
     CanvasXYPosition,
     LLMGenerationMetadataModel,
     MasterADTemplateBaseModel,

@@ -63,17 +63,6 @@ class CanvasNodeVariantType(Enum):
     infoNode = "infoNode"
 
 
-class CardFieldId(Enum):
-    card_data = "field_Zz8qcXRmTdRthKaSaSsYGp"
-    card_devices = "field_Beug2fybTozsC4q9GzrisZ"
-    card_feature = "field_kjoQLrFNiwtPd6PSFiF4ui"
-    card_intent = "field_SQgayC4tL9q294ao54XnYD"
-    card_interface = "field_nd6pU88Fpe5mtLkyHMTnPW"
-    card_outcome = "field_TNPsydHStdtNvySMqfV8qF"
-    card_title = "field_RcTZUir6t69LEoJv9ipQsQ"
-    card_users = "field_KxsU6BvQmFPtXRcH44ZhKj"
-
-
 class KnowledgebaseSource(Enum):
     attack = "MITRE ATT&CK"
     masterRiskRegister = "Master Risk Register"
@@ -220,10 +209,6 @@ class Collection(Enum):
     ##################################################
 
 
-class CQFieldId(Enum):
-    user_story_card = "field_aYTgbRTobNfeTx8qfgNaYX"
-
-
 class DefaultGroup(Enum):
     Placeholder = "Placeholder"
     Unassigned = "Unassigned"
@@ -320,7 +305,6 @@ class Project(Enum):
 
 class ProjectAD(Enum):
     canvas = "canvas"
-    card_nodes = "card_nodes"
     project_id = "project_id"
 
 

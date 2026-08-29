@@ -26,14 +26,6 @@ def test_update_project_ad():
                 "ref": {"key": "value"},
             }
         ],
-        "card_nodes": [
-            {
-                "label": "example_label",
-                "ref_key": "example_ref_key",
-                "value": "example_value",
-                "example_node_field": "example_node_value",
-            }
-        ],
     }
     mock_auth_producer = MagicMock(spec=AuthenticationProducer)
     mock_auth_producer.authentication_model = MagicMock()
@@ -75,15 +67,6 @@ def test_update_project_ad():
                 "warnings": [],
             }
         ]
-        assert result["card_nodes"] == [
-            {
-                "label": "example_label",
-                "node_id": None,
-                "ref_key": "example_ref_key",
-                "value": "example_value",
-                "card_id_affliations": [],
-            }
-        ]
         assert "reserved_key1" not in result
         assert "reserved_key2" not in result
         mock_verify_project_id.assert_called_once_with(
@@ -104,15 +87,6 @@ def test_update_project_ad():
                         "ref": {"key": "value"},
                         "view_only": False,
                         "warnings": [],
-                    }
-                ],
-                "card_nodes": [
-                    {
-                        "label": "example_label",
-                        "node_id": None,
-                        "ref_key": "example_ref_key",
-                        "value": "example_value",
-                        "card_id_affliations": [],
                     }
                 ],
             },

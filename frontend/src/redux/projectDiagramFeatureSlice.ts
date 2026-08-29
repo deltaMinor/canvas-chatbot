@@ -4,7 +4,6 @@ import { HandleType } from "@xyflow/react";
 import { options_dict } from "#root/constants/diagramImportDialog";
 import { OptionLabel } from "#root/interfaces";
 import {
-    CanvasColumn,
     CanvasType,
     DiagramCanvas,
     DiagramEdge,
@@ -39,7 +38,6 @@ import type {
     SetDiagramAttackStepCountMappingPayload,
     SetDiagramAttackStepPayload,
     SetDiagramBooleanPayload,
-    SetDiagramCanvasColumnMappingPayload,
     SetDiagramCanvasHistoryPayload,
     SetDiagramCanvasPayload,
     SetDiagramDrawerStatePayload,
@@ -53,7 +51,6 @@ import type {
     SetDiagramNodePayload,
     SetDiagramNodesPayload,
     SetDiagramNumberPayload,
-    SetDiagramOptionLabelArrayMappingPayload,
     SetDiagramOptionLabelPayload,
     SetDiagramPendingDrawerKeyPayload,
     SetDiagramPendingThreatOverviewScenarioScopePayload,
@@ -90,9 +87,6 @@ export const createInitialDiagramInstanceState = (): DiagramInstanceState => ({
     setupSelectedOption: options_dict.template.key,
     setupSelectedTemplateCanvasId: "",
     setupNaturalLanguageDescription: "",
-    userStoryPendingSelectedDataNodesMapping: {},
-    userStoryNodesPositionApplyToAll: false,
-    userStoryCanvasColumnButtonSelectedPositionMapping: {},
     hiddenEdgeIds: [],
     warningListMapping: {},
     toscaReportMapping: {},
@@ -381,37 +375,6 @@ const projectDiagramFeatureSliceInternal = createSlice({
         ) {
             const { instanceId, value } = getDiagramPayload(action.payload);
             ensureDiagramInstance(state, instanceId).setupNaturalLanguageDescription = value;
-        },
-        setUserStoryPendingSelectedDataNodesMapping(
-            state,
-            action: PayloadAction<
-                | Record<string, OptionLabel[]>
-                | DiagramInstancePayload<Record<string, OptionLabel[]>>
-            >
-        ) {
-            const { instanceId, value } = getDiagramPayload(action.payload);
-            ensureDiagramInstance(state, instanceId).userStoryPendingSelectedDataNodesMapping =
-                value;
-        },
-        setUserStoryNodesPositionApplyToAll(
-            state,
-            action: PayloadAction<boolean | DiagramInstancePayload<boolean>>
-        ) {
-            const { instanceId, value } = getDiagramPayload(action.payload);
-            ensureDiagramInstance(state, instanceId).userStoryNodesPositionApplyToAll = value;
-        },
-        setUserStoryCanvasColumnButtonSelectedPositionMapping(
-            state,
-            action: PayloadAction<
-                | Record<string, CanvasColumn | undefined>
-                | DiagramInstancePayload<Record<string, CanvasColumn | undefined>>
-            >
-        ) {
-            const { instanceId, value } = getDiagramPayload(action.payload);
-            ensureDiagramInstance(
-                state,
-                instanceId
-            ).userStoryCanvasColumnButtonSelectedPositionMapping = value;
         },
         setHiddenEdgeIds(
             state, //
@@ -946,18 +909,6 @@ const projectDiagramFeatureSlice: {
         setSetupNaturalLanguageDescription: ActionCreatorWithPayload<
             SetDiagramStringPayload,
             "diagram/setSetupNaturalLanguageDescription"
-        >;
-        setUserStoryPendingSelectedDataNodesMapping: ActionCreatorWithPayload<
-            SetDiagramOptionLabelArrayMappingPayload,
-            "diagram/setUserStoryPendingSelectedDataNodesMapping"
-        >;
-        setUserStoryNodesPositionApplyToAll: ActionCreatorWithPayload<
-            SetDiagramBooleanPayload,
-            "diagram/setUserStoryNodesPositionApplyToAll"
-        >;
-        setUserStoryCanvasColumnButtonSelectedPositionMapping: ActionCreatorWithPayload<
-            SetDiagramCanvasColumnMappingPayload,
-            "diagram/setUserStoryCanvasColumnButtonSelectedPositionMapping"
         >;
         setHiddenEdgeIds: ActionCreatorWithPayload<
             SetDiagramStringArrayPayload,

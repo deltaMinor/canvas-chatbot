@@ -13,7 +13,6 @@ from shared_libs.lib.prompt_type import canonical_prompt_type
 from shared_libs.models.model_batch_helper import ModelBatchHelper
 from shared_libs.types.enum import (
     CanvasNodeVariantType,
-    CardFieldId,
     ScenarioTags,
 )
 
@@ -1370,15 +1369,6 @@ class CanvasNodeBaseValidator(AbstractValidator):
 
         # ==============================
         node_data = data.get("data", {})
-        if (
-            node_data.get("cardRefKey", "") == CardFieldId.card_devices.name
-            and "physicalLocation" not in node_data
-        ):
-            node_data["physicalLocation"] = "internet"
-            _patchkeys.append("data")
-
-        # ==============================
-        node_data = data.get("data", {})
         if "clusterNodeType" in node_data:
             del node_data["clusterNodeType"]
             _patchkeys.append("data")
@@ -1387,7 +1377,6 @@ class CanvasNodeBaseValidator(AbstractValidator):
         node_data = data.get("data", {})
         if (
             data.get("type", "") == CanvasNodeVariantType.clusterNode.value
-            and node_data.get("cardRefKey", "") != CardFieldId.card_devices.name
             and "publiclyAccessible" not in node_data
         ):
             node_data["publiclyAccessible"] = False

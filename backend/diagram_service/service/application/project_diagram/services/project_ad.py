@@ -51,7 +51,6 @@ from shared_libs.domain import (
     MasterADTemplateService,
     ProjectADFileService,
     ProjectADService,
-    ProjectCQService,
     ProjectService,
 )
 from shared_libs.exceptions.api_exceptions import BadRequest, InternalServerError
@@ -60,13 +59,11 @@ from shared_libs.infrastructure.remote_file_repository.service import (
     RemoteFileRepository,
 )
 from shared_libs.infrastructure.remote_repository.service import RemoteRepository
-from shared_libs.lib.diagram_util.card_node_builder import CardNodeBuilder
 from shared_libs.lib.file_validator import FileValidator
 from shared_libs.lib.diagram_util.diagram_canvas_factory import DiagramCanvasFactory
 from shared_libs.models.base_models import (
     AuditLogModel,
     CanvasBaseModel,
-    CanvasCardNodeBaseModel,
     CanvasDataBaseModel,
     CanvasEdgeBaseModel,
     CanvasNodeBaseModel,
@@ -79,7 +76,6 @@ from shared_libs.models.database_models import (
     KbToscaModel,
     MasterADTemplateModel,
     ProjectADModel,
-    ProjectCQModel,
 )
 from shared_libs.producers.producer_data import (
     producer_data_database_log_ad,
@@ -89,7 +85,6 @@ from shared_libs.producers.producer_data import (
     producer_data_project,
     producer_data_project_ad,
     producer_data_project_ad_file,
-    producer_data_project_cq,
 )
 from shared_libs.types.auditLog import AuditLogAction, AuditLogTargetKey
 from shared_libs.types.enum import CanvasType, Collection, Project
@@ -164,16 +159,6 @@ class ProjectADApplicationService(ProjectADService):
                 producer=Producer(
                     producer_data_model=ProducerDataModel(
                         **producer_data_project,
-                    ),
-                    celery_app=celery_app,
-                ),
-            )
-        )
-        self.project_cq_service = ProjectCQService(
-            repository=RemoteRepository(
-                producer=Producer(
-                    producer_data_model=ProducerDataModel(
-                        **producer_data_project_cq,
                     ),
                     celery_app=celery_app,
                 ),
@@ -719,22 +704,15 @@ class ProjectADApplicationService(ProjectADService):
     )
     def get_updated_canvas_model(
         self,
-        card_nodes: list[dict[str, Any]],
         diagram: dict,
-        user_story_cards: list[dict],
     ) -> list[CanvasBaseModel]:
         """
         Retrieves the updated canvas model.
 
-        This method uses the DiagramCanvasFactory to get the updated architecture canvas model and
-        generate data flow canvas models from user story cards. These are then combined into a
-        single list which is returned.
+        This method uses the DiagramCanvasFactory to get the updated architecture canvas model.
 
         Args:
-            card_nodes (List[dict[str, Any]]): A list of card node dictionary
             diagram: The diagram for which the updated canvas model is to be retrieved.
-            user_story_cards (List[dict]): The user story cards from which to generate data flow
-            canvas models.
 
         Returns:
             List[CanvasBaseModel]: A list of canvas models.
@@ -742,8 +720,6 @@ class ProjectADApplicationService(ProjectADService):
         Raises:
             Exception: If the canvas models cannot be retrieved.
         """
-        canvas_models = []
-
         # Get architecture canvas model
         diagram_canvas_factory = DiagramCanvasFactory()
         architecture_canvas_model = (
@@ -751,16 +727,8 @@ class ProjectADApplicationService(ProjectADService):
                 diagram=diagram,
             )
         )
-        canvas_models.append(architecture_canvas_model)
 
-        # Get data flow canvas models
-        data_flow_canvas_models = diagram_canvas_factory.get_data_flow_canvas_models(
-            card_nodes=card_nodes,
-            user_story_cards=user_story_cards,
-        )
-        canvas_models.extend(data_flow_canvas_models)
-
-        return canvas_models
+        return [architecture_canvas_model]
 
     @staticmethod
     def normalize_project_ad_nested_models(project_ad_model: ProjectADModel) -> None:
@@ -768,12 +736,6 @@ class ProjectADApplicationService(ProjectADService):
         project_ad_model.canvas = [
             canvas if isinstance(canvas, CanvasBaseModel) else CanvasBaseModel(**canvas)
             for canvas in (project_ad_model.canvas or [])
-        ]
-        project_ad_model.card_nodes = [
-            card_node
-            if isinstance(card_node, CanvasCardNodeBaseModel)
-            else CanvasCardNodeBaseModel(**card_node)
-            for card_node in (project_ad_model.card_nodes or [])
         ]
 
     @raise_exception(
@@ -807,17 +769,6 @@ class ProjectADApplicationService(ProjectADService):
         selected_cacti_file_id = data["selected_cacti_file_id"]
 
         # Verify the project ID
-        db_project_cq = self.project_cq_service.get_one(
-            {"project_id": project_id},
-            raise_if_not_found=True,
-            user_info=SYSTEM_USER_INFO,
-        )
-        if not db_project_cq.get("isCompleted"):
-            raise BadRequest(
-                "The Conception Questionnaire must be submitted before this operation can proceed."
-            )
-        project_cq_model = ProjectCQModel(**db_project_cq)
-
         db_project_ad = self.get_one(
             {"project_id": project_id},
             raise_if_not_found=True,
@@ -826,15 +777,6 @@ class ProjectADApplicationService(ProjectADService):
         project_ad_model = ProjectADModel(
             **db_project_ad,
         )
-
-        # Get the user story cards for the project
-        # Update the card nodes based on the user story cards
-        card_node_builder = CardNodeBuilder(
-            values=project_cq_model.values,
-            project_ad_model=project_ad_model,
-        )
-        user_story_cards = card_node_builder.user_story_cards
-        card_nodes = card_node_builder.card_nodes
 
         # Retrieve project cacti model from database using the provided project id
         # Construct node and edge id list using retrieved CACTi json
@@ -860,9 +802,7 @@ class ProjectADApplicationService(ProjectADService):
 
         # Get updated canvas
         canvas_models = self.get_updated_canvas_model(
-            card_nodes=card_nodes,
             diagram=diagram,
-            user_story_cards=user_story_cards,
         )
         project_ad_model.canvas = canvas_models
 
@@ -890,7 +830,6 @@ class ProjectADApplicationService(ProjectADService):
             )
 
         field_data = {
-            "card_nodes": card_nodes,
             "canvas": [_.model_dump() for _ in project_ad_model.canvas],
             "ref.selected_cacti_file_id": selected_cacti_file_id,
         }
@@ -959,17 +898,6 @@ class ProjectADApplicationService(ProjectADService):
         selected_diagram_file_id = data["selected_diagram_file_id"]
 
         # Verify the project ID
-        db_project_cq = self.project_cq_service.get_one(
-            {"project_id": project_id},
-            raise_if_not_found=True,
-            user_info=SYSTEM_USER_INFO,
-        )
-        if not db_project_cq.get("isCompleted"):
-            raise BadRequest(
-                "The Conception Questionnaire must be submitted before this operation can proceed."
-            )
-        project_cq_model = ProjectCQModel(**db_project_cq)
-
         db_project_ad = self.get_one(
             {"project_id": project_id},
             raise_if_not_found=True,
@@ -978,15 +906,6 @@ class ProjectADApplicationService(ProjectADService):
         project_ad_model = ProjectADModel(
             **db_project_ad,
         )
-
-        # Get the user story cards for the project
-        # Update the card nodes based on the user story cards
-        card_node_builder = CardNodeBuilder(
-            values=project_cq_model.values,
-            project_ad_model=project_ad_model,
-        )
-        user_story_cards = card_node_builder.user_story_cards
-        card_nodes = card_node_builder.card_nodes
 
         # Retrieve project diagram json model from database using the provided project id
         # Construct node and edge id list using retrieved diagram json
@@ -1010,9 +929,7 @@ class ProjectADApplicationService(ProjectADService):
 
         # Get updated canvas
         canvas_models = self.get_updated_canvas_model(
-            card_nodes=card_nodes,
             diagram=diagram,
-            user_story_cards=user_story_cards,
         )
         project_ad_model.canvas = canvas_models
 
@@ -1042,7 +959,6 @@ class ProjectADApplicationService(ProjectADService):
         # Prepare the payload for updating the database
         # Update the database
         field_data = {
-            "card_nodes": card_nodes,
             "canvas": [_.model_dump() for _ in project_ad_model.canvas],
             "ref.selected_diagram_file_id": selected_diagram_file_id,
         }
@@ -1111,17 +1027,6 @@ class ProjectADApplicationService(ProjectADService):
         selected_template_id = data["selected_template_id"]
 
         # Verify the project ID
-        db_project_cq = self.project_cq_service.get_one(
-            {"project_id": project_id},
-            raise_if_not_found=True,
-            user_info=SYSTEM_USER_INFO,
-        )
-        if not db_project_cq.get("isCompleted"):
-            raise BadRequest(
-                "The Conception Questionnaire must be submitted before this operation can proceed."
-            )
-        project_cq_model = ProjectCQModel(**db_project_cq)
-
         db_project_ad = self.get_one(
             {"project_id": project_id},
             raise_if_not_found=True,
@@ -1130,15 +1035,6 @@ class ProjectADApplicationService(ProjectADService):
         project_ad_model = ProjectADModel(
             **db_project_ad,
         )
-
-        # Get the user story cards for the project
-        # Update the card nodes based on the user story cards
-        card_node_builder = CardNodeBuilder(
-            values=project_cq_model.values,
-            project_ad_model=project_ad_model,
-        )
-        user_story_cards = card_node_builder.user_story_cards
-        card_nodes = card_node_builder.card_nodes
 
         # Retrieve the architecture diagram (AD) template model from the database using the provided
         # template ID
@@ -1162,9 +1058,7 @@ class ProjectADApplicationService(ProjectADService):
 
         # Get the updated canvas
         canvas_models = self.get_updated_canvas_model(
-            card_nodes=card_nodes,
             diagram=diagram,
-            user_story_cards=user_story_cards,
         )
         project_ad_model.canvas = canvas_models
 
@@ -1194,7 +1088,6 @@ class ProjectADApplicationService(ProjectADService):
         # Prepare the payload for updating the database
         # Update the database
         field_data = {
-            "card_nodes": card_nodes,
             "canvas": [_.model_dump() for _ in project_ad_model.canvas],
             "ref.selected_template_id": selected_template_id,
         }
@@ -1263,17 +1156,6 @@ class ProjectADApplicationService(ProjectADService):
         selected_xml_file_id = data["selected_xml_file_id"]
 
         # Verify the project ID
-        db_project_cq = self.project_cq_service.get_one(
-            {Project.project_id.value: project_id},
-            raise_if_not_found=True,
-            user_info=SYSTEM_USER_INFO,
-        )
-        if not db_project_cq.get("isCompleted"):
-            raise BadRequest(
-                "The Conception Questionnaire must be submitted before this operation can proceed."
-            )
-        project_cq_model = ProjectCQModel(**db_project_cq)
-
         db_project_ad = self.get_one(
             {Project.project_id.value: project_id},
             raise_if_not_found=True,
@@ -1282,15 +1164,6 @@ class ProjectADApplicationService(ProjectADService):
         project_ad_model = ProjectADModel(
             **db_project_ad,
         )
-
-        # Get the user story cards for the project
-        # Update the card nodes based on the user story cards
-        card_node_builder = CardNodeBuilder(
-            values=project_cq_model.values,
-            project_ad_model=project_ad_model,
-        )
-        user_story_cards = card_node_builder.user_story_cards
-        card_nodes = card_node_builder.card_nodes
 
         # Retrieve project xml model from database using the provided project id
         # Construct node and edge id list using retrieved XML
@@ -1314,9 +1187,7 @@ class ProjectADApplicationService(ProjectADService):
 
         # Get updated canvas
         canvas_models = self.get_updated_canvas_model(
-            card_nodes=card_nodes,
             diagram=diagram,
-            user_story_cards=user_story_cards,
         )
         project_ad_model.canvas = canvas_models
 
@@ -1346,7 +1217,6 @@ class ProjectADApplicationService(ProjectADService):
         # Prepare the payload for updating the database
         # Update the database
         field_data = {
-            "card_nodes": card_nodes,
             "canvas": [_.model_dump() for _ in project_ad_model.canvas],
             "ref.selected_xml_file_id": selected_xml_file_id,
         }
@@ -1418,17 +1288,6 @@ class ProjectADApplicationService(ProjectADService):
         # TODO: selected_module_file_id_list not being used. find out why.
 
         # Verify the project ID
-        db_project_cq = self.project_cq_service.get_one(
-            {"project_id": project_id},
-            raise_if_not_found=True,
-            user_info=SYSTEM_USER_INFO,
-        )
-        if not db_project_cq.get("isCompleted"):
-            raise BadRequest(
-                "The Conception Questionnaire must be submitted before this operation can proceed."
-            )
-        project_cq_model = ProjectCQModel(**db_project_cq)
-
         db_project_ad = self.get_one(
             {"project_id": project_id},
             raise_if_not_found=True,
@@ -1437,15 +1296,6 @@ class ProjectADApplicationService(ProjectADService):
         project_ad_model = ProjectADModel(
             **db_project_ad,
         )
-
-        # Get the user story cards for the project
-        # Update the card nodes based on the user story cards
-        card_node_builder = CardNodeBuilder(
-            values=project_cq_model.values,
-            project_ad_model=project_ad_model,
-        )
-        user_story_cards = card_node_builder.user_story_cards
-        card_nodes = card_node_builder.card_nodes
 
         # Define the directories for terraform and graph
         # Create the directories if they do not exist
@@ -1486,9 +1336,7 @@ class ProjectADApplicationService(ProjectADService):
 
         # Get the updated canvas
         canvas_models = self.get_updated_canvas_model(
-            card_nodes=card_nodes,
             diagram=diagram,
-            user_story_cards=user_story_cards,
         )
         project_ad_model.canvas = canvas_models
 
@@ -1516,7 +1364,6 @@ class ProjectADApplicationService(ProjectADService):
             )
 
         field_data = {
-            "card_nodes": card_nodes,
             "canvas": [_.model_dump() for _ in project_ad_model.canvas],
             "ref.selected_terraform_file_id_list": selected_terraform_file_id_list,
             "ref.selected_module_file_id_list": selected_module_file_id_list,
@@ -1567,8 +1414,8 @@ class ProjectADApplicationService(ProjectADService):
         Initializes a blank canvas for a specific project.
 
         This method requires the permissions provided in the 'permissions' list. The project ID
-        should be provided in the 'data' dictionary under the key 'project_id'. It retrieves user
-        story cards, updates card nodes and canvas, and saves the canvas in the database.
+        should be provided in the 'data' dictionary under the key 'project_id'. It initializes
+        the canvas and saves it in the database.
 
         Args:
             data (dict): The dictionary containing the project ID under the key 'project_id'.
@@ -1578,20 +1425,9 @@ class ProjectADApplicationService(ProjectADService):
             Exception: If an error occurs while initializing the blank canvas.
 
         Returns:
-            dict: A dictionary containing the project ID, updated card nodes, and canvas.
+            dict: A dictionary containing the project ID and updated canvas.
         """
         project_id = data["project_id"]
-
-        db_project_cq = self.project_cq_service.get_one(
-            {"project_id": project_id},
-            raise_if_not_found=True,
-            user_info=SYSTEM_USER_INFO,
-        )
-        if not db_project_cq.get("isCompleted"):
-            raise BadRequest(
-                "The Conception Questionnaire must be submitted before this operation can proceed."
-            )
-        project_cq_model = ProjectCQModel(**db_project_cq)
 
         db_project_ad = self.get_one(
             {"project_id": project_id},
@@ -1602,24 +1438,13 @@ class ProjectADApplicationService(ProjectADService):
             **db_project_ad,
         )
 
-        # get user story cards
-        card_node_builder = CardNodeBuilder(
-            values=project_cq_model.values,
-            project_ad_model=project_ad_model,
-        )
-        user_story_cards = card_node_builder.user_story_cards
-        card_nodes = card_node_builder.card_nodes
-
         # Get updated canvas
         canvas_models = self.get_updated_canvas_model(
-            card_nodes=card_nodes,
             diagram=None,
-            user_story_cards=user_story_cards,
         )
 
         # save canvas in database
         payload = {
-            "card_nodes": card_nodes,
             "canvas": [_.model_dump() for _ in canvas_models],
         }
 
@@ -1741,11 +1566,11 @@ class ProjectADApplicationService(ProjectADService):
         Updates the architecture diagram (AD) for a specific project.
 
         This method requires the permissions provided in the 'permissions' list. The project ID,
-        canvas list, and card nodes should be provided in the 'data' dictionary. It updates the AD
+        canvas list should be provided in the 'data' dictionary. It updates the AD
         for the project in the database and returns the updated data.
 
         Args:
-            data (dict): The dictionary containing the project ID, canvas, and card nodes.
+            data (dict): The dictionary containing the project ID and canvas.
             permissions (List[str]): The list of permissions required to perform the operation.
             reserved_keys (List[str]): The list of keys that should not be updated in the database.
 
@@ -1766,14 +1591,6 @@ class ProjectADApplicationService(ProjectADService):
                     node["extent"] = extent if isinstance(extent, str) else None
             canvas_models = [CanvasBaseModel(**_) for _ in canvas]
             data["canvas"] = [_.model_dump() for _ in canvas_models]
-
-        # If card nodes are provided, convert each card node to a CanvasCardNodeBaseModel and dump
-        # it to a dictionary
-        card_nodes = data.get("card_nodes")
-        if card_nodes:
-            data["card_nodes"] = [
-                CanvasCardNodeBaseModel(**_).model_dump() for _ in card_nodes
-            ]
 
         ref = data.get("ref")
         if ref:
@@ -1966,7 +1783,6 @@ class ProjectADApplicationService(ProjectADService):
             project_ad["canvas"][i]["warnings"] = merged_warning_list
 
         payload = {
-            "card_nodes": project_ad["card_nodes"],
             "canvas": project_ad["canvas"],
         }
 

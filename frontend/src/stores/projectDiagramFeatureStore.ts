@@ -11,6 +11,5 @@ export * from "./projectDiagram/joyride";
 export * from "./projectDiagram/selection";
 export * from "./projectDiagram/setup";
 export * from "./projectDiagram/toscaValidation";
-export * from "./projectDiagram/userStory";
 export * from "./projectDiagram/visibility";
 export * from "./projectDiagram/warnings";

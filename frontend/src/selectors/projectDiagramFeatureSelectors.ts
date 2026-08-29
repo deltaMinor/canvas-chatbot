@@ -115,30 +115,6 @@ export const selectDiagramSetupNaturalLanguageDescription = (
     return diagramInstanceState.setupNaturalLanguageDescription;
 };
 
-export const selectDiagramUserStoryPendingSelectedDataNodesMapping = (
-    state: RootState,
-    instanceId?: string
-) => {
-    const diagramInstanceState = selectDiagramInstanceState(state, instanceId);
-    return diagramInstanceState.userStoryPendingSelectedDataNodesMapping;
-};
-
-export const selectDiagramUserStoryNodesPositionApplyToAll = (
-    state: RootState,
-    instanceId?: string
-) => {
-    const diagramInstanceState = selectDiagramInstanceState(state, instanceId);
-    return diagramInstanceState.userStoryNodesPositionApplyToAll;
-};
-
-export const selectDiagramUserStoryCanvasColumnButtonSelectedPositionMapping = (
-    state: RootState,
-    instanceId?: string
-) => {
-    const diagramInstanceState = selectDiagramInstanceState(state, instanceId);
-    return diagramInstanceState.userStoryCanvasColumnButtonSelectedPositionMapping;
-};
-
 export const selectHiddenEdgeIds = (
     state: RootState, //
     instanceId?: string

@@ -27,12 +27,6 @@ def test_initialize_architecture_canvas_from_cacti():
     mock_auth_producer.user_info = {"user_id": "test_user"}
     mock_permissions = ["perm1", "perm2"]
 
-    mock_db_project_cq = {
-        "project_id": "1",
-        "schema_": "1.0.0",
-        "sections": [],
-        "values": {},
-    }
     mock_project_ad_model = MagicMock()
 
     mock_cacti_file = {
@@ -42,19 +36,12 @@ def test_initialize_architecture_canvas_from_cacti():
 
     mock_diagram = {"nodes": [{"id": "n1"}], "edges": [{"id": "e1"}]}
 
-    mock_card_nodes = []
-
     mock_canvas_model = MagicMock()
 
     with (
         patch.object(
             AuthorizationManager, "verify_project_id", return_value=True
         ) as mock_verify_project_id,
-        patch.object(
-            service.project_cq_service,
-            "get_one",
-            return_value=mock_db_project_cq,
-        ) as mock_project_cq_service_get_one,
         patch.object(
             service,
             "get_project_ad_model_from_database",
@@ -90,13 +77,9 @@ def test_initialize_architecture_canvas_from_cacti():
     # Assert
     assert result == {
         "project_id": mock_project_id,
-        "card_nodes": mock_card_nodes,
         "canvas": [canvas.model_dump() for canvas in mock_canvas_model],
     }
     mock_verify_project_id.assert_called_once_with(project_id=mock_project_id)
-    mock_project_cq_service_get_one.assert_called_once_with(
-        {"project_id": mock_project_id}, raise_if_not_found=True
-    )
     mock_get_project_ad_model_from_database.assert_called_once_with(mock_project_id)
     mock_project_ad_file_service_get_many_files.assert_called_once_with(
         {
@@ -111,7 +94,6 @@ def test_initialize_architecture_canvas_from_cacti():
         {"project_id": mock_project_id},
         payload={
             "project_id": mock_project_id,
-            "card_nodes": mock_card_nodes,
             "canvas": [canvas.model_dump() for canvas in mock_canvas_model],
         },
         user_info=mock_auth_producer.user_info,

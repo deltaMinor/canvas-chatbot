@@ -1,1 +1,0 @@
-# Moved to register_libs/src/register_libs/generators/llm_generator_threat_attributes/llm_single_threat_attributes.py

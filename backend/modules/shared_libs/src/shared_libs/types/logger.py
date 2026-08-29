@@ -153,7 +153,6 @@ class AppLoggerName(Enum):
     token_encryption_service = f"{app_logger}.lib.token_encryption_service"
     # diagram_util
     canvas_node_sorter = f"{app_logger}.lib.canvas_node_sorter"
-    card_node_builder = f"{app_logger}.lib.card_node_builder"
     card_node_processor = f"{app_logger}.lib.card_node_processor"
     diagram_canvas_factory = f"{app_logger}.lib.diagram_canvas_factory"
     # task_util

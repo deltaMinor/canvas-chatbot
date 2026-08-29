@@ -19,7 +19,6 @@ import {
 import { AttackPath } from "#root/interfaces/register";
 import { NodeIconKey } from "#root/interfaces/svg";
 import { NodeIconKeyBridgeMapping } from "#root/interfaces/svgBridgeMapping";
-import { UserStoryCardIconMapping } from "#root/interfaces/userstoryDrawer";
 
 import { getNodeInfo } from "./diagramNodePositionUtil";
 import { getIconType } from "./diagramTerraform";
@@ -489,21 +488,6 @@ export const checkOutdatedNodeKey = (
     return false;
 };
 
-export const checkCardNodeIcon = (
-    n: DiagramNode, //
-    iconKey: string
-) => {
-    if (!iconKey) return false;
-    const cardRefKey = n?.data?.cardRefKey || "";
-    const _cardRefKey =
-        UserStoryCardIconMapping[cardRefKey as keyof typeof UserStoryCardIconMapping];
-    if (!!cardRefKey && iconKey !== _cardRefKey) {
-        n.data.icon = _cardRefKey;
-        return true;
-    }
-    return false;
-};
-
 export const patchCanvasListWithUpdatedIcons = (
     canvas: DiagramCanvas[], //
     updateDB: boolean
@@ -515,15 +499,12 @@ export const patchCanvasListWithUpdatedIcons = (
                 if (!iconKey) return n;
 
                 /**
-                 * Updates the `updateDB` flag based on the results of `checkOutdatedNodeKey` and `checkCardNodeIcon` functions.
-                 *
-                 * This code snippet checks if the node's key or icon is outdated or needs to be updated by calling the
-                 * `checkOutdatedNodeKey` and `checkCardNodeIcon` functions. If either function returns `true`, indicating
-                 * that an update is needed, the `updateDB` flag is set to `true`.
+                 * Updates the `updateDB` flag based on the result of the `checkOutdatedNodeKey`
+                 * function. If the function returns `true`, indicating that an update is needed,
+                 * the `updateDB` flag is set to `true`.
                  */
                 const _updateDB = checkOutdatedNodeKey(n, iconKey);
-                const __updateDB = checkCardNodeIcon(n, iconKey);
-                updateDB = updateDB || __updateDB || _updateDB;
+                updateDB = updateDB || _updateDB;
                 return n;
             }) || [];
         c.nodes = _nodes;

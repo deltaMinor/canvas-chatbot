@@ -16,18 +16,13 @@ from .diagram_file import ProjectADFileBaseModel
 from .shared.shared.database import MetadataModel, PatchBaseModel
 
 __all__ = [
-    "AttackEdgeModel",
-    "AttackNodeMappingModel",
-    "AttackNodeModel",
     "CanvasBaseModel",
-    "CanvasCardNodeBaseModel",
     "CanvasDataBaseModel",
     "CanvasDataViewportBaseModel",
     "CanvasEdgeBaseModel",
     "CanvasNodeBaseModel",
     "CanvasNodeHandle",
     "CanvasNodeMeasured",
-    "CanvasViewRefAttackMappingModel",
     "CanvasXYPosition",
     "LLMGenerationMetadataModel",
     "MasterADTemplateBaseModel",
@@ -207,36 +202,6 @@ class CanvasBaseModel(CanvasDataBaseModel):
     warnings: list[dict] = Field(default=[])
 
 
-class AttackNodeMappingModel(BaseModel):
-    path_id: str
-    isin_possible_path: bool | None = Field(default=False)
-    isin_condition_nodes: bool | None = Field(default=False)
-
-
-class AttackNodeModel(BaseModel):
-    node_id: str | None = Field(default="")
-    mapping_list: list["AttackNodeMappingModel"] | None = Field(default=[])
-
-
-class AttackEdgeModel(BaseModel):
-    edge_id: str | None = Field(default="")
-    condition_edges__path_id_list: list[str] | None = Field(default=[])
-
-
-class CanvasViewRefAttackMappingModel(BaseModel):
-    attack_nodes: list["AttackNodeModel"] | None = Field(default=[])
-    attack_edges: list["AttackEdgeModel"] | None = Field(default=[])
-
-
-class CanvasCardNodeBaseModel(BaseModel):
-    label: str | None = Field(default="")
-    value: str | None = Field(default="")
-    ref: dict | None = Field(default={})
-    node_id: str | None = Field(default="")
-    ref_key: str | None = Field(default="")
-    card_id_affliations: list[str] | None = Field(default=[])
-
-
 class LLMGenerationMetadataModel(BaseModel):
     state: str | None = Field(default="")
     task_id: str | None = Field(default="")
@@ -280,7 +245,6 @@ class ProjectADBaseModel(
     )
     conversations: list["ConversationBaseModel"] | None = Field(default=[])
     topology_run_context: list["TopologyRunContextBaseModel"] | None = Field(default=[])
-    card_nodes: list["CanvasCardNodeBaseModel"] | None = Field(default=[])
     isCompleted: bool | None = Field(default=False)
     lastCompletedBy: Optional["MetadataModel"] = Field(
         default_factory=MetadataModel,

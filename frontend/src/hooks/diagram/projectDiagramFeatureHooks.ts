@@ -3,9 +3,7 @@ import { useSelector } from "react-redux";
 
 import { useDiagramInstanceId } from "#root/contexts/DiagramInstanceContext";
 import { useProjectDiagram } from "#root/hooks/backendHooks";
-import { OptionLabel } from "#root/interfaces";
 import {
-    CanvasColumn,
     DeviceToInterfaceMappingSingle,
     DiagramCanvas,
     DiagramEdge,
@@ -54,9 +52,6 @@ import {
     selectDiagramSetupSelectedOption,
     selectDiagramSetupSelectedTemplateCanvasId,
     selectDiagramToscaReportMapping,
-    selectDiagramUserStoryCanvasColumnButtonSelectedPositionMapping,
-    selectDiagramUserStoryNodesPositionApplyToAll,
-    selectDiagramUserStoryPendingSelectedDataNodesMapping,
     selectDiagramView,
     selectDraftCanvasId,
     selectDrawerState,
@@ -149,11 +144,6 @@ import {
     setDiagramSetupSelectedTemplateCanvasId,
 } from "#root/stores/projectDiagram/setup";
 import { setDiagramToscaReportMapping } from "#root/stores/projectDiagram/toscaValidation";
-import {
-    setDiagramUserStoryCanvasColumnButtonSelectedPositionMapping,
-    setDiagramUserStoryNodesPositionApplyToAll,
-    setDiagramUserStoryPendingSelectedDataNodesMapping,
-} from "#root/stores/projectDiagram/userStory";
 import { setDiagramHiddenEdgeIds } from "#root/stores/projectDiagram/visibility";
 import {
     setDiagramHiddenWarningIdList,
@@ -186,7 +176,6 @@ import {
     getNextWarningFlterKey,
     getNextWarningSortDirection,
 } from "#root/utils/diagram/diagramWarningUtil";
-import { resolveNextStateAction } from "#root/utils/diagramUtil";
 
 // ==============================
 // useSelector Hooks
@@ -277,59 +266,6 @@ export const useDiagramSetupNaturalLanguageDescription = () => {
 
     return useSelector(
         (state: RootState) => selectDiagramSetupNaturalLanguageDescription(state, instanceId) //
-    );
-};
-
-export const useDiagramUserStoryPendingSelectedDataNodesMapping = () => {
-    const instanceId = useDiagramInstanceId();
-
-    return useSelector(
-        (state: RootState) =>
-            selectDiagramUserStoryPendingSelectedDataNodesMapping(state, instanceId) //
-    );
-};
-
-export const useDiagramUserStoryPendingSelectedDataNodes = (
-    dataNodeId: string | undefined,
-    fallbackValue: OptionLabel[]
-) => {
-    const pendingSelectedDataNodesMapping = useDiagramUserStoryPendingSelectedDataNodesMapping();
-
-    return React.useMemo(() => {
-        if (!dataNodeId) return fallbackValue;
-        return pendingSelectedDataNodesMapping[dataNodeId] ?? fallbackValue;
-    }, [dataNodeId, fallbackValue, pendingSelectedDataNodesMapping]);
-};
-
-export const useDiagramUserStoryNodesPositionApplyToAll = () => {
-    const instanceId = useDiagramInstanceId();
-
-    return useSelector(
-        (state: RootState) => selectDiagramUserStoryNodesPositionApplyToAll(state, instanceId) //
-    );
-};
-
-export const useDiagramUserStoryCanvasColumnButtonSelectedPositionMapping = () => {
-    const instanceId = useDiagramInstanceId();
-
-    return useSelector(
-        (state: RootState) =>
-            selectDiagramUserStoryCanvasColumnButtonSelectedPositionMapping(state, instanceId) //
-    );
-};
-
-const USER_STORY_CANVAS_COLUMN_ALL_KEY = "__all__";
-
-export const useDiagramUserStoryCanvasColumnButtonSelectedPosition = (
-    nodeId: string | undefined,
-    fallbackValue: CanvasColumn | undefined
-) => {
-    const selectedPositionMapping = useDiagramUserStoryCanvasColumnButtonSelectedPositionMapping();
-    const key = nodeId ?? USER_STORY_CANVAS_COLUMN_ALL_KEY;
-
-    return React.useMemo(
-        () => selectedPositionMapping[key] ?? fallbackValue,
-        [fallbackValue, key, selectedPositionMapping]
     );
 };
 
@@ -1455,80 +1391,6 @@ export const useSetDiagramSetupNaturalLanguageDescription = () => {
             setDiagramSetupNaturalLanguageDescription(value, instanceId); //
         },
         [instanceId]
-    );
-};
-
-export const useSetDiagramUserStoryPendingSelectedDataNodes = (dataNodeId: string | undefined) => {
-    const instanceId = useDiagramInstanceId();
-
-    return React.useCallback(
-        (value: React.SetStateAction<OptionLabel[]>) => {
-            if (!dataNodeId) return;
-
-            setDiagramUserStoryPendingSelectedDataNodesMapping(
-                (prev) => ({
-                    ...prev,
-                    [dataNodeId]: resolveNextStateAction(value, prev[dataNodeId] ?? []),
-                }),
-                instanceId
-            );
-        },
-        [dataNodeId, instanceId]
-    );
-};
-
-export const useSetDiagramUserStoryPendingSelectedDataNodesMapping = () => {
-    const instanceId = useDiagramInstanceId();
-
-    return React.useCallback(
-        (value: Parameters<typeof setDiagramUserStoryPendingSelectedDataNodesMapping>[0]) => {
-            setDiagramUserStoryPendingSelectedDataNodesMapping(value, instanceId); //
-        },
-        [instanceId]
-    );
-};
-
-export const useSetDiagramUserStoryNodesPositionApplyToAll = () => {
-    const instanceId = useDiagramInstanceId();
-
-    return React.useCallback(
-        (value: Parameters<typeof setDiagramUserStoryNodesPositionApplyToAll>[0]) => {
-            setDiagramUserStoryNodesPositionApplyToAll(value, instanceId); //
-        },
-        [instanceId]
-    );
-};
-
-export const useSetDiagramUserStoryCanvasColumnButtonSelectedPositionMapping = () => {
-    const instanceId = useDiagramInstanceId();
-
-    return React.useCallback(
-        (
-            value: Parameters<
-                typeof setDiagramUserStoryCanvasColumnButtonSelectedPositionMapping
-            >[0]
-        ) => {
-            setDiagramUserStoryCanvasColumnButtonSelectedPositionMapping(value, instanceId); //
-        },
-        [instanceId]
-    );
-};
-
-export const useSetDiagramUserStoryCanvasColumnButtonSelectedPosition = (
-    nodeId: string | undefined
-) => {
-    const setSelectedPositionMapping =
-        useSetDiagramUserStoryCanvasColumnButtonSelectedPositionMapping();
-    const key = nodeId ?? USER_STORY_CANVAS_COLUMN_ALL_KEY;
-
-    return React.useCallback(
-        (value: React.SetStateAction<CanvasColumn | undefined>) => {
-            setSelectedPositionMapping((prev) => ({
-                ...prev,
-                [key]: resolveNextStateAction(value, prev[key]),
-            }));
-        },
-        [key, setSelectedPositionMapping]
     );
 };
 
