@@ -8,7 +8,7 @@ import { useDiagramInstanceId } from "#root/contexts/DiagramInstanceContext";
 import { ChatbotState } from "#root/enums/diagram-chatbot";
 import { DialogConfirmStateEnum } from "#root/enums/dialog";
 import { processConfirmClearDiagram } from "#root/features/DiagramContent/DiagramBody/DiagramHeader/dialogs/helper";
-import { useDraggableEdgeActions, useHandleSetProcessedNodesAndEdges } from "#root/hooks/diagram";
+import { useHandleSetProcessedNodesAndEdges } from "#root/hooks/diagram";
 import {
     AbortInputFn,
     ChatBubbleProps,
@@ -86,7 +86,6 @@ import { resetTopologyFileTrackingState } from "#root/utils/diagramChatbot/topol
 export const useDiagramChatbotProps = (chatbotRef: RefObject<ChatbotHandle | null>) => {
     const instanceId = useDiagramInstanceId();
     useReactFlow<DiagramNode, DiagramEdge>();
-    const { resetOverlappingLineSegments } = useDraggableEdgeActions();
     const handleSetProcessedNodesAndEdges = useHandleSetProcessedNodesAndEdges();
 
     const ownProjectIdRef = useRef(getBackendProjectIdFromStore() ?? "");
@@ -161,7 +160,6 @@ export const useDiagramChatbotProps = (chatbotRef: RefObject<ChatbotHandle | nul
                     await processConfirmClearDiagram({
                         instanceId,
                         handleSetProcessedNodesAndEdges,
-                        resetOverlappingLineSegments,
                     });
                 },
                 eyebrowText: "Diagram Workspace",
@@ -170,7 +168,7 @@ export const useDiagramChatbotProps = (chatbotRef: RefObject<ChatbotHandle | nul
                     "Removing the current canvas nodes and edges, updating diagram state, and saving the change.",
             });
         });
-    }, [handleSetProcessedNodesAndEdges, instanceId, resetOverlappingLineSegments]);
+    }, [handleSetProcessedNodesAndEdges, instanceId]);
 
     const performImportDiagramFromFile = React.useCallback(
         async (file: File): Promise<string> =>

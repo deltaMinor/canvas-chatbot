@@ -1,20 +1,13 @@
-import { CanvasType, DiagramEdge, DiagramNode } from "#root/interfaces/diagram";
+import { DiagramEdge, DiagramNode } from "#root/interfaces/diagram";
 import { getProjectDiagramFromStore, getProjectIdFromStore } from "#root/stores/backendStore";
 import { getDraftCanvasIdFromStore } from "#root/stores/projectDiagram/backend";
-import {
-    getDiagramDraftCanvasEdgesFromStore,
-    getDiagramDraftCanvasFromStore,
-    getDiagramDraftCanvasNodesFromStore,
-    getDiagramDraftCanvasTypeFromStore,
-} from "#root/stores/projectDiagram/canvas";
 import { updateProjectDiagram } from "#root/stores/projectDiagramFeaturePersistenceStore";
-import { processDeleteAllNodesAndEdges } from "#root/utils/diagram";
 import { clearProjectCanvasHistory } from "#root/utils/diagram/diagramCanvasHistoryUtil";
+import { getSelectedCanvasFromId } from "#root/utils/diagram/diagramCanvasUtil";
 
 export const processConfirmClearDiagram = async ({
     instanceId,
     handleSetProcessedNodesAndEdges,
-    resetOverlappingLineSegments,
 }: {
     instanceId: string;
     handleSetProcessedNodesAndEdges: (p: {
@@ -22,48 +15,26 @@ export const processConfirmClearDiagram = async ({
         canvasEdges: DiagramEdge[];
         funcRef?: string;
     }) => Promise<void>;
-    resetOverlappingLineSegments: (edges: DiagramEdge[], new_edge: DiagramEdge) => void;
 }) => {
     const projectDiagram = getProjectDiagramFromStore();
     if (!projectDiagram) return;
-    const project_id = getProjectIdFromStore();
+
     const draftCanvasId = getDraftCanvasIdFromStore(instanceId) ?? "";
-    const selectedCanvas = getDiagramDraftCanvasFromStore(instanceId);
-    const selectedCanvasType = getDiagramDraftCanvasTypeFromStore(instanceId);
-    const context__nodes = getDiagramDraftCanvasNodesFromStore(instanceId);
-    const context__edges = getDiagramDraftCanvasEdgesFromStore(instanceId);
-
+    const selectedCanvas = getSelectedCanvasFromId({ projectDiagram, draftCanvasId });
     if (!selectedCanvas) return;
 
-    const canvasToClear =
-        projectDiagram.canvas.find((canvas) => canvas.canvas_id === draftCanvasId) ??
-        selectedCanvas;
+    const updatedCanvas = projectDiagram.canvas.map((canvas) =>
+        canvas.canvas_id === selectedCanvas.canvas_id ? { ...canvas, nodes: [], edges: [] } : canvas
+    );
 
-    let canvasNodeIdList: string[] = [];
-
-    //  only architecture canvas nodes are deletable
-    if (selectedCanvasType === CanvasType.architecture) {
-        canvasNodeIdList = canvasToClear.nodes.map((n) => n.id);
-    }
-
-    const canvasEdgeIdList = canvasToClear.edges.map((e) => e.id);
-
-    if (!selectedCanvas) return;
-
-    await processDeleteAllNodesAndEdges({
-        projectDiagram,
-        updateProjectDiagram: (params) => updateProjectDiagram(params),
-        selectedCanvasId: draftCanvasId,
-        handleSetProcessedNodesAndEdges,
-        context__nodes,
-        context__edges,
-        selectedCanvas,
-        selectedCanvasType,
-        resetOverlappingLineSegments,
-        selectedNodeIdList: canvasNodeIdList,
-        selectedEdgeIdList: canvasEdgeIdList,
+    await updateProjectDiagram({ canvas: updatedCanvas });
+    await handleSetProcessedNodesAndEdges({
+        canvasNodes: [],
+        canvasEdges: [],
+        funcRef: "processConfirmClearDiagram",
     });
 
+    const project_id = getProjectIdFromStore();
     if (project_id) {
         clearProjectCanvasHistory({
             instanceId,

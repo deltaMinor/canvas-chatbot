@@ -2,38 +2,38 @@ import React from "react";
 
 import DialogConfirm from "#root/components/DialogConfirm";
 import { useDiagramInstanceId } from "#root/contexts/DiagramInstanceContext";
-import { useDraggableEdgeActions, useHandleSetProcessedNodesAndEdges } from "#root/hooks/diagram";
+import { useHandleSetProcessedNodesAndEdges } from "#root/hooks/diagram";
 import { useDialogState } from "#root/hooks/dialogHooks";
 import { DialogConfirmStateEnum } from "#root/interfaces/dialog";
 import { ConfirmDialogProps } from "#root/interfaces/dialogConfirm";
+import CallApiWithSnackbar from "#root/services/CallApiWithSnackbar";
 import { handleCloseDialogAsync } from "#root/stores/dialogStore";
 import { runWithHeavyExecutionGuard } from "#root/utils/animationFrameUtil";
 
 import { processConfirmClearDiagram } from "./helper";
 
-/**
- * Confirm dialogs owned by the diagram header. Currently this only wires up
- * the "Clear Diagram" confirmation opened by the Header's ClearButton - the
- * `confirmSetDiagramComplete` / `confirmUnsetDiagramComplete` flows from the
- * full application are not present in this demo, since there is no submit /
- * lock canvas button here.
- */
 const DiagramHeaderDialogConfirmComponent = () => {
     const instanceId = useDiagramInstanceId();
     const dialogConfirmState = useDialogState();
-    const { resetOverlappingLineSegments } = useDraggableEdgeActions();
     const handleSetProcessedNodesAndEdges = useHandleSetProcessedNodesAndEdges();
+
+    const handleClearDiagram = React.useCallback(async () => {
+        await CallApiWithSnackbar({
+            async_func: async () => {
+                await processConfirmClearDiagram({
+                    instanceId,
+                    handleSetProcessedNodesAndEdges,
+                });
+            },
+            message: "Clearing diagram ...",
+            messageOnError: "Failed to clear diagram.",
+        });
+    }, [handleSetProcessedNodesAndEdges, instanceId]);
 
     const handleClickClearDiagram = React.useCallback(async () => {
         await handleCloseDialogAsync(DialogConfirmStateEnum.confirmClearCanvas);
-        await runWithHeavyExecutionGuard(async () => {
-            await processConfirmClearDiagram({
-                instanceId,
-                handleSetProcessedNodesAndEdges,
-                resetOverlappingLineSegments,
-            });
-        });
-    }, [handleSetProcessedNodesAndEdges, instanceId, resetOverlappingLineSegments]);
+        await runWithHeavyExecutionGuard(handleClearDiagram);
+    }, [handleClearDiagram]);
 
     const handleCloseDiagramHeaderDialogConfirm = React.useCallback(async () => {
         await handleCloseDialogAsync(DialogConfirmStateEnum.confirmClearCanvas);
@@ -42,7 +42,8 @@ const DiagramHeaderDialogConfirmComponent = () => {
     const dialogConfirmProps = [
         {
             stateKey: DialogConfirmStateEnum.confirmClearCanvas,
-            message: "Are you sure you want to delete all architecture nodes and edges in this canvas?",
+            message:
+                "Are you sure you want to delete all architecture nodes and edges in this canvas?",
             onClick: handleClickClearDiagram,
             title: "Clear Diagram",
             data: [],
