@@ -46,7 +46,6 @@ export enum MitigationTableFieldsEnum {
     header = "header",
     isArchived = "isArchived",
     isCompleted = "isCompleted",
-    kbAssociations = "kbAssociations",
     keyRisk = "keyRisk",
     measure = "measure",
     mitigationId = "mitigationId",
@@ -65,10 +64,6 @@ export enum MitigationTableFieldsEnum {
     scanHp = "scanHp",
     stride = "stride",
     //
-    mappingIM8 = "mappingIM8",
-    mappingCCoP = "mappingCCoP",
-    mappingNistCSF = "mappingNistCSF",
-    mappingISOIEC27001 = "mappingISOIEC27001",
     riskScenarioList = "riskScenarioList",
     //
     isAccepted = "isAccepted",
@@ -102,10 +97,6 @@ export enum MitigationTableFieldsEnum {
 export const MitigationTableFieldHeader = {
     // Column Headers
     [MitigationTableFieldsEnum.actions]: "Actions",
-    [MitigationTableFieldsEnum.mappingIM8]: "IM8 Mapping",
-    [MitigationTableFieldsEnum.mappingCCoP]: "Codes of Practice Mapping",
-    [MitigationTableFieldsEnum.mappingNistCSF]: "NIST CSF Mapping",
-    [MitigationTableFieldsEnum.mappingISOIEC27001]: "ISO/IEC 27001 Mapping",
     // Data
     [MitigationTableFieldsEnum.assignees]: "Assignees",
     [MitigationTableFieldsEnum.category]: "Domain",
@@ -113,7 +104,6 @@ export const MitigationTableFieldHeader = {
     [MitigationTableFieldsEnum.header]: "Header",
     [MitigationTableFieldsEnum.isArchived]: "Archived?",
     [MitigationTableFieldsEnum.isCompleted]: "Completed?",
-    [MitigationTableFieldsEnum.kbAssociations]: "KB Assoc.",
     [MitigationTableFieldsEnum.measure]: "Measure",
     [MitigationTableFieldsEnum.mitigationId]: "Measure ID",
     [MitigationTableFieldsEnum.ref]: "Ref",

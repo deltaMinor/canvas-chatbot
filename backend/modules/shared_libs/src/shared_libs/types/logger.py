@@ -51,17 +51,12 @@ class AppLoggerName(Enum):
     domain_feedback_form = f"{app_logger}.domain.feedback_form"
     domain_integrations = f"{app_logger}.domain.integration"
     domain_kb_attack_flow = f"{app_logger}.domain.kb_attack_flow"
-    domain_kb_mitre = f"{app_logger}.domain.kb_mitre"
-    domain_kb_mitre_parsed = f"{app_logger}.domain.kb_mitre_parsed"
     domain_kb_generation_rule = f"{app_logger}.domain.kb_generation_rule"
     domain_kb_generation_rules_library = (
         f"{app_logger}.domain.kb_generation_rules_library"
     )
-    domain_kb_im8 = f"{app_logger}.domain.kb_im8"
-    domain_kb_csa_ccop = f"{app_logger}.domain.kb_csa_ccop"
-    domain_kb_nist_csf = f"{app_logger}.domain.kb_nist_csf"
-    domain_kb_isoiec_27001 = f"{app_logger}.domain.kb_isoiec_27001"
     domain_kb_llm_prompt = f"{app_logger}.domain.kb_llm_prompt"
+    domain_kb_owasp_register = f"{app_logger}.domain.kb_owasp_register"
     domain_kb_priority_rules = f"{app_logger}.domain.kb_priority_rules"
     domain_kb_question_to_model = f"{app_logger}.domain.kb_question_to_model"
     domain_kb_assessment_config = f"{app_logger}.domain.kb_assessment_config"

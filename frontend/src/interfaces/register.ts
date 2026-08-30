@@ -2,12 +2,9 @@ import { ColorMapping, DatabaseProps, OptionLabel } from ".";
 import { AlertColor, SliderProps } from "@mui/material";
 
 import { AppLinearCategoryMapping } from "#root/components/AppLinearCategoryBar";
-import { AsyncValue } from "#root/utils/policy.utils";
 
 import { ProjectDiagramFile, ProjectProps } from "./common";
-import { CompliancePolicyType } from "./compliance_policies";
 import { DialogConfirmStateEnum, DialogStateEnum, LogDialogStateEnum } from "./dialog";
-import { IM8Policy } from "./im8";
 import { DisplayFrameworksSettings } from "./project";
 
 //////////////////////////////////////////////////
@@ -20,7 +17,6 @@ export enum MitigationMeasureKey {
     header = "header",
     isArchived = "isArchived",
     isCompleted = "isCompleted",
-    kbAssociations = "kbAssociations",
     location = "location",
     mapping = "mapping",
     measure = "measure",
@@ -51,7 +47,6 @@ export interface MitigationMeasure {
     [MitigationMeasureKey.header]: string;
     [MitigationMeasureKey.isArchived]: boolean;
     [MitigationMeasureKey.isCompleted]: boolean;
-    [MitigationMeasureKey.kbAssociations]: MitigationMappingKB[];
     [MitigationMeasureKey.measure]: string;
     [MitigationMeasureKey.mitigationId]: string;
     [MitigationMeasureKey.source]: string;
@@ -132,7 +127,6 @@ export interface BaseRegisterFields {
     keyRisk: string;
     knowledgebaseSource: string;
     mappingToATK: unknown[];
-    mappingToIM8: RegisterFieldMappingToIM8[];
     recommendedMitigationMeasures: string[];
     recommendedMitigationMeasuresHidden: string[];
     recommendedMitigationMeasuresParsed: MitigationMeasure[];
@@ -197,18 +191,6 @@ export interface RegisterCore<V extends BaseRegisterFields> {
 
 export interface MasterRegister<V extends BaseRegisterFields = MasterRegisterFields>
     extends DatabaseProps, RegisterCore<V> {}
-
-export interface MitigationMappingKB {
-    source: MitigationMappingKBSource;
-    id: string[];
-}
-
-export enum MitigationMappingKBSource {
-    kbIM8 = "IM8",
-    kbCsaCCoP = "CSA Codes Of Practice",
-    kbNistCSF = "NIST CSF",
-    kbISOIEC27001 = "ISO/IEC 27001",
-}
 
 export interface AttackNarrativeSteps {
     descriptions: string[];
@@ -395,12 +377,6 @@ export interface RegisterFieldLocationParentNode {
     source: string;
 }
 
-export interface RegisterFieldMappingToIM8 {
-    policyRef: string;
-    section: string;
-    stdRef: string;
-}
-
 interface updateDescription {
     updatedFields: ProjectRegister;
     removedFields: unknown[];
@@ -475,14 +451,6 @@ export interface ScenarioField<V extends BaseRegisterFields> {
         disableAddRecommendedMeasure?: boolean;
         disableEditRecommendedMeasure?: boolean;
         disableDuplicateRecommendedMeasure?: boolean;
-        getPolicyMappingFromKbAssoc?: (
-            kbAssociations: MitigationMappingKB[]
-        ) => Promise<Record<string, CompliancePolicyType[]>>;
-        getPolicyIdListFromKbAssoc?: (kbAssociations: MitigationMappingKB[]) => string[];
-        getPolicy?: (key: string) => Promise<CompliancePolicyType[]>;
-        selectedPolicyList?: AsyncValue<CompliancePolicyType[]>;
-        policyList?: AsyncValue<CompliancePolicyType[]>;
-        isPolicyReadAuthorizedAndSelected?: (key: string) => boolean;
         [key: string]: unknown;
     };
     fields?: ScenarioField<V>[];
@@ -560,7 +528,6 @@ export enum ScenarioFieldType {
     displayChipsGrouped = "displayChipsGrouped",
     displayCVEList = "displayCVEList",
     displayExplanation = "displayExplanation",
-    displayIM8Mapping = "displayIM8Mapping",
     displayFrameworks = "displayFrameworks",
     displayRiskChip = "displayRiskChip",
     displayText = "displayText",
@@ -611,7 +578,6 @@ export enum BaseRegisterFieldKey {
     keyRisk = "keyRisk",
     knowledgebaseSource = "knowledgebaseSource",
     mappingToATK = "mappingToATK",
-    mappingToIM8 = "mappingToIM8",
     recommendedMitigationMeasures = "recommendedMitigationMeasures",
     recommendedMitigationMeasuresParsed = "recommendedMitigationMeasuresParsed",
     riskScenario = "riskScenario",
@@ -925,7 +891,6 @@ export type FrameworkCategoryType = keyof typeof FrameworkCategoryEnum;
 //////////////////////////////////////////////////
 export enum ScenarioSourceKey {
     attack = "attack",
-    mitre = "mitre",
     attack_flow = "attack_flow",
     master_register = "master_register",
     risk_control_library = "risk_control_library",
@@ -1032,17 +997,6 @@ export const CheckboxFilterKey = {
     // scenario status
     ...ScenarioStatusKey,
 };
-
-export interface GetScenarioFieldGroups {
-    disableAddActualMeasure?: boolean;
-    disableAddRecommendedMeasure?: boolean;
-    disableCompleteActualMeasure?: boolean;
-    disableDuplicateActualMeasure?: boolean;
-    disableDuplicateRecommendedMeasure?: boolean;
-    disableEditActualMeasure?: boolean;
-    disableEditRecommendedMeasure?: boolean;
-    getMulti: (id_list: string[]) => Promise<IM8Policy[]>;
-}
 
 export enum ScenarioExportFormatKey {
     json = "json",

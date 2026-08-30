@@ -9,7 +9,6 @@ from .base_models.app_tnc import AppTNCBaseModel
 from .base_models.attack_graph_rule import KbAttackGraphRuleBaseModel
 from .base_models.cacti import ProjectCactiBaseModel
 from .base_models.credit_transaction_log import CreditTransactionLogBaseModel
-from .base_models.csa_ccop import KbCsaCCoPBaseModel
 from .base_models.database import DatabaseModel
 from .base_models.diagram import (
     MasterADTemplateBaseModel,
@@ -17,13 +16,9 @@ from .base_models.diagram import (
 )
 from .base_models.diagram_file import ProjectDiagramFilesBaseModel
 from .base_models.feedback import FeedbackFormBaseModel
-from .base_models.im8 import KbIM8BaseModel
 from .base_models.integration import IntegrationBaseModel
-from .base_models.isoiec_27001 import KbISOIEC27001BaseModel
 from .base_models.llm import KbLLMPromptBaseModel
 from .base_models.mitigation import MasterMitigationBaseModel
-from .base_models.mitre import KbMitreParsedBaseModel
-from .base_models.nist_csf import KbNistCSFBaseModel
 from .base_models.project import ProjectBaseModel
 from .base_models.project_assessment import (
     ProjectAssessmentBaseModel,
@@ -188,41 +183,6 @@ class ProjectXMLModel(
     ProjectXMLBaseModel,
 ):
     project_id: str
-
-
-class KbIM8Model(
-    DatabaseModel,
-    KbIM8BaseModel,
-):
-    pass
-
-
-class KbNistCSFModel(
-    DatabaseModel,
-    KbNistCSFBaseModel,
-):
-    pass
-
-
-class KbISOIEC27001Model(
-    DatabaseModel,
-    KbISOIEC27001BaseModel,
-):
-    pass
-
-
-class KbCsaCCoPModel(
-    DatabaseModel,
-    KbCsaCCoPBaseModel,
-):
-    pass
-
-
-class KbMtireParsedModel(
-    DatabaseModel,
-    KbMitreParsedBaseModel,
-):
-    pass
 
 
 class KbLLMPromptModel(

@@ -4,24 +4,7 @@
 export enum ProgressChartTypeKey {
     total_mitigation = "total_mitigation",
     domain_mitigation = "domain_mitigation",
-    im8_compliance = "im8_compliance",
 }
-
-export enum CompliancePolicyEnum {
-    im8 = "im8",
-    ccop = "ccop",
-    csf = "csf",
-    iso = "iso",
-}
-
-export const CompliancePolicyKeys = Object.keys(CompliancePolicyEnum);
-
-export const CompliancePolicyKeyToLabel = {
-    [CompliancePolicyEnum.im8]: "SNDGG IM8 Compliance",
-    [CompliancePolicyEnum.ccop]: "CSA CCoP Compliance",
-    [CompliancePolicyEnum.csf]: "Nist CSF Compliance",
-    [CompliancePolicyEnum.iso]: "ISO/IEC 27001 Compliance",
-};
 
 export interface ProgressChartStats {
     currentCount: number | Record<string, number>;
@@ -85,21 +68,5 @@ export interface StatisticsChartProps {
 
 export interface ProjectStatistics {
     project_id: string;
-    compliance: ProjectStatisticsCompliance;
     riskLevelChanges: TrendCardStats;
-}
-
-export interface ProjectStatisticsCompliance {
-    [CompliancePolicyEnum.im8]: ComplianceCount;
-    [CompliancePolicyEnum.ccop]: ComplianceCount;
-    [CompliancePolicyEnum.csf]: ComplianceCount;
-    [CompliancePolicyEnum.iso]: ComplianceCount;
-}
-
-export interface ComplianceCount {
-    totalCount: number;
-    inScopeCompliantCount: number;
-    outScopeCompliantCount: number;
-    inScopeTotalCount: number;
-    outScopeTotalCount: number;
 }

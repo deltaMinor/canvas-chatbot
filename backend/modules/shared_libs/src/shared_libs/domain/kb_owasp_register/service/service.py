@@ -21,7 +21,7 @@ default_code_message_mapping = {
     409: "KB owasp register conflict.",
 }
 
-logger = logging.getLogger(AppLoggerName.domain_kb_mitre.value)
+logger = logging.getLogger(AppLoggerName.domain_kb_owasp_register.value)
 
 
 class KbOwaspRegisterService(

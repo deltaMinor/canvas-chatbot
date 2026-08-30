@@ -22,7 +22,6 @@ import {
     WarningSortCriteriaKey,
 } from "#root/interfaces/diagram";
 import type { DrawerState } from "#root/interfaces/diagramContent";
-import { NodeAttackPathMapping } from "#root/interfaces/mitre";
 import type {
     DiagramCapabilitiesState,
     DiagramInstanceState,
@@ -34,7 +33,6 @@ import type {
 import type {
     DiagramInstancePayload,
     InitializeDiagramInstancePayload,
-    SetDiagramAttackPathMappingPayload,
     SetDiagramAttackStepCountMappingPayload,
     SetDiagramAttackStepPayload,
     SetDiagramBooleanPayload,
@@ -158,18 +156,12 @@ export const createInitialDiagramInstanceState = (): DiagramInstanceState => ({
     isAttributeDrawerOpen: false,
     selectedAttackStep: {} as AttackStep,
     nodeAttackStepCountMapping: {} as NodeAttackStepCountMapping,
-    nodeAttackPathMapping: {} as NodeAttackPathMapping,
     viewAllPaths: false,
     pendingThreatOverviewScenarioScope: null,
     threatOverviewScenarioScope: "top5",
     visibleThreatScenarioCanvasIds: [],
     hideAllPaths: false,
-    startAttackPath: false,
     threatScenarioExpandedFrameworkKeys: [],
-    attackPathSelectionFieldContentHeights: {
-        collapsed: 0,
-        expanded: 0,
-    },
     joyrideViewType: CanvasType.architecture,
     capabilities: {
         toolbar: {
@@ -778,15 +770,6 @@ const projectDiagramFeatureSliceInternal = createSlice({
             const { instanceId, value } = getDiagramPayload(action.payload);
             ensureDiagramInstance(state, instanceId).nodeAttackStepCountMapping = value;
         },
-        setNodeAttackPathMapping(
-            state, //
-            action: PayloadAction<
-                NodeAttackPathMapping | DiagramInstancePayload<NodeAttackPathMapping>
-            >
-        ) {
-            const { instanceId, value } = getDiagramPayload(action.payload);
-            ensureDiagramInstance(state, instanceId).nodeAttackPathMapping = value;
-        },
         setViewAllPaths(
             state, //
             action: PayloadAction<boolean | DiagramInstancePayload<boolean>>
@@ -824,29 +807,12 @@ const projectDiagramFeatureSliceInternal = createSlice({
             const { instanceId, value } = getDiagramPayload(action.payload);
             ensureDiagramInstance(state, instanceId).hideAllPaths = value;
         },
-        setStartAttackPath(
-            state, //
-            action: PayloadAction<boolean | DiagramInstancePayload<boolean>>
-        ) {
-            const { instanceId, value } = getDiagramPayload(action.payload);
-            ensureDiagramInstance(state, instanceId).startAttackPath = value;
-        },
         setThreatScenarioExpandedFrameworkKeys(
             state,
             action: PayloadAction<string[] | DiagramInstancePayload<string[]>>
         ) {
             const { instanceId, value } = getDiagramPayload(action.payload);
             ensureDiagramInstance(state, instanceId).threatScenarioExpandedFrameworkKeys = value;
-        },
-        setAttackPathSelectionFieldContentHeights(
-            state,
-            action: PayloadAction<
-                | { collapsed: number; expanded: number }
-                | DiagramInstancePayload<{ collapsed: number; expanded: number }>
-            >
-        ) {
-            const { instanceId, value } = getDiagramPayload(action.payload);
-            ensureDiagramInstance(state, instanceId).attackPathSelectionFieldContentHeights = value;
         },
     },
 });
@@ -1123,10 +1089,6 @@ const projectDiagramFeatureSlice: {
             SetDiagramAttackStepCountMappingPayload,
             "diagram/setNodeAttackStepCountMapping"
         >;
-        setNodeAttackPathMapping: ActionCreatorWithPayload<
-            SetDiagramAttackPathMappingPayload,
-            "diagram/setNodeAttackPathMapping"
-        >;
         setViewAllPaths: ActionCreatorWithPayload<
             SetDiagramBooleanPayload,
             "diagram/setViewAllPaths"
@@ -1147,18 +1109,9 @@ const projectDiagramFeatureSlice: {
             SetDiagramBooleanPayload,
             "diagram/setHideAllPaths"
         >;
-        setStartAttackPath: ActionCreatorWithPayload<
-            SetDiagramBooleanPayload,
-            "diagram/setStartAttackPath"
-        >;
         setThreatScenarioExpandedFrameworkKeys: ActionCreatorWithPayload<
             SetDiagramStringArrayPayload,
             "diagram/setThreatScenarioExpandedFrameworkKeys"
-        >;
-        setAttackPathSelectionFieldContentHeights: ActionCreatorWithPayload<
-            | { collapsed: number; expanded: number }
-            | DiagramInstancePayload<{ collapsed: number; expanded: number }>,
-            "diagram/setAttackPathSelectionFieldContentHeights"
         >;
         setCapabilities: ActionCreatorWithPayload<
             DiagramInstancePayload<DiagramCapabilitiesState>,

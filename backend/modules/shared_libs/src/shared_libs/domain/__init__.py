@@ -7,16 +7,10 @@ from .integration import IntegrationService
 from .kb_assessment_config import KbAssessmentConfigService
 from .kb_attack_flow import KbAttackFlowService
 from .kb_attack_graph_rule import KbAttackGraphRuleService
-from .kb_csa_ccop import KbCsaCCoPService
 from .kb_generation_rule import KbGenerationRuleService
 from .kb_generation_rules_library import KbGenerationRulesLibraryService
 from .kb_gt_llm_register import KbGTLLMRegisterService
-from .kb_im8 import KbIM8Service
-from .kb_isoiec_27001 import KbISOIEC27001Service
 from .kb_llm_prompt import KbLLMPromptService
-from .kb_mitre import KbMitreService
-from .kb_mitre_parsed import KbMitreParsedService
-from .kb_nist_csf import KbNistCSFService
 from .kb_owasp_register import KbOwaspRegisterService
 from .kb_priority_rules import KbPriorityRulesService
 from .kb_question_to_model import KbQuestionToModelService
@@ -54,16 +48,10 @@ __all__ = [
     "IntegrationService",
     "KbAttackFlowService",
     "KbAttackGraphRuleService",
-    "KbCsaCCoPService",
     "KbGTLLMRegisterService",
     "KbGenerationRuleService",
     "KbGenerationRulesLibraryService",
-    "KbIM8Service",
-    "KbISOIEC27001Service",
     "KbLLMPromptService",
-    "KbMitreParsedService",
-    "KbMitreService",
-    "KbNistCSFService",
     "KbOwaspRegisterService",
     "KbPriorityRulesService",
     "KbQuestionToModelService",

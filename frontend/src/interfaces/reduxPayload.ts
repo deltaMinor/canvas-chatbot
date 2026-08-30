@@ -18,7 +18,6 @@ import type {
 } from "#root/interfaces/diagram";
 import type { DiagramElementAttributes } from "#root/interfaces/diagramAttributes";
 import type { DrawerState } from "#root/interfaces/diagramContent";
-import type { NodeAttackPathMapping } from "#root/interfaces/mitre";
 import type {
     AssessmentSetupFeatureInstanceState,
     DiagramEditToolbarState,
@@ -180,9 +179,6 @@ export type SetDiagramAttackStepPayload = AttackStep | DiagramInstancePayload<At
 export type SetDiagramAttackStepCountMappingPayload =
     | NodeAttackStepCountMapping
     | DiagramInstancePayload<NodeAttackStepCountMapping>;
-export type SetDiagramAttackPathMappingPayload =
-    | NodeAttackPathMapping
-    | DiagramInstancePayload<NodeAttackPathMapping>;
 export type SetDiagramWarningMessageMappingPayload =
     | WarningMessageMapping
     | DiagramInstancePayload<WarningMessageMapping>;

@@ -96,11 +96,9 @@ export interface StatRiskLevel {
 
 export enum GenerationSettingsEnum {
     allowMasterRegisterGeneration = "allowMasterRegisterGeneration",
-    allowKbMitreGeneration = "allowKbMitreGeneration",
 }
 export interface GenerationSettings {
     [GenerationSettingsEnum.allowMasterRegisterGeneration]: boolean;
-    [GenerationSettingsEnum.allowKbMitreGeneration]: boolean;
 }
 export interface DisplayFrameworksSettings {
     [FrameworkCategoryEnum.owasp]: boolean;

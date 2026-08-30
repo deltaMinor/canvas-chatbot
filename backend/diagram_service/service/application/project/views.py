@@ -43,7 +43,6 @@ def _default_project(project_id: str) -> dict:
         "project_settings": {
             "generation": {
                 "allowMasterRegisterGeneration": False,
-                "allowKbMitreGeneration": False,
             },
         },
     }

@@ -1,51 +1,6 @@
 from enum import Enum
 
 
-class MitreDocType(Enum):
-    mitre_docs = "mitre_docs"
-
-
-class MitreDomain(Enum):
-    ics = "ics"
-    mobile = "mobile"
-    enterprise = "enterprise"
-    atlas = "atlas"
-    embed = "embed"
-    fight = "fight"
-
-
-class MitreType(Enum):
-    analytic = "analytic"
-    association = "association"
-    campaign = "campaign"
-    dataComponent = "dataComponent"
-    dataSource = "dataSource"
-    detectionStrategy = "detectionStrategy"
-    group = "group"
-    mitigation = "mitigation"
-    mitigationUse = "mitigationUse"
-    property = "property"
-    software = "software"
-    tactic = "tactic"
-    technique = "technique"
-
-
-class MitreTypeLabel(Enum):
-    analytic = "Analytic"
-    association = "Association"
-    campaign = "Campaign"
-    dataComponent = "Data Component"
-    dataSource = "Data Source"
-    detectionStrategy = "Detection Strategy"
-    group = "Group"
-    mitigation = "Mitigation"
-    mitigationUse = "Mitigation Use"
-    property = "Property"
-    software = "Software"
-    tactic = "Tactic"
-    technique = "Technique"
-
-
 class CanvasType(Enum):
     architecture = "architecture"
 
@@ -76,20 +31,6 @@ class AttackFlowEngineVersion(Enum):
     v2 = "Engine V2"
 
 
-class MitigationMappingKbSource(Enum):
-    kbIM8 = "IM8"
-    kbCsaCCoP = "CSA Codes Of Practice"
-    kbNistCSF = "NIST CSF"
-    kbISOIEC27001 = "ISO/IEC 27001"
-
-
-class CompliancePolicyEnum(Enum):
-    im8 = "im8"
-    ccop = "ccop"
-    csf = "csf"
-    iso = "iso"
-
-
 class Collection(Enum):
     ##################################################
     ## Risk Register
@@ -99,13 +40,7 @@ class Collection(Enum):
     kb_generation_rule = "kb_generation_rule"
     kb_generation_rules_library = "kb_generation_rules_library"
     kb_gt_llm_register = "kb_gt_llm_register"
-    kb_csa_ccop = "kb_csa_ccop"
-    kb_im8 = "kb_im8"
-    kb_nist_csf = "kb_nist_csf"
-    kb_isoiec_27001 = "kb_isoiec_27001"
     kb_llm_prompt = "kb_llm_prompt"
-    kb_mitre = "kb_mitre"
-    kb_mitre_parsed = "kb_mitre_parsed"
     kb_owasp_register = "kb_owasp_register"
     kb_priority_rules = "kb_priority_rules"
     kb_question_to_model = "kb_question_to_model"
@@ -127,13 +62,7 @@ class Collection(Enum):
     kb_generation_rule_log = "kb_generation_rule_log"
     kb_generation_rules_library_log = "kb_generation_rules_library_log"
     kb_gt_llm_register_log = "kb_gt_llm_register_log"
-    kb_im8_log = "kb_im8_log"
-    kb_csa_ccop_log = "kb_csa_ccop_log"
-    kb_nist_csf_log = "kb_nist_csf_log"
-    kb_isoiec_27001_log = "kb_isoiec_27001_log"
     kb_llm_log = "kb_llm_log"
-    kb_mitre_log = "kb_mitre_log"
-    kb_mitre_parsed_log = "kb_mitre_parsed_log"
     kb_owasp_register_log = "kb_owasp_register_log"
     kb_priority_rules_log = "kb_priority_rules_log"
     kb_question_to_model_log = "kb_question_to_model_log"

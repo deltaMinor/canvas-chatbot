@@ -477,14 +477,6 @@ export const selectNodeAttackStepCountMapping = (
     return diagramInstanceState.nodeAttackStepCountMapping;
 };
 
-export const selectNodeAttackPathMapping = (
-    state: RootState, //
-    instanceId?: string
-) => {
-    const diagramInstanceState = selectDiagramInstanceState(state, instanceId);
-    return diagramInstanceState.nodeAttackPathMapping;
-};
-
 export const selectViewAllPaths = (
     state: RootState, //
     instanceId?: string
@@ -525,28 +517,12 @@ export const selectHideAllPaths = (
     return diagramInstanceState.hideAllPaths;
 };
 
-export const selectStartAttackPath = (
-    state: RootState, //
-    instanceId?: string
-) => {
-    const diagramInstanceState = selectDiagramInstanceState(state, instanceId);
-    return diagramInstanceState.startAttackPath;
-};
-
 export const selectThreatScenarioExpandedFrameworkKeys = (
     state: RootState,
     instanceId?: string
 ) => {
     const diagramInstanceState = selectDiagramInstanceState(state, instanceId);
     return diagramInstanceState.threatScenarioExpandedFrameworkKeys;
-};
-
-export const selectAttackPathSelectionFieldContentHeights = (
-    state: RootState,
-    instanceId?: string
-) => {
-    const diagramInstanceState = selectDiagramInstanceState(state, instanceId);
-    return diagramInstanceState.attackPathSelectionFieldContentHeights;
 };
 
 export const selectJoyrideViewType = (

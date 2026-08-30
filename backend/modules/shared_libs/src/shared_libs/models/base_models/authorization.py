@@ -130,7 +130,6 @@ class MasterRegisterRiskScenarioFieldsModel(FieldsBaseModel):
     defaultRiskLevel: CRUDModel
     keyRisk: CRUDModel
     mappingToATK: CRUDModel
-    mappingToIM8: CRUDModel
     recommendedMitigationMeasures: CRUDModel
     recommendedMitigationMeasuresHidden: CRUDModel
     recommendedMitigationMeasuresParsed: CRUDModel
@@ -300,13 +299,7 @@ class PermissionModel(BaseModel):
     integration: IntegrationPermissionModel
     jira_issue: CRUDModel
     jira_options: CRUDModel
-    kb_csa_ccop: CRUDModel
     kb_gt_llm_register: CRUDModel
-    kb_im8: CRUDModel
-    kb_mitre_parsed: CRUDModel
-    kb_mitre: CRUDModel
-    kb_nist_csf: CRUDModel
-    kb_isoiec_27001: CRUDModel
     kb_owasp_register: CRUDModel
     kb_tosca: CRUDModel
     master_cq_template: CRUDModel

@@ -92,15 +92,6 @@ export const useUsersLoaded = createBackendStateHook(
 export const useUsersLoadError = createBackendStateHook(
     "usersLoadError" //
 );
-export const useAttackFlowsGroupings = createBackendStateHook(
-    "attackFlowsGroupings" //
-);
-export const useAttackFlowsGroupingsLoaded = createBackendStateHook(
-    "attackFlowsGroupingsLoaded" //
-);
-export const useAttackFlowsGroupingsLoadError = createBackendStateHook(
-    "attackFlowsGroupingsLoadError" //
-);
 export const useAppTNC = createBackendStateHook(
     "appTNC" //
 );
@@ -172,51 +163,6 @@ export const usePreAuthLoaded = createBackendStateHook(
 );
 export const usePreAuthLoadError = createBackendStateHook(
     "preAuthLoadError" //
-);
-export const useKbCsaCCoP = createBackendStateHook(
-    "kbCsaCCoP" //
-);
-export const useKbCsaCCoPLoaded = createBackendStateHook(
-    "kbCsaCCoPLoaded" //
-);
-export const useKbCsaCCoPLoadError = createBackendStateHook(
-    "kbCsaCCoPLoadError" //
-);
-export const useKbIM8 = createBackendStateHook(
-    "kbIM8" //
-);
-export const useKbIM8Loaded = createBackendStateHook(
-    "kbIM8Loaded" //
-);
-export const useKbIM8LoadError = createBackendStateHook(
-    "kbIM8LoadError" //
-);
-export const useKbMitre = createBackendStateHook(
-    "kbMitre" //
-);
-export const useKbMitreLoaded = createBackendStateHook(
-    "kbMitreLoaded" //
-);
-export const useKbMitreLoadError = createBackendStateHook(
-    "kbMitreLoadError" //
-);
-export const useKbNistCSF = createBackendStateHook(
-    "kbNistCSF" //
-);
-export const useKbNistCSFLoaded = createBackendStateHook(
-    "kbNistCSFLoaded" //
-);
-export const useKbNistCSFLoadError = createBackendStateHook(
-    "kbNistCSFLoadError" //
-);
-export const useKbISOIEC27001 = createBackendStateHook(
-    "kbISOIEC27001" //
-);
-export const useKbISOIEC27001Loaded = createBackendStateHook(
-    "kbISOIEC27001Loaded" //
-);
-export const useKbISOIEC27001LoadError = createBackendStateHook(
-    "kbISOIEC27001LoadError" //
 );
 export const useKbOwaspRegister = createBackendStateHook(
     "kbOwaspRegister" //

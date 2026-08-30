@@ -24,7 +24,6 @@ class DisplayFrameworksSettings(BaseModel):
 
 class GenerationSettings(BaseModel):
     allowMasterRegisterGeneration: bool | None = Field(default=False)
-    allowKbMitreGeneration: bool | None = Field(default=True)
 
 
 class ProjectSettings(BaseModel):

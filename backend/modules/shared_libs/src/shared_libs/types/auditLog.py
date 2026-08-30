@@ -5,12 +5,9 @@ class AuditLogTargetKey(Enum):
     ##################################################
     ## Risk Register
     ##################################################
-    kb_mitre = "kb_mitre"
-    kb_mitre_parsed = "kb_mitre_parsed"
     kb_attack_flow = "kb_attack_flow"
     kb_generation_rule = "kb_generation_rule"
     kb_generation_rules_library = "kb_generation_rules_library"
-    kb_im8 = "kb_im8"
     kb_llm_prompt = "kb_llm_prompt"
     kb_priority_rules = "kb_priority_rules"
     kb_question_to_model = "kb_question_to_model"
@@ -24,12 +21,8 @@ class AuditLogTargetKey(Enum):
     #
     kb_attack_flow_log = "kb_attack_flow_log"
     #
-    kb_mitre_log = "kb_mitre_log"
-    kb_mitre_parsed_log = "kb_mitre_parsed_log"
-    #
     kb_generation_rule_log = "kb_generation_rule_log"
     kb_generation_rules_library_log = "kb_generation_rules_library_log"
-    kb_im8_log = "kb_im8_log"
     kb_llm_prompt_log = "kb_llm_prompt_log"
     kb_priority_rules_log = "kb_priority_rules_log"
     kb_question_to_model_log = "kb_question_to_model_log"

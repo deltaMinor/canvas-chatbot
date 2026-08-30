@@ -180,57 +180,6 @@ export const setPreAuth = createBackendSetter(
     {} as NonNullable<BackendState["preAuth"]>
 );
 
-export const getKbCsaCCoPFromStore = createBackendGetter(
-    "kbCsaCCoP",
-    {} as NonNullable<BackendState["kbCsaCCoP"]>
-);
-export const setKbCsaCCoP = createBackendSetter(
-    "kbCsaCCoP",
-    app_actions.backend.setKbCsaCCoP,
-    {} as NonNullable<BackendState["kbCsaCCoP"]>
-);
-
-export const getKbIM8FromStore = createBackendGetter(
-    "kbIM8",
-    {} as NonNullable<BackendState["kbIM8"]>
-);
-export const setKbIM8 = createBackendSetter(
-    "kbIM8",
-    app_actions.backend.setKbIM8,
-    {} as NonNullable<BackendState["kbIM8"]>
-);
-
-export const getKbMitreFromStore = createBackendGetter(
-    "kbMitre",
-    {} as NonNullable<BackendState["kbMitre"]>
-);
-export const setKbMitre = createBackendSetter(
-    "kbMitre",
-    app_actions.backend.setKbMitre,
-    {} as NonNullable<BackendState["kbMitre"]>
-);
-
-export const getKbNistCSFFromStore = createBackendGetter(
-    "kbNistCSF",
-    {} as NonNullable<BackendState["kbNistCSF"]>
-);
-export const setKbNistCSF = createBackendSetter(
-    "kbNistCSF",
-    app_actions.backend.setKbNistCSF,
-    {} as NonNullable<BackendState["kbNistCSF"]>
-);
-
-export const getKbISOIEC27001FromStore = createBackendGetter(
-    "kbISOIEC27001",
-    {} as NonNullable<BackendState["kbISOIEC27001"]>
-);
-
-export const setKbISOIEC27001 = createBackendSetter(
-    "kbISOIEC27001",
-    app_actions.backend.setKbISOIEC27001,
-    {} as NonNullable<BackendState["kbISOIEC27001"]>
-);
-
 export const getKbOwaspRegisterFromStore = createBackendGetter(
     "kbOwaspRegister",
     {} as NonNullable<BackendState["kbOwaspRegister"]>
@@ -539,26 +488,6 @@ export const getJiraIssueLoadedFromStore = createBackendGetter(
 export const getJiraIssueOptionsLoadedFromStore = createBackendGetter(
     "jiraIssueOptionsLoaded",
     false
-);
-export const getKbCsaCCoPLoadedFromStore = createBackendGetter(
-    "kbCsaCCoPLoaded",
-    false //
-);
-export const getKbIM8LoadedFromStore = createBackendGetter(
-    "kbIM8Loaded",
-    false //
-);
-export const getKbMitreLoadedFromStore = createBackendGetter(
-    "kbMitreLoaded",
-    false //
-);
-export const getKbNistCSFLoadedFromStore = createBackendGetter(
-    "kbNistCSFLoaded",
-    false //
-);
-export const getKbISOIEC27001LoadedFromStore = createBackendGetter(
-    "kbISOIEC27001Loaded",
-    false //
 );
 export const getKbOwaspRegisterLoadedFromStore = createBackendGetter(
     "kbOwaspRegisterLoaded",

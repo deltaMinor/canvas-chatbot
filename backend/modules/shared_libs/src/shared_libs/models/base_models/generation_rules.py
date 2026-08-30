@@ -7,4 +7,3 @@ __all__ = [
 
 class GenerationRulesDictModel(BaseModel):
     master_register: dict | None = Field(default={})
-    mitre_attack: dict | None = Field(default={})

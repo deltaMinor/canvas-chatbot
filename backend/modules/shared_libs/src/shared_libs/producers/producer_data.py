@@ -179,30 +179,6 @@ producer_data_generation_rules_library = {
     },
 }
 
-producer_data_kb_mitre = {
-    "task_queue": "register_queue",
-    "task_mappings": {
-        "task_name_dict": {
-            "find_multiple": "register.create_get_kb_mitre_list_task",
-        },
-        "task_key_dict": {
-            "find_multiple": "kb_mitre_list_task",
-        },
-    },
-}
-
-producer_data_kb_mitre_parsed = {
-    "task_queue": "register_queue",
-    "task_mappings": {
-        "task_name_dict": {
-            "find_single": "register.create_get_kb_mitre_parsed_task",
-        },
-        "task_key_dict": {
-            "find_single": "kb_mitre_parsed",
-        },
-    },
-}
-
 producer_data_kb_owasp_register = {
     "task_queue": "register_queue",
     "task_mappings": {
@@ -223,54 +199,6 @@ producer_data_kb_gt_llm_register = {
         },
         "task_key_dict": {
             "find_single": "kb_gt_llm_register",
-        },
-    },
-}
-
-producer_data_kb_im8 = {
-    "task_queue": "register_queue",
-    "task_mappings": {
-        "task_name_dict": {
-            "find_single": "register.create_get_kb_im8_task",
-        },
-        "task_key_dict": {
-            "find_single": "kb_im8",
-        },
-    },
-}
-
-producer_data_kb_csa_ccop = {
-    "task_queue": "register_queue",
-    "task_mappings": {
-        "task_name_dict": {
-            "find_single": "register.create_get_kb_csa_ccop_task",
-        },
-        "task_key_dict": {
-            "find_single": "kb_csa_ccop",
-        },
-    },
-}
-
-producer_data_kb_nist_csf = {
-    "task_queue": "register_queue",
-    "task_mappings": {
-        "task_name_dict": {
-            "find_single": "register.create_get_kb_nist_csf_task",
-        },
-        "task_key_dict": {
-            "find_single": "kb_nist_csf",
-        },
-    },
-}
-
-producer_data_kb_isoiec_27001 = {
-    "task_queue": "register_queue",
-    "task_mappings": {
-        "task_name_dict": {
-            "find_single": "register.create_get_kb_isoiec_27001_task",
-        },
-        "task_key_dict": {
-            "find_single": "kb_isoiec_27001",
         },
     },
 }

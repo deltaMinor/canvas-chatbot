@@ -40,7 +40,6 @@ __all__ = [
     "AssessmentBenchmark",
     "AssessmentConfiguration",
     "AssessmentData",
-    "MappingToIM8",
     "SolutionDetail",
     "RuleExplanationAttribute",
     "RuleExplanation",
@@ -58,12 +57,6 @@ __all__ = [
     "ProjectRegisterBaseModel",
     "ProjectRegisterAssessment",
 ]
-
-
-class MappingToIM8(BaseModel):
-    policyRef: str | None = Field(default="")
-    section: str | None = Field(default="")
-    stdRef: str | None = Field(default="")
 
 
 class SolutionDetail(BaseModel):
@@ -148,7 +141,6 @@ class RiskScenarioCore(BaseModel):
     keyRisk: str | None = Field(default="")
     knowledgebaseSource: str | None = Field(default="")
     mappingToATK: list[str] | None = Field(default=[])
-    mappingToIM8: list["MappingToIM8"] | None = Field(default=[])
     recommendedMitigationMeasures: list[str] | None = Field(default=[])
     recommendedMitigationMeasuresHidden: list[str] | None = Field(default=[])
     recommendedMitigationMeasuresParsed: list["MitigationMeasure"] | None = Field(

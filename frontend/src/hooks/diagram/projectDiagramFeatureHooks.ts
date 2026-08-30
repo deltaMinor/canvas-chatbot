@@ -16,7 +16,6 @@ import { NodeHandleEdgeMappingResolver } from "#root/lib/NodeHandleEdgeMappingRe
 import { DiagramEditToolbarState } from "#root/redux/projectDiagramFeatureSlice";
 import { RootState } from "#root/redux/store";
 import {
-    selectAttackPathSelectionFieldContentHeights,
     selectBackendSaveEnabled,
     selectBiDirectionalArrow,
     selectDiagramCanvasHistory,
@@ -63,7 +62,6 @@ import {
     selectIsEdgeDrawerDirty,
     selectIsNodeDrawerDirty,
     selectJoyrideViewType,
-    selectNodeAttackPathMapping,
     selectNodeAttackStepCountMapping,
     selectNodeHandleEdgeMapping,
     selectPathSelectDisabled,
@@ -77,7 +75,6 @@ import {
     selectSelectedEdgeIdList,
     selectSelectedNodeIdList,
     selectSelectedPathId,
-    selectStartAttackPath,
     selectStepNumber,
     selectTargetEdgeId,
     selectTargetEdgePulseToken,
@@ -853,14 +850,6 @@ export const useNodeAttackStepCountMapping = () => {
     );
 };
 
-export const useNodeAttackPathMapping = () => {
-    const instanceId = useDiagramInstanceId();
-
-    return useSelector(
-        (state: RootState) => selectNodeAttackPathMapping(state, instanceId) //
-    );
-};
-
 export const useViewAllPaths = () => {
     const instanceId = useDiagramInstanceId();
 
@@ -901,27 +890,11 @@ export const useVisibleThreatScenarioCanvasIds = () => {
     );
 };
 
-export const useStartAttackPath = () => {
-    const instanceId = useDiagramInstanceId();
-
-    return useSelector(
-        (state: RootState) => selectStartAttackPath(state, instanceId) //
-    );
-};
-
 export const useDiagramThreatScenarioExpandedFrameworkKeys = () => {
     const instanceId = useDiagramInstanceId();
 
     return useSelector(
         (state: RootState) => selectThreatScenarioExpandedFrameworkKeys(state, instanceId) //
-    );
-};
-
-export const useDiagramAttackPathSelectionFieldContentHeights = () => {
-    const instanceId = useDiagramInstanceId();
-
-    return useSelector(
-        (state: RootState) => selectAttackPathSelectionFieldContentHeights(state, instanceId) //
     );
 };
 
@@ -1009,15 +982,13 @@ export const useSelectedAttackStepNode = ({
     nodeId: string;
 }) => {
     const selectedAttackStep = useSelectedAttackStep();
-    const startAttackPath = useStartAttackPath();
 
     return React.useMemo(
         () =>
-            !!startAttackPath &&
             [String(nodeId || ""), comparableNodeId].includes(
                 String(selectedAttackStep?.nodeId || "")
             ),
-        [comparableNodeId, nodeId, selectedAttackStep?.nodeId, startAttackPath]
+        [comparableNodeId, nodeId, selectedAttackStep?.nodeId]
     );
 };
 

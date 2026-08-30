@@ -19,7 +19,6 @@ from .chatbot import (
     ConversationBaseModel,
     SpecialInputBaseModel,
 )
-from .csa_ccop import CsaCCoPPolicyModel, KbCsaCCoPBaseModel
 from .database import (
     AuditLogModel,
     BatchInfoModel,
@@ -68,9 +67,7 @@ from .diagram_file import (
 )
 from .feedback import FeedbackFormBaseModel
 from .generation_rules import GenerationRulesDictModel
-from .im8 import IM8PolicyModel, KbIM8BaseModel
 from .infrastructure import ProducerDataModel, TaskMappingsModel
-from .isoiec_27001 import ISOIEC27001Model, KbISOIEC27001BaseModel
 from .llm import (
     KbLLMPromptBaseModel,
     PromptGenerationRuleCombineTemplateModel,
@@ -78,8 +75,6 @@ from .llm import (
     PromptGenerationRuleModel,
 )
 from .mitigation import MasterMitigationBaseModel, MasterMitigationMeasure
-from .mitre import KbMitreParsedBaseModel, MitreParsedDocs, ParsedMitreDomainModel
-from .nist_csf import KbNistCSFBaseModel, NistCSFModel
 from .project import ProjectBaseModel, ProjectProgressBaseModel
 from .project_assessment import (
     ProjectAssessmentBaseModel,
@@ -115,7 +110,6 @@ from .register import (
     LlmModelUsage,
     LlmTokenCount,
     LlmTokenUsage,
-    MappingToIM8,
     MasterRegisterBaseModel,
     MasterRiskScenario,
     ProjectRegisterAssessment,

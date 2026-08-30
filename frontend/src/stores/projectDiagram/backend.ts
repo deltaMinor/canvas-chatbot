@@ -16,7 +16,6 @@ import {
     WarningReport,
     WarningSortCriteriaKey,
 } from "#root/interfaces/diagram";
-import { NodeAttackPathMapping } from "#root/interfaces/mitre";
 import { AttackStep } from "#root/interfaces/register";
 import {
     DiagramEditToolbarState,
@@ -152,18 +151,12 @@ export const getInitialDiagramCanvasStateFromStore = (): DiagramInstanceState =>
         isAttributeDrawerOpen: false,
         selectedAttackStep: {} as AttackStep,
         nodeAttackStepCountMapping: {} as NodeAttackStepCountMapping,
-        nodeAttackPathMapping: {} as NodeAttackPathMapping,
         viewAllPaths: false,
         pendingThreatOverviewScenarioScope: null,
         threatOverviewScenarioScope: "top5",
         visibleThreatScenarioCanvasIds: [],
         hideAllPaths: false,
-        startAttackPath: false,
         threatScenarioExpandedFrameworkKeys: [],
-        attackPathSelectionFieldContentHeights: {
-            collapsed: 0,
-            expanded: 0,
-        },
         joyrideViewType: CanvasType.architecture,
         capabilities: {
             toolbar: {

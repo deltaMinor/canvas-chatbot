@@ -91,14 +91,12 @@ class KbRegisterMappingService(
         # Process each object in the register mapping list
         for obj in register_mapping_list:
             riskScenarioId = obj["riskScenarioId"]
-            register_mapping_dict[riskScenarioId] = {"IM8": [], "ATT&CK": []}
+            register_mapping_dict[riskScenarioId] = {"ATT&CK": []}
 
             # Process each knowledge base in the object
             knowledgeBases = obj["knowledgeBases"]
             for kb in knowledgeBases:
-                if kb["source"] == "IM8":
-                    register_mapping_dict[riskScenarioId]["IM8"] = kb["id"]
-                elif kb["source"] == "ATT&CK":
+                if kb["source"] == "ATT&CK":
                     register_mapping_dict[riskScenarioId]["ATT&CK"] = kb["id"]
 
         return register_mapping_dict

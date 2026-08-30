@@ -9,7 +9,6 @@ import type {
     UserPolicyDoc,
     UserRoleDocWithPermissions,
 } from "#root/interfaces/authorization";
-import type { CompliancePolicyType } from "#root/interfaces/compliance_policies";
 import type { ProjectRegisterFields } from "#root/interfaces/register";
 import type { UserEntitlement } from "#root/interfaces/user";
 
@@ -17,10 +16,6 @@ export enum DialogFieldTypeEnum {
     accordion = "accordion",
     checkboxGroup = "checkboxGroup",
     entitlementTableFields = "entitlementTableFields",
-    mappingCOPTableFields = "mappingCOPTableFields",
-    mappingIM8TableFields = "mappingIM8TableFields",
-    mappingNistCSFTableFields = "mappingNistCSFTableFields",
-    mappingISOIEC27001TableFields = "mappingISOIEC27001TableFields",
     password = "password",
     reactSelect = "reactSelect",
     reactSelectMulti = "reactSelectMulti",
@@ -128,8 +123,6 @@ export interface DialogFieldPropFields<
         user_policy_docs?: UserPolicyDoc[];
         user_role_list_with_permissions?: UserRoleDocWithPermissions[];
         tagOptions?: OptionLabel[];
-        getSelectedPolicies?: () => Promise<CompliancePolicyType[]>;
-        getAllPolicies?: () => Promise<CompliancePolicyType[]>;
         isReadAuthorized?: boolean;
         [key: string]: unknown;
     };

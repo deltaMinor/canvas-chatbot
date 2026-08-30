@@ -16,7 +16,6 @@ import type { PreAuthFields } from "#root/interfaces/authentication";
 import type { UserAuthorization, UserPolicyDoc, UserRoleDoc } from "#root/interfaces/authorization";
 import type { ProjectCacti } from "#root/interfaces/cacti";
 import type { ProjectDiagramFile } from "#root/interfaces/common";
-import type { KbCsaCCoP } from "#root/interfaces/csa_ccop";
 import type {
     CanvasType,
     DiagramCanvas,
@@ -46,20 +45,13 @@ import type {
 import type { ErrorDetails } from "#root/interfaces/error";
 import type { FeedbackFormFields } from "#root/interfaces/feedback_form";
 import type { FormFieldConfig, FormValueMap } from "#root/interfaces/formField";
-import type { KbIM8 } from "#root/interfaces/im8";
 import type { AuditLog, OptionLabel } from "#root/interfaces/index";
 import type { Integration, JiraIssue, JiraIssueOptions } from "#root/interfaces/integration";
 import type { MasterMitigation } from "#root/interfaces/mitigation";
 import type {
-    AttackFlowsGrouping,
-    MitreDatabaseInterface,
-    NodeAttackPathMapping,
-} from "#root/interfaces/mitre";
-import type {
     MuiFilterButtonStateProps,
     MuiFilterButtonValueProps,
 } from "#root/interfaces/muiDataGridTable";
-import type { KbNistCSF } from "#root/interfaces/nist_csf";
 import type {
     Project,
     ProjectAssessment,
@@ -89,8 +81,6 @@ import type { JWT_fields, UserAdminFields, UserCoreFields } from "#root/interfac
 import type { UserCreditsFields } from "#root/interfaces/user_credits";
 import type { ProjectXML } from "#root/interfaces/xml";
 import type { ToolHistoryItem } from "#root/services/domain/tools";
-
-import { KbISOIEC27001 } from "./isoiec27001";
 
 export type AdminConsoleActionStatus = "unknown" | "pending" | "completed";
 
@@ -188,9 +178,6 @@ export interface LegacyBackendState {
     appVersions: string[];
     appVersionsLoaded: boolean;
     appVersionsLoadError: boolean;
-    attackFlowsGroupings: AttackFlowsGrouping[];
-    attackFlowsGroupingsLoaded: boolean;
-    attackFlowsGroupingsLoadError: boolean;
     authorization: UserAuthorization;
     authorizationLoaded: boolean;
     authorizationLoadError: boolean;
@@ -206,21 +193,6 @@ export interface LegacyBackendState {
     jiraIssueOptions: JiraIssueOptions | null;
     jiraIssueOptionsLoaded: boolean;
     jiraIssueOptionsLoadError: boolean;
-    kbCsaCCoP: KbCsaCCoP | null;
-    kbCsaCCoPLoaded: boolean;
-    kbCsaCCoPLoadError: boolean;
-    kbIM8: KbIM8 | null;
-    kbIM8Loaded: boolean;
-    kbIM8LoadError: boolean;
-    kbISOIEC27001: KbISOIEC27001 | null;
-    kbISOIEC27001Loaded: boolean;
-    kbISOIEC27001LoadError: boolean;
-    kbMitre: MitreDatabaseInterface | null;
-    kbMitreLoaded: boolean;
-    kbMitreLoadError: boolean;
-    kbNistCSF: KbNistCSF | null;
-    kbNistCSFLoaded: boolean;
-    kbNistCSFLoadError: boolean;
     kbOwaspRegister: MasterRegister | null;
     kbOwaspRegisterLoaded: boolean;
     kbOwaspRegisterLoadError: boolean;
@@ -467,10 +439,6 @@ export interface LogDialogInstanceState {
 
 export interface LogDialogFeatureState {
     instances: Record<string, LogDialogInstanceState>;
-}
-
-export interface MitreFeatureState {
-    searchResultIds: string[];
 }
 
 export interface MuiDataGridInstanceState {
@@ -737,18 +705,12 @@ export interface DiagramInstanceState {
     isAttributeDrawerOpen: boolean;
     selectedAttackStep: AttackStep;
     nodeAttackStepCountMapping: NodeAttackStepCountMapping;
-    nodeAttackPathMapping: NodeAttackPathMapping;
     viewAllPaths: boolean;
     pendingThreatOverviewScenarioScope: "top5" | "all" | null;
     threatOverviewScenarioScope: "top5" | "all";
     visibleThreatScenarioCanvasIds: string[];
     hideAllPaths: boolean;
-    startAttackPath: boolean;
     threatScenarioExpandedFrameworkKeys: string[];
-    attackPathSelectionFieldContentHeights: {
-        collapsed: number;
-        expanded: number;
-    };
     joyrideViewType: CanvasType;
     capabilities: DiagramCapabilitiesState;
 }
@@ -830,7 +792,6 @@ export interface RootState {
     formFieldFeature: FormFieldFeatureState;
     layout: LayoutState;
     logDialogFeature: LogDialogFeatureState;
-    mitreFeature: MitreFeatureState;
     muiDataGridFeature: MuiDataGridFeatureState;
     projectAssessment: ProjectAssessmentState;
     projectDashboardFeature: ProjectDashboardFeatureState;

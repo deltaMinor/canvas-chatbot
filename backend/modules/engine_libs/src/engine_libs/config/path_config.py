@@ -86,7 +86,6 @@ os.makedirs(DATA_RESULTS_DIR, exist_ok=True)
 # ---------------------------------------------------------------------------
 
 KB_LLM_PROMPT = RR_DATA_DIR / "kb_llm_prompt.json"
-KB_MITRE = RR_DATA_DIR / "kb_mitre.json"
 KB_QUESTION_TO_MODEL_FILE = RR_DATA_DIR / "kb_question_to_model.json"
 DATAFLOW_PROMPT = DATA_TEST_DIR / "dataflow_prompt.json"
 ARCHITECTURE_DIAGRAM_FILE = DATA_TEST_DIR / "project_ad.json"
@@ -103,7 +102,6 @@ __all__ = [
     "DATA_TEST_DIR",
     "DATA_RESULTS_DIR",
     "KB_LLM_PROMPT",
-    "KB_MITRE",
     "KB_QUESTION_TO_MODEL_FILE",
     "DATAFLOW_PROMPT",
     "ARCHITECTURE_DIAGRAM_FILE",

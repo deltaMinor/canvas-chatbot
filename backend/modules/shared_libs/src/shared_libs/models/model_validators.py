@@ -1725,22 +1725,6 @@ class TokenBaseValidator(AbstractValidator):
     patchVer_ = "patch_82eb50f5-8115-4ed3-a44f-59d1487bb5b0"
 
 
-class KbIM8BaseValidator(AbstractValidator):
-    patchVer_ = "patch_1bd07053-a0b0-40f8-a904-ddef31ae1003"
-
-
-class KbNistCSFBaseValidator(AbstractValidator):
-    patchVer_ = "patch_a26f04fe-4df0-4bd1-94ba-614b4e8d1813"
-
-
-class KbISOIEC27001BaseValidator(AbstractValidator):
-    patchVer_ = "patch_9f9f0730-bfd9-46a1-98b9-6f1ab746d312"
-
-
-class KbCsaCCoPBaseValidator(AbstractValidator):
-    patchVer_ = "patch_0a0e7718-4562-40ac-9050-e8b16ec732f6"
-
-
 class KbLLMPromptBaseValidator(AbstractValidator):
     patchVer_ = "patch_77620afd-5b25-49e4-bbc2-8f6fc35ad748"
 
@@ -1814,10 +1798,6 @@ class KbAssessmentConfigBaseValidator(AbstractValidator):
         model._unset = len(_unsetkeys) > 0
         model._unsetkeys = _unsetkeys
         return model
-
-
-class KbMitreParsedBaseValidator(AbstractValidator):
-    patchVer_ = "patch_ddb7bbad-dfc5-483e-b753-017486cae680"
 
 
 class CreditTransactionLogBaseValidator(AbstractValidator):

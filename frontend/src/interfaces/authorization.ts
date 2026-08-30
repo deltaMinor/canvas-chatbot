@@ -57,13 +57,7 @@ export interface UserPermissionDoc {
     jira_issue: IsAuthorized<string>;
     jira_options: IsAuthorized<string>;
     kb_attack_flow: IsAuthorized<string>;
-    kb_csa_ccop: IsAuthorized<string>;
-    kb_nist_csf: IsAuthorized<string>;
-    kb_isoiec_27001: IsAuthorized<string>;
     kb_gt_llm_register: IsAuthorized<string>;
-    kb_im8: IsAuthorized<string>;
-    kb_mitre: IsAuthorized<string>;
-    kb_mitre_parsed: IsAuthorized<string>;
     kb_owasp_register: IsAuthorized<string>;
     kb_tosca: IsAuthorized<string>;
     master_diagram_template: IsAuthorized<string>;

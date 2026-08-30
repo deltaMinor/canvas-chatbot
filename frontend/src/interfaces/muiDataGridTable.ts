@@ -38,7 +38,6 @@ export interface MuiFilterButtonStateProps {
     [MuiFilterButtonKey.obsolete]?: boolean;
     [MuiFilterButtonKey.resolved]?: boolean;
     [MuiFilterButtonKey.showAll]?: boolean;
-    [MuiFilterButtonKey.xMitreDomains]?: boolean;
     [MuiFilterButtonKey.projectStatus]?: boolean;
 }
 
@@ -54,7 +53,6 @@ export interface MuiFilterButtonValueProps {
     [MuiFilterButtonKey.resolved]?: boolean;
     [MuiFilterButtonKey.showAll]?: boolean;
     [MuiFilterButtonKey.projectStatus]?: boolean;
-    [MuiFilterButtonKey.xMitreDomains]?: string;
 }
 
 export enum MuiFilterButtonKey {
@@ -68,7 +66,6 @@ export enum MuiFilterButtonKey {
     obsolete = "obsolete",
     resolved = "resolved",
     showAll = "showAll",
-    xMitreDomains = "xMitreDomains",
     projectStatus = "projectStatus",
 }
 

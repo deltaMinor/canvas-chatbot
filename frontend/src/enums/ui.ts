@@ -75,14 +75,12 @@ export enum MuiFilterButtonKey {
     obsolete = "obsolete",
     resolved = "resolved",
     showAll = "showAll",
-    xMitreDomains = "xMitreDomains",
     projectStatus = "projectStatus",
 }
 
 export enum ProgressChartTypeKey {
     total_mitigation = "total_mitigation",
     domain_mitigation = "domain_mitigation",
-    im8_compliance = "im8_compliance",
 }
 
 export enum StatsChartType {

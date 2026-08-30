@@ -223,7 +223,6 @@ WRITE_ENGINE_RESULT_TO_FILE = bool(
 
 # Collection Management
 DISABLE_MASTER_REGISTER = bool(os.environ.get("DISABLE_MASTER_REGISTER") == "TRUE")
-DISABLE_KB_IM8 = bool(os.environ.get("DISABLE_KB_IM8") == "TRUE")
 
 
 # =============================================================================
