@@ -20,5 +20,6 @@ export enum ProjectDiagramFileField {
     project_id = "project_id",
     metadata = "metadata",
     select = "select",
+    download = "download",
     delete = "delete",
 }

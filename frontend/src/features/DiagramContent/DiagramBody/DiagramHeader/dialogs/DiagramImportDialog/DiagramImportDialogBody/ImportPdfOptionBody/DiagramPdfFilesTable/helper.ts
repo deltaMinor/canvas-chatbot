@@ -2,7 +2,10 @@ import { MAX_FILE_COUNT, MAX_FILE_SIZE_MB } from "#root/constants/tab";
 import { ServiceDomainProps } from "#root/interfaces/domain";
 import { FileUploadFactory } from "#root/lib/upload";
 import CallApiWithSnackbar from "#root/services/CallApiWithSnackbar";
-import { deleteProjectDiagramFilePdf } from "#root/services/domain/diagram_pdf_file";
+import {
+    deleteProjectDiagramFilePdf,
+    downloadProjectDiagramFilePdf,
+} from "#root/services/domain/diagram_pdf_file";
 import { refreshProjectDiagramFilePdf } from "#root/stores/backendRefreshStore";
 import {
     getProjectDiagramFilePdfFromStore,
@@ -39,6 +42,22 @@ export const processClickDeleteProjectPdfFiles = async (
         { project_id, file_id_list }, //
         serviceDomainProps
     );
+};
+
+export const handleClickDownloadPdfFile = async (file_id: string) => {
+    const project_id = getProjectIdFromStore();
+
+    await CallApiWithSnackbar({
+        async_func: async () => {
+            await downloadProjectDiagramFilePdf(
+                { project_id, file_id }, //
+                {}
+            );
+        },
+        message: "Downloading ...",
+        messageOnSuccess: "Downloaded.",
+        disableMessageOnError: true,
+    });
 };
 
 export const processClickUploadProjectPdfFile = async (

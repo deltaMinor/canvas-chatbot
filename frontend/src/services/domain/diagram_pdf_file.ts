@@ -1,6 +1,7 @@
 import { enqueueSnackbar } from "notistack";
 
 import { ServiceDomainProps } from "#root/interfaces/domain";
+import { downloadBase64File } from "#root/utils/fileDownloadHelper";
 
 import {
     ArchitectureDiagramFormService,
@@ -54,6 +55,36 @@ export const deleteProjectDiagramFilePdf = async (
                 );
             }
             return res?.data?.data;
+        })
+        .catch((reason) => {
+            processDomainFailure(reason, serviceDomainProps);
+            return Promise.reject(reason);
+        });
+};
+
+export const downloadProjectDiagramFilePdf = async (
+    {
+        project_id, //
+        file_id,
+    }: {
+        project_id: string;
+        file_id: string;
+    },
+    serviceDomainProps: ServiceDomainProps = {}
+): Promise<void> => {
+    const { hideSnackbar = true } = serviceDomainProps;
+    const ADApi = new ArchitectureDiagramService();
+    return await ADApi.getProjectDiagramFilePdfFile({ project_id, file_id })
+        .then((res) => {
+            const file = res?.data?.data;
+            if (!file) return;
+            downloadBase64File(file.data, file.filename, file.content_type);
+            if (!hideSnackbar) {
+                enqueueSnackbar(
+                    "Project PDF document file is downloaded successfully.", //
+                    { variant: "success" }
+                );
+            }
         })
         .catch((reason) => {
             processDomainFailure(reason, serviceDomainProps);

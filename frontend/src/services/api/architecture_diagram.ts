@@ -25,6 +25,13 @@ import {
 
 import { setupApiInterceptors } from "./tokenRefresh";
 
+export interface ProjectDiagramPdfFileDownload {
+    file_id: string;
+    filename: string;
+    content_type: string;
+    data: string;
+}
+
 const baseURL = `${SINGLE_ORIGIN_SERVER_BASE_URL}/${AD_API_URL_PREFIX}`;
 
 const axios_api = axios.create({
@@ -297,6 +304,16 @@ export class ArchitectureDiagramService {
             "project_diagram/files/pdf", //
             { data }
         );
+    }
+    async getProjectDiagramFilePdfFile({
+        project_id,
+        file_id,
+    }: {
+        project_id: string;
+        file_id: string;
+    }): Promise<AxiosApiResponse<ProjectDiagramPdfFileDownload>> {
+        const params = { project_id, file_id };
+        return await axios_json_api.get("project_diagram/files/pdf/download", { params });
     }
 
     // Module Files

@@ -25,6 +25,7 @@ export const getDiagramPdfFilesDataGridProps = ({
 export const defaultVisibleFields = [
     ProjectDiagramFileField.filename, //
     ProjectDiagramFileField.timestamp,
+    ProjectDiagramFileField.download,
     ProjectDiagramFileField.delete,
 ];
 

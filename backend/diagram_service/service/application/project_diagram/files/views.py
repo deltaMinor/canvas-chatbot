@@ -640,6 +640,48 @@ class ProjectDiagramPDFDocumentFilesAPIView(NonBlockingAPIView):
 
 
 @throttle_classes([UserRateThrottle])
+class ProjectDiagramPDFDocumentFileDownloadAPIView(NonBlockingAPIView):
+    """
+    API View for downloading a single storage-only PDF document file.
+
+    Attributes:
+        project_ad_file_service (ProjectADFileApplicationService): The service used for
+        performing operations related to the Project Diagram File
+    """
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        from .services import ProjectADFileApplicationService
+
+        self.project_ad_file_service = ProjectADFileApplicationService(
+            *args,
+            celery_app=celery_app,
+            **kwargs,
+        )
+
+    @raise_exception(
+        "An error occurred while downloading the project PDF document file.",
+        exception_logger=logger,
+    )
+    @verify_get_params(key_list=["project_id", "file_id"])
+    def get(
+        self,
+        request: Request,
+    ):
+        file_data = self.project_ad_file_service.get_file(
+            data=request.GET,
+            file_type=PROJECT_AD_FILE_TYPE_PDF_DOCUMENT,
+        )
+        return Response(
+            success(
+                "Project PDF document file retrieved successfully.",
+                file_data,
+            ),
+            status=status.HTTP_200_OK,
+        )
+
+
+@throttle_classes([UserRateThrottle])
 class ProjectDiagramMediaFilesAPIView(NonBlockingAPIView):
     file_types: list[str] = []
     file_label = "media"

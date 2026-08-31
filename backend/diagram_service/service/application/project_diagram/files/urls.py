@@ -5,6 +5,7 @@ from .views import (
     ProjectDiagramImageFilesAPIView,
     ProjectDiagramJSONFilesAPIView,
     ProjectDiagramModuleFilesAPIView,
+    ProjectDiagramPDFDocumentFileDownloadAPIView,
     ProjectDiagramPDFDocumentFilesAPIView,
     ProjectDiagramTerraformFilesAPIView,
     ProjectDiagramXMLFilesAPIView,
@@ -38,5 +39,9 @@ urlpatterns = [
     path(
         "files/pdf",
         ProjectDiagramPDFDocumentFilesAPIView.as_view(),
+    ),
+    path(
+        "files/pdf/download",
+        ProjectDiagramPDFDocumentFileDownloadAPIView.as_view(),
     ),
 ]

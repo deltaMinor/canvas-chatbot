@@ -25,7 +25,7 @@ from shared_libs.constants.architecture_diagram import (
 from shared_libs.constants.database import MAX_FILE_COUNT
 from shared_libs.decorators import raise_exception
 from shared_libs.domain import DatabaseLogService, ProjectADFileService
-from shared_libs.exceptions.api_exceptions import BadRequest
+from shared_libs.exceptions.api_exceptions import BadRequest, NotFound
 from shared_libs.infrastructure.producer.service import Producer
 from shared_libs.infrastructure.remote_file_repository.service import (
     RemoteFileRepository,
@@ -123,6 +123,32 @@ class ProjectADFileApplicationService(ProjectADFileService):
             project_id=project_id,
             file_type=file_type,
         )
+
+    @raise_exception("Failed to retrieve project AD file.", exception_logger=logger)
+    def get_file(
+        self,
+        data: dict,
+        file_type: str,
+    ) -> dict:
+        project_id = data["project_id"]
+        file_id = data["file_id"]
+
+        file = self.get_one_file(
+            {
+                "project_id": project_id,
+                "file_id": file_id,
+                "file_type": file_type,
+            },
+        )
+        if not file:
+            raise NotFound(f"No file found for file_id {file_id}.")
+
+        return {
+            "file_id": file["file_id"],
+            "filename": file["filename"],
+            "content_type": file.get("content_type") or "application/octet-stream",
+            "data": file["data"],
+        }
 
     def _check_file_count_limit(
         self,
