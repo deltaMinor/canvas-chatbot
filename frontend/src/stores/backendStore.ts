@@ -100,66 +100,6 @@ export const setAttackFlowsGroupings = createBackendSetter(
     [] as NonNullable<BackendState["attackFlowsGroupings"]>
 );
 
-export const getAppTNCFromStore = createBackendGetter(
-    "appTNC",
-    {} as NonNullable<BackendState["appTNC"]>
-);
-export const setAppTNC = createBackendSetter(
-    "appTNC",
-    app_actions.backend.setAppTNC,
-    {} as NonNullable<BackendState["appTNC"]>
-);
-
-export const getAppVersionDataFromStore = createBackendGetter(
-    "appVersionData",
-    {} as NonNullable<BackendState["appVersionData"]>
-);
-export const setAppVersionData = createBackendSetter(
-    "appVersionData",
-    app_actions.backend.setAppVersionData,
-    {} as NonNullable<BackendState["appVersionData"]>
-);
-
-export const getAppVersionsFromStore = createBackendGetter(
-    "appVersions",
-    [] as NonNullable<BackendState["appVersions"]>
-);
-export const setAppVersions = createBackendSetter(
-    "appVersions",
-    app_actions.backend.setAppVersions,
-    [] as NonNullable<BackendState["appVersions"]>
-);
-
-export const getFeedbackFormsFromStore = createBackendGetter(
-    "feedbackForms",
-    [] as NonNullable<BackendState["feedbackForms"]>
-);
-export const setFeedbackForms = createBackendSetter(
-    "feedbackForms",
-    app_actions.backend.setFeedbackForms,
-    [] as NonNullable<BackendState["feedbackForms"]>
-);
-
-export const getIntegrationFromStore = createBackendGetter(
-    "integration",
-    {} as NonNullable<BackendState["integration"]>
-);
-export const setIntegration = createBackendSetter(
-    "integration",
-    app_actions.backend.setIntegration,
-    {} as NonNullable<BackendState["integration"]>
-);
-
-export const getJiraIssueOptionsFromStore = createBackendGetter(
-    "jiraIssueOptions",
-    {} as NonNullable<BackendState["jiraIssueOptions"]>
-);
-export const setJiraIssueOptions = createBackendSetter(
-    "jiraIssueOptions",
-    app_actions.backend.setJiraIssueOptions,
-    {} as NonNullable<BackendState["jiraIssueOptions"]>
-);
-
 export const getKbToscaFromStore = createBackendGetter(
     "kbTosca",
     {} as NonNullable<BackendState["kbTosca"]>
@@ -263,10 +203,6 @@ export const setProjectDiagramFileModule = createProjectSetter(
 export const getProjectFromStore = createProjectGetter(
     "project",
     {} as NonNullable<ProjectScopedState["project"]>
-);
-export const getProjectStatisticsFromStore = createProjectGetter(
-    "projectStatistics",
-    {} as NonNullable<ProjectScopedState["projectStatistics"]>
 );
 export const getProjectIdFromStore = () =>
     `${getRouteProjectIdFromWindow() || getProjectFromStore()?.project_id || ""}`;
@@ -453,18 +389,6 @@ export const getUsersLoadedFromStore = createBackendGetter(
     "usersLoaded",
     false //
 );
-export const getAppTNCLoadedFromStore = createBackendGetter(
-    "appTNCLoaded",
-    false //
-);
-export const getAppVersionDataLoadedFromStore = createBackendGetter(
-    "appVersionDataLoaded",
-    false //
-);
-export const getAppVersionsLoadedFromStore = createBackendGetter(
-    "appVersionsLoaded",
-    false //
-);
 export const getAttackFlowsGroupingsLoadedFromStore = createBackendGetter(
     "attackFlowsGroupingsLoaded",
     false
@@ -472,22 +396,6 @@ export const getAttackFlowsGroupingsLoadedFromStore = createBackendGetter(
 export const getAuthorizationLoadedFromStore = createBackendGetter(
     "authorizationLoaded",
     false //
-);
-export const getFeedbackFormsLoadedFromStore = createBackendGetter(
-    "feedbackFormsLoaded",
-    false //
-);
-export const getIntegrationLoadedFromStore = createBackendGetter(
-    "integrationLoaded",
-    false //
-);
-export const getJiraIssueLoadedFromStore = createBackendGetter(
-    "jiraIssueLoaded",
-    false //
-);
-export const getJiraIssueOptionsLoadedFromStore = createBackendGetter(
-    "jiraIssueOptionsLoaded",
-    false
 );
 export const getKbOwaspRegisterLoadedFromStore = createBackendGetter(
     "kbOwaspRegisterLoaded",
@@ -555,10 +463,6 @@ export const getProjectDiagramLogsLoadedFromStore = createProjectGetter(
 );
 export const getProjectLoadedFromStore = createProjectGetter(
     "projectLoaded",
-    false //
-);
-export const getProjectStatisticsLoadedFromStore = createProjectGetter(
-    "projectStatisticsLoaded",
     false //
 );
 export const getProjectLogsLoadedFromStore = createProjectGetter(

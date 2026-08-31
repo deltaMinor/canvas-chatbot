@@ -15,29 +15,6 @@ export enum DetailsSectionType {
     SETTINGS = "settings",
 }
 
-export enum IntegrationJiraFieldKey {
-    jiraApiToken = "jiraApiToken",
-    jiraUsername = "jiraUsername",
-}
-
-export enum FeedbackFormFieldsEnum {
-    feedback_id = "feedback_id",
-    feedback_content = "feedback_content",
-    feedback_type = "feedback_type",
-    user_id = "user_id",
-    username = "username",
-    email = "email",
-    metadata = "metadata",
-    //
-    created_on = "created_on",
-    modified_on = "modified_on",
-}
-
-export enum FeedbackFormTypeKey {
-    suggestion = "suggestion",
-    bug = "bug",
-}
-
 export enum RiskInfoKeyEnum {
     keyRisk = "Key Risk",
     category = "Category",

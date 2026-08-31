@@ -12,8 +12,6 @@ from .shared.shared.database import PatchBaseModel
 __all__ = [
     "CRUDModel",
     "FieldsBaseModel",
-    "IntegrationPermissionFieldsModel",
-    "IntegrationPermissionModel",
     "MasterMitigationFieldsModel",
     "MasterMitigationFieldsModel",
     "MasterMitigationMeasureModel",
@@ -187,7 +185,6 @@ class ProjectRegisterRiskScenarioPermissionModel(CRUDModel):
 
 class ProjectRegisterPermissionFieldsModel(FieldsBaseModel):
     risk_scenarios: ProjectRegisterRiskScenarioPermissionModel
-    integration: CRUDModel
     assessment: CRUDModel
     mitigation: CRUDModel
     review: CRUDModel
@@ -199,7 +196,6 @@ class ProjectRegisterPermissionModel(CRUDModel):
 
 class ProjectPermissionFieldsModel(FieldsBaseModel):
     #
-    integrations: CRUDModel
     project_progress: CRUDModel
     project_settings: CRUDModel
     # admin
@@ -243,15 +239,6 @@ class UserPermissionModel(CRUDModel):
     fields: UserPermissionFieldsModel
 
 
-class IntegrationPermissionFieldsModel(FieldsBaseModel):
-    jiraApiToken: CRUDModel
-    jiraUsername: CRUDModel
-
-
-class IntegrationPermissionModel(CRUDModel):
-    fields: IntegrationPermissionFieldsModel
-
-
 class MitigationFieldsModel(FieldsBaseModel):
     assignee: CRUDModel
     category: CRUDModel
@@ -291,14 +278,8 @@ class UserCreditsPermissionModel(CRUDModel):
 
 
 class PermissionModel(BaseModel):
-    app_tnc: CRUDModel
-    app_version: CRUDModel
-    feedback_form: CRUDModel
     kb_attack_graph_rule: CRUDModel
     kb_attack_flow: CRUDModel
-    integration: IntegrationPermissionModel
-    jira_issue: CRUDModel
-    jira_options: CRUDModel
     kb_gt_llm_register: CRUDModel
     kb_owasp_register: CRUDModel
     kb_tosca: CRUDModel
@@ -330,7 +311,6 @@ class PermissionModel(BaseModel):
     project_diagram_tosca_validate: CRUDModel
     project_diagram: CRUDModel
     project_log: CRUDModel
-    project_statistics: CRUDModel
     project_duplicate: CRUDModel
     project_export: CRUDModel
     project_import: CRUDModel

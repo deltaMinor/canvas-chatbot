@@ -1,11 +1,7 @@
 import axios from "axios";
 
 import { AuditLog, AxiosApiResponse } from "#root/interfaces";
-import { AppTNCFields } from "#root/interfaces/app_tnc";
-import { AppVersionFields } from "#root/interfaces/app_version";
 import { ProjectProps } from "#root/interfaces/common";
-import { FeedbackFormFields } from "#root/interfaces/feedback_form";
-import { Integration, JiraIssue, JiraIssueOptions } from "#root/interfaces/integration";
 import {
     ImportProject,
     Project,
@@ -13,15 +9,6 @@ import {
     ProjectSettingsData,
 } from "#root/interfaces/project";
 import { ResourceTagFields } from "#root/interfaces/resource_tag";
-import {
-    GetIntegrationBody,
-    GetJiraIssueBody,
-    GetJiraIssueOptionsBody,
-    PatchIntegrationJiraBody,
-    PatchJiraIssueBody,
-    PostJiraIssueBody,
-} from "#root/interfaces/service";
-import { ProjectStatistics } from "#root/interfaces/statistics";
 import { UserAdminFields, UserCoreFields } from "#root/interfaces/user";
 import {
     APPLICATION_API_URL_PREFIX,
@@ -63,18 +50,8 @@ export class ApplicationService {
         return await axios_api.patch("project/project_settings", body);
     }
 
-    async patchProjectIntegrations(
-        body: Partial<Project> //
-    ): Promise<AxiosApiResponse> {
-        return await axios_api.patch("project/integrations", body);
-    }
     async getAllProjects(): Promise<AxiosApiResponse<{ projects: Project[] }>> {
         return await axios_api.get("projects");
-    }
-    async getProjectStatistics(
-        { project_id }: ProjectProps //
-    ): Promise<AxiosApiResponse<{ statistics: ProjectStatistics }>> {
-        return await axios_api.get("project/statistics", { params: { project_id } });
     }
     async postProjectAdmin(
         obj: Partial<Project> //
@@ -121,41 +98,6 @@ export class ApplicationService {
         obj: Partial<ResourceTagFields> //
     ): Promise<AxiosApiResponse> {
         return await axios_api.delete("resource_tags", { data: obj });
-    }
-
-    // feedback_form
-    async getFeedbackForms(): Promise<AxiosApiResponse<{ feedback_forms: FeedbackFormFields[] }>> {
-        return await axios_api.get("feedback_form");
-    }
-    async postFeedbackForm(
-        body: Partial<FeedbackFormFields> //
-    ): Promise<AxiosApiResponse> {
-        return await axios_api.post("feedback_form", body);
-    }
-    async deleteFeedbackForms(obj: { feedback_id_list?: string[] }): Promise<AxiosApiResponse> {
-        return await axios_api.delete("feedback_form", { data: obj });
-    }
-
-    // app_version
-    async getAppVersionData({
-        version_number,
-    }: Partial<AppVersionFields>): Promise<AxiosApiResponse<{ app_version: AppVersionFields }>> {
-        return await axios_api.get("app_version", {
-            params: { version_number },
-        });
-    }
-    async getAppVersionDataList(): Promise<AxiosApiResponse> {
-        return await axios_api.get("app_versions");
-    }
-    async getAppVersionNumbers(): Promise<AxiosApiResponse<{ app_versions: AppVersionFields[] }>> {
-        return await axios_api.get("app_versions", {
-            params: { numbers_only: "true" },
-        });
-    }
-
-    // app_tnc
-    async getAppTNCData(): Promise<AxiosApiResponse<{ app_tnc: AppTNCFields }>> {
-        return await axios_api.get("app_tnc");
     }
 
     async initDatabases(): Promise<AxiosApiResponse> {
@@ -246,41 +188,5 @@ export class ApplicationService {
         data: { user_id_list?: string[] } //
     ): Promise<AxiosApiResponse> {
         return await axios_api.delete("users", { data });
-    }
-
-    // Jira Issue
-    async getJiraIssue(
-        obj: GetJiraIssueBody //
-    ): Promise<AxiosApiResponse<{ jira_issue: JiraIssue }>> {
-        return await axios_api.get("integration/jira/issue", { params: obj });
-    }
-    async updateJiraIssue(
-        obj: PatchJiraIssueBody //
-    ): Promise<AxiosApiResponse<AxiosApiResponse>> {
-        return await axios_api.patch("integration/jira/issue", obj);
-    }
-    async createJiraIssue(
-        obj: PostJiraIssueBody //
-    ): Promise<AxiosApiResponse<{ jira_issue_id: string }>> {
-        return await axios_api.post("integration/jira/issue", obj);
-    }
-
-    // Jira Issue Options
-    async getJiraIssueOptions(
-        obj: GetJiraIssueOptionsBody //
-    ): Promise<AxiosApiResponse<{ jira_issue_options: JiraIssueOptions }>> {
-        return await axios_api.get("integration/jira/options", { params: obj });
-    }
-
-    // Integration
-    async testAndPatchIntegrationJira(
-        obj: PatchIntegrationJiraBody //
-    ): Promise<AxiosApiResponse> {
-        return await axios_api.patch("integration/jira", obj);
-    }
-    async getIntegration(
-        obj: GetIntegrationBody //
-    ): Promise<AxiosApiResponse<{ integration: Integration }>> {
-        return await axios_api.get("integration", { params: obj });
     }
 }

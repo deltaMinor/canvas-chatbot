@@ -1,9 +1,5 @@
 from .ai_invocation_log import AiInvocationLogService
-from .app_tnc import AppTNCService
-from .app_version import AppVersionService
 from .database_log import DatabaseLogService
-from .feedback_form import FeedbackFormService
-from .integration import IntegrationService
 from .kb_assessment_config import KbAssessmentConfigService
 from .kb_attack_flow import KbAttackFlowService
 from .kb_attack_graph_rule import KbAttackGraphRuleService
@@ -41,11 +37,7 @@ from .user_plan_config import UserPlanConfigService
 
 __all__ = [
     "AiInvocationLogService",
-    "AppTNCService",
-    "AppVersionService",
     "DatabaseLogService",
-    "FeedbackFormService",
-    "IntegrationService",
     "KbAttackFlowService",
     "KbAttackGraphRuleService",
     "KbGTLLMRegisterService",

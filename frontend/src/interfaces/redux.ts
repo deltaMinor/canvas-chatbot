@@ -7,11 +7,8 @@ import type {
 } from "@mui/x-data-grid";
 import type { PayloadAction } from "@reduxjs/toolkit";
 import type { HandleType } from "@xyflow/react";
-import type { FormikValues } from "formik";
 import type { Store } from "redux";
 
-import type { AppTNCFields } from "#root/interfaces/app_tnc";
-import type { AppVersionFields } from "#root/interfaces/app_version";
 import type { PreAuthFields } from "#root/interfaces/authentication";
 import type { UserAuthorization, UserPolicyDoc, UserRoleDoc } from "#root/interfaces/authorization";
 import type { ProjectCacti } from "#root/interfaces/cacti";
@@ -43,10 +40,8 @@ import type {
     LogDialogStateEnumKeys,
 } from "#root/interfaces/dialog";
 import type { ErrorDetails } from "#root/interfaces/error";
-import type { FeedbackFormFields } from "#root/interfaces/feedback_form";
 import type { FormFieldConfig, FormValueMap } from "#root/interfaces/formField";
 import type { AuditLog, OptionLabel } from "#root/interfaces/index";
-import type { Integration, JiraIssue, JiraIssueOptions } from "#root/interfaces/integration";
 import type { MasterMitigation } from "#root/interfaces/mitigation";
 import type {
     MuiFilterButtonStateProps,
@@ -62,8 +57,6 @@ import type {
     ExtendedFieldConfig,
     ProjectAssessmentConfigObject,
     Question,
-    QuestionOption,
-    QuestionOptionGroup,
     TableRowParams,
 } from "#root/interfaces/questionnaire";
 import type {
@@ -75,7 +68,6 @@ import type {
     ScenarioTableFilterCheckboxItem,
 } from "#root/interfaces/register";
 import type { ResourceTagFields } from "#root/interfaces/resource_tag";
-import type { ProjectStatistics } from "#root/interfaces/statistics";
 import type { KBTosca } from "#root/interfaces/tosca";
 import type { JWT_fields, UserAdminFields, UserCoreFields } from "#root/interfaces/user";
 import type { UserCreditsFields } from "#root/interfaces/user_credits";
@@ -120,22 +112,6 @@ export interface AppReducer {
     resetSecondsLeft: (state: AppState, action: PayloadAction<number | undefined>) => void;
 }
 
-export interface AppVersionFeatureState {
-    currentIndex: number;
-    appVersionDialogLoaded: boolean;
-}
-
-export interface AppVersionFeatureReducer {
-    setCurrentIndex: (
-        state: AppVersionFeatureState,
-        action: PayloadAction<AppVersionFeatureState["currentIndex"]>
-    ) => void;
-    setAppVersionDialogLoaded: (
-        state: AppVersionFeatureState,
-        action: PayloadAction<AppVersionFeatureState["appVersionDialogLoaded"]>
-    ) => void;
-}
-
 export interface AssessmentSetupFeatureInstanceState {
     activeStep: number;
     isSaving: boolean;
@@ -169,30 +145,9 @@ export interface AuthReducer {
 }
 
 export interface LegacyBackendState {
-    appTNC: AppTNCFields | null;
-    appTNCLoaded: boolean;
-    appTNCLoadError: boolean;
-    appVersionData: AppVersionFields | null;
-    appVersionDataLoaded: boolean;
-    appVersionDataLoadError: boolean;
-    appVersions: string[];
-    appVersionsLoaded: boolean;
-    appVersionsLoadError: boolean;
     authorization: UserAuthorization;
     authorizationLoaded: boolean;
     authorizationLoadError: boolean;
-    feedbackForms: FeedbackFormFields[];
-    feedbackFormsLoaded: boolean;
-    feedbackFormsLoadError: boolean;
-    integration: Integration | null;
-    integrationLoaded: boolean;
-    integrationLoadError: boolean;
-    jiraIssue: JiraIssue | null;
-    jiraIssueLoaded: boolean;
-    jiraIssueLoadError: boolean;
-    jiraIssueOptions: JiraIssueOptions | null;
-    jiraIssueOptionsLoaded: boolean;
-    jiraIssueOptionsLoadError: boolean;
     kbOwaspRegister: MasterRegister | null;
     kbOwaspRegisterLoaded: boolean;
     kbOwaspRegisterLoadError: boolean;
@@ -269,9 +224,6 @@ export interface LegacyBackendState {
     projects: Project[];
     projectsLoaded: boolean;
     projectsLoadError: boolean;
-    projectStatistics: ProjectStatistics | null;
-    projectStatisticsLoaded: boolean;
-    projectStatisticsLoadError: boolean;
     resourceTags: ResourceTagFields[];
     resourceTagsLoaded: boolean;
     resourceTagsLoadError: boolean;
@@ -337,10 +289,7 @@ export type ProjectStateKey =
     | "projectLogsLoadError"
     | "projectAssessmentConfig"
     | "projectAssessmentConfigLoaded"
-    | "projectAssessmentConfigLoadError"
-    | "projectStatistics"
-    | "projectStatisticsLoaded"
-    | "projectStatisticsLoadError";
+    | "projectAssessmentConfigLoadError";
 
 export type ProjectScopedState = Pick<LegacyBackendState, ProjectStateKey>;
 
@@ -783,7 +732,6 @@ export interface TableFieldFeatureState {
 export interface RootState {
     adminConsole: AdminConsoleState;
     app: AppState;
-    appVersionFeature: AppVersionFeatureState;
     assessmentSetupFeature: AssessmentSetupFeatureState;
     auth: AuthState;
     backend: BackendState;

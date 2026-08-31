@@ -5,7 +5,6 @@ import type { RootState } from "#root/interfaces/redux";
 import { localStorageListenerMiddleware } from "#root/middleware/localStorageListener";
 
 import appSlice from "./appSlice";
-import appVersionFeatureSlice from "./appVersionFeatureSlice";
 import backendSlice from "./backendSlice";
 import dialogSlice from "./dialogSlice";
 import layoutSlice from "./layoutSlice";
@@ -41,7 +40,6 @@ export type { AppDispatch, RootState } from "#root/interfaces/redux";
 
 const app_reducer = {
     app: appSlice.reducer,
-    appVersionFeature: appVersionFeatureSlice.reducer,
     backend: backendSlice.reducer,
     logDialogFeature: logDialogFeatureReducer,
     dialog: dialogSlice.reducer,
@@ -58,7 +56,6 @@ const rootReducer: Reducer<RootState, UnknownAction> = (state, action) => {
 
 export const app_actions = {
     app: appSlice.actions,
-    appVersionFeature: appVersionFeatureSlice.actions,
     backend: backendSlice.actions,
     logDialogFeature: {
         initializeInstance: initializeLogDialogInstanceAction,

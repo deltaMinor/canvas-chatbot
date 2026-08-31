@@ -63,7 +63,6 @@ class DiagramSpec(BaseModel):
 class RegisterSpec(BaseModel):
     max_risk_scenarios: int = Field(default=100)
     allowed_display_frameworks: list[str] = Field(default_factory=list)
-    allow_integration_jira: bool = Field(default=False)
 
 
 class QuestionnaireSpec(BaseModel):

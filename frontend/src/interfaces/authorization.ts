@@ -50,12 +50,6 @@ export interface IsAuthorized<T = boolean | null> extends IsAuthorizedCore<T> {
 
 export interface UserPermissionDoc {
     token: IsAuthorized<string>;
-    app_tnc: IsAuthorized<string>;
-    app_version: IsAuthorized<string>;
-    feedback_form: IsAuthorized<string>;
-    integration: IsAuthorized<string>;
-    jira_issue: IsAuthorized<string>;
-    jira_options: IsAuthorized<string>;
     kb_attack_flow: IsAuthorized<string>;
     kb_gt_llm_register: IsAuthorized<string>;
     kb_owasp_register: IsAuthorized<string>;
@@ -82,7 +76,6 @@ export interface UserPermissionDoc {
     project_diagram_log: IsAuthorized<string>;
     project_diagram_tosca_validate: IsAuthorized<string>;
     project_log: IsAuthorized<string>;
-    project_statistics: IsAuthorized<string>;
     project_register: IsAuthorized<string>;
     project_register_history: IsAuthorized<string>;
     project_assessment: IsAuthorized<string>;

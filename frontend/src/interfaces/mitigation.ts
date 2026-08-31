@@ -17,26 +17,6 @@ export interface MasterMitigation extends DatabaseProps {
     mitigation_measures: MasterMitigationMeasure[];
 }
 
-export enum JiraFieldsEnum {
-    assignee = "assignee",
-    description = "description",
-    duedate = "duedate",
-    issue_id = "issue_id",
-    issuetype = "issuetype",
-    status = "status",
-    summary = "summary",
-}
-
-export const JiraFieldsLabel = {
-    [JiraFieldsEnum.assignee]: "Assignee",
-    [JiraFieldsEnum.description]: "Description",
-    [JiraFieldsEnum.duedate]: "Due Date",
-    [JiraFieldsEnum.issue_id]: "Issue ID",
-    [JiraFieldsEnum.issuetype]: "Issue Type",
-    [JiraFieldsEnum.status]: "Status",
-    [JiraFieldsEnum.summary]: "Summary",
-};
-
 export enum MitigationTableFieldsEnum {
     actions = "actions",
     //
@@ -90,8 +70,6 @@ export enum MitigationTableFieldsEnum {
     groupCompletedCount = "groupCompletedCount",
     groupCompletedProgress = "groupCompletedProgress",
     groupLocation = "groupLocation",
-    //
-    jiraIssueId = "jiraIssueId",
 }
 
 export const MitigationTableFieldHeader = {
@@ -148,8 +126,6 @@ export const MitigationTableFieldHeader = {
     [MitigationTableFieldsEnum.groupCompletedCount]: "No. of Completed Measures",
     [MitigationTableFieldsEnum.groupCompletedProgress]: "Completion Progress",
     [MitigationTableFieldsEnum.groupLocation]: "Location",
-    //
-    [MitigationTableFieldsEnum.jiraIssueId]: "Jira",
 };
 
 export enum MitigationTableGroupType {

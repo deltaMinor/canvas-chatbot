@@ -177,15 +177,6 @@ class MasterRiskScenario(
         super().__init__(**data)
 
 
-class JiraMapping(BaseModel):
-    mitigationId: str | None = Field(default="")
-    issueId: str | None = Field(default="")
-
-
-class RegisterIntegrationModel(BaseModel):
-    jira: list[JiraMapping] | None = Field(default=[])
-
-
 class CVEDictObject(BaseModel):
     cveId: str | None = Field(default="")
     cveDescription: str | None = Field(default="")
@@ -559,11 +550,6 @@ class ProjectRegisterBaseModel(
     review: ProjectRegisterReview | None = Field(default_factory=ProjectRegisterReview)
     mitigation: ProjectRegisterMitigation | None = Field(
         default_factory=ProjectRegisterMitigation
-    )
-
-    # integration
-    integration: RegisterIntegrationModel | None = Field(
-        default_factory=RegisterIntegrationModel
     )
 
     @model_validator(mode="wrap")

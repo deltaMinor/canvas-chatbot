@@ -211,15 +211,6 @@ export interface ThreatFrameworks {
     tm?: string[];
 }
 
-export interface JiraMapping {
-    mitigationId: string;
-    issueId: string;
-}
-
-export interface ProjectRegisterIntegration {
-    jira: JiraMapping[];
-}
-
 export interface CVEListObject {
     cveId: string;
     cveDescription: string;
@@ -350,7 +341,6 @@ export interface ProjectRegister<V extends BaseRegisterFields = ProjectRegisterF
     extends ProjectProps, DatabaseProps, RegisterCore<V> {
     assessment_id?: string;
     assessment: ProjectRegisterAssessment;
-    integration: ProjectRegisterIntegration;
     mitigation: ProjectRegisterMitigation;
     review: ProjectRegisterReview;
     headCells?: unknown;

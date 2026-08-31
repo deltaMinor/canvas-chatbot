@@ -29,16 +29,6 @@ from .graph_validity_models import (
     RuleInfo,
     ValidityInfo,
 )
-from .jira import (
-    JIRA_ASSIGNEE_API,
-    JIRA_CLOUD_DOMAIN,
-    JIRA_ISSUE_API,
-    JIRA_ISSUE_FIELDS,
-    JIRA_ISSUE_TYPE_API,
-    JIRA_PROJECT_API,
-    JIRA_STATUS_API,
-    MAX_RESULT,
-)
 from .llm import (
     LLM_API_CATALOG,
     LLM_BATCH_CATALOG,
@@ -80,13 +70,6 @@ __all__ = [
     "EdgeValidityInfo",
     "FALLBACK_IMAGE_CONTENT_TYPE",
     "HierarchyValidityInfo",
-    "JIRA_ASSIGNEE_API",
-    "JIRA_CLOUD_DOMAIN",
-    "JIRA_ISSUE_API",
-    "JIRA_ISSUE_FIELDS",
-    "JIRA_ISSUE_TYPE_API",
-    "JIRA_PROJECT_API",
-    "JIRA_STATUS_API",
     "LLM_API_CATALOG",
     "LLM_BATCH_CATALOG",
     "LLM_BEDROCK_CANONICAL_NAME_TO_DISPLAY",
@@ -95,7 +78,6 @@ __all__ = [
     "LlmCatalog",
     "LlmCatalogEntry",
     "MAX_LLM_DIAGRAM_IMAGE_FILE_COUNT",
-    "MAX_RESULT",
     "NodeForEdgeInfo",
     "NodeForHierarchyInfo",
     "PDF_DATA_URL_PREFIX",

@@ -127,21 +127,6 @@ producer_data_kb_attack_flow = {
     },
 }
 
-producer_data_feedback_form = {
-    "task_queue": "application_queue",
-    "task_mappings": {
-        "task_name_dict": {
-            "find_multiple": "application.create_get_feedback_forms_task",
-            "update_single": "application.create_insert_feedback_form_task",
-            "delete_multiple": "application.create_delete_feedback_forms_task",
-        },
-        "task_key_dict": {
-            "find_multiple": "feedback_forms",
-            "find_single": "feedback_form",
-        },
-    },
-}
-
 producer_data_tool_history = {
     "task_queue": "application_queue",
     "task_mappings": {
@@ -617,50 +602,6 @@ producer_data_register_mapping = {
         },
         "task_key_dict": {
             "find_single": "register_mapping",
-        },
-    },
-}
-
-producer_data_integration = {
-    "task_queue": "authentication_queue",
-    "task_mappings": {
-        "task_name_dict": {
-            "find_single": "auth.create_get_integration_task",
-            "find_multiple": "auth.create_get_integrations_task",
-            "update_single": "auth.create_update_integration_task",
-            "delete_multiple": "auth.create_delete_integration_task",
-        },
-        "task_key_dict": {
-            "find_single": "integration",
-            "find_multiple": "integrations",
-        },
-    },
-}
-
-producer_data_app_tnc = {
-    "task_queue": "application_queue",
-    "task_mappings": {
-        "task_name_dict": {
-            "find_single": "application.create_get_app_tnc_task",
-            "find_multiple": "application.create_get_app_tncs_task",
-        },
-        "task_key_dict": {
-            "find_single": "app_tnc",
-            "find_multiple": "app_tncs",
-        },
-    },
-}
-
-producer_data_app_version = {
-    "task_queue": "application_queue",
-    "task_mappings": {
-        "task_name_dict": {
-            "find_single": "application.create_get_app_version_task",
-            "find_multiple": "application.create_get_app_versions_task",
-        },
-        "task_key_dict": {
-            "find_single": "app_version",
-            "find_multiple": "app_versions",
         },
     },
 }

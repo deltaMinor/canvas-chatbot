@@ -34,10 +34,6 @@ export enum ProjectTableFieldsEnum {
 }
 
 export enum ProjectEnum {
-    integrations = "integrations",
-    jira_project_key = "jira_project_key",
-    jira_site_name = "jira_site_name",
-    //
     project_file = "project_file",
     project_id = "project_id",
     project_name = "project_name",
@@ -114,7 +110,6 @@ export { ProjectSettings, ProjectSettingsSection };
 export const ProjectSettingsLabel = {
     [ProjectSettingsSection.generation]: "Risk Assessment",
     [ProjectSettingsSection.displayFrameworks]: "Display Frameworks",
-    [ProjectSettingsSection.integration]: "Integration",
     [ProjectSettingsSection.reset]: "Danger Zone",
 };
 
@@ -137,25 +132,14 @@ export interface ProjectCore extends ProjectProps {
     tier_level: number;
 }
 
-interface ProjectJira {
-    jira_project_key: string;
-    jira_site_name: string;
-}
-
-export interface ProjectIntegration {
-    jira?: ProjectJira;
-}
-
 export interface Project extends ProjectCore {
     metadata?: Metadata;
     // setup_progress?: Progress;
     user_count?: number;
     project_file?: FileList;
-    integrations: ProjectIntegration;
 }
 
 export interface ImportProject {
-    integrations?: ProjectIntegration;
     project_data?: ProjectExportData;
     resource_tags?: string[];
 }

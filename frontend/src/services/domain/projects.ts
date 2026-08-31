@@ -94,26 +94,6 @@ export const updateProjectSettings = async (
         });
 };
 
-export const updateProjectIntegration = async (
-    body: Partial<Project>, //
-    serviceDomainProps: ServiceDomainProps = {}
-) => {
-    const { hideSnackbar = true } = serviceDomainProps;
-    const ApplicationApi = new ApplicationService();
-    return await ApplicationApi.patchProjectIntegrations(body)
-        .then((res) => {
-            if (!hideSnackbar)
-                enqueueSnackbar("Project integration is updated successfully.", {
-                    variant: "success",
-                });
-            return res?.data?.data;
-        })
-        .catch((reason) => {
-            processDomainFailure(reason, serviceDomainProps);
-            return Promise.reject(reason);
-        });
-};
-
 export const createProjectAdmin = async (
     body: Partial<Project>, //
     serviceDomainProps: ServiceDomainProps = {}

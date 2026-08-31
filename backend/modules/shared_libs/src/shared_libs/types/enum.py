@@ -76,9 +76,6 @@ class Collection(Enum):
     ##################################################
     ## Application
     ##################################################
-    app_tnc = "app_tnc"
-    app_version = "app_version"
-    feedback_form = "feedback_form"
     master_cq = "master_cq"
     master_cq_template = "master_cq_template"
     project_cq = "project_cq"
@@ -91,9 +88,6 @@ class Collection(Enum):
     credit_transaction_log = "credit_transaction_log"
     user_plan_config = "user_plan_config"
     #
-    app_tnc_log = "app_tnc_log"
-    app_version_log = "app_version_log"
-    feedback_form_log = "feedback_form_log"
     master_cq_log = "master_cq_log"
     master_cq_template_log = "master_cq_template_log"
     project_cq_log = "project_cq_log"
@@ -122,14 +116,12 @@ class Collection(Enum):
     ##################################################
     ## Authentication
     ##################################################
-    integrations = "integrations"
     tokens = "tokens"
     user_permission_doc = "user_permission_doc"
     user_policy_doc = "user_policy_doc"
     user_role_doc = "user_role_doc"
     users = "users"
     #
-    integrations_log = "integrations_log"
     token_log = "token_log"
     user_log = "user_log"
     user_permission_doc_log = "user_permission_doc_log"
@@ -220,7 +212,6 @@ class Project(Enum):
     architecture_diagram = "architecture_diagram"
     conception_questionnaire = "conception_questionnaire"
     conception_template = "conception_template"
-    integrations = "integrations"
     metadata = "metadata"
     project_group = "project_group"
     project_group_id = "project_group_id"
@@ -251,7 +242,6 @@ class ProjectRegister(Enum):
     risk_scenarios = "risk_scenarios"
     review = "review"
     assessment = "assessment"
-    integration = "integration"
     mitigation = "mitigation"
     schema_ = "schema_"
     ref = "ref"

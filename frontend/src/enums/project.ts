@@ -1,8 +1,4 @@
 export enum ProjectEnum {
-    integrations = "integrations",
-    jira_project_key = "jira_project_key",
-    jira_site_name = "jira_site_name",
-    //
     project_file = "project_file",
     project_id = "project_id",
     project_name = "project_name",
@@ -35,7 +31,6 @@ export enum ProjectSettingsSection {
     reset = "reset",
     generation = "generation",
     displayFrameworks = "displayFrameworks",
-    integration = "integration",
 }
 
 export enum ProjectStatusEnum {
@@ -110,9 +105,4 @@ export enum ProjectDiagramTerraformFileField {
     modified_on = "modified_on",
     select = "select",
     delete = "delete",
-}
-
-export enum UpdateTypeEnum {
-    features = "Features",
-    bug_fixes = "Bug Fixes",
 }

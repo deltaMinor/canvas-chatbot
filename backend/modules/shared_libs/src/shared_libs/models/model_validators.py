@@ -158,40 +158,6 @@ class MitigationMeasureValidator(AbstractValidator):
         return model
 
 
-class FeedbackFormBaseValidator(AbstractValidator):
-    patchVer_ = "patch_5fc964e7-f2cb-4306-bcbc-52c20299e3d8"
-
-    @classmethod
-    def get_validated_model(
-        cls,
-        data: dict,
-        handler: Callable[[dict], "PatchBaseModel"],
-    ):
-        data = data or {}
-        _patchkeys = []
-        _unsetkeys = []
-
-        if data.get("patchVer_") == cls.patchVer_:
-            model = handler(data)
-            return model
-
-        # ==============================
-        if "feedback_type" in data and data["feedback_type"] == "bug report":
-            data["feedback_type"] = "bug"
-            _patchkeys.append("feedback_type")
-
-        # ==============================
-        data["patchVer_"] = cls.patchVer_
-        _patchkeys.append("patchVer_")
-
-        # ==============================
-        model = handler(data)
-        model._patch = len(_patchkeys) > 0
-        model._unset = len(_unsetkeys) > 0
-        model._unsetkeys = _unsetkeys
-        return model
-
-
 class ProjectBaseValidator(AbstractValidator):
     patchVer_ = "patch_3c256f26-487a-4d1c-8f34-39c3e8a4361e"
 
@@ -1875,10 +1841,6 @@ class UserPolicyDocBaseValidator(AbstractValidator):
     patchVer_ = "patch_703f0fe4-6d92-462e-a4d4-5a0c9659d62a"
 
 
-class AppInfoBaseValidator(AbstractValidator):
-    patchVer_ = "patch_7608ba17-148f-4691-9b0c-2f713fca5d95"
-
-
 class KbToscaBaseValidator(AbstractValidator):
     patchVer_ = "patch_bb4efffc-be4c-4e7b-b0db-4dd718eb0887"
 
@@ -1893,10 +1855,6 @@ class ProjectDiagramBaseValidator(AbstractValidator):
 
 class ProjectDiagramFileBaseValidator(AbstractValidator):
     patchVer_ = "patch_99812a83-fdb0-4945-9d76-8e757bc151df"
-
-
-class IntegrationBaseValidator(AbstractValidator):
-    patchVer_ = "patch_4d7572fc-c0a0-424d-8ddf-bb26c71e1c30"
 
 
 class ProjectXMLBaseValidator(AbstractValidator):

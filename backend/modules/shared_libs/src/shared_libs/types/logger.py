@@ -45,11 +45,8 @@ class AppLoggerName(Enum):
     domain_shared_file_repository = f"{app_logger}.domain.shared.file_repository"
     domain_token_redis_service = f"{app_logger}.domain.token.service.redis_service"
     # ==============================
-    domain_app_version = f"{app_logger}.domain.app_version"
     domain_kb_attack_graph_rule = f"{app_logger}.domain.kb_attack_graph_rule"
     domain_database_log = f"{app_logger}.domain.database_log"
-    domain_feedback_form = f"{app_logger}.domain.feedback_form"
-    domain_integrations = f"{app_logger}.domain.integration"
     domain_kb_attack_flow = f"{app_logger}.domain.kb_attack_flow"
     domain_kb_generation_rule = f"{app_logger}.domain.kb_generation_rule"
     domain_kb_generation_rules_library = (

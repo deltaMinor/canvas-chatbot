@@ -168,36 +168,3 @@ export interface PatchProjectDiagramCanvasBody extends ProjectProps {
     canvas_id: string;
     canvas: Partial<DiagramCanvas>;
 }
-
-export interface GetIntegrationBody {
-    user_id: string;
-}
-
-export interface PatchIntegrationJiraBody extends ProjectProps {
-    jira_project_key?: string;
-    jira_site_name?: string;
-    jiraApiToken?: string;
-    jiraUsername?: string;
-    testOnly?: boolean;
-    user_id: string;
-}
-
-export interface GetJiraIssueBody extends ProjectProps {
-    user_id: string;
-    jiraIssueId: string;
-}
-
-export interface GetJiraIssueOptionsBody extends ProjectProps {
-    user_id: string;
-}
-
-export interface PatchJiraIssueBody extends ProjectProps {
-    user_id: string;
-    jiraIssueId: string;
-    jiraField: { [key: string]: unknown };
-}
-
-export interface PostJiraIssueBody extends ProjectProps {
-    user_id: string;
-    jiraField: { [key: string]: unknown };
-}

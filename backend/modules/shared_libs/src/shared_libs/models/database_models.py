@@ -4,8 +4,6 @@ from pydantic import ConfigDict, Field
 
 from .alias import QuestionnaireValue
 from .base_models.ai_invocation_log import AiInvocationLogBaseModel
-from .base_models.app_info import AppInfoBaseModel
-from .base_models.app_tnc import AppTNCBaseModel
 from .base_models.attack_graph_rule import KbAttackGraphRuleBaseModel
 from .base_models.cacti import ProjectCactiBaseModel
 from .base_models.credit_transaction_log import CreditTransactionLogBaseModel
@@ -15,8 +13,6 @@ from .base_models.diagram import (
     ProjectADBaseModel,
 )
 from .base_models.diagram_file import ProjectDiagramFilesBaseModel
-from .base_models.feedback import FeedbackFormBaseModel
-from .base_models.integration import IntegrationBaseModel
 from .base_models.llm import KbLLMPromptBaseModel
 from .base_models.mitigation import MasterMitigationBaseModel
 from .base_models.project import ProjectBaseModel
@@ -213,37 +209,9 @@ class KbToscaModel(
     pass
 
 
-class FeedbackFormModel(
-    DatabaseModel,
-    FeedbackFormBaseModel,
-):
-    pass
-
-
 class ToolHistoryModel(
     DatabaseModel,
     ToolHistoryBaseModel,
-):
-    pass
-
-
-class AppInfoModel(
-    DatabaseModel,
-    AppInfoBaseModel,
-):
-    pass
-
-
-class AppTNCModel(
-    DatabaseModel,
-    AppTNCBaseModel,
-):
-    pass
-
-
-class IntegrationModel(
-    DatabaseModel,
-    IntegrationBaseModel,
 ):
     pass
 

@@ -7,8 +7,6 @@ from shared_libs.models.model_validators import ProjectBaseValidator
 
 __all__ = [
     "ProjectBaseModel",
-    "ProjectIntegrationBaseModel",
-    "ProjectJiraBaseModel",
     "ProjectProgressBaseModel",
 ]
 
@@ -42,17 +40,6 @@ class ProjectProgressBaseModel(BaseModel):
     view_threat_scenarios: int | None = Field(default=0)
 
 
-class ProjectJiraBaseModel(BaseModel):
-    jira_project_key: str | None = Field(default="")
-    jira_site_name: str | None = Field(default="")
-
-
-class ProjectIntegrationBaseModel(BaseModel):
-    jira: Optional["ProjectJiraBaseModel"] = Field(
-        default_factory=ProjectJiraBaseModel,
-    )
-
-
 class ProjectBaseModel(
     PatchBaseModel,
     ProjectBaseValidator,
@@ -77,9 +64,6 @@ class ProjectBaseModel(
     project_status: str | None = Field(default="active")
     resource_tags: list[str] | None = Field(default=[])
     tier_level: int | None = Field(default=0, ge=0)
-    integrations: Optional["ProjectIntegrationBaseModel"] = Field(
-        default_factory=ProjectIntegrationBaseModel,
-    )
 
     @model_validator(mode="wrap")
     @classmethod

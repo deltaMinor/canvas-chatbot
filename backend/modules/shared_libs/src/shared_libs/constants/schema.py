@@ -1,5 +1,4 @@
 schema_dict = {
-    "app_tnc": "1.0.0",
     "kb_assessment_config": "1.0.11",
     "kb_attack_flow": "1.0.0",
     "kb_attack_graph_rule": "1.0.2",
