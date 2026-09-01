@@ -9,8 +9,6 @@ export const MSG_HELP =
     "• /clear runs: Clear all stored run ids\n" +
     "• /clear all: Clear chat history, canvas diagram, and stored run ids\n" +
     "• /help: Send the list of available commands";
-export const MSG_CONFIRM_LLM_TOPOLOGY =
-    'As a TopologyGenerator session involves loading diagrams onto the canvas, the canvas will be cleared and locked during the entirety of the session. Do you want to proceed?\n(Enter "yes" to confirm)';
 export const MSG_CONFIRM_CLEAR_CHAT =
     'This will clear the chat history, are you sure?\n(Enter "yes" to confirm)';
 export const MSG_CONFIRM_CLEAR_DIAGRAM =

@@ -28,10 +28,6 @@ export const defaultPhysicalLocationOptions: SelectableValue<string>[] = [
     { label: "Not specified", value: "not_specified" },
 ];
 
-export const defaultPhysicalLocationValues = defaultPhysicalLocationOptions?.map(
-    (option) => option?.value || ""
-);
-
 export const icon_options =
     Object.keys(NodeIconKey)
         ?.sort()
