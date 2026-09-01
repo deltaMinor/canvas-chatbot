@@ -30,7 +30,7 @@ class IntentRXApplicationService:
         with get_session_lock(session_id):
             session = get_or_create_session(session_id)
             try:
-                panels, ended = session.start(app_name=app_name)
+                panels, ended = session.start(app_name=app_name, project_id=project_id)
             except IntentRXProcessError as exc:
                 drop_session(session_id)
                 panels, ended = [{"title": None, "text": str(exc)}], True

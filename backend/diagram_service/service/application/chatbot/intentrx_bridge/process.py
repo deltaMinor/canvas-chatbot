@@ -137,13 +137,23 @@ class IntentRXSession:
     def is_running(self) -> bool:
         return self._proc is not None and self._proc.poll() is None
 
-    def start(self, app_name: str | None = None) -> tuple[list[Panel], bool]:
+    def start(
+        self, app_name: str | None = None, project_id: str | None = None
+    ) -> tuple[list[Panel], bool]:
         """Launch the subprocess and return its startup output as a list of panels
 
         ``app_name`` (one of :data:`VALID_APPS`) is passed straight through
         as ``--app <app_name>``, the equivalent of running
         ``python -m main --app <app_name>`` -- this jumps straight to that
         workflow's own startup banner.
+
+        ``project_id`` identifies the canvas/project this chatbot session
+        belongs to. It is forwarded to IntentRX as the ``PROJECT_ID``
+        environment variable so that IntentRX's own database-backed import
+        options (e.g. "Import from database", "Import from current project
+        database") read from the same project's records in the
+        ``project_ad_file`` collection instead of falling back to whatever
+        default project IntentRX otherwise assumes.
 
         The bare launcher (``python -m main`` with no ``--app``, which
         prompts interactively for a workflow) is not supported yet: it
@@ -186,6 +196,13 @@ class IntentRXSession:
             # pipe, not a real console, so forcing UTF-8 is always safe.
             "PYTHONIOENCODING": "utf-8",
         }
+        if project_id:
+            # Lets IntentRX scope its own database-backed PDF import
+            # options (e.g. "Import from database (tm_ad_db)", "Import
+            # from current project database") to the project the chatbot
+            # session was actually started from, instead of an unrelated
+            # default project.
+            env["PROJECT_ID"] = project_id
         command = [str(python_exe), "-u", "-m", "main", "--app", app_name]
         try:
             self._proc = subprocess.Popen(  # noqa: S603
