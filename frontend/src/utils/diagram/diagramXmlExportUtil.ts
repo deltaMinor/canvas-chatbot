@@ -1,6 +1,3 @@
-import { FC, SVGProps, createElement } from "react";
-import { renderToStaticMarkup } from "react-dom/server";
-
 import {
     DEFAULT_CLUSTER_NODE_HEIGHT,
     DEFAULT_CLUSTER_NODE_WIDTH,
@@ -26,6 +23,27 @@ const escapeXml = (value: string): string =>
         .replace(/"/g, "&quot;")
         .replace(/'/g, "&apos;");
 
+const ensureExplicitSvgDimensions = (svgMarkup: string): string => {
+    const openTagMatch = svgMarkup.match(/<svg\b[^>]*>/);
+    if (!openTagMatch) return svgMarkup;
+
+    const openTag = openTagMatch[0];
+    if (/\swidth=/.test(openTag) && /\sheight=/.test(openTag)) return svgMarkup;
+
+    const viewBoxMatch = openTag.match(
+        /viewBox=["']\s*[\d.-]+\s+[\d.-]+\s+([\d.]+)\s+([\d.]+)\s*["']/
+    );
+    if (!viewBoxMatch) return svgMarkup;
+
+    const [, viewBoxWidth, viewBoxHeight] = viewBoxMatch;
+    const patchedOpenTag = openTag.replace(
+        /^<svg\b/,
+        `<svg width="${viewBoxWidth}" height="${viewBoxHeight}"`
+    );
+
+    return svgMarkup.replace(openTag, patchedOpenTag);
+};
+
 const iconDataUriCache = new Map<string, Promise<string>>();
 
 const getIconDataUri = (iconKey?: string): Promise<string> => {
@@ -36,16 +54,16 @@ const getIconDataUri = (iconKey?: string): Promise<string> => {
 
     const promise = (async (): Promise<string> => {
         try {
-            const IconComponent = svg_image_src_dict[key as keyof typeof svg_image_src_dict] as FC<
-                SVGProps<SVGSVGElement>
-            >;
-            const svgMarkup = renderToStaticMarkup(createElement(IconComponent));
+            const iconUrl = svg_image_src_dict[key as keyof typeof svg_image_src_dict];
+            if (typeof iconUrl !== "string") return "";
+
+            const response = await fetch(iconUrl);
+            if (!response.ok) return "";
+            const svgMarkup = ensureExplicitSvgDimensions(await response.text());
+
             const base64 = btoa(unescape(encodeURIComponent(svgMarkup)));
-            return `data:image/svg+xml,${base64}`;
+            return `data:image/svg+xml%3Bbase64,${base64}`;
         } catch {
-            // If the icon can't be rendered/encoded, the caller falls back
-            // to a plain (non-image) vertex rather than failing the whole
-            // export.
             return "";
         }
     })();
