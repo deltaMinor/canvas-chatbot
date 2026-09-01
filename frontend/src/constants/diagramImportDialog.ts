@@ -27,4 +27,9 @@ export const options_dict = {
         title: "Upload PDF",
         dialogKey: undefined,
     },
+    generatedJson: {
+        key: DiagramFileOption.generatedJson,
+        title: "View generated JSONs",
+        dialogKey: undefined,
+    },
 };

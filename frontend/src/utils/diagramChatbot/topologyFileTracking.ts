@@ -1,5 +1,7 @@
 import { ChatMessage } from "#root/interfaces/chatbot";
+import { saveGeneratedTopologyJson } from "#root/services/domain/diagram_generated_json_file";
 import { IntentRXPanel, readIntentRXFile } from "#root/services/domain/intentrx";
+import { refreshProjectDiagramFileGeneratedJson } from "#root/stores/backendRefreshStore";
 import { formatIntentRXPanels } from "#root/utils/diagramChatbot/formatIntentRX";
 import {
     extractTopologyRunId,
@@ -74,6 +76,7 @@ const updateTopologyFileTracking = (state: TopologyFileTrackingState, text: stri
 
 export const applyTopologyFileFromAddress = async (
     sessionId: string,
+    projectId: string,
     address: string
 ): Promise<ChatMessage[]> => {
     const state = getTopologyFileTrackingState(sessionId);
@@ -88,10 +91,17 @@ export const applyTopologyFileFromAddress = async (
     state.lastMtime = fileRead.mtime ?? null;
     state.lastSize = fileRead.size ?? null;
 
+    const saved = await saveGeneratedTopologyJson(projectId, fileRead.content, {
+        hideSnackbar: true,
+    });
+    if (!saved?.file_id) return [];
+
+    void refreshProjectDiagramFileGeneratedJson();
+
     return [
         {
             text: "A diagram has been generated from TopologyGenerator.",
-            topology_diagram_address: state.filePath,
+            topology_diagram_address: saved.file_id,
         },
     ];
 };
@@ -100,7 +110,8 @@ export const checkAndApplyTopologyFile = async (
     sessionId: string,
     projectId: string,
     conversationId: string,
-    panels: IntentRXPanel[]
+    panels: IntentRXPanel[],
+    generatedJsonFileId?: string
 ): Promise<ChatMessage[]> => {
     const state = getTopologyFileTrackingState(sessionId);
     for (const panel of panels) {
@@ -114,8 +125,15 @@ export const checkAndApplyTopologyFile = async (
         persistTopologyRunContext(projectId, conversationId, state.runId, state.filePath);
     }
 
-    if (!state.filePath) return messages;
+    if (!generatedJsonFileId) return messages;
 
-    const importMessages = await applyTopologyFileFromAddress(sessionId, state.filePath);
-    return [...messages, ...importMessages];
+    void refreshProjectDiagramFileGeneratedJson();
+
+    return [
+        ...messages,
+        {
+            text: "A diagram has been generated from TopologyGenerator.",
+            topology_diagram_address: generatedJsonFileId,
+        },
+    ];
 };

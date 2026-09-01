@@ -12,6 +12,9 @@ export type ProjectDiagramJsonFile = ProjectDiagramFile;
 export type ProjectDiagramPdfFiles = ProjectDiagramFiles;
 export type ProjectDiagramPdfFile = ProjectDiagramFile;
 
+export type ProjectDiagramGeneratedJsonFiles = ProjectDiagramFiles;
+export type ProjectDiagramGeneratedJsonFile = ProjectDiagramFile;
+
 export enum ProjectDiagramFileField {
     data = "data",
     file_id = "file_id",

@@ -9,7 +9,11 @@ import {
     ProjectDiagram,
     WarningReport,
 } from "#root/interfaces/diagram";
-import { ProjectDiagramFiles, ProjectDiagramPdfFiles } from "#root/interfaces/diagramFile";
+import {
+    ProjectDiagramFiles,
+    ProjectDiagramGeneratedJsonFiles,
+    ProjectDiagramPdfFiles,
+} from "#root/interfaces/diagramFile";
 import {
     PatchProjectDiagramCanvasBody,
     PatchProjectDiagramEdgeBody,
@@ -26,6 +30,13 @@ import {
 import { setupApiInterceptors } from "./tokenRefresh";
 
 export interface ProjectDiagramPdfFileDownload {
+    file_id: string;
+    filename: string;
+    content_type: string;
+    data: string;
+}
+
+export interface ProjectDiagramGeneratedJsonFileDownload {
     file_id: string;
     filename: string;
     content_type: string;
@@ -314,6 +325,41 @@ export class ArchitectureDiagramService {
     }): Promise<AxiosApiResponse<ProjectDiagramPdfFileDownload>> {
         const params = { project_id, file_id };
         return await axios_json_api.get("project_diagram/files/pdf/download", { params });
+    }
+
+    // Generated JSON Files (storage only, saved automatically from TopologyGenerator output)
+    async getProjectDiagramFileGeneratedJson(
+        { project_id }: ProjectProps //
+    ): Promise<AxiosApiResponse<{ project_generated_json_file: ProjectDiagramGeneratedJsonFiles }>> {
+        const params = { project_id };
+        return await axios_json_api.get("project_diagram/files/generated_json", { params });
+    }
+    async postDiagramFileGeneratedJson(body: {
+        project_id: string;
+        content: string;
+    }): Promise<AxiosApiResponse<{ file_id: string; filename: string }>> {
+        return await axios_json_api.post("project_diagram/files/generated_json", body);
+    }
+    async deleteProjectDiagramFileGeneratedJson(data: {
+        project_id: string; //
+        file_id_list: string[];
+    }): Promise<AxiosApiResponse> {
+        return await axios_json_api.delete(
+            "project_diagram/files/generated_json", //
+            { data }
+        );
+    }
+    async getProjectDiagramFileGeneratedJsonFile({
+        project_id,
+        file_id,
+    }: {
+        project_id: string;
+        file_id: string;
+    }): Promise<AxiosApiResponse<ProjectDiagramGeneratedJsonFileDownload>> {
+        const params = { project_id, file_id };
+        return await axios_json_api.get("project_diagram/files/generated_json/download", {
+            params,
+        });
     }
 
     // Module Files

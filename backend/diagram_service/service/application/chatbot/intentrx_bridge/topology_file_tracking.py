@@ -3,14 +3,17 @@ chip logic in `topologyFileTracking.ts` -- keep the two in sync.
 
 This only runs from `chat_persistence.append_turn`'s durability safety
 net. In the normal case the frontend already detects the same file
-change and saves the resulting chip itself; this exists purely so that
-if the safety net is what ends up persisting a turn (e.g. the browser
-closed before the frontend's own save happened), the "Diagram
-Generated" chip is still present when the conversation is reloaded.
+change and saves the resulting chip (and persists the generated JSON to
+the database) itself; this exists purely so that if the safety net is
+what ends up persisting a turn (e.g. the browser closed before the
+frontend's own save happened), the "Diagram Generated" chip -- backed by
+a real database file_id, not a temporary directory path -- is still
+present when the conversation is reloaded.
 """
 
 from __future__ import annotations
 
+import logging
 import re
 from typing import TYPE_CHECKING
 
@@ -18,6 +21,8 @@ from .file_access import FileAccessError, read_temp_file
 
 if TYPE_CHECKING:
     from .process import IntentRXSession
+
+logger = logging.getLogger(__name__)
 
 _TOPOLOGY_FILEDIR_PANEL_TITLE = "TOPO-GENERATOR-PREFLIGHT"
 
@@ -47,9 +52,39 @@ def _update_topology_file_tracking(session: "IntentRXSession", text: str) -> Non
                 tracking["file_path"] = resolved
 
 
-def _apply_topology_file(session: "IntentRXSession", address: str) -> str | None:
-    """Returns `address` if it points at a new/changed diagram file (and
-    records it as seen on `session`), otherwise None."""
+def _save_generated_json(project_id: str, content: str) -> str | None:
+    """Persists `content` to the database as a new generated-JSON file
+    (see `ProjectADFileApplicationService.save_generated_json`) and
+    returns the resulting `file_id`, or None if the save failed.
+    """
+    try:
+        from main import celery_app
+        from service.application.project_diagram.files.services import (
+            ProjectADFileApplicationService,
+        )
+
+        service = ProjectADFileApplicationService(celery_app=celery_app)
+        result = service.save_generated_json(
+            {"project_id": project_id, "content": content}
+        )
+        return result.get("file_id") if result else None
+    except Exception:
+        logger.warning(
+            "Failed to persist generated topology JSON to the database "
+            "as a durability safety net (project_id=%s); no diagram chip "
+            "will be attached to this turn.",
+            project_id,
+            exc_info=True,
+        )
+        return None
+
+
+def _apply_topology_file(
+    session: "IntentRXSession", address: str, project_id: str
+) -> str | None:
+    """Returns a database `file_id` if `address` points at a new/changed
+    diagram file that was successfully saved to the database (and records
+    it as seen on `session`), otherwise None."""
     tracking = session.topology_tracking
     tracking["file_path"] = address
 
@@ -70,15 +105,24 @@ def _apply_topology_file(session: "IntentRXSession", address: str) -> str | None
 
     tracking["last_mtime"] = file_read.get("mtime")
     tracking["last_size"] = file_read.get("size")
-    return address
+
+    return _save_generated_json(project_id, file_read["content"])
 
 
-def check_topology_file(session: "IntentRXSession | None", panels: list[dict]) -> dict | None:
+def check_topology_file(
+    session: "IntentRXSession | None", panels: list[dict], project_id: str | None
+) -> dict | None:
     """Returns a chat entry dict (``{"text": ..., "topology_diagram_address":
-    ...}``) for a "Diagram Generated" chip if `panels` reveal a new/changed
-    TopologyGenerator output file, otherwise None.
+    <file_id>}``) for a "Diagram Generated" chip if `panels` reveal a
+    new/changed TopologyGenerator output file that was successfully saved to
+    the database, otherwise None.
+
+    `topology_diagram_address` now carries a database `file_id` (not a
+    temporary directory path) so the resulting "Import Diagram" chip keeps
+    working even after the temp directory is gone or the conversation is
+    reopened on another device.
     """
-    if session is None:
+    if session is None or not project_id:
         return None
 
     tracking = session.topology_tracking
@@ -90,11 +134,11 @@ def check_topology_file(session: "IntentRXSession | None", panels: list[dict]) -
     if not tracking["file_path"]:
         return None
 
-    address = _apply_topology_file(session, tracking["file_path"])
-    if not address:
+    file_id = _apply_topology_file(session, tracking["file_path"], project_id)
+    if not file_id:
         return None
 
     return {
         "text": "A diagram has been generated from TopologyGenerator.",
-        "topology_diagram_address": address,
+        "topology_diagram_address": file_id,
     }

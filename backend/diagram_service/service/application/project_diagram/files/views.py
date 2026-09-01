@@ -10,6 +10,7 @@ from rest_framework.throttling import UserRateThrottle
 from shared_libs.constants.architecture_diagram import (
     PROJECT_AD_FILE_TYPE_CACTI,
     PROJECT_AD_FILE_TYPE_DIAGRAM,
+    PROJECT_AD_FILE_TYPE_GENERATED_JSON,
     PROJECT_AD_FILE_TYPE_MODULE,
     PROJECT_AD_FILE_TYPE_PDF_DOCUMENT,
     PROJECT_AD_FILE_TYPE_TERRAFORM,
@@ -675,6 +676,149 @@ class ProjectDiagramPDFDocumentFileDownloadAPIView(NonBlockingAPIView):
         return Response(
             success(
                 "Project PDF document file retrieved successfully.",
+                file_data,
+            ),
+            status=status.HTTP_200_OK,
+        )
+
+
+@throttle_classes([UserRateThrottle])
+class ProjectDiagramGeneratedJSONFilesAPIView(NonBlockingAPIView):
+    """
+    API View for handling requests related to storage-only generated topology
+    JSON files -- i.e. the `network_diagram.json` files TopologyGenerator
+    produces via IntentRX, persisted to the database instead of only being
+    tracked by their temporary directory path.
+
+    Attributes:
+        project_ad_file_service (ProjectADFileApplicationService): The service used for
+        performing operations related to the Project Diagram File
+    """
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        from .services import ProjectADFileApplicationService
+
+        self.project_ad_file_service = ProjectADFileApplicationService(
+            *args,
+            celery_app=celery_app,
+            **kwargs,
+        )
+
+    @raise_exception(
+        "An error occurred while retrieving generated JSON files.",
+        exception_logger=logger,
+    )
+    @verify_get_params(key_list=["project_id"])
+    def get(
+        self,
+        request: Request,
+    ):
+        project_generated_json_file = self.project_ad_file_service.get_files(
+            data=request.GET,
+            file_type=PROJECT_AD_FILE_TYPE_GENERATED_JSON,
+            as_response=True,
+        )
+        return Response(
+            success(
+                "Generated JSON files retrieved successfully.",
+                {"project_generated_json_file": project_generated_json_file},
+            ),
+            status=status.HTTP_200_OK,
+        )
+
+    @raise_exception(
+        "An error occurred while saving the generated JSON file.",
+        exception_logger=logger,
+    )
+    @verify_data_params(key_list=["project_id", "content"])
+    def post(
+        self,
+        request: Request,
+    ):
+        """Saves a TopologyGenerator-produced JSON diagram to the database
+        from raw JSON content (not a multipart file upload), so it survives
+        deletion of the temporary directory it was originally read from, and
+        remains available to any user/device that later opens the project.
+
+        Args:
+            request (Request): The HTTP request containing `project_id` and
+            `content` (the raw JSON text).
+
+        Returns:
+            Response: A response containing the newly saved file's
+            `file_id` and `filename`.
+        """
+        payload = self.project_ad_file_service.save_generated_json(
+            data=request.data,
+        )
+        return Response(
+            success(
+                "Generated JSON file successfully saved.",
+                payload,
+            ),
+            status=status.HTTP_201_CREATED,
+        )
+
+    @raise_exception(
+        "An error occurred while deleting generated JSON files.",
+        exception_logger=logger,
+    )
+    @verify_data_params(key_list=["project_id"])
+    def delete(
+        self,
+        request: Request,
+    ):
+        retval = self.project_ad_file_service.delete_files(
+            data=request.data,
+            file_type=PROJECT_AD_FILE_TYPE_GENERATED_JSON,
+        )
+        return Response(
+            success(
+                "Generated JSON file(s) deleted successfully.",
+                retval,
+            ),
+            status=status.HTTP_200_OK,
+        )
+
+
+@throttle_classes([UserRateThrottle])
+class ProjectDiagramGeneratedJSONFileDownloadAPIView(NonBlockingAPIView):
+    """
+    API View for downloading (or fetching the content of) a single
+    storage-only generated topology JSON file.
+
+    Attributes:
+        project_ad_file_service (ProjectADFileApplicationService): The service used for
+        performing operations related to the Project Diagram File
+    """
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        from .services import ProjectADFileApplicationService
+
+        self.project_ad_file_service = ProjectADFileApplicationService(
+            *args,
+            celery_app=celery_app,
+            **kwargs,
+        )
+
+    @raise_exception(
+        "An error occurred while downloading the generated JSON file.",
+        exception_logger=logger,
+    )
+    @verify_get_params(key_list=["project_id", "file_id"])
+    def get(
+        self,
+        request: Request,
+    ):
+        file_data = self.project_ad_file_service.get_file(
+            data=request.GET,
+            file_type=PROJECT_AD_FILE_TYPE_GENERATED_JSON,
+        )
+        return Response(
+            success(
+                "Generated JSON file retrieved successfully.",
                 file_data,
             ),
             status=status.HTTP_200_OK,

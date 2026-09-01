@@ -20,6 +20,7 @@ import {
 import useDebouncedCallbackHook from "#root/hooks/useDebouncedCallback";
 
 import ImportPdfOptionBody from "./ImportPdfOptionBody";
+import ViewGeneratedJsonsOptionBody from "./ViewGeneratedJsonsOptionBody";
 
 interface DiagramImportDialogContentProps {
     handleCloseDialog: () => Promise<void>;
@@ -69,6 +70,17 @@ const DiagramImportDialogContentComponent = ({
                         disabled={!capabilities.toolbar.selectPdfOption.enabled}
                     />
                     <ImportPdfOptionBody
+                        handleCloseDialog={handleCloseDialog}
+                        pendingSelectedOption={pendingSelectedOption}
+                        selectedOption={selectedOption}
+                    />
+                    <FormControlLabel
+                        control={<Radio />}
+                        label={options_dict.generatedJson.title}
+                        value={options_dict.generatedJson.key}
+                        disabled={!capabilities.toolbar.selectGeneratedJsonOption.enabled}
+                    />
+                    <ViewGeneratedJsonsOptionBody
                         handleCloseDialog={handleCloseDialog}
                         pendingSelectedOption={pendingSelectedOption}
                         selectedOption={selectedOption}

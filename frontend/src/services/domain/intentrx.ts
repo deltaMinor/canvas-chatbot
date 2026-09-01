@@ -12,6 +12,13 @@ export type { IntentRXPanel };
 export interface IntentRXTurn {
     panels: IntentRXPanel[];
     ended: boolean;
+    /**
+     * The database file_id of a newly generated topology diagram the
+     * backend detected and saved during this same request (if any). Use
+     * this directly instead of independently re-reading the temp file and
+     * saving it again -- doing both creates duplicate "diagram.json" rows.
+     */
+    topology_diagram_address?: string;
 }
 
 const FAILURE_TURN: IntentRXTurn = {

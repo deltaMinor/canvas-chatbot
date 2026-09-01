@@ -13,10 +13,12 @@ from django.core.files.uploadedfile import UploadedFile
 from django.utils.datastructures import MultiValueDict
 
 from shared_libs.constants.architecture_diagram import (
+    GENERATED_JSON_FILENAME,
     PROJECT_AD_FILE_SOURCE_DIRECT,
     PROJECT_AD_FILE_SOURCES,
     PROJECT_AD_FILE_TYPE_CACTI,
     PROJECT_AD_FILE_TYPE_DIAGRAM,
+    PROJECT_AD_FILE_TYPE_GENERATED_JSON,
     PROJECT_AD_FILE_TYPE_MODULE,
     PROJECT_AD_FILE_TYPE_PDF_DOCUMENT,
     PROJECT_AD_FILE_TYPE_TERRAFORM,
@@ -519,6 +521,47 @@ class ProjectADFileApplicationService(ProjectADFileService):
                 )
             )
         return res_arr
+
+    @raise_exception(
+        "Failed to save generated topology JSON.", exception_logger=logger
+    )
+    def save_generated_json(self, data: dict) -> dict:
+        """Persists a TopologyGenerator-produced JSON diagram straight from its
+        raw text content (as already read from the temp directory), rather
+        than from a multipart file upload.
+
+        Every call creates a new row, named `GENERATED_JSON_FILENAME`
+        ("diagram.json") as a temporary implementation, so the "View
+        generated JSONs" table can show a full history of every generation.
+
+        Args:
+            data (dict): Must contain `project_id` and `content` (a raw
+            JSON-encoded string).
+
+        Returns:
+            dict: `{"file_id": str, "filename": str}` for the newly
+            persisted file.
+        """
+        project_id = data["project_id"]
+        content = data["content"]
+        raw = content.encode("utf-8") if isinstance(content, str) else content
+
+        if not FileValidator.is_valid_json(raw):
+            raise BadRequest("Generated topology content must be valid JSON.")
+
+        decoded_file = base64.b64encode(raw).decode("utf-8")
+        file_id = f"generated_json_{uuid.uuid4()}"
+
+        self._write_file(
+            project_id=project_id,
+            filename=GENERATED_JSON_FILENAME,
+            file_id=file_id,
+            file_type=PROJECT_AD_FILE_TYPE_GENERATED_JSON,
+            content_type="application/json",
+            decoded_file=decoded_file,
+        )
+
+        return {"file_id": file_id, "filename": GENERATED_JSON_FILENAME}
 
     @raise_exception("Failed to insert project AD files.", exception_logger=logger)
     def insert_files(

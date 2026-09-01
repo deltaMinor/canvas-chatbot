@@ -58,21 +58,31 @@ def append_turn(
     panels: list[dict],
     ended: bool,
     chat_state: int,
-) -> None:
+) -> str | None:
     """Append one command + response exchange to a single conversation's
     persisted chat history, and bring its stored chat_state/chat_pending in
     line with `ended`.
+
+    Returns the database `file_id` of a newly generated topology diagram
+    detected this turn (if any), so the HTTP response can hand it straight
+    back to the frontend. The frontend then reuses this value instead of
+    independently re-reading the temp file and saving it a second time --
+    doing both used to create two near-identical "diagram.json" rows a
+    second apart for every single generation.
     """
     if not project_id or not conversation_id:
         logger.debug(
             "Skipping IntentRX chat persistence: missing project_id/conversation_id."
         )
-        return
+        return None
 
     response_texts = _format_panels(panels)
-    topology_entry = check_topology_file(session, panels)
+    topology_entry = check_topology_file(session, panels, project_id)
+    topology_diagram_address = (
+        topology_entry["topology_diagram_address"] if topology_entry else None
+    )
     if not command_text and not response_texts and not topology_entry:
-        return
+        return None
 
     try:
         from main import celery_app
@@ -127,3 +137,8 @@ def append_turn(
             conversation_id,
             exc_info=True,
         )
+
+    # Returned regardless of whether the try block above succeeded: the
+    # generated JSON file (if any) was already saved to the database by
+    # `check_topology_file` earlier, independent of chat-history persistence.
+    return topology_diagram_address

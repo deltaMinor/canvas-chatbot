@@ -40,7 +40,8 @@ export const startIntentRXSession = async (
         intentContext.sessionId,
         intentContext.projectId,
         intentContext.conversationId,
-        intentRxResponse.panels
+        intentRxResponse.panels,
+        intentRxResponse.topology_diagram_address
     );
     return [
         { messages: messages.length > 0 ? messages : [{ text: "" }] },

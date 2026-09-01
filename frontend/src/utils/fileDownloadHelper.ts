@@ -94,3 +94,19 @@ export const downloadBase64File = (
     document.body.removeChild(link);
     URL.revokeObjectURL(url);
 };
+
+/**
+ * Decodes a base64-encoded UTF-8 text payload (as returned by the backend's
+ * single-file download endpoints) back into a plain string, e.g. for
+ * re-importing a previously saved diagram JSON file's content without
+ * triggering a browser file download.
+ */
+export const base64ToText = (base64Data: string): string => {
+    const byteCharacters = atob(base64Data);
+    const byteNumbers = new Array(byteCharacters.length);
+    for (let i = 0; i < byteCharacters.length; i++) {
+        byteNumbers[i] = byteCharacters.charCodeAt(i);
+    }
+    const byteArray = new Uint8Array(byteNumbers);
+    return new TextDecoder("utf-8").decode(byteArray);
+};

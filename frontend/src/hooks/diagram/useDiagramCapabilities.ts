@@ -53,12 +53,14 @@ const EMPTY_TOOLBAR: DiagramToolbarCapabilities = {
     importTerraformFileDelete: EMPTY_BUTTON,
     uploadPdfFileCreate: EMPTY_BUTTON,
     uploadPdfFileDelete: EMPTY_BUTTON,
+    deleteGeneratedJsonFile: EMPTY_BUTTON,
     selectJsonOption: EMPTY_BUTTON,
     selectCactiOption: EMPTY_BUTTON,
     selectImageOption: EMPTY_BUTTON,
     selectXmlOption: EMPTY_BUTTON,
     selectIacOption: EMPTY_BUTTON,
     selectPdfOption: EMPTY_BUTTON,
+    selectGeneratedJsonOption: EMPTY_BUTTON,
     iacTerraformTab: EMPTY_BUTTON,
     iacModuleTab: EMPTY_BUTTON,
 };
@@ -112,6 +114,7 @@ export const useDiagramCapabilities = (): DiagramCapabilitiesState => {
     const canDeleteJsonFile = true;
     const canCreatePdfFile = true;
     const canDeletePdfFile = true;
+    const canDeleteGeneratedJsonFile = true;
     const canCreateCactiFile = true;
     const canDeleteCactiFile = true;
     const canCreateImageFile = true;
@@ -219,6 +222,7 @@ export const useDiagramCapabilities = (): DiagramCapabilitiesState => {
                 importTerraformFileDelete: { show: true, enabled: canDeleteTerraformFile },
                 uploadPdfFileCreate: { show: true, enabled: canCreatePdfFile },
                 uploadPdfFileDelete: { show: true, enabled: canDeletePdfFile },
+                deleteGeneratedJsonFile: { show: true, enabled: canDeleteGeneratedJsonFile },
                 // setup dialog radio button enablement per file type
                 selectJsonOption: { show: true, enabled: canCreateJsonFile },
                 selectCactiOption: { show: true, enabled: canCreateCactiFile },
@@ -229,6 +233,7 @@ export const useDiagramCapabilities = (): DiagramCapabilitiesState => {
                     enabled: canCreateModuleFile || canCreateTerraformFile,
                 },
                 selectPdfOption: { show: true, enabled: canCreatePdfFile },
+                selectGeneratedJsonOption: { show: true, enabled: canRead },
                 // IaC tab enablement
                 iacTerraformTab: { show: true, enabled: canCreateTerraformFile },
                 iacModuleTab: { show: true, enabled: canCreateModuleFile },
@@ -251,6 +256,7 @@ export const useDiagramCapabilities = (): DiagramCapabilitiesState => {
         canCreateXmlFile,
         canDeleteCactiFile,
         canDeleteImageFile,
+        canDeleteGeneratedJsonFile,
         canDeleteJsonFile,
         canDeleteModuleFile,
         canDeletePdfFile,

@@ -37,8 +37,14 @@ class IntentRXApplicationService:
             else:
                 if ended:
                     drop_session(session_id)
-        append_turn(session, project_id, conversation_id, command_text, panels, ended, chat_state)
-        return {"panels": panels, "ended": ended}
+        topology_diagram_address = append_turn(
+            session, project_id, conversation_id, command_text, panels, ended, chat_state
+        )
+        return {
+            "panels": panels,
+            "ended": ended,
+            "topology_diagram_address": topology_diagram_address,
+        }
  
     @raise_exception("Failed to exchange message with IntentRX.", exception_logger=logger)
     def send_message(self, data: dict) -> dict:
@@ -52,8 +58,14 @@ class IntentRXApplicationService:
             panels, ended = session.send(text)
             if ended:
                 drop_session(session_id)
-        append_turn(session, project_id, conversation_id, text, panels, ended, chat_state)
-        return {"panels": panels, "ended": ended}
+        topology_diagram_address = append_turn(
+            session, project_id, conversation_id, text, panels, ended, chat_state
+        )
+        return {
+            "panels": panels,
+            "ended": ended,
+            "topology_diagram_address": topology_diagram_address,
+        }
  
     @raise_exception("Failed to check IntentRX status.", exception_logger=logger)
     def status(self, data: dict) -> dict:

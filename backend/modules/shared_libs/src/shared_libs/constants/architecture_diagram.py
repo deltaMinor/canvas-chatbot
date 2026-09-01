@@ -5,12 +5,19 @@ FALLBACK_IMAGE_CONTENT_TYPE = "image/png"
 
 PROJECT_AD_FILE_TYPE_CACTI = "cacti"
 PROJECT_AD_FILE_TYPE_DIAGRAM = "diagram"
+PROJECT_AD_FILE_TYPE_GENERATED_JSON = "generated_json"
 PROJECT_AD_FILE_TYPE_IMAGE = "image"
 PROJECT_AD_FILE_TYPE_MODULE = "module"
 PROJECT_AD_FILE_TYPE_PDF = "pdf"
 PROJECT_AD_FILE_TYPE_PDF_DOCUMENT = "pdf_document"
 PROJECT_AD_FILE_TYPE_TERRAFORM = "terraform"
 PROJECT_AD_FILE_TYPE_XML = "xml"
+
+# Filename used for every JSON file automatically saved to the database when
+# TopologyGenerator (via IntentRX) produces a new network diagram. This is a
+# temporary implementation -- every generation is stored as its own row, all
+# sharing this literal filename, distinguished by file_id/timestamp.
+GENERATED_JSON_FILENAME = "diagram.json"
 PROJECT_AD_LLM_IMAGE_FILE_TYPES = [
     PROJECT_AD_FILE_TYPE_IMAGE,
     PROJECT_AD_FILE_TYPE_PDF,

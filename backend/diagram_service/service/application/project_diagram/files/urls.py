@@ -2,6 +2,8 @@ from django.urls import path
 
 from .views import (
     ProjectDiagramCactiFilesAPIView,
+    ProjectDiagramGeneratedJSONFileDownloadAPIView,
+    ProjectDiagramGeneratedJSONFilesAPIView,
     ProjectDiagramImageFilesAPIView,
     ProjectDiagramJSONFilesAPIView,
     ProjectDiagramModuleFilesAPIView,
@@ -43,5 +45,13 @@ urlpatterns = [
     path(
         "files/pdf/download",
         ProjectDiagramPDFDocumentFileDownloadAPIView.as_view(),
+    ),
+    path(
+        "files/generated_json",
+        ProjectDiagramGeneratedJSONFilesAPIView.as_view(),
+    ),
+    path(
+        "files/generated_json/download",
+        ProjectDiagramGeneratedJSONFileDownloadAPIView.as_view(),
     ),
 ]

@@ -2,6 +2,7 @@ import {
     KbToscaLoader,
     MasterDiagramTemplatesLoader,
     ProjectCactiLoader,
+    ProjectDiagramFileGeneratedJsonLoader,
     ProjectDiagramFileJsonLoader,
     ProjectDiagramFilePdfLoader,
     ProjectDiagramImageFilesLoader,
@@ -49,6 +50,9 @@ export const useProjectDiagramFileJsonLoader = createAuthorizationProjectLoaderH
 );
 export const useProjectDiagramFilePdfLoader = createAuthorizationProjectLoaderHook(
     ProjectDiagramFilePdfLoader //
+);
+export const useProjectDiagramFileGeneratedJsonLoader = createAuthorizationProjectLoaderHook(
+    ProjectDiagramFileGeneratedJsonLoader //
 );
 export const useProjectDiagramImageFilesLoader = createAuthorizationProjectLoaderHook(
     ProjectDiagramImageFilesLoader //

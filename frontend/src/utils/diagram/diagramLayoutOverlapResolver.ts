@@ -51,11 +51,12 @@ const NODE_OVERLAP_MARGIN = 20;
 
 const CLUSTER_FIT_MARGIN = 80;
 
-// Safety valves to guarantee termination on pathological/import-corrupted
-// diagrams instead of hanging the UI.
-const MAX_RESOLUTION_ITERATIONS = 300;
-const MAX_SEARCH_EXPANSIONS = 4000;
-const UNBOUNDED_SEARCH_MARGIN = 4000;
+const MAX_RESOLUTION_ITERATIONS = 500;
+const MAX_SEARCH_EXPANSIONS = 6000;
+
+const SEARCH_MARGIN = 4000;
+
+const RESOLUTION_TIME_BUDGET_MS = 6000;
 
 const toBox = (node: DiagramNode, allNodes: DiagramNode[]): Box | undefined => {
     const info = getNodeInfo({ node, allNodes });
@@ -130,6 +131,23 @@ const segmentsIntersect = (
 
     return false;
 };
+
+const getPolylineBounds = (polyline: XYPosition[]): Box => {
+    let minX = Infinity;
+    let minY = Infinity;
+    let maxX = -Infinity;
+    let maxY = -Infinity;
+    polyline.forEach((p) => {
+        if (p.x < minX) minX = p.x;
+        if (p.x > maxX) maxX = p.x;
+        if (p.y < minY) minY = p.y;
+        if (p.y > maxY) maxY = p.y;
+    });
+    return { x: minX, y: minY, width: maxX - minX, height: maxY - minY };
+};
+
+const boxesIntersectRaw = (a: Box, b: Box): boolean =>
+    !(a.x + a.width < b.x || b.x + b.width < a.x || a.y + a.height < b.y || b.y + b.height < a.y);
 
 const segmentIntersectsBox = (p1: XYPosition, p2: XYPosition, box: Box): boolean => {
     if (pointInBox(p1, box) || pointInBox(p2, box)) return true;
@@ -245,18 +263,30 @@ const isAncestorDescendantPair = (
     );
 };
 
-const findNodeNodeViolations = (nodes: DiagramNode[]): NodeNodeViolation[] => {
+const buildBoxCache = (nodes: DiagramNode[]): Map<string, Box> => {
+    const cache = new Map<string, Box>();
+    nodes.forEach((n) => {
+        const box = toBox(n, nodes);
+        if (box) cache.set(n.id, box);
+    });
+    return cache;
+};
+
+const findNodeNodeViolations = (
+    nodes: DiagramNode[], //
+    boxCache: Map<string, Box> = buildBoxCache(nodes)
+): NodeNodeViolation[] => {
     const violations: NodeNodeViolation[] = [];
     const visible = nodes.filter((n) => !n.hidden);
 
     for (let i = 0; i < visible.length; i++) {
         const nodeA = visible[i];
-        const boxA = nodeA && toBox(nodeA, nodes);
+        const boxA = nodeA && boxCache.get(nodeA.id);
         if (!nodeA || !boxA) continue;
 
         for (let j = i + 1; j < visible.length; j++) {
             const nodeB = visible[j];
-            const boxB = nodeB && toBox(nodeB, nodes);
+            const boxB = nodeB && boxCache.get(nodeB.id);
             if (!nodeB || !boxB) continue;
 
             if (isAncestorDescendantPair(nodeA, nodeB, nodes)) continue;
@@ -272,7 +302,8 @@ const findNodeNodeViolations = (nodes: DiagramNode[]): NodeNodeViolation[] => {
 
 const findNodeEdgeViolations = (
     nodes: DiagramNode[], //
-    edges: DiagramEdge[]
+    edges: DiagramEdge[],
+    boxCache: Map<string, Box> = buildBoxCache(nodes)
 ): NodeEdgeViolation[] => {
     const violations: NodeEdgeViolation[] = [];
     const nodesById = new Map(nodes.map((n) => [n.id, n]));
@@ -288,13 +319,15 @@ const findNodeEdgeViolations = (
         .forEach((edge) => {
             const polyline = getEdgePolyline(edge, nodesById, nodes);
             if (!polyline || polyline.length < 2) return;
+            const polylineBounds = getPolylineBounds(polyline);
 
             candidateNodes.forEach((node) => {
                 if (node.id === edge.source || node.id === edge.target) return;
 
-                const box = toBox(node, nodes);
+                const box = boxCache.get(node.id);
                 if (!box) return;
                 const inflatedBox = inflateBox(box, NODE_OVERLAP_MARGIN);
+                if (!boxesIntersectRaw(inflatedBox, polylineBounds)) return;
 
                 for (let i = 0; i < polyline.length - 1; i++) {
                     const p1 = polyline[i];
@@ -312,11 +345,17 @@ const findNodeEdgeViolations = (
 };
 
 const findAllViolations = (nodes: DiagramNode[], edges: DiagramEdge[]): Violation[] => {
+    const boxCache = buildBoxCache(nodes);
     return [
-        ...findNodeNodeViolations(nodes), //
-        ...findNodeEdgeViolations(nodes, edges),
+        ...findNodeNodeViolations(nodes, boxCache), //
+        ...findNodeEdgeViolations(nodes, edges, boxCache),
     ];
 };
+
+const violationKey = (v: Violation): string =>
+    v.kind === "node-node"
+        ? `node-node:${[v.nodeAId, v.nodeBId].sort().join("|")}`
+        : `node-edge:${v.nodeId}|${v.edgeId}`;
 
 // ####################################################################
 // Mover resolution
@@ -603,18 +642,242 @@ const resizeClusterAncestorChainToFitChildren = (
     return workingNodes;
 };
 
+const collectSubtreeIds = (rootId: string, nodes: DiagramNode[]): Set<string> => {
+    const childrenByParent = new Map<string, string[]>();
+    nodes.forEach((n) => {
+        if (!n.parentId) return;
+        const list = childrenByParent.get(n.parentId);
+        if (list) {
+            list.push(n.id);
+        } else {
+            childrenByParent.set(n.parentId, [n.id]);
+        }
+    });
+
+    const result = new Set<string>([rootId]);
+    const queue: string[] = [rootId];
+    while (queue.length > 0) {
+        const current = queue.shift();
+        if (!current) continue;
+        const children = childrenByParent.get(current) ?? [];
+        for (const childId of children) {
+            if (!result.has(childId)) {
+                result.add(childId);
+                queue.push(childId);
+            }
+        }
+    }
+    return result;
+};
+
+const collectAncestorChainIds = (
+    startId: string | undefined,
+    nodesById: Map<string, DiagramNode>
+): Set<string> => {
+    const result = new Set<string>();
+    let currentId = startId;
+    const visited = new Set<string>();
+    while (currentId && !visited.has(currentId)) {
+        visited.add(currentId);
+        result.add(currentId);
+        const current = nodesById.get(currentId);
+        currentId = current?.parentId || undefined;
+    }
+    return result;
+};
+
+const findLocalNodeNodeViolations = (
+    nodes: DiagramNode[], //
+    movedIds: Set<string>,
+    unmovedBoxCache: Map<string, Box>
+): NodeNodeViolation[] => {
+    const violations: NodeNodeViolation[] = [];
+    const visible = nodes.filter((n) => !n.hidden);
+    const moved = visible.filter((n) => movedIds.has(n.id));
+
+    for (const nodeA of moved) {
+        const boxA = toBox(nodeA, nodes);
+        if (!boxA) continue;
+
+        for (const nodeB of visible) {
+            if (movedIds.has(nodeB.id)) continue;
+            const boxB = unmovedBoxCache.get(nodeB.id);
+            if (!boxB) continue;
+            if (isAncestorDescendantPair(nodeA, nodeB, nodes)) continue;
+            if (boxesOverlap(boxA, boxB)) {
+                violations.push({ kind: "node-node", nodeAId: nodeA.id, nodeBId: nodeB.id });
+            }
+        }
+    }
+
+    return violations;
+};
+
+interface CachedPolyline {
+    points: XYPosition[];
+    bounds: Box;
+}
+
+const findLocalNodeEdgeViolations = (
+    nodes: DiagramNode[], //
+    edges: DiagramEdge[],
+    movedIds: Set<string>,
+    unmovedEdgePolylineCache: Map<string, CachedPolyline>,
+    unmovedBoxCache: Map<string, Box>
+): NodeEdgeViolation[] => {
+    const violations: NodeEdgeViolation[] = [];
+    const nodesById = new Map(nodes.map((n) => [n.id, n]));
+
+    const candidateNodes = nodes.filter(
+        (n) => !n.hidden && n.type !== CanvasNodeVariantType.clusterNode
+    );
+    const movedCandidateNodes = candidateNodes.filter((n) => movedIds.has(n.id));
+
+    edges
+        .filter((e) => !e.hidden)
+        .forEach((edge) => {
+            const edgeMoved = movedIds.has(edge.source) || movedIds.has(edge.target);
+            let points: XYPosition[] | undefined;
+            let bounds: Box | undefined;
+            if (edgeMoved) {
+                points = getEdgePolyline(edge, nodesById, nodes);
+                bounds = points && getPolylineBounds(points);
+            } else {
+                const cached = unmovedEdgePolylineCache.get(edge.id);
+                points = cached?.points;
+                bounds = cached?.bounds;
+            }
+            if (!points || !bounds || points.length < 2) return;
+            const polyline = points;
+            const polylineBounds = bounds;
+
+            // If the edge itself is unaffected, only a *moved* node could
+            // have newly crossed into (or out of) its path - an unmoved
+            // node's relationship to an unmoved edge cannot have changed.
+            const nodesToCheck = edgeMoved ? candidateNodes : movedCandidateNodes;
+
+            nodesToCheck.forEach((node) => {
+                if (node.id === edge.source || node.id === edge.target) return;
+
+                const box = movedIds.has(node.id)
+                    ? toBox(node, nodes)
+                    : unmovedBoxCache.get(node.id);
+                if (!box) return;
+                const inflatedBox = inflateBox(box, NODE_OVERLAP_MARGIN);
+                if (!boxesIntersectRaw(inflatedBox, polylineBounds)) return;
+
+                for (let i = 0; i < polyline.length - 1; i++) {
+                    const p1 = polyline[i];
+                    const p2 = polyline[i + 1];
+                    if (!p1 || !p2) continue;
+                    if (segmentIntersectsBox(p1, p2, inflatedBox)) {
+                        violations.push({ kind: "node-edge", nodeId: node.id, edgeId: edge.id });
+                        return;
+                    }
+                }
+            });
+        });
+
+    return violations;
+};
+
+const buildCandidateEvaluator = ({
+    nodes,
+    edges,
+    moverId,
+    containedWithinId,
+    baselineViolations,
+}: {
+    nodes: DiagramNode[];
+    edges: DiagramEdge[];
+    moverId: string;
+    containedWithinId: string | undefined;
+    baselineViolations: Violation[];
+}) => {
+    const nodesById = new Map(nodes.map((n) => [n.id, n]));
+    const edgesById = new Map(edges.map((e) => [e.id, e]));
+
+    const movedIds = new Set<string>([
+        ...collectSubtreeIds(moverId, nodes),
+        ...collectAncestorChainIds(containedWithinId, nodesById),
+    ]);
+
+    const edgeTouchesMoved = (edgeId: string): boolean => {
+        const edge = edgesById.get(edgeId);
+        if (!edge) return true; // missing edge: treat as changed, force a recheck
+        return movedIds.has(edge.source) || movedIds.has(edge.target);
+    };
+
+    const carryForwardKeys = new Set<string>();
+    baselineViolations.forEach((v) => {
+        if (v.kind === "node-node") {
+            const aMoved = movedIds.has(v.nodeAId);
+            const bMoved = movedIds.has(v.nodeBId);
+            // Both moved (always an ancestor/descendant pair - see header
+            // comment) or both unmoved: relative geometry is unaffected.
+            if (aMoved === bMoved) carryForwardKeys.add(violationKey(v));
+        } else {
+            const nodeMoved = movedIds.has(v.nodeId);
+            if (!nodeMoved && !edgeTouchesMoved(v.edgeId)) carryForwardKeys.add(violationKey(v));
+        }
+    });
+
+    const unmovedBoxCache = new Map<string, Box>();
+    nodes.forEach((n) => {
+        if (movedIds.has(n.id) || n.hidden) return;
+        const box = toBox(n, nodes);
+        if (box) unmovedBoxCache.set(n.id, box);
+    });
+
+    const unmovedEdgePolylineCache = new Map<string, CachedPolyline>();
+    edges.forEach((edge) => {
+        if (edge.hidden || edgeTouchesMoved(edge.id)) return;
+        const polyline = getEdgePolyline(edge, nodesById, nodes);
+        if (polyline) {
+            unmovedEdgePolylineCache.set(edge.id, {
+                points: polyline,
+                bounds: getPolylineBounds(polyline),
+            });
+        }
+    });
+
+    const baselineKeyCount = new Set(baselineViolations.map(violationKey)).size;
+
+    const countViolations = (
+        candidateNodes: DiagramNode[],
+        candidateEdges: DiagramEdge[]
+    ): number => {
+        const total = new Set(carryForwardKeys);
+        findLocalNodeNodeViolations(candidateNodes, movedIds, unmovedBoxCache).forEach((v) =>
+            total.add(violationKey(v))
+        );
+        findLocalNodeEdgeViolations(
+            candidateNodes,
+            candidateEdges,
+            movedIds,
+            unmovedEdgePolylineCache,
+            unmovedBoxCache
+        ).forEach((v) => total.add(violationKey(v)));
+        return total.size;
+    };
+
+    return { movedIds, baselineKeyCount, countViolations };
+};
+
 const searchMinimalOffset = ({
     nodes,
     edges,
     moverId,
     containedWithinId,
-    baselineViolationCount,
+    baselineViolations,
+    deadlineAt,
 }: {
     nodes: DiagramNode[];
     edges: DiagramEdge[];
     moverId: string;
     containedWithinId?: string | undefined;
-    baselineViolationCount: number;
+    baselineViolations: Violation[];
+    deadlineAt: number;
 }): SearchResult | undefined => {
     const moverNode = nodes.find((n) => n.id === moverId);
     if (!moverNode) return undefined;
@@ -622,28 +885,22 @@ const searchMinimalOffset = ({
     const moverBox = toBox(moverNode, nodes);
     if (!moverBox) return undefined;
 
-    let bounds: Box | undefined;
-    if (containedWithinId) {
-        const containerNode = nodes.find((n) => n.id === containedWithinId);
-        bounds = containerNode ? toBox(containerNode, nodes) : undefined;
-    }
+    const { movedIds, baselineKeyCount, countViolations } = buildCandidateEvaluator({
+        nodes,
+        edges,
+        moverId,
+        containedWithinId,
+        baselineViolations,
+    });
 
-    const isOffsetWithinBounds = (offset: XYPosition): boolean => {
-        if (!bounds) {
-            return (
-                Math.abs(offset.x) <= UNBOUNDED_SEARCH_MARGIN &&
-                Math.abs(offset.y) <= UNBOUNDED_SEARCH_MARGIN
-            );
-        }
-        const newX = moverBox.x + offset.x;
-        const newY = moverBox.y + offset.y;
-        return (
-            newX >= bounds.x &&
-            newY >= bounds.y &&
-            newX + moverBox.width <= bounds.x + bounds.width &&
-            newY + moverBox.height <= bounds.y + bounds.height
-        );
-    };
+    const expansionBudget =
+        movedIds.size <= 2
+            ? MAX_SEARCH_EXPANSIONS
+            : Math.max(500, Math.floor(MAX_SEARCH_EXPANSIONS / movedIds.size));
+
+    const movedEdges = edges.filter(
+        (e) => !e.hidden && (movedIds.has(e.source) || movedIds.has(e.target))
+    );
 
     const heap = new MinHeap();
     const visited = new Set<string>();
@@ -652,7 +909,11 @@ const searchMinimalOffset = ({
 
     let expansions = 0;
 
-    while (heap.size > 0 && expansions < MAX_SEARCH_EXPANSIONS) {
+    while (heap.size > 0 && expansions < expansionBudget) {
+        // Cheap wall-clock check every so often - keeps a single stuck
+        // violation from ever exceeding the overall time budget.
+        if ((expansions & 0xff) === 0 && Date.now() > deadlineAt) break;
+
         const current = heap.pop();
         if (!current) break;
         expansions += 1;
@@ -662,18 +923,21 @@ const searchMinimalOffset = ({
             y: current.j * SEARCH_GRID_STEP,
         };
 
-        if (isOffsetWithinBounds(offset)) {
-            const candidateNodes = cloneNodesWithOffset(nodes, moverId, offset);
-            const resizedNodes = resizeClusterAncestorChainToFitChildren(
-                candidateNodes,
-                containedWithinId
-            );
-            const candidateEdges = getRealignedEdgeHandles(resizedNodes, edges);
-            const violationCount = findAllViolations(resizedNodes, candidateEdges).length;
+        const candidateNodes = cloneNodesWithOffset(nodes, moverId, offset);
+        const resizedNodes = resizeClusterAncestorChainToFitChildren(
+            candidateNodes,
+            containedWithinId
+        );
 
-            if (violationCount < baselineViolationCount) {
-                return { offset, nodes: resizedNodes, edges: candidateEdges };
-            }
+        const realignedMovedEdges = getRealignedEdgeHandles(resizedNodes, movedEdges);
+        const realignedMovedById = new Map(realignedMovedEdges.map((e) => [e.id, e]));
+        const candidateEdgesForCheck = edges.map((e) => realignedMovedById.get(e.id) ?? e);
+
+        const violationCount = countViolations(resizedNodes, candidateEdgesForCheck);
+
+        if (violationCount < baselineKeyCount) {
+            const finalEdges = getRealignedEdgeHandles(resizedNodes, edges);
+            return { offset, nodes: resizedNodes, edges: finalEdges };
         }
 
         for (const step of NEIGHBOUR_STEPS) {
@@ -688,11 +952,10 @@ const searchMinimalOffset = ({
             };
             // Prune the frontier so it never wanders outside the region we
             // could possibly accept a solution in - keeps the search finite
-            // and fast even for unbounded (top-level) movers.
-            const margin = bounds
-                ? Math.max(bounds.width, bounds.height) + SEARCH_GRID_STEP
-                : UNBOUNDED_SEARCH_MARGIN;
-            if (Math.abs(nextOffset.x) > margin || Math.abs(nextOffset.y) > margin) continue;
+            // and fast regardless of whether the mover is contained.
+            if (Math.abs(nextOffset.x) > SEARCH_MARGIN || Math.abs(nextOffset.y) > SEARCH_MARGIN) {
+                continue;
+            }
 
             visited.add(key);
             heap.push({ i: nextI, j: nextJ, cost: current.cost + step.cost });
@@ -700,6 +963,78 @@ const searchMinimalOffset = ({
     }
 
     return undefined;
+};
+
+const computeDirectSeparationOffset = (movingBox: Box, staticBox: Box): XYPosition => {
+    const inflatedMoving = inflateBox(movingBox, NODE_OVERLAP_MARGIN);
+    const inflatedStatic = inflateBox(staticBox, NODE_OVERLAP_MARGIN);
+
+    const overlapX =
+        Math.min(inflatedMoving.x + inflatedMoving.width, inflatedStatic.x + inflatedStatic.width) -
+        Math.max(inflatedMoving.x, inflatedStatic.x);
+    const overlapY =
+        Math.min(
+            inflatedMoving.y + inflatedMoving.height,
+            inflatedStatic.y + inflatedStatic.height
+        ) - Math.max(inflatedMoving.y, inflatedStatic.y);
+
+    if (overlapX <= 0 || overlapY <= 0) return { x: 0, y: 0 };
+
+    const movingCenterX = movingBox.x + movingBox.width / 2;
+    const movingCenterY = movingBox.y + movingBox.height / 2;
+    const staticCenterX = staticBox.x + staticBox.width / 2;
+    const staticCenterY = staticBox.y + staticBox.height / 2;
+
+    // Snap up to the next grid step past the overlap so the pushed box
+    // clears `boxesOverlap`'s own margin check, not just the raw overlap.
+    const snap = (distance: number) =>
+        Math.ceil((distance + 1) / SEARCH_GRID_STEP) * SEARCH_GRID_STEP;
+
+    if (overlapX < overlapY) {
+        const direction = movingCenterX <= staticCenterX ? -1 : 1;
+        return { x: direction * snap(overlapX), y: 0 };
+    }
+    const direction = movingCenterY <= staticCenterY ? -1 : 1;
+    return { x: 0, y: direction * snap(overlapY) };
+};
+
+const applyDirectSeparation = (
+    nodes: DiagramNode[],
+    edges: DiagramEdge[],
+    attempt: MoverResolution,
+    violation: NodeNodeViolation
+): SearchResult | undefined => {
+    const nodeA = nodes.find((n) => n.id === violation.nodeAId);
+    const nodeB = nodes.find((n) => n.id === violation.nodeBId);
+    if (!nodeA || !nodeB) return undefined;
+
+    const boxA = toBox(nodeA, nodes);
+    const boxB = toBox(nodeB, nodes);
+    if (!boxA || !boxB) return undefined;
+
+    const nodesById = new Map(nodes.map((n) => [n.id, n]));
+    const aMoves = isDescendantOrSelf(violation.nodeAId, attempt.moverId, nodesById);
+    const bMoves = isDescendantOrSelf(violation.nodeBId, attempt.moverId, nodesById);
+    if (!aMoves && !bMoves) return undefined;
+
+    const [movingBox, staticBox] = aMoves ? [boxA, boxB] : [boxB, boxA];
+    const offset = computeDirectSeparationOffset(movingBox, staticBox);
+    if (offset.x === 0 && offset.y === 0) return undefined;
+
+    const candidateNodes = cloneNodesWithOffset(nodes, attempt.moverId, offset);
+    const resizedNodes = resizeClusterAncestorChainToFitChildren(
+        candidateNodes,
+        attempt.containedWithinId
+    );
+    const candidateEdges = getRealignedEdgeHandles(resizedNodes, edges);
+
+    const newNodeA = resizedNodes.find((n) => n.id === violation.nodeAId);
+    const newNodeB = resizedNodes.find((n) => n.id === violation.nodeBId);
+    const newBoxA = newNodeA && toBox(newNodeA, resizedNodes);
+    const newBoxB = newNodeB && toBox(newNodeB, resizedNodes);
+    if (!newBoxA || !newBoxB || boxesOverlap(newBoxA, newBoxB)) return undefined;
+
+    return { offset, nodes: resizedNodes, edges: candidateEdges };
 };
 
 export const resolveDiagramLayoutOverlaps = (
@@ -713,22 +1048,19 @@ export const resolveDiagramLayoutOverlaps = (
     // cluster) are tracked so we don't spin forever retrying them.
     const unresolvable = new Set<string>();
 
-    const violationKey = (v: Violation): string =>
-        v.kind === "node-node"
-            ? `node-node:${[v.nodeAId, v.nodeBId].sort().join("|")}`
-            : `node-edge:${v.nodeId}|${v.edgeId}`;
+    const deadlineAt = Date.now() + RESOLUTION_TIME_BUDGET_MS;
 
     for (let iteration = 0; iteration < MAX_RESOLUTION_ITERATIONS; iteration++) {
-        const violations = findAllViolations(workingNodes, workingEdges).filter(
-            (v) => !unresolvable.has(violationKey(v))
-        );
+        if (Date.now() > deadlineAt) break;
+
+        const baselineViolations = findAllViolations(workingNodes, workingEdges);
+        const violations = baselineViolations.filter((v) => !unresolvable.has(violationKey(v)));
         if (violations.length === 0) break;
 
         const violation = violations[0];
         if (!violation) break;
 
         const nodesById = new Map(workingNodes.map((n) => [n.id, n]));
-        const baselineViolationCount = findAllViolations(workingNodes, workingEdges).length;
 
         const attempts: MoverResolution[] = [];
         if (violation.kind === "node-node") {
@@ -765,27 +1097,46 @@ export const resolveDiagramLayoutOverlaps = (
             }
         }
 
-        // Evaluate every candidate mover and keep whichever produces the
-        // smallest actual movement, rather than stopping at the first one
-        // that happens to work - now that a violation can be resolved by
-        // moving any of several different nodes, "first found" and
-        // "smallest movement" are no longer the same thing.
+        const subtreeSizeByMoverId = new Map<string, number>();
+        const getSubtreeSize = (id: string): number => {
+            const cached = subtreeSizeByMoverId.get(id);
+            if (cached !== undefined) return cached;
+            const size = collectSubtreeIds(id, workingNodes).size;
+            subtreeSizeByMoverId.set(id, size);
+            return size;
+        };
+        const orderedAttempts = [...attempts].sort(
+            (a, b) => getSubtreeSize(a.moverId) - getSubtreeSize(b.moverId)
+        );
+
         let result: SearchResult | undefined;
-        let bestCost = Infinity;
-        for (const attempt of attempts) {
+        for (const attempt of orderedAttempts) {
             const candidate = searchMinimalOffset({
                 nodes: workingNodes,
                 edges: workingEdges,
                 moverId: attempt.moverId,
                 containedWithinId: attempt.containedWithinId,
-                baselineViolationCount,
+                baselineViolations,
+                deadlineAt,
             });
-            if (!candidate) continue;
-
-            const cost = Math.hypot(candidate.offset.x, candidate.offset.y);
-            if (cost < bestCost) {
-                bestCost = cost;
+            if (candidate) {
                 result = candidate;
+                break;
+            }
+        }
+
+        if (!result && violation.kind === "node-node") {
+            for (const attempt of orderedAttempts) {
+                const fallback = applyDirectSeparation(
+                    workingNodes,
+                    workingEdges,
+                    attempt,
+                    violation
+                );
+                if (fallback) {
+                    result = fallback;
+                    break;
+                }
             }
         }
 

@@ -1,6 +1,7 @@
 export { KbToscaLoader } from "./KbToscaLoader";
 export { MasterDiagramTemplatesLoader } from "./MasterDiagramTemplatesLoader";
 export { ProjectCactiLoader } from "./ProjectCactiLoader";
+export { ProjectDiagramFileGeneratedJsonLoader } from "./ProjectDiagramFileGeneratedJsonLoader";
 export { ProjectDiagramFileJsonLoader } from "./ProjectDiagramFileJsonLoader";
 export { ProjectDiagramFilePdfLoader } from "./ProjectDiagramFilePdfLoader";
 export { ProjectDiagramImageFilesLoader } from "./ProjectDiagramImageFilesLoader";

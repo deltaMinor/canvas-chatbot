@@ -345,7 +345,8 @@ export const handleIntentRXState = async (
         intentContext.sessionId,
         intentContext.projectId,
         intentContext.conversationId,
-        intentRxResponse.panels
+        intentRxResponse.panels,
+        intentRxResponse.topology_diagram_address
     );
     if (intentRxResponse.ended) {
         resetTopologyFileTrackingState(intentContext.sessionId);
@@ -418,7 +419,8 @@ export const handleTopologySetup = async (
         intentContext.sessionId,
         intentContext.projectId,
         intentContext.conversationId,
-        intentRxResponse.panels
+        intentRxResponse.panels,
+        intentRxResponse.topology_diagram_address
     );
     if (intentRxResponse.ended) {
         resetTopologyFileTrackingState(intentContext.sessionId);
@@ -467,7 +469,8 @@ export const handleTopologySetupContinue = async (
         intentContext.sessionId,
         intentContext.projectId,
         intentContext.conversationId,
-        intentRxResponse.panels
+        intentRxResponse.panels,
+        intentRxResponse.topology_diagram_address
     );
     if (intentRxResponse.ended) {
         resetTopologyFileTrackingState(intentContext.sessionId);
@@ -498,6 +501,7 @@ export const handleTopologySetupContinue = async (
         if (run) {
             const importMessages = await applyTopologyFileFromAddress(
                 intentContext.sessionId,
+                intentContext.projectId,
                 run.address
             );
             messages.push(...importMessages);
@@ -598,7 +602,8 @@ export const handleLlmTopologySetupUploadedPdf = async (
         intentContext.sessionId,
         intentContext.projectId,
         intentContext.conversationId,
-        intentRxResponse.panels
+        intentRxResponse.panels,
+        intentRxResponse.topology_diagram_address
     );
     if (intentRxResponse.ended) {
         resetTopologyFileTrackingState(intentContext.sessionId);
@@ -676,7 +681,8 @@ export const handleLlmTopologySetupUpload = async (
         intentContext.sessionId,
         intentContext.projectId,
         intentContext.conversationId,
-        intentRxResponse.panels
+        intentRxResponse.panels,
+        intentRxResponse.topology_diagram_address
     );
     if (intentRxResponse.ended) {
         resetTopologyFileTrackingState(intentContext.sessionId);

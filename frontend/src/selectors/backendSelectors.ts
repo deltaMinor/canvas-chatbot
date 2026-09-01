@@ -10,6 +10,7 @@ import {
     KbToscaLoader,
     MasterDiagramTemplatesLoader,
     ProjectCactiLoader,
+    ProjectDiagramFileGeneratedJsonLoader,
     ProjectDiagramFileJsonLoader,
     ProjectDiagramFilePdfLoader,
     ProjectDiagramImageFilesLoader,
@@ -52,6 +53,24 @@ export const selectBackendProjectDiagram = (
 export const selectBackendProject = (
     state: RootState //
 ) => selectBackendProjectState(state).project;
+export const selectBackendIntegration = (
+    state: RootState //
+) => selectBackendState(state).integration;
+export const selectBackendIntegrationLoaded = (
+    state: RootState //
+) => selectBackendState(state).integrationLoaded;
+export const selectBackendIntegrationLoadError = (
+    state: RootState //
+) => selectBackendState(state).integrationLoadError;
+export const selectBackendJiraIssueOptions = (
+    state: RootState //
+) => selectBackendState(state).jiraIssueOptions;
+export const selectBackendJiraIssueOptionsLoaded = (
+    state: RootState //
+) => selectBackendState(state).jiraIssueOptionsLoaded;
+export const selectBackendJiraIssueOptionsLoadError = (
+    state: RootState //
+) => selectBackendState(state).jiraIssueOptionsLoadError;
 export const selectBackendProjectDiagramIsAuthorized = (
     state: RootState //
 ) => {
@@ -74,6 +93,15 @@ export const selectBackendProjectCactiLoadError = (
 export const selectBackendProjectCacti = (
     state: RootState //
 ) => selectBackendProjectState(state).projectDiagramFileCacti;
+export const selectBackendProjectStatisticsLoaded = (
+    state: RootState //
+) => !!selectBackendProjectState(state).projectStatisticsLoaded;
+export const selectBackendProjectStatisticsLoadError = (
+    state: RootState //
+) => !!selectBackendProjectState(state).projectStatisticsLoadError;
+export const selectBackendProjectStatistics = (
+    state: RootState //
+) => selectBackendProjectState(state).projectStatistics;
 export const selectBackendTerraformFilesLoaded = (
     state: RootState //
 ) => selectBackendProjectState(state).projectDiagramFileTerraformLoaded;
@@ -179,6 +207,15 @@ export const selectBackendUserRoleOptionsLoaded = (
 export const selectBackendUserRoleOptionsLoadError = (
     state: RootState //
 ) => selectBackendState(state).userRoleOptionsLoadError;
+export const selectBackendAppVersions = (
+    state: RootState //
+) => selectBackendState(state).appVersions;
+export const selectBackendAppVersionsLoaded = (
+    state: RootState //
+) => selectBackendState(state).appVersionsLoaded;
+export const selectBackendAppVersionData = (
+    state: RootState //
+) => selectBackendState(state).appVersionData;
 export const selectBackendPreAuth = (
     state: RootState //
 ) => selectBackendState(state).preAuth;
@@ -212,6 +249,11 @@ export const selectProjectDiagramFileJsonLoader = createSelector(
 export const selectProjectDiagramFilePdfLoader = createSelector(
     [selectBackendProjectId],
     (projectId) => new ProjectDiagramFilePdfLoader(projectId)
+);
+
+export const selectProjectDiagramFileGeneratedJsonLoader = createSelector(
+    [selectBackendProjectId],
+    (projectId) => new ProjectDiagramFileGeneratedJsonLoader(projectId)
 );
 
 export const selectProjectDiagramImageFilesLoader = createSelector(

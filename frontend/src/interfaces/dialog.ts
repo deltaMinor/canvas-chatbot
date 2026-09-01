@@ -202,6 +202,9 @@ export enum DialogConfirmStateEnum {
     // diagram PDF document (storage only)
     confirmDeletePdfFile = "confirmDeletePdfFile",
     confirmDeletePdfFiles = "confirmDeletePdfFiles",
+    // diagram generated JSON (storage only, saved from TopologyGenerator output)
+    confirmDeleteGeneratedJsonFile = "confirmDeleteGeneratedJsonFile",
+    confirmDeleteGeneratedJsonFiles = "confirmDeleteGeneratedJsonFiles",
     // generate diagram
     confirmGenerateDiagramBlank = "confirmGenerateDiagramBlank",
     confirmGenerateDiagramFromCacti = "confirmGenerateDiagramFromCacti",

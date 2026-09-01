@@ -92,6 +92,60 @@ export const useUsersLoaded = createBackendStateHook(
 export const useUsersLoadError = createBackendStateHook(
     "usersLoadError" //
 );
+export const useAppTNC = createBackendStateHook(
+    "appTNC" //
+);
+export const useAppTNCLoaded = createBackendStateHook(
+    "appTNCLoaded" //
+);
+export const useAppTNCLoadError = createBackendStateHook(
+    "appTNCLoadError" //
+);
+export const useAppVersionData = createBackendStateHook(
+    "appVersionData" //
+);
+export const useAppVersionDataLoaded = createBackendStateHook(
+    "appVersionDataLoaded" //
+);
+export const useAppVersionDataLoadError = createBackendStateHook(
+    "appVersionDataLoadError" //
+);
+export const useAppVersions = createBackendStateHook(
+    "appVersions" //
+);
+export const useAppVersionsLoaded = createBackendStateHook(
+    "appVersionsLoaded" //
+);
+export const useAppVersionsLoadError = createBackendStateHook(
+    "appVersionsLoadError" //
+);
+export const useFeedbackForms = createBackendStateHook(
+    "feedbackForms" //
+);
+export const useFeedbackFormsLoaded = createBackendStateHook(
+    "feedbackFormsLoaded" //
+);
+export const useFeedbackFormsLoadError = createBackendStateHook(
+    "feedbackFormsLoadError" //
+);
+export const useIntegration = createBackendStateHook(
+    "integration" //
+);
+export const useIntegrationLoaded = createBackendStateHook(
+    "integrationLoaded" //
+);
+export const useIntegrationLoadError = createBackendStateHook(
+    "integrationLoadError" //
+);
+export const useJiraIssueOptions = createBackendStateHook(
+    "jiraIssueOptions" //
+);
+export const useJiraIssueOptionsLoaded = createBackendStateHook(
+    "jiraIssueOptionsLoaded" //
+);
+export const useJiraIssueOptionsLoadError = createBackendStateHook(
+    "jiraIssueOptionsLoadError" //
+);
 export const useKbTosca = createBackendStateHook(
     "kbTosca" //
 );
@@ -202,6 +256,15 @@ export const useModuleFilesLoadError = createProjectStateHook(
 );
 export const useProject = createProjectStateHook(
     "project" //
+);
+export const useProjectStatistics = createProjectStateHook(
+    "projectStatistics" //
+);
+export const useProjectStatisticsLoaded = createProjectStateHook(
+    "projectStatisticsLoaded" //
+);
+export const useProjectStatisticsLoadError = createProjectStateHook(
+    "projectStatisticsLoadError" //
 );
 export const useProjectId = () => {
     const location = useLocation();
@@ -321,6 +384,15 @@ export const useProjectDiagramFilePdfLoaded = createProjectStateHook(
 );
 export const useProjectDiagramFilePdfLoadError = createProjectStateHook(
     "projectDiagramFilePdfLoadError" //
+);
+export const useProjectDiagramFileGeneratedJson = createProjectStateHook(
+    "projectDiagramFileGeneratedJson" //
+);
+export const useProjectDiagramFileGeneratedJsonLoaded = createProjectStateHook(
+    "projectDiagramFileGeneratedJsonLoaded" //
+);
+export const useProjectDiagramFileGeneratedJsonLoadError = createProjectStateHook(
+    "projectDiagramFileGeneratedJsonLoadError" //
 );
 export const useProjectRegister = createProjectStateHook(
     "projectRegister" //

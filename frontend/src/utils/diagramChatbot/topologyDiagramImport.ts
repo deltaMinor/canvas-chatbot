@@ -1,5 +1,5 @@
 import { HandleSetProcessedNodesAndEdges } from "#root/interfaces/diagramContent";
-import { readIntentRXFile } from "#root/services/domain/intentrx";
+import { fetchProjectDiagramFileGeneratedJsonContent } from "#root/services/domain/diagram_generated_json_file";
 import { updateProjectDiagram } from "#root/stores/projectDiagramFeaturePersistenceStore";
 import { getBackendProjectDiagramFromStore } from "#root/stores/projectDiagramFeatureStore";
 import { processImportDiagram } from "#root/utils/diagram/diagramImportDialogUtil";
@@ -35,18 +35,23 @@ export const importDiagramFromFile = async ({
 export const importDiagramFromTopologyGeneratorAddress = async ({
     instanceId,
     handleSetProcessedNodesAndEdges,
-    address,
+    projectId,
+    fileId,
 }: {
     instanceId: string;
     handleSetProcessedNodesAndEdges: HandleSetProcessedNodesAndEdges;
-    address: string;
+    projectId: string;
+    fileId: string;
 }): Promise<string> => {
-    const fileRead = await readIntentRXFile(address);
-    if (!fileRead.exists || fileRead.content === undefined) {
+    const content = await fetchProjectDiagramFileGeneratedJsonContent({
+        project_id: projectId,
+        file_id: fileId,
+    });
+    if (!content) {
         throw new Error("The generated topology file could not be found.");
     }
 
-    const file = new File([fileRead.content], "network_topology.json", {
+    const file = new File([content], "diagram.json", {
         type: "application/json",
     });
 

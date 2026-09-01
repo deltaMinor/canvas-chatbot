@@ -5,11 +5,12 @@ import DiagramTopologyPreviewImage from "#root/components/DiagramTopologyPreview
 import DialogConfirm from "#root/components/DialogConfirm";
 import { useDiagramInstanceId } from "#root/contexts/DiagramInstanceContext";
 import { DialogConfirmStateEnum } from "#root/enums/dialog";
+import { useProjectId } from "#root/hooks/backendHooks";
 import { useHandleSetProcessedNodesAndEdges } from "#root/hooks/diagram";
 import { useDialogState } from "#root/hooks/dialogHooks";
 import { DiagramEdge, DiagramNode } from "#root/interfaces/diagram";
 import CallApiWithTransition from "#root/services/CallApiWithTransition";
-import { readIntentRXFile } from "#root/services/domain/intentrx";
+import { fetchProjectDiagramFileGeneratedJsonContent } from "#root/services/domain/diagram_generated_json_file";
 import { handleCloseDialogAsync } from "#root/stores/dialogStore";
 import { parseImportedDiagramCanvas } from "#root/utils/diagramChatbot/importDiagram";
 import { importDiagramFromTopologyGeneratorAddress } from "#root/utils/diagramChatbot/topologyDiagramImport";
@@ -23,6 +24,7 @@ type PreviewStatus = "loading" | "ready" | "error";
 
 const TopologyGeneratorDialogConfirmComponent = () => {
     const instanceId = useDiagramInstanceId();
+    const projectId = useProjectId();
     const dialogConfirmState = useDialogState();
     const handleSetProcessedNodesAndEdges = useHandleSetProcessedNodesAndEdges();
 
@@ -36,7 +38,7 @@ const TopologyGeneratorDialogConfirmComponent = () => {
     >(undefined);
 
     // Generate a fresh preview every time the dialog opens, so it always
-    // reflects the current contents of the address on disk.
+    // reflects the current saved content for this file_id.
     React.useEffect(() => {
         if (!isOpen) return;
 
@@ -47,19 +49,22 @@ const TopologyGeneratorDialogConfirmComponent = () => {
             setPreviewImageUrl(undefined);
             setCaptureData(undefined);
 
-            const address = getPendingTopologyDiagramAddress();
-            if (!address) {
+            const fileId = getPendingTopologyDiagramAddress();
+            if (!fileId) {
                 if (!cancelled) setPreviewStatus("error");
                 return;
             }
 
             try {
-                const fileRead = await readIntentRXFile(address);
-                if (!fileRead.exists || fileRead.content === undefined) {
+                const content = await fetchProjectDiagramFileGeneratedJsonContent({
+                    project_id: projectId,
+                    file_id: fileId,
+                });
+                if (!content) {
                     throw new Error("The generated topology file could not be found.");
                 }
 
-                const importedCanvas = parseImportedDiagramCanvas(fileRead.content);
+                const importedCanvas = parseImportedDiagramCanvas(content);
                 const preview = getPrimaryCanvasPreviewNodesAndEdges(importedCanvas);
                 if (!preview) {
                     throw new Error("The generated topology file has no canvas to preview.");
@@ -76,7 +81,7 @@ const TopologyGeneratorDialogConfirmComponent = () => {
         return () => {
             cancelled = true;
         };
-    }, [isOpen]);
+    }, [isOpen, projectId]);
 
     const handlePreviewCaptured = React.useCallback((dataUrl: string) => {
         setPreviewImageUrl(dataUrl);
@@ -96,16 +101,17 @@ const TopologyGeneratorDialogConfirmComponent = () => {
     };
 
     const handleClickGenerateDiagramFromTopologyGenerator = async () => {
-        const address = getPendingTopologyDiagramAddress();
+        const fileId = getPendingTopologyDiagramAddress();
         await handleCloseTopologyGeneratorDialogConfirm();
-        if (!address) return;
+        if (!fileId) return;
 
         await CallApiWithTransition({
             async_func: async () => {
                 await importDiagramFromTopologyGeneratorAddress({
                     instanceId,
                     handleSetProcessedNodesAndEdges,
-                    address,
+                    projectId,
+                    fileId,
                 });
             },
             func_on_completion: async () => {

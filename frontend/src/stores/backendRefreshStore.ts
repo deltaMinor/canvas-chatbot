@@ -3,6 +3,7 @@ import {
     selectKbToscaLoader,
     selectMasterDiagramTemplatesLoader,
     selectProjectCactiLoader,
+    selectProjectDiagramFileGeneratedJsonLoader,
     selectProjectDiagramFileJsonLoader,
     selectProjectDiagramFilePdfLoader,
     selectProjectDiagramImageFilesLoader,
@@ -65,6 +66,11 @@ export const refreshProjectDiagramFileJson = async () =>
 
 export const refreshProjectDiagramFilePdf = async () =>
     await selectProjectDiagramFilePdfLoader(
+        getRootStateFromStore() //
+    ).refresh();
+
+export const refreshProjectDiagramFileGeneratedJson = async () =>
+    await selectProjectDiagramFileGeneratedJsonLoader(
         getRootStateFromStore() //
     ).refresh();
 
