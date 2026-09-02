@@ -44,13 +44,10 @@ const TO_REPLACE_SETUP_PARAGRAPH = [
 
 const REPLACEMENT_SETUP_PARAGRAPH = [
     "How would you like to continue?",
-    "[1] Use one of the detected files",
-    "[2] Provide a new absolute PDF path",
-    "[3] Import from database (tm_ad_db)",
-    "[4] Continue from previous run",
-    "[5] Continue without a diagram",
-    "[6] Import from current project database",
-    "[7] Upload PDF file",
+    "[1] Continue from previous run",
+    "[2] Continue without a diagram",
+    "[3] Import from current project database",
+    "[4] Upload PDF file",
 ].join("\n");
 
 const addMenuOptions = (input: string): string => {

@@ -15,6 +15,7 @@ import {
     TOPOLOGY_CURRPROJ_INPUT,
     TOPOLOGY_DATABASE_INPUT,
     TOPOLOGY_DIRUPLOAD_INPUT,
+    TOPOLOGY_NODIAGRAM_INPUT,
 } from "#root/constants/diagramChatbot";
 import { ChatbotState } from "#root/enums/diagram-chatbot";
 import { ChatMessage, ChatbotHandle, HandleInputFnOutput } from "#root/interfaces/chatbot";
@@ -367,80 +368,120 @@ export const handleTopologySetup = async (
         intentContext.projectId,
         intentContext.conversationId
     );
-    if (text === TOPOLOGY_CONTINUE_INPUT) {
-        if (runs.length === 0) {
-            return [
-                stringsToHandleInputFnOutput(
-                    "No run-ids recorded for this conversation, please select a different setup option."
-                ),
-                ChatbotState.LlmTopologySetup,
-            ];
-        }
-    }
-    if (text === TOPOLOGY_DIRUPLOAD_INPUT) {
-        return [
-            stringsToHandleInputFnOutput("Attach a PDF file to parse."),
-            ChatbotState.LlmTopologySetupUpload,
-        ];
-    }
-    if (text === TOPOLOGY_CURRPROJ_INPUT) {
-        const projectDiagramFilePdf = await getProjectDiagramFilePdfFromApi(
-            intentContext.projectId
-        );
-        const files = getUploadedPdfs(projectDiagramFilePdf);
+    switch (text) {
+        case TOPOLOGY_CONTINUE_INPUT:
+            if (runs.length === 0) {
+                return [
+                    stringsToHandleInputFnOutput(
+                        "No run-ids recorded for this conversation, please select a different setup option."
+                    ),
+                    ChatbotState.LlmTopologySetup,
+                ];
+            } else {
+                const intentRxResponse = await withIntentRXProgress(
+                    intentContext.sessionId,
+                    intentContext.onProgress,
+                    () =>
+                        sendIntentRXMessage(
+                            intentContext.sessionId,
+                            "4",
+                            intentContext.projectId,
+                            intentContext.conversationId,
+                            ChatbotState.LlmTopology
+                        )
+                );
+                const messages = await checkAndApplyTopologyFile(
+                    intentContext.sessionId,
+                    intentContext.projectId,
+                    intentContext.conversationId,
+                    intentRxResponse.panels,
+                    intentRxResponse.topology_diagram_address
+                );
+                if (intentRxResponse.ended) {
+                    resetTopologyFileTrackingState(intentContext.sessionId);
+                }
 
-        if (files.length === 0) {
-            return [
-                stringsToHandleInputFnOutput(
-                    "No uploaded PDF files found. Select a different option."
-                ),
-                ChatbotState.LlmTopologySetup,
-            ];
-        }
-
-        return [
-            stringsToHandleInputFnOutput("Choose an uploaded PDF to parse:\n" + filesToList(files)),
-            ChatbotState.LlmTopologySetupUploadedPdf,
-        ];
-    }
-    const intentRxResponse = await withIntentRXProgress(
-        intentContext.sessionId,
-        intentContext.onProgress,
-        () =>
-            sendIntentRXMessage(
+                return [
+                    {
+                        messages: messages.length > 0 ? messages : [{ text: "" }],
+                        inputs: runs.map(topologyRunContextToSpecialInput),
+                    },
+                    intentRxResponse.ended
+                        ? ChatbotState.Neutral
+                        : ChatbotState.LlmTopologySetupContinue,
+                ];
+            }
+        case TOPOLOGY_NODIAGRAM_INPUT: {
+            const intentRxResponse = await withIntentRXProgress(
                 intentContext.sessionId,
-                text,
+                intentContext.onProgress,
+                () =>
+                    sendIntentRXMessage(
+                        intentContext.sessionId,
+                        "5",
+                        intentContext.projectId,
+                        intentContext.conversationId,
+                        ChatbotState.LlmTopology
+                    )
+            );
+            const messages = await checkAndApplyTopologyFile(
+                intentContext.sessionId,
                 intentContext.projectId,
                 intentContext.conversationId,
-                ChatbotState.LlmTopology
-            )
-    );
-    const messages = await checkAndApplyTopologyFile(
-        intentContext.sessionId,
-        intentContext.projectId,
-        intentContext.conversationId,
-        intentRxResponse.panels,
-        intentRxResponse.topology_diagram_address
-    );
-    if (intentRxResponse.ended) {
-        resetTopologyFileTrackingState(intentContext.sessionId);
-    }
+                intentRxResponse.panels,
+                intentRxResponse.topology_diagram_address
+            );
+            if (intentRxResponse.ended) {
+                resetTopologyFileTrackingState(intentContext.sessionId);
+            }
+            return [
+                {
+                    messages: messages.length > 0 ? messages : [{ text: "" }],
+                },
+                intentRxResponse.ended ? ChatbotState.Neutral : ChatbotState.LlmTopology,
+            ];
+        }
+        case TOPOLOGY_CURRPROJ_INPUT: {
+            const projectDiagramFilePdf = await getProjectDiagramFilePdfFromApi(
+                intentContext.projectId
+            );
+            const files = getUploadedPdfs(projectDiagramFilePdf);
 
-    if (text === TOPOLOGY_CONTINUE_INPUT) {
-        return [
-            {
-                messages: messages.length > 0 ? messages : [{ text: "" }],
-                inputs: runs.map(topologyRunContextToSpecialInput),
-            },
-            intentRxResponse.ended ? ChatbotState.Neutral : ChatbotState.LlmTopologySetupContinue,
-        ];
+            if (files.length === 0) {
+                return [
+                    stringsToHandleInputFnOutput(
+                        "No uploaded PDF files found. Select a different option."
+                    ),
+                    ChatbotState.LlmTopologySetup,
+                ];
+            }
+
+            return [
+                stringsToHandleInputFnOutput(
+                    "Choose an uploaded PDF to parse:\n" + filesToList(files)
+                ),
+                ChatbotState.LlmTopologySetupUploadedPdf,
+            ];
+        }
+        case TOPOLOGY_DIRUPLOAD_INPUT:
+            return [
+                stringsToHandleInputFnOutput("Attach a PDF file to parse."),
+                ChatbotState.LlmTopologySetupUpload,
+            ];
+        default:
+            return [
+                stringsToHandleInputFnOutput(
+                    [
+                        "Invalid input, please select an option from below.",
+                        "[1] Continue from previous run",
+                        "[2] Continue without a diagram",
+                        "[3] Import from current project database",
+                        "[4] Upload PDF file",
+                    ].join("\n")
+                ),
+                ChatbotState.LlmTopologySetup,
+            ];
     }
-    return [
-        {
-            messages: messages.length > 0 ? messages : [{ text: "" }],
-        },
-        intentRxResponse.ended ? ChatbotState.Neutral : ChatbotState.LlmTopology,
-    ];
 };
 
 export const handleTopologySetupContinue = async (
