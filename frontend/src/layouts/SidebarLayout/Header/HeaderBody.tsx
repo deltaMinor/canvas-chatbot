@@ -6,6 +6,7 @@ import { useProject, useProjectId } from "#root/hooks/backendHooks";
 
 import ClearButton from "./ClearButton";
 import ExportButton from "./ExportButton";
+import GeneratedDiagramsButton from "./GeneratedDiagramsButton";
 import ImportButton from "./ImportButton";
 
 const BRAND_NAME = import.meta.env.VITE_BRAND_NAME || "Integrative Threat Modelling Platform";
@@ -79,9 +80,10 @@ const HeaderBodyComponent = () => {
                                         justifyContent: "flex-end",
                                         alignItems: "center",
                                     }}
-                                    spacing={1}
+                                    spacing={0}
                                 >
                                     <ImportButton />
+                                    <GeneratedDiagramsButton />
                                     <ExportButton />
                                     <ClearButton />
                                 </Stack>

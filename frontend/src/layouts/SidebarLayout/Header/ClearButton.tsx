@@ -2,10 +2,7 @@ import React from "react";
 
 import DeleteIcon from "@mui/icons-material/Delete";
 
-import {
-    DiagramToolbarButton,
-    DiagramToolbarDivider,
-} from "#root/components/DiagramToolbarPrimitives";
+import { DiagramToolbarButton } from "#root/components/DiagramToolbarPrimitives";
 import { DialogConfirmStateEnum } from "#root/interfaces/dialog";
 import { handleOpenDialog } from "#root/stores/dialogStore";
 
@@ -24,12 +21,6 @@ const ClearButtonComponent = () => {
             >
                 Clear
             </DiagramToolbarButton>
-            <DiagramToolbarDivider //
-                orientation="vertical"
-                variant="middle"
-                flexItem
-                sx={{ borderColor: "rgba(255, 255, 255, 0.5)" }}
-            />
         </>
     );
 };

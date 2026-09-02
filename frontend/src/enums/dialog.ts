@@ -7,6 +7,7 @@ export enum DialogStateEnum {
     assessmentCheckpointHistory = "assessmentCheckpointHistory",
     attackFlowDatabase = "attackFlowDatabase",
     diagramExport = "diagramExport",
+    diagramGeneratedJsonImport = "diagramGeneratedJsonImport",
     diagramImport = "diagramImport",
     editMasterRegisterScenario = "editMasterRegisterScenario",
     editProjectRegisterScenario = "editProjectRegisterScenario",

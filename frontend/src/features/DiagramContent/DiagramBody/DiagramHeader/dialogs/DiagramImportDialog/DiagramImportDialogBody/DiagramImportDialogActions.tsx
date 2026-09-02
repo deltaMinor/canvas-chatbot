@@ -10,9 +10,9 @@ interface DiagramImportDialogActionsProps {
 }
 
 /**
- * The PDF-upload flow (the only import option kept in this demo) manages its
- * own confirmation inside `ImportPdfOptionBody`, so this footer only offers
- * a way to skip/close the import dialog and start with a blank canvas.
+ * Both the PDF-upload dialog and the generated-diagrams dialog manage their
+ * own confirmation inside their respective option body components, so this
+ * shared footer only offers a way to skip/close the dialog.
  */
 const DiagramImportDialogActionsComponent = ({
     noButtonText,

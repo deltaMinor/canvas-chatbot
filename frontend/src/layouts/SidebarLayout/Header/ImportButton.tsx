@@ -2,10 +2,7 @@ import React from "react";
 
 import FileUploadOutlinedIcon from "@mui/icons-material/FileUploadOutlined";
 
-import {
-    DiagramToolbarButton,
-    DiagramToolbarDivider,
-} from "#root/components/DiagramToolbarPrimitives";
+import { DiagramToolbarButton } from "#root/components/DiagramToolbarPrimitives";
 import { DialogStateEnum } from "#root/interfaces/dialog";
 import { handleOpenDialog } from "#root/stores/dialogStore";
 
@@ -22,13 +19,8 @@ const ImportButtonComponent = () => {
                 size="small"
                 startIcon={<FileUploadOutlinedIcon />}
             >
-                Import
+                Import PDF
             </DiagramToolbarButton>
-            <DiagramToolbarDivider //
-                orientation="vertical" //
-                variant="middle"
-                flexItem
-            />
         </>
     );
 };
