@@ -44,7 +44,6 @@ import type {
     LogDialogStateEnumKeys,
 } from "#root/interfaces/dialog";
 import type { ErrorDetails } from "#root/interfaces/error";
-import type { FormFieldConfig, FormValueMap } from "#root/interfaces/formField";
 import type { AuditLog, OptionLabel } from "#root/interfaces/index";
 import type { MasterMitigation } from "#root/interfaces/mitigation";
 import type {
@@ -56,52 +55,16 @@ import type {
     ProjectAssessment,
     ProjectAssessmentHistory,
 } from "#root/interfaces/project";
-import type {
-    CQFormQuestion,
-    ExtendedFieldConfig,
-    ProjectAssessmentConfigObject,
-    Question,
-    TableRowParams,
-} from "#root/interfaces/questionnaire";
-import type {
-    AttackStep,
-    CheckboxFilterState,
-    MasterRegister,
-    ProjectRegister,
-    ProjectRegisterFields,
-    ScenarioTableFilterCheckboxItem,
-} from "#root/interfaces/register";
+import type { AttackStep, MasterRegister, ProjectRegister } from "#root/interfaces/register";
 import type { ResourceTagFields } from "#root/interfaces/resource_tag";
 import type { KBTosca } from "#root/interfaces/tosca";
-import type { JWT_fields, UserAdminFields, UserCoreFields } from "#root/interfaces/user";
-import type { UserCreditsFields } from "#root/interfaces/user_credits";
+import type { UserAdminFields, UserCoreFields } from "#root/interfaces/user";
 import type { ProjectXML } from "#root/interfaces/xml";
-import type { ToolHistoryItem } from "#root/services/domain/tools";
 
-export type AdminConsoleActionStatus = "unknown" | "pending" | "completed";
+export type UserCreditsFields = Record<string, unknown>;
 
-export interface AdminConsoleScanDetail {
-    label: string;
-    value: string;
-}
-
-export interface AdminConsoleScanState {
-    skipScan: boolean;
-    canExecute: boolean;
-    isScanning: boolean;
-    message: string;
-    details: AdminConsoleScanDetail[];
-    hasScanned: boolean;
-    showStatusMessage: boolean;
-    status: AdminConsoleActionStatus;
-}
-
-export interface AdminConsoleState {
-    toolHistory: ToolHistoryItem[];
-    toolHistoryVisible: boolean;
-    toolHistoryLoading: boolean;
-    toolHistoryLoadError: boolean;
-    scanStateByToolKey: Record<string, AdminConsoleScanState>;
+export interface ProjectCQState {
+    schema_?: string;
 }
 
 export interface AppState {
@@ -116,41 +79,45 @@ export interface AppReducer {
     resetSecondsLeft: (state: AppState, action: PayloadAction<number | undefined>) => void;
 }
 
-export interface AssessmentSetupFeatureInstanceState {
-    activeStep: number;
-    isSaving: boolean;
-    dirtySteps: Record<number, boolean>;
-    formCompletionByStep: Record<number, boolean>;
-}
-
-export interface AssessmentSetupFeatureState {
-    instances: Record<string, AssessmentSetupFeatureInstanceState>;
-}
-
-export interface AuthState {
-    user_permission_list: string[];
-    isAuthenticated: boolean;
-    isAuthenticating: boolean;
-    user: JWT_fields | null;
-    /** Unix epoch (seconds) when the current access token cookie expires. */
-    sessionExpiresAt: number | null;
-    /** True when the idle-detection hook has triggered a "session expiring" warning. */
-    showSessionWarning: boolean;
-}
-
 export interface LegacyBackendState {
+    appTNC: Record<string, unknown> | null;
+    appTNCLoaded: boolean;
+    appTNCLoadError: boolean;
+    appVersionData: Record<string, unknown> | null;
+    appVersionDataLoaded: boolean;
+    appVersionDataLoadError: boolean;
+    appVersions: Record<string, unknown>[];
+    appVersionsLoaded: boolean;
+    appVersionsLoadError: boolean;
+    attackFlowsGroupings: Record<string, unknown>[];
+    attackFlowsGroupingsLoaded: boolean;
     authorization: UserAuthorization;
     authorizationLoaded: boolean;
     authorizationLoadError: boolean;
+    feedbackForms: Record<string, unknown>[];
+    feedbackFormsLoaded: boolean;
+    feedbackFormsLoadError: boolean;
+    integration: Record<string, unknown> | null;
+    integrationLoaded: boolean;
+    integrationLoadError: boolean;
+    jiraIssue: Record<string, unknown> | null;
+    jiraIssueLoaded: boolean;
+    jiraIssueLoadError: boolean;
+    jiraIssueOptions: Record<string, unknown> | null;
+    jiraIssueOptionsLoaded: boolean;
+    jiraIssueOptionsLoadError: boolean;
     kbOwaspRegister: MasterRegister | null;
     kbOwaspRegisterLoaded: boolean;
     kbOwaspRegisterLoadError: boolean;
     kbTosca: KBTosca | null;
     kbToscaLoaded: boolean;
     kbToscaLoadError: boolean;
-    projectAssessmentConfig: ProjectAssessmentConfigObject | null;
-    projectAssessmentConfigLoaded: boolean;
-    projectAssessmentConfigLoadError: boolean;
+    masterCQ: Record<string, unknown> | null;
+    masterCQLoaded: boolean;
+    masterCQLoadError: boolean;
+    masterCQTemplate: Record<string, unknown> | null;
+    masterCQTemplateLoaded: boolean;
+    masterCQTemplateLoadError: boolean;
     masterDiagramTemplates: MasterDiagramTemplate[];
     masterDiagramTemplatesLoaded: boolean;
     masterDiagramTemplatesLoadError: boolean;
@@ -211,13 +178,24 @@ export interface LegacyBackendState {
     projectDiagramLogs: AuditLog[];
     projectDiagramLogsLoaded: boolean;
     projectDiagramLogsLoadError: boolean;
-    // projectAssessmentConfig fields are declared above (from TP2-858-AK block)
+    projectCQ: ProjectCQState | null;
+    projectCQLoaded: boolean;
+    projectCQLoadError: boolean;
+    projectCQLogs: Record<string, unknown>[];
+    projectCQLogsLoaded: boolean;
+    projectCQLogsLoadError: boolean;
+    projectCQTemplate: Record<string, unknown> | null;
+    projectCQTemplateLoaded: boolean;
+    projectCQTemplateLoadError: boolean;
     projectLogs: AuditLog[];
     projectLogsLoaded: boolean;
     projectLogsLoadError: boolean;
     projectRegister: ProjectRegister | null;
     projectRegisterLoaded: boolean;
     projectRegisterLoadError: boolean;
+    projectStatistics: Record<string, unknown> | null;
+    projectStatisticsLoaded: boolean;
+    projectStatisticsLoadError: boolean;
     projects: Project[];
     projectsLoaded: boolean;
     projectsLoadError: boolean;
@@ -281,15 +259,24 @@ export type ProjectStateKey =
     | "projectDiagramLogs"
     | "projectDiagramLogsLoaded"
     | "projectDiagramLogsLoadError"
+    | "projectCQ"
+    | "projectCQLoaded"
+    | "projectCQLoadError"
+    | "projectCQLogs"
+    | "projectCQLogsLoaded"
+    | "projectCQLogsLoadError"
+    | "projectCQTemplate"
+    | "projectCQTemplateLoaded"
+    | "projectCQTemplateLoadError"
     | "projectRegister"
     | "projectRegisterLoaded"
     | "projectRegisterLoadError"
     | "projectLogs"
     | "projectLogsLoaded"
     | "projectLogsLoadError"
-    | "projectAssessmentConfig"
-    | "projectAssessmentConfigLoaded"
-    | "projectAssessmentConfigLoadError";
+    | "projectStatistics"
+    | "projectStatisticsLoaded"
+    | "projectStatisticsLoadError";
 
 export type ProjectScopedState = Pick<LegacyBackendState, ProjectStateKey>;
 
@@ -324,24 +311,6 @@ export interface DialogReducer {
     closeDialog: (state: DialogStoreState, action: PayloadAction<DialogStateKey>) => void;
     setDialogState: (state: DialogStoreState, action: PayloadAction<DialogStatePayload>) => void;
     closeAllDialogs: (state: DialogStoreState) => void;
-}
-
-export interface FormFieldExternalState {
-    hideInfoDrawer: boolean;
-    hideUsefulness: boolean;
-    isFieldDisabled: boolean;
-    isInfoDrawerDisabled: boolean;
-    isScenarioDialogDisabled: boolean;
-    questionFromSource: CQFormQuestion | undefined;
-    useTemplate: boolean;
-}
-
-export interface FormFieldInstanceState extends FormFieldExternalState {
-    loaded: boolean;
-}
-
-export interface FormFieldFeatureState {
-    instances: Record<string, FormFieldInstanceState>;
 }
 
 export interface LayoutState {
@@ -409,63 +378,6 @@ export interface MuiDataGridInstanceState {
 
 export interface MuiDataGridFeatureState {
     instances: Record<string, MuiDataGridInstanceState>;
-}
-
-export interface ProjectAssessmentInstanceState {
-    activeAssessmentPollingVersion: string | null;
-    projectAssessmentPageLimit: number;
-    projectAssessmentPageNumber: number;
-    deletingAssessmentId: string | null;
-    pendingDeleteAssessmentId: string | null;
-    pendingRemoveFailedAssessmentIds: string[];
-    pendingRestoreAssessmentId: string | null;
-    pendingRestoreEligibility: { has_cq: boolean; has_diagram: boolean } | null;
-    restoringAssessmentId: string | null;
-    projectWorkflowClickedAssess: boolean;
-    projectWorkflowClickedAbort: boolean;
-    projectWorkflowHeartbeatRunning: boolean;
-    projectWorkflowProgress: number;
-    projectWorkflowProgressInfo: string[];
-    projectWorkflowRunLLM: boolean;
-    projectWorkflowTrackedQuestionMapping: Record<string, boolean>;
-}
-
-export interface ProjectAssessmentState {
-    instances: Record<string, ProjectAssessmentInstanceState>;
-}
-
-export interface ProjectDashboardFeatureInstanceState {
-    projectSettingsSelectedToggle: string;
-}
-
-export interface ProjectDashboardFeatureState {
-    instances: Record<string, ProjectDashboardFeatureInstanceState>;
-}
-
-export interface SignInContentFeatureInstanceState {
-    rememberMe: boolean;
-    signInConfirmed: boolean;
-    signInFailureKind: "credentialMismatch" | "tooManyRequests" | null;
-}
-
-export interface SignInContentFeatureState {
-    instances: Record<string, SignInContentFeatureInstanceState>;
-}
-
-export interface SignUpContentFeatureInstanceState {
-    confirmPassword: string;
-}
-
-export interface SignUpContentFeatureState {
-    instances: Record<string, SignUpContentFeatureInstanceState>;
-}
-
-export interface SignUpSuperuserContentFeatureInstanceState {
-    confirmPassword: string;
-}
-
-export interface SignUpSuperuserContentFeatureState {
-    instances: Record<string, SignUpSuperuserContentFeatureInstanceState>;
 }
 
 export type DiagramPendingDrawerKey = "attackPath" | "overview" | "nodes" | "edges" | null;
@@ -674,85 +586,14 @@ export interface DiagramState {
     diagramView: DiagramView;
 }
 
-export interface ProjectMitigationFeatureInstanceState {
-    actGroupType: string;
-    actProcessingRowAction: boolean;
-    hideRec: boolean;
-    mitigationTab: number;
-    recGroupType: string;
-    recProcessingRowAction: boolean;
-}
-
-export interface ProjectMitigationFeatureState {
-    instances: Record<string, ProjectMitigationFeatureInstanceState>;
-}
-
-export interface ProjectRegisterFeatureInstanceState {
-    registerTab: number;
-    displayedRegisterTab: number;
-    isSwitching: boolean;
-    inTransition: boolean;
-    viewConflictScenarioDetailsId: string;
-    registerFilterTab: number;
-    applicabilityFilterIndex: number[];
-    checkboxFilterState: CheckboxFilterState;
-    checkboxItems: ScenarioTableFilterCheckboxItem[];
-    scenarios: ProjectRegisterFields[];
-    filteredIdList: string[];
-    /** True while an executive summary report is being generated. */
-    executiveSummaryGenerating: boolean;
-    /** 0-100 generation progress % for the executive summary report. */
-    executiveSummaryProgress: number;
-}
-
-export interface ProjectRegisterFeatureState {
-    instances: Record<string, ProjectRegisterFeatureInstanceState>;
-}
-
-export interface TableFieldExternalState {
-    isFieldDisabled: boolean;
-    isFieldTracked: boolean;
-    extendedFieldConfig: ExtendedFieldConfig;
-    fieldConfig: FormFieldConfig | undefined;
-    formValues: FormValueMap;
-    immutableFieldIdList: string[];
-    question: Question | undefined;
-    tableType: string;
-    uniqueFieldIdList: string[];
-}
-
-export interface TableFieldInstanceState extends TableFieldExternalState {
-    editTable: boolean;
-    loaded: boolean;
-    rows: TableRowParams[];
-    savedRows: TableRowParams[];
-    selectedTemplateIdList: string[];
-}
-
-export interface TableFieldFeatureState {
-    instances: Record<string, TableFieldInstanceState>;
-}
-
 export interface RootState {
-    adminConsole: AdminConsoleState;
     app: AppState;
-    assessmentSetupFeature: AssessmentSetupFeatureState;
-    auth: AuthState;
     backend: BackendState;
     diagram: DiagramState;
     dialog: DialogStoreState;
-    formFieldFeature: FormFieldFeatureState;
     layout: LayoutState;
     logDialogFeature: LogDialogFeatureState;
     muiDataGridFeature: MuiDataGridFeatureState;
-    projectAssessment: ProjectAssessmentState;
-    projectDashboardFeature: ProjectDashboardFeatureState;
-    projectMitigationFeature: ProjectMitigationFeatureState;
-    projectRegisterFeature: ProjectRegisterFeatureState;
-    signInContentFeature: SignInContentFeatureState;
-    signUpContentFeature: SignUpContentFeatureState;
-    signUpSuperuserContentFeature: SignUpSuperuserContentFeatureState;
-    tableFieldFeature: TableFieldFeatureState;
 }
 
 export type AppDispatch = Store<RootState>["dispatch"];

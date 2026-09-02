@@ -19,7 +19,6 @@ import type {
 import type { DiagramElementAttributes } from "#root/interfaces/diagramAttributes";
 import type { DrawerState } from "#root/interfaces/diagramContent";
 import type {
-    AssessmentSetupFeatureInstanceState,
     DiagramEditToolbarState,
     DiagramInstanceState,
     DiagramPendingDrawerKey,
@@ -29,29 +28,10 @@ import type {
     MuiDataGridInstanceState,
     ProjectScopedState,
     ProjectStateKey,
-    SignInContentFeatureInstanceState,
-    SignUpContentFeatureInstanceState,
-    SignUpSuperuserContentFeatureInstanceState,
 } from "#root/interfaces/redux";
 import type { AttackStep } from "#root/interfaces/register";
 
 export type NonProjectStateKey = Exclude<keyof LegacyBackendState, ProjectStateKey>;
-
-export interface AssessmentSetupFeatureInstancePayload<T> {
-    instanceId?: string;
-    value: T;
-}
-
-export interface InitializeAssessmentSetupFeatureInstancePayload {
-    initialState?: Partial<AssessmentSetupFeatureInstanceState>;
-    instanceId: string;
-}
-
-export interface SetAssessmentSetupStepValuePayload {
-    instanceId?: string;
-    step: number;
-    value: boolean;
-}
 
 export type BackendReducerMap = {
     [K in NonProjectStateKey as `set${Capitalize<string & K>}`]: (
@@ -88,56 +68,6 @@ export interface MuiDataGridInstancePayload<T> {
 
 export interface UpdateMuiDataGridExternalStatePayload {
     externalState?: Partial<Pick<MuiDataGridInstanceState, "defaultVisibleFields" | "refRows">>;
-    instanceId: string;
-}
-
-export interface ProjectDashboardInstancePayload<T> {
-    instanceId?: string;
-    value: T;
-}
-
-export interface InitializeProjectDashboardInstancePayload {
-    initialState?: Partial<import("#root/interfaces/redux").ProjectDashboardFeatureInstanceState>;
-    instanceId: string;
-}
-
-export interface SignInContentInstancePayload<T> {
-    instanceId?: string;
-    value: T;
-}
-
-export interface InitializeSignInContentInstancePayload {
-    initialState?: Partial<SignInContentFeatureInstanceState>;
-    instanceId: string;
-}
-
-export interface SignUpContentInstancePayload<T> {
-    instanceId?: string;
-    value: T;
-}
-
-export interface InitializeSignUpContentInstancePayload {
-    initialState?: Partial<SignUpContentFeatureInstanceState>;
-    instanceId: string;
-}
-
-export interface SignUpSuperuserContentInstancePayload<T> {
-    instanceId?: string;
-    value: T;
-}
-
-export interface InitializeSignUpSuperuserContentInstancePayload {
-    initialState?: Partial<SignUpSuperuserContentFeatureInstanceState>;
-    instanceId: string;
-}
-
-export interface ProjectAssessmentInstancePayload<T> {
-    instanceId?: string;
-    value: T;
-}
-
-export interface InitializeProjectAssessmentInstancePayload {
-    initialState?: Partial<import("#root/interfaces/redux").ProjectAssessmentInstanceState>;
     instanceId: string;
 }
 
@@ -215,18 +145,3 @@ export type SetDiagramPendingThreatOverviewScenarioScopePayload =
 export type SetDiagramCanvasTypePayload = CanvasType | DiagramInstancePayload<CanvasType>;
 export type SetDiagramSortDirectionPayload = SortDirection | DiagramInstancePayload<SortDirection>;
 export type SetDiagramHandleTypePayload = HandleType | DiagramInstancePayload<HandleType>;
-
-export interface ProjectMitigationInstancePayload<T> {
-    instanceId?: string;
-    value: T;
-}
-
-export interface InitializeProjectMitigationInstancePayload {
-    initialState?: Partial<import("#root/interfaces/redux").ProjectMitigationFeatureInstanceState>;
-    instanceId: string;
-}
-
-export interface ProjectRegisterInstancePayload<T> {
-    instanceId?: string;
-    value: T;
-}
