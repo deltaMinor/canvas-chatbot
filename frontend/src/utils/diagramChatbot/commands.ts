@@ -15,7 +15,6 @@ import {
     TOPOLOGY_CURRPROJ_INPUT,
     TOPOLOGY_DATABASE_INPUT,
     TOPOLOGY_DIRUPLOAD_INPUT,
-    TOPOLOGY_NODIAGRAM_INPUT,
 } from "#root/constants/diagramChatbot";
 import { ChatbotState } from "#root/enums/diagram-chatbot";
 import { ChatMessage, ChatbotHandle, HandleInputFnOutput } from "#root/interfaces/chatbot";
@@ -412,36 +411,6 @@ export const handleTopologySetup = async (
                         : ChatbotState.LlmTopologySetupContinue,
                 ];
             }
-        case TOPOLOGY_NODIAGRAM_INPUT: {
-            const intentRxResponse = await withIntentRXProgress(
-                intentContext.sessionId,
-                intentContext.onProgress,
-                () =>
-                    sendIntentRXMessage(
-                        intentContext.sessionId,
-                        "5",
-                        intentContext.projectId,
-                        intentContext.conversationId,
-                        ChatbotState.LlmTopology
-                    )
-            );
-            const messages = await checkAndApplyTopologyFile(
-                intentContext.sessionId,
-                intentContext.projectId,
-                intentContext.conversationId,
-                intentRxResponse.panels,
-                intentRxResponse.topology_diagram_address
-            );
-            if (intentRxResponse.ended) {
-                resetTopologyFileTrackingState(intentContext.sessionId);
-            }
-            return [
-                {
-                    messages: messages.length > 0 ? messages : [{ text: "" }],
-                },
-                intentRxResponse.ended ? ChatbotState.Neutral : ChatbotState.LlmTopology,
-            ];
-        }
         case TOPOLOGY_CURRPROJ_INPUT: {
             const projectDiagramFilePdf = await getProjectDiagramFilePdfFromApi(
                 intentContext.projectId
@@ -475,9 +444,8 @@ export const handleTopologySetup = async (
                     [
                         "Invalid input, please select an option from below.",
                         "[1] Continue from previous run",
-                        "[2] Continue without a diagram",
-                        "[3] Import from current project database",
-                        "[4] Upload PDF file",
+                        "[2] Import from current project database",
+                        "[3] Upload PDF file",
                     ].join("\n")
                 ),
                 ChatbotState.LlmTopologySetup,

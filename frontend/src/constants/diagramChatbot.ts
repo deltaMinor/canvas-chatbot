@@ -38,9 +38,8 @@ export const INPUT_LLM_TOPOLOGY: SpecialInput = {
 export const MSG_INTENTRX_ABORTED = "IntentRX session aborted.";
 
 export const TOPOLOGY_CONTINUE_INPUT = "1";
-export const TOPOLOGY_NODIAGRAM_INPUT = "2";
-export const TOPOLOGY_CURRPROJ_INPUT = "3";
-export const TOPOLOGY_DIRUPLOAD_INPUT = "4";
+export const TOPOLOGY_CURRPROJ_INPUT = "2";
+export const TOPOLOGY_DIRUPLOAD_INPUT = "3";
 export const TOPOLOGY_DATABASE_INPUT = "3";
 
 export const TOPOLOGY_CONTINUE_TITLE = "SETUP-RESUME-RUN";

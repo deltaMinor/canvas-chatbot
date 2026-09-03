@@ -45,9 +45,8 @@ const TO_REPLACE_SETUP_PARAGRAPH = [
 const REPLACEMENT_SETUP_PARAGRAPH = [
     "How would you like to continue?",
     "[1] Continue from previous run",
-    "[2] Continue without a diagram",
-    "[3] Import from current project database",
-    "[4] Upload PDF file",
+    "[2] Import from current project database",
+    "[3] Upload PDF file",
 ].join("\n");
 
 const addMenuOptions = (input: string): string => {
