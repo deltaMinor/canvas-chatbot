@@ -16,7 +16,6 @@ const formatPdfTimestamp = (raw?: string): string => {
 
 export const getUploadedPdfs = (projectDiagramFilePdf: ProjectDiagramFiles): ProjectDiagramFile[] =>
     (projectDiagramFilePdf?.files ?? [])
-        .filter((file) => file.source !== CHATBOT_FILE_SOURCE)
         .slice()
         .sort(
             (a, b) => new Date(b.uploadDate ?? 0).getTime() - new Date(a.uploadDate ?? 0).getTime()

@@ -369,6 +369,37 @@ export const handleTopologySetup = async (
         intentContext.conversationId
     );
     switch (text) {
+        case ":quit": {
+            const intentRxResponse = await withIntentRXProgress(
+                intentContext.sessionId,
+                intentContext.onProgress,
+                () =>
+                    sendIntentRXMessage(
+                        intentContext.sessionId,
+                        ":quit",
+                        intentContext.projectId,
+                        intentContext.conversationId,
+                        ChatbotState.LlmTopology
+                    )
+            );
+            const messages = await checkAndApplyTopologyFile(
+                intentContext.sessionId,
+                intentContext.projectId,
+                intentContext.conversationId,
+                intentRxResponse.panels,
+                intentRxResponse.topology_diagram_address
+            );
+            if (intentRxResponse.ended) {
+                resetTopologyFileTrackingState(intentContext.sessionId);
+            }
+
+            return [
+                {
+                    messages: messages.length > 0 ? messages : [{ text: "" }],
+                },
+                ChatbotState.Neutral,
+            ];
+        }
         case TOPOLOGY_CONTINUE_INPUT:
             if (runs.length === 0) {
                 return [
@@ -551,6 +582,7 @@ export const handleLlmTopologySetupUploadedPdf = async (
                 ChatbotState.LlmTopologySetupUploadedPdf,
             ];
         }
+        console.log(files.length);
         if (numInput < 1 || numInput > files.length) {
             return [
                 stringsToHandleInputFnOutput(
@@ -593,7 +625,9 @@ export const handleLlmTopologySetupUploadedPdf = async (
                         ChatbotState.LlmTopology
                     )
             );
+            console.log(firstResponse.panels[0]?.text);
             text = getIndexWithPdf(firstResponse.panels, targetFileString);
+            console.log(text);
         }
     }
     const intentRxResponse = await withIntentRXProgress(
@@ -694,6 +728,7 @@ export const handleLlmTopologySetupUpload = async (
                 )
         );
         text = extractLastDatabasePdfIndex(firstResponse.panels) ?? "";
+        console.log(text);
     }
     const intentRxResponse = await withIntentRXProgress(
         intentContext.sessionId,

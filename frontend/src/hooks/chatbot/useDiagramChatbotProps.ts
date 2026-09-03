@@ -9,6 +9,7 @@ import { ChatbotState } from "#root/enums/diagram-chatbot";
 import { DialogConfirmStateEnum } from "#root/enums/dialog";
 import { processConfirmClearDiagram } from "#root/features/DiagramContent/DiagramBody/DiagramHeader/dialogs/helper";
 import { useHandleSetProcessedNodesAndEdges } from "#root/hooks/diagram";
+import { useRootSelector } from "#root/hooks/useRootSelector";
 import {
     AbortInputFn,
     ChatBubbleProps,
@@ -25,6 +26,7 @@ import {
     SpecialInput,
 } from "#root/interfaces/chatbot";
 import { DiagramEdge, DiagramNode } from "#root/interfaces/diagram";
+import { selectBackendProjectId } from "#root/selectors/backendSelectors";
 import CallApiWithTransition from "#root/services/CallApiWithTransition";
 import {
     createConversation,
@@ -88,7 +90,22 @@ export const useDiagramChatbotProps = (chatbotRef: RefObject<ChatbotHandle | nul
     useReactFlow<DiagramNode, DiagramEdge>();
     const handleSetProcessedNodesAndEdges = useHandleSetProcessedNodesAndEdges();
 
-    const ownProjectIdRef = useRef(getBackendProjectIdFromStore() ?? "");
+    // `getBackendProjectIdFromStore()` resolves to the *current* project (route
+    // `project_id`, falling back to the loaded project object). Subscribing to
+    // `selectBackendProjectId` via redux keeps this in sync whenever the user
+    // navigates to a different project/diagram without this component
+    // unmounting. Previously this was seeded once via `useRef(...)` at mount
+    // time, which froze `ownProjectIdRef.current` to whatever project id (or
+    // empty string, if the backend project hadn't loaded yet) happened to be
+    // current at that instant. Every subsequent command built its
+    // `intentContext.projectId` from that stale ref, so it could end up
+    // pointing at a different project's database than the one shown in the
+    // UI (e.g. the PDF files table, which always reads the live project id) -
+    // causing `getUploadedPdfs(...)` to come back empty and IntentRX topology
+    // uploads to be applied against the wrong project/session.
+    const liveProjectId = useRootSelector(selectBackendProjectId) ?? "";
+    const ownProjectIdRef = useRef(liveProjectId);
+    ownProjectIdRef.current = liveProjectId;
 
     const [activeConversationId, setActiveConversationIdState] = useState<string>(() =>
         resolveInitialConversationId(ownProjectIdRef.current)
