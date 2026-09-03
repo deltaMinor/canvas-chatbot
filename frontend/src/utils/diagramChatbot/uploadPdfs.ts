@@ -3,7 +3,7 @@ import { ProjectDiagramFile } from "#root/interfaces/common";
 import type { ProjectDiagramFiles } from "#root/interfaces/diagramFile";
 import { IntentRXPanel } from "#root/services/domain/intentrx";
 
-const CHATBOT_FILE_SOURCE = "chatbot";
+export const CHATBOT_FILE_SOURCE = "chatbot";
 
 const formatPdfTimestamp = (raw?: string): string => {
     if (!raw) return "";

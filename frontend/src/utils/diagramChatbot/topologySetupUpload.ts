@@ -1,5 +1,8 @@
 import { TOPOLOGY_DATABASE_FILE_TITLE } from "#root/constants/diagramChatbot";
+import { postDiagramPdfFiles } from "#root/services/domain/diagram_pdf_file";
 import { IntentRXPanel } from "#root/services/domain/intentrx";
+import { refreshProjectDiagramFilePdf } from "#root/stores/backendRefreshStore";
+import { CHATBOT_FILE_SOURCE } from "#root/utils/diagramChatbot/uploadPdfs";
 
 export interface TopologyPdfUploadResult {
     success: boolean;
@@ -19,6 +22,28 @@ export const validatePdf = (files: File[]): TopologyPdfUploadResult => {
     if (!file || !isPdfFile(file))
         return { success: false, message: "Please upload a valid PDF file." };
     else return { success: true };
+};
+
+export const uploadTopologySetupPdf = async (
+    file: File,
+    projectId: string
+): Promise<TopologyPdfUploadResult> => {
+    try {
+        const formData = new FormData();
+        formData.append("file", file);
+        formData.append("project_id", projectId);
+        formData.append("source", CHATBOT_FILE_SOURCE);
+
+        await postDiagramPdfFiles(formData);
+        await refreshProjectDiagramFilePdf();
+
+        return { success: true };
+    } catch {
+        return {
+            success: false,
+            message: "Failed to save the uploaded PDF file. Please try again.",
+        };
+    }
 };
 
 const DATABASE_PDF_OPTION_LINE_RE = /^\[(\d+)]\s+\S.*\.pdf\s*\(size=.*\)\s*$/i;

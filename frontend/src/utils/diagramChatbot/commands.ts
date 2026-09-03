@@ -42,6 +42,7 @@ import {
 } from "#root/utils/diagramChatbot/topologyRunContext";
 import {
     extractLastDatabasePdfIndex,
+    uploadTopologySetupPdf,
     validatePdf,
 } from "#root/utils/diagramChatbot/topologySetupUpload";
 import {
@@ -683,6 +684,26 @@ export const handleLlmTopologySetupUpload = async (
                 ChatbotState.LlmTopologySetupUpload,
             ];
         }
+
+        const file = files[0];
+        if (file === undefined) {
+            return [
+                stringsToHandleInputFnOutput(
+                    "File cannot be accessed, please attach the PDF again."
+                ),
+                ChatbotState.LlmTopologySetupUpload,
+            ];
+        }
+        const dbUploadResult = await uploadTopologySetupPdf(file, intentContext.projectId);
+        if (!dbUploadResult.success) {
+            return [
+                stringsToHandleInputFnOutput(
+                    dbUploadResult.message === undefined ? "" : dbUploadResult.message
+                ),
+                ChatbotState.LlmTopologySetupUpload,
+            ];
+        }
+
         await withIntentRXProgress(intentContext.sessionId, intentContext.onProgress, () =>
             sendIntentRXMessage(
                 intentContext.sessionId,

@@ -14,6 +14,7 @@ from django.utils.datastructures import MultiValueDict
 
 from shared_libs.constants.architecture_diagram import (
     GENERATED_JSON_FILENAME,
+    PROJECT_AD_FILE_SOURCE_CHATBOT,
     PROJECT_AD_FILE_SOURCE_DIRECT,
     PROJECT_AD_FILE_SOURCES,
     PROJECT_AD_FILE_TYPE_CACTI,
@@ -491,14 +492,16 @@ class ProjectADFileApplicationService(ProjectADFileService):
         project_id: str,
     ) -> list[dict]:
         pdf_document_files: list[UploadedFile] = files.getlist("file")
-        self._check_file_count_limit(
-            project_id, PROJECT_AD_FILE_TYPE_PDF_DOCUMENT, pdf_document_files
-        )
 
         source = data.get("source") or PROJECT_AD_FILE_SOURCE_DIRECT
         if source not in PROJECT_AD_FILE_SOURCES:
             raise BadRequest(
                 f"Invalid source '{source}'. Must be one of {PROJECT_AD_FILE_SOURCES}."
+            )
+
+        if source != PROJECT_AD_FILE_SOURCE_CHATBOT:
+            self._check_file_count_limit(
+                project_id, PROJECT_AD_FILE_TYPE_PDF_DOCUMENT, pdf_document_files
             )
 
         res_arr = []
