@@ -56,7 +56,7 @@ export const extractLastDatabasePdfIndex = (panels: IntentRXPanel[]): string | n
         const text = searchPanels[i]?.text ?? "";
         console.log(text);
         const lines = text.split("\n");
-        for (let j = lines.length - 1; j >= 0; j--) {
+        for (let j = 0; j < lines.length; j++) {
             const match = DATABASE_PDF_OPTION_LINE_RE.exec(lines[j]?.trim() ?? "");
             if (match?.[1]) return match[1];
         }

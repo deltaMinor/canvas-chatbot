@@ -7,9 +7,8 @@ from django.core.files.uploadedfile import UploadedFile
 class FileManager:
     @staticmethod
     def get_file_bytes(decoded_file: str) -> io.BytesIO:
-        """Converts a decoded string to a BytesIO object."""
-        encoded_file = decoded_file.encode("utf-8")
-        return io.BytesIO(encoded_file)
+        raw_bytes = base64.b64decode(decoded_file)
+        return io.BytesIO(raw_bytes)
 
     @staticmethod
     def get_decoded_file(file: UploadedFile) -> str:

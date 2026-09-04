@@ -1,3 +1,4 @@
+import base64
 import logging
 
 from gridfs import GridOut
@@ -67,7 +68,7 @@ class FileRepositoryHelper:
         ]
         _file: dict = file.__dict__["_file"]
         formatted_file = {k: v for k, v in _file.items() if k in ALLOWED_KEYS}
-        formatted_file["data"] = file.read().decode("utf-8")
+        formatted_file["data"] = base64.b64encode(file.read()).decode("utf-8")
         return formatted_file
 
     @staticmethod
