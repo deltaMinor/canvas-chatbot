@@ -36,7 +36,7 @@ class TopologyRunContextAPIView(NonBlockingAPIView):
     def get(self, request: Request) -> Response:
         """
         Returns:
-            Response: { runs: [{conversation_id, run_id, address, created_at}, ...] }
+            Response: { runs: [{conversation_id, run_id, address, file_name, created_at}, ...] }
         """
         result = self.topology_run_context_service.list_runs(data=request.GET)
         return Response(
@@ -51,8 +51,11 @@ class TopologyRunContextAPIView(NonBlockingAPIView):
     @verify_data_params(key_list=["project_id", "conversation_id", "run_id", "address"])
     def post(self, request: Request) -> Response:
         """
+        `file_name` is optional in the request body; if omitted, it defaults
+        to "diagram".
+
         Returns:
-            Response: {conversation_id, run_id, address, created_at}
+            Response: {conversation_id, run_id, address, file_name, created_at}
         """
         result = self.topology_run_context_service.record_run(data=request.data)
         return Response(

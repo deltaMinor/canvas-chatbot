@@ -15,6 +15,8 @@ logger = logging.getLogger(__name__)
 
 user_info = {"user_id": "admin_user_id", "username": "admin_username"}
 
+DEFAULT_TOPOLOGY_FILE_NAME = "diagram"
+
 
 def _now_iso() -> str:
     return datetime.now(timezone.utc).isoformat()
@@ -90,14 +92,16 @@ class TopologyRunContextApplicationService(ProjectADService):
         exception_logger=logger,
     )
     def record_run(self, data: dict) -> dict:
-        """Upserts one `{conversation_id, run_id, address}` pair. If a run
-        context already exists for that `(conversation_id, run_id)`, its
-        address is updated in place instead of being duplicated.
+        """Upserts one `{conversation_id, run_id, address, file_name}` pair.
+        If a run context already exists for that `(conversation_id, run_id)`,
+        its address and file_name are updated in place instead of being
+        duplicated.
         """
         project_id: str = data["project_id"]
         conversation_id: str = data["conversation_id"]
         run_id: str = data["run_id"]
         address: str = data["address"]
+        file_name: str = data.get("file_name") or DEFAULT_TOPOLOGY_FILE_NAME
 
         runs = self._get_all_runs(project_id)
         existing = next(
@@ -111,12 +115,14 @@ class TopologyRunContextApplicationService(ProjectADService):
         )
         if existing is not None:
             existing["address"] = address
+            existing["file_name"] = file_name
             entry = existing
         else:
             entry = TopologyRunContextBaseModel(
                 conversation_id=conversation_id,
                 run_id=run_id,
                 address=address,
+                file_name=file_name,
                 created_at=_now_iso(),
             ).model_dump()
             runs.append(entry)

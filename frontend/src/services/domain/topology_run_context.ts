@@ -12,6 +12,7 @@ export const recordTopologyRunContext = async (
     conversationId: string,
     runId: string,
     address: string,
+    fileName: string,
     serviceDomainProps: ServiceDomainProps = {}
 ): Promise<TopologyRunContextEntry | null> => {
     if (!projectId || !conversationId || !runId || !address) return null;
@@ -22,6 +23,7 @@ export const recordTopologyRunContext = async (
             conversation_id: conversationId,
             run_id: runId,
             address,
+            file_name: fileName,
         })
         .then((res) => res?.data?.data ?? null)
         .catch((reason) => {

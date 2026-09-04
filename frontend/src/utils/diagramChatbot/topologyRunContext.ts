@@ -23,9 +23,10 @@ export const persistTopologyRunContext = (
     projectId: string,
     conversationId: string,
     runId: string,
-    address: string
+    address: string,
+    fileName: string
 ): void => {
-    void recordTopologyRunContext(projectId, conversationId, runId, address, {
+    void recordTopologyRunContext(projectId, conversationId, runId, address, fileName, {
         hideSnackbar: true,
     });
 };

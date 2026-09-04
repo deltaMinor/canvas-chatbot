@@ -15,6 +15,7 @@ export interface TopologyRunContextEntry {
     conversation_id: string;
     run_id: string;
     address: string;
+    file_name: string;
     created_at: string;
 }
 
@@ -24,17 +25,20 @@ class TopologyRunContextService {
         conversation_id,
         run_id,
         address,
+        file_name,
     }: {
         project_id: string;
         conversation_id: string;
         run_id: string;
         address: string;
+        file_name: string;
     }): Promise<AxiosApiResponse<TopologyRunContextEntry>> {
         return await axios_json_api.post("topology_run_context", {
             project_id,
             conversation_id,
             run_id,
             address,
+            file_name,
         });
     }
 

@@ -63,3 +63,22 @@ export const extractLastDatabasePdfIndex = (panels: IntentRXPanel[]): string | n
     }
     return null;
 };
+
+const escapeRegExp = (value: string): string => value.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
+
+export const extractDatabasePdfFileNameFromPanelText = (
+    panelText: string,
+    index: string
+): string | null => {
+    if (!index) return null;
+    const linePattern = new RegExp(
+        `^\\[${escapeRegExp(index)}]\\s+(\\S.*?)\\.pdf\\s*\\(.*\\)\\s*$`,
+        "i"
+    );
+
+    for (const rawLine of panelText.split("\n")) {
+        const match = linePattern.exec(rawLine.trim());
+        if (match?.[1]) return match[1].trim();
+    }
+    return null;
+};

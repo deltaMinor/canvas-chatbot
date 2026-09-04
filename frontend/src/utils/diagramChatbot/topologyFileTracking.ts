@@ -15,7 +15,10 @@ interface TopologyFileTrackingState {
     runContextPersisted: boolean;
     lastMtime: number | null;
     lastSize: number | null;
+    fileName: string | null;
 }
+
+export const DEFAULT_TOPOLOGY_FILE_NAME = "diagram";
 
 const TOPOLOGY_FILEDIR_PANELTITLE = "TOPO-GENERATOR-PREFLIGHT";
 
@@ -34,6 +37,7 @@ const getTopologyFileTrackingState = (sessionId: string): TopologyFileTrackingSt
             runContextPersisted: false,
             lastMtime: null,
             lastSize: null,
+            fileName: null,
         };
         topologyFileTrackingBySession.set(sessionId, state);
     }
@@ -42,6 +46,11 @@ const getTopologyFileTrackingState = (sessionId: string): TopologyFileTrackingSt
 
 export const resetTopologyFileTrackingState = (sessionId: string): void => {
     topologyFileTrackingBySession.delete(sessionId);
+};
+
+export const setTopologyFileTrackingFileName = (sessionId: string, fileName: string): void => {
+    const state = getTopologyFileTrackingState(sessionId);
+    state.fileName = fileName;
 };
 
 const updateTopologyFileTracking = (state: TopologyFileTrackingState, text: string): void => {
@@ -122,7 +131,13 @@ export const checkAndApplyTopologyFile = async (
 
     if (state.runId && state.filePath && !state.runContextPersisted) {
         state.runContextPersisted = true;
-        persistTopologyRunContext(projectId, conversationId, state.runId, state.filePath);
+        persistTopologyRunContext(
+            projectId,
+            conversationId,
+            state.runId,
+            state.filePath,
+            state.fileName ?? DEFAULT_TOPOLOGY_FILE_NAME
+        );
     }
 
     if (!generatedJsonFileId) return messages;

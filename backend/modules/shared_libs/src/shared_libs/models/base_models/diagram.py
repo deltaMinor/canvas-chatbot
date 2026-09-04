@@ -232,6 +232,7 @@ class TopologyRunContextBaseModel(BaseModel):
     conversation_id: str
     run_id: str
     address: str
+    file_name: str = Field(default="diagram")
     created_at: str
 
 

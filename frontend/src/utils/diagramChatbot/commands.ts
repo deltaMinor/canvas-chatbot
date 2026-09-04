@@ -28,9 +28,11 @@ import {
     withIntentRXProgress,
 } from "#root/utils/diagramChatbot/intentRXSession";
 import {
+    DEFAULT_TOPOLOGY_FILE_NAME,
     applyTopologyFileFromAddress,
     checkAndApplyTopologyFile,
     resetTopologyFileTrackingState,
+    setTopologyFileTrackingFileName,
 } from "#root/utils/diagramChatbot/topologyFileTracking";
 import {
     clearTopologyRunContexts,
@@ -40,6 +42,7 @@ import {
     topologyRunContextToSpecialInput,
 } from "#root/utils/diagramChatbot/topologyRunContext";
 import {
+    extractDatabasePdfFileNameFromPanelText,
     extractLastDatabasePdfIndex,
     uploadTopologySetupPdf,
     validatePdf,
@@ -606,6 +609,10 @@ export const handleLlmTopologySetupUploadedPdf = async (
             ];
         } else {
             const targetFileString = fileToString(targetFile);
+            const fileName = targetFile.filename
+                ? targetFile.filename.replace(/\.pdf$/i, "")
+                : DEFAULT_TOPOLOGY_FILE_NAME;
+            setTopologyFileTrackingFileName(intentContext.sessionId, fileName);
 
             await withIntentRXProgress(intentContext.sessionId, intentContext.onProgress, () =>
                 sendIntentRXMessage(
@@ -732,6 +739,10 @@ export const handleLlmTopologySetupUpload = async (
         );
         text = extractLastDatabasePdfIndex(firstResponse.panels) ?? "";
         console.log(text);
+        const fileName =
+            extractDatabasePdfFileNameFromPanelText(firstResponse.panels[0]?.text ?? "", text) ??
+            DEFAULT_TOPOLOGY_FILE_NAME;
+        setTopologyFileTrackingFileName(intentContext.sessionId, fileName);
     }
     const intentRxResponse = await withIntentRXProgress(
         intentContext.sessionId,
