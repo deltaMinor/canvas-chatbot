@@ -133,6 +133,9 @@ export const handleNeutralState = async (
         case "/start intent": {
             return startIntentRXSession("intent", ChatbotState.LlmIntent, intentContext);
         }
+        case "/start topodebug": {
+            return startIntentRXSession("topology", ChatbotState.LlmTopology, intentContext);
+        }
         case "/start topology": {
             const [response, state] = await startIntentRXSession(
                 "topology",
