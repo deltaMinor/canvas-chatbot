@@ -87,6 +87,43 @@ class TopologyRunContextApplicationService(ProjectADService):
         logger.warning("[topology_run_context] list_runs matched=%r", conversation_runs)
         return {"runs": conversation_runs}
 
+    def get_run(self, data: dict) -> dict | None:
+        """Returns the single run context entry recorded for
+        `(conversation_id, run_id)`, or `None` if none has been recorded
+        (including when the project has no run contexts at all yet).
+
+        Deliberately undecorated (unlike the other methods on this class):
+        callers that only want the recorded `file_name` as a best-effort
+        lookup (see `intentrx_bridge/topology_file_tracking.py`) should
+        treat *any* failure here -- not found, malformed data, etc. -- as
+        "no run context available" and fall back accordingly, rather than
+        surfacing an API error.
+        """
+        project_id: str = data["project_id"]
+        conversation_id: str = data["conversation_id"]
+        run_id: str = data["run_id"]
+
+        try:
+            runs = self._get_all_runs(project_id)
+        except Exception:
+            logger.warning(
+                "[topology_run_context] get_run found no project_ad "
+                "document for project_id=%r; treating as no run context.",
+                project_id,
+                exc_info=True,
+            )
+            return None
+
+        return next(
+            (
+                run
+                for run in runs
+                if run.get("conversation_id") == conversation_id
+                and run.get("run_id") == run_id
+            ),
+            None,
+        )
+
     @raise_exception(
         "Failed to record topology run context.",
         exception_logger=logger,

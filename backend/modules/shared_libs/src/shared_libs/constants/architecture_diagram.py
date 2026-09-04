@@ -13,10 +13,11 @@ PROJECT_AD_FILE_TYPE_PDF_DOCUMENT = "pdf_document"
 PROJECT_AD_FILE_TYPE_TERRAFORM = "terraform"
 PROJECT_AD_FILE_TYPE_XML = "xml"
 
-# Filename used for every JSON file automatically saved to the database when
-# TopologyGenerator (via IntentRX) produces a new network diagram. This is a
-# temporary implementation -- every generation is stored as its own row, all
-# sharing this literal filename, distinguished by file_id/timestamp.
+# Fallback filename for a JSON file automatically saved to the database when
+# TopologyGenerator (via IntentRX) produces a new network diagram, used when
+# no topology run context (with a `file_name`) is recorded for the current
+# run_id -- see `intentrx_bridge/topology_file_tracking.py`. Every generation
+# is stored as its own row, distinguished by file_id/timestamp.
 GENERATED_JSON_FILENAME = "diagram.json"
 PROJECT_AD_LLM_IMAGE_FILE_TYPES = [
     PROJECT_AD_FILE_TYPE_IMAGE,

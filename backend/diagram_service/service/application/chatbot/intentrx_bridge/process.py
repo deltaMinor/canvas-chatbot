@@ -128,6 +128,7 @@ class IntentRXSession:
         self.topology_tracking: dict = {
             "aliases": {},
             "file_path": None,
+            "run_id": None,
             "last_mtime": None,
             "last_size": None,
         }

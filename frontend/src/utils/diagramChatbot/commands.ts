@@ -549,7 +549,8 @@ export const handleTopologySetupContinue = async (
             const importMessages = await applyTopologyFileFromAddress(
                 intentContext.sessionId,
                 intentContext.projectId,
-                run.address
+                run.address,
+                run.file_name
             );
             messages.push(...importMessages);
         }

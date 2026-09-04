@@ -125,18 +125,20 @@ export const fetchProjectDiagramFileGeneratedJsonContent = async (
  * chip references a permanent, database-backed file rather than a temp path
  * that may be deleted or unavailable to other users/devices.
  *
- * Every generation is saved as its own new row, filed under the literal
- * filename "diagram.json" (see backend `GENERATED_JSON_FILENAME`), as a
- * temporary implementation.
+ * Every generation is saved as its own new row. When `fileName` (bare, no
+ * extension) is given, the row is named `` `${fileName}.json` ``; otherwise
+ * it falls back to the literal filename "diagram.json" (see backend
+ * `GENERATED_JSON_FILENAME`).
  */
 export const saveGeneratedTopologyJson = async (
     project_id: string,
     content: string,
+    fileName?: string,
     serviceDomainProps: ServiceDomainProps = {}
 ): Promise<{ file_id: string; filename: string } | null> => {
     const { hideSnackbar = true } = serviceDomainProps;
     const ADApi = new ArchitectureDiagramService();
-    return await ADApi.postDiagramFileGeneratedJson({ project_id, content })
+    return await ADApi.postDiagramFileGeneratedJson({ project_id, content, file_name: fileName })
         .then((res) => {
             if (!hideSnackbar) {
                 enqueueSnackbar(

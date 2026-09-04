@@ -533,13 +533,18 @@ class ProjectADFileApplicationService(ProjectADFileService):
         raw text content (as already read from the temp directory), rather
         than from a multipart file upload.
 
-        Every call creates a new row, named `GENERATED_JSON_FILENAME`
-        ("diagram.json") as a temporary implementation, so the "View
-        generated JSONs" table can show a full history of every generation.
+        Every call creates a new row, so the "View generated JSONs" table can
+        show a full history of every generation. The row is named
+        `f"{file_name}.json"`, where `file_name` is the optional bare (no
+        extension) `file_name` in `data` -- typically resolved by the caller
+        from the topology run context matching the current IntentRX run_id
+        (see `intentrx_bridge/topology_file_tracking.py`). When no
+        `file_name` is given, it falls back to the literal
+        `GENERATED_JSON_FILENAME` ("diagram.json").
 
         Args:
             data (dict): Must contain `project_id` and `content` (a raw
-            JSON-encoded string).
+            JSON-encoded string). May optionally contain `file_name`.
 
         Returns:
             dict: `{"file_id": str, "filename": str}` for the newly
@@ -547,6 +552,8 @@ class ProjectADFileApplicationService(ProjectADFileService):
         """
         project_id = data["project_id"]
         content = data["content"]
+        file_name = data.get("file_name")
+        filename = f"{file_name}.json" if file_name else GENERATED_JSON_FILENAME
         raw = content.encode("utf-8") if isinstance(content, str) else content
 
         if not FileValidator.is_valid_json(raw):
@@ -557,14 +564,14 @@ class ProjectADFileApplicationService(ProjectADFileService):
 
         self._write_file(
             project_id=project_id,
-            filename=GENERATED_JSON_FILENAME,
+            filename=filename,
             file_id=file_id,
             file_type=PROJECT_AD_FILE_TYPE_GENERATED_JSON,
             content_type="application/json",
             decoded_file=decoded_file,
         )
 
-        return {"file_id": file_id, "filename": GENERATED_JSON_FILENAME}
+        return {"file_id": file_id, "filename": filename}
 
     @raise_exception("Failed to insert project AD files.", exception_logger=logger)
     def insert_files(

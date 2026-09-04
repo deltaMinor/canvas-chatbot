@@ -337,6 +337,7 @@ export class ArchitectureDiagramService {
     async postDiagramFileGeneratedJson(body: {
         project_id: string;
         content: string;
+        file_name?: string;
     }): Promise<AxiosApiResponse<{ file_id: string; filename: string }>> {
         return await axios_json_api.post("project_diagram/files/generated_json", body);
     }

@@ -86,7 +86,8 @@ const updateTopologyFileTracking = (state: TopologyFileTrackingState, text: stri
 export const applyTopologyFileFromAddress = async (
     sessionId: string,
     projectId: string,
-    address: string
+    address: string,
+    fileName?: string
 ): Promise<ChatMessage[]> => {
     const state = getTopologyFileTrackingState(sessionId);
     state.filePath = address;
@@ -100,7 +101,7 @@ export const applyTopologyFileFromAddress = async (
     state.lastMtime = fileRead.mtime ?? null;
     state.lastSize = fileRead.size ?? null;
 
-    const saved = await saveGeneratedTopologyJson(projectId, fileRead.content, {
+    const saved = await saveGeneratedTopologyJson(projectId, fileRead.content, fileName, {
         hideSnackbar: true,
     });
     if (!saved?.file_id) return [];

@@ -743,7 +743,9 @@ class ProjectDiagramGeneratedJSONFilesAPIView(NonBlockingAPIView):
 
         Args:
             request (Request): The HTTP request containing `project_id` and
-            `content` (the raw JSON text).
+            `content` (the raw JSON text). May optionally include
+            `file_name` (bare, no extension) to name the saved row
+            `f"{file_name}.json"` instead of the default "diagram.json".
 
         Returns:
             Response: A response containing the newly saved file's

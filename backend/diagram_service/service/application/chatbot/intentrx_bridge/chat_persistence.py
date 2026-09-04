@@ -77,7 +77,7 @@ def append_turn(
         return None
 
     response_texts = _format_panels(panels)
-    topology_entry = check_topology_file(session, panels, project_id)
+    topology_entry = check_topology_file(session, panels, project_id, conversation_id)
     topology_diagram_address = (
         topology_entry["topology_diagram_address"] if topology_entry else None
     )
