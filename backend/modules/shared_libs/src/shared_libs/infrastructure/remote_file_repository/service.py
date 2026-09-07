@@ -120,6 +120,39 @@ class RemoteFileRepository(RemoteFileRepositoryHelper):
         )
 
     @raise_exception(
+        "Failed to rename file in remote database.",
+        exception_logger=logger,
+    )
+    def rename_file(
+        self,
+        query_dict: dict,
+        filename: str,
+        user_info: dict,
+        **kwargs,
+    ):
+        """
+        Renames a single file in the remote file repository.
+
+        Args:
+            query_dict (dict): The query to use to locate the file to rename.
+            filename (str): The new filename to set.
+            user_info (dict): The user information.
+            **kwargs: Additional keyword arguments.
+
+        Returns:
+            dict: The result of the rename operation.
+        """
+        return self.producer.get_task_value(
+            task_type="rename_single_file",
+            task_body={
+                **kwargs,
+                "query_dict": query_dict,
+                "filename": filename,
+                "user_info": user_info,
+            },
+        )
+
+    @raise_exception(
         "Failed to delete files in remote database.",
         exception_logger=logger,
     )

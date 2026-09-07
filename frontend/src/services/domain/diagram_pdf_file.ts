@@ -92,6 +92,40 @@ export const downloadProjectDiagramFilePdf = async (
         });
 };
 
+export const renameProjectDiagramFilePdf = async (
+    {
+        project_id,
+        file_id,
+        filename, //
+    }: {
+        project_id: string;
+        file_id: string;
+        filename: string;
+    },
+    serviceDomainProps: ServiceDomainProps = {}
+) => {
+    const { hideSnackbar = true } = serviceDomainProps;
+    const ADApi = new ArchitectureDiagramService();
+    return await ADApi.patchProjectDiagramFilePdf({
+        project_id,
+        file_id,
+        filename,
+    })
+        .then((res) => {
+            if (!hideSnackbar) {
+                enqueueSnackbar(
+                    "Project PDF document file renamed successfully.", //
+                    { variant: "success" }
+                );
+            }
+            return res?.data?.data;
+        })
+        .catch((reason) => {
+            processDomainFailure(reason, serviceDomainProps);
+            return Promise.reject(reason);
+        });
+};
+
 export const postDiagramPdfFiles = async (
     body: FormData, //
     serviceDomainProps: ServiceDomainProps = {}

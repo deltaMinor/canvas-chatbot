@@ -107,3 +107,13 @@ export const getObjectDifference = (
         {}
     );
 };
+
+export const getFileExtension = (filename: string): string => {
+    const dotIndex = (filename || "").lastIndexOf(".");
+    return dotIndex >= 0 ? filename.slice(dotIndex) : "";
+};
+
+export const getFileBaseName = (filename: string): string => {
+    const dotIndex = (filename || "").lastIndexOf(".");
+    return dotIndex >= 0 ? filename.slice(0, dotIndex) : filename || "";
+};

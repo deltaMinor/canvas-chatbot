@@ -5,6 +5,7 @@ from datetime import datetime
 from gridfs import GridOut
 
 from shared_libs.decorators import raise_exception
+from shared_libs.exceptions.api_exceptions import NotFound
 from shared_libs.infrastructure.file_repository_collection import (
     FileRepositoryCollection,
 )
@@ -212,6 +213,56 @@ class FileRepository(FileRepositoryHelper):
         # Insert the file into the collection and return the file ID
         _id = self.collection.put(**collection_put_body)
         return {"_id": str(_id)}
+
+    @raise_exception(
+        "Failed to rename file in database.",
+        exception_logger=logger,
+    )
+    def rename_file(
+        self,
+        query_dict: dict,
+        filename: str,
+        user_info: dict,
+        **kwargs,
+    ) -> dict:
+        """
+        Renames a single file in-place (metadata-only; the underlying file
+        content/chunks are left untouched).
+
+        Args:
+            query_dict (dict): The query used to locate the file to rename.
+            filename (str): The new filename to set.
+            user_info (dict): Dictionary containing user information, used
+            to stamp `metadata.modified_on`.
+            **kwargs: Additional keyword arguments, such as `session`.
+
+        Returns:
+            dict: A dictionary containing the renamed file's `file_id` and
+            new `filename`.
+
+        Raises:
+            NotFound: If no file matches `query_dict`.
+        """
+        existing_file = self.find_single_file(
+            query_dict=query_dict,
+            raise_if_not_found=True,
+        )
+
+        timestamp = datetime.now(TZINFO)
+        metadata_field = self.get_metadata_field(timestamp, user_info)
+
+        matched_count = self.collection.rename_file(
+            query_dict=query_dict,
+            filename=filename,
+            modified_on=metadata_field,
+            session=kwargs.get("session"),
+        )
+        if not matched_count:
+            raise NotFound(
+                f"File {existing_file.get('file_id')} not found to rename."
+            )
+
+        return {"file_id": existing_file.get("file_id"), "filename": filename}
 
     @raise_exception(
         "Failed to delete files in database.",

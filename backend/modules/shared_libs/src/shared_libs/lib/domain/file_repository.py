@@ -62,6 +62,24 @@ class DomainFileRepositoryService:
         )
 
     @raise_exception(
+        "Failed to rename one file.",
+        exception_logger=logger,
+    )
+    def rename_one_file(
+        self,
+        query_dict: dict,
+        filename: str,
+        user_info: dict,
+        **kwargs: Any,
+    ):
+        return self.repository.rename_file(
+            query_dict=query_dict,
+            filename=filename,
+            user_info=user_info,
+            **kwargs,
+        )
+
+    @raise_exception(
         "Failed to delete many files.",
         exception_logger=logger,
     )

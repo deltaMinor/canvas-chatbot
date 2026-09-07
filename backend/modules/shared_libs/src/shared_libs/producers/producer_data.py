@@ -338,6 +338,7 @@ producer_data_project_ad_file = {
         "task_name_dict": {
             "find_multiple_files": "diagram.create_get_project_ad_files_task",
             "insert_single_file": "diagram.create_insert_project_ad_file_task",
+            "rename_single_file": "diagram.create_rename_project_ad_file_task",
             "delete_multiple_files": "diagram.create_delete_project_ad_files_task",
         },
         "task_key_dict": {

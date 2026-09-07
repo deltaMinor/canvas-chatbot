@@ -218,6 +218,86 @@ class ProjectADFileApplicationService(ProjectADFileService):
             file_id_list=data["file_id_list"],
         )
 
+    @raise_exception("Failed to rename project AD file.", exception_logger=logger)
+    def rename_file(
+        self,
+        data: dict,
+        file_type: str,
+    ) -> dict:
+        """Renames a single project AD file's `filename` in-place.
+
+        The file's extension always tracks the *existing* stored file's
+        extension -- any extension present in the client-supplied
+        `filename` is stripped and replaced, so the file type can never be
+        changed via rename. The resulting base name (i.e. the filename with
+        its extension removed) must be non-blank.
+
+        Args:
+            data (dict): Must contain `project_id`, `file_id`, and
+            `filename` (the requested new filename).
+            file_type (str): The project AD file type being renamed.
+
+        Returns:
+            dict: `{"file_id": str, "filename": str}` for the renamed file.
+
+        Raises:
+            NotFound: If no file matches `project_id`/`file_id`/`file_type`.
+            BadRequest: If the resulting base filename would be blank.
+        """
+        project_id = data["project_id"]
+        file_id = data["file_id"]
+        requested_filename = (data.get("filename") or "").strip()
+
+        existing_file = self.get_one_file(
+            {
+                "project_id": project_id,
+                "file_id": file_id,
+                "file_type": file_type,
+            },
+        )
+        if not existing_file:
+            raise NotFound(f"No file found for file_id {file_id}.")
+
+        _, extension = os.path.splitext(existing_file["filename"])
+        base_name, _ = os.path.splitext(requested_filename)
+        base_name = base_name.strip()
+        if not base_name:
+            raise BadRequest("File name cannot be blank.")
+
+        final_filename = f"{base_name}{extension}"
+
+        audit_log_model = AuditLogModel(
+            action=AuditLogAction.update.value,
+            fieldChanges={
+                "identifiers": {
+                    "project_id": project_id,
+                    "file_id": file_id,
+                },
+                "value": {
+                    "filename": final_filename,
+                    "previous_filename": existing_file["filename"],
+                },
+            },
+            targetKey=AuditLogTargetKey.project_ad_file.value,
+            user_id=SYSTEM_USER_INFO["user_id"],
+            username=SYSTEM_USER_INFO["username"],
+            timestamp=datetime.now(TZINFO),
+        )
+        self.rename_one_file(
+            query_dict={
+                "project_id": project_id,
+                "file_id": file_id,
+                "file_type": file_type,
+            },
+            filename=final_filename,
+            user_info=SYSTEM_USER_INFO,
+        )
+        self.write_audit_log(
+            audit_log_service=self.db_log_ad_service,
+            audit_log_model=audit_log_model,
+        )
+        return {"file_id": file_id, "filename": final_filename}
+
     def _write_file(
         self,
         project_id: str,

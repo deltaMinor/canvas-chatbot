@@ -33,6 +33,7 @@ export { default as DiagramZoomSlider } from "./DiagramZoomSlider";
 export { default as DialogConfirm } from "./DialogConfirm";
 export { default as DialogField } from "./DialogField";
 export { default as DialogFields } from "./DialogFields";
+export { default as EditableFilenameCell } from "./EditableFilenameCell";
 export { default as ErrorFallback } from "./ErrorFallback";
 export { default as FeatureGate } from "./FeatureGate";
 export { default as FilesTable } from "./FilesTable";

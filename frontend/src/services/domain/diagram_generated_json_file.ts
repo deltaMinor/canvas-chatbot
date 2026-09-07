@@ -89,6 +89,40 @@ export const downloadProjectDiagramFileGeneratedJson = async (
         });
 };
 
+export const renameProjectDiagramFileGeneratedJson = async (
+    {
+        project_id,
+        file_id,
+        filename, //
+    }: {
+        project_id: string;
+        file_id: string;
+        filename: string;
+    },
+    serviceDomainProps: ServiceDomainProps = {}
+) => {
+    const { hideSnackbar = true } = serviceDomainProps;
+    const ADApi = new ArchitectureDiagramService();
+    return await ADApi.patchProjectDiagramFileGeneratedJson({
+        project_id,
+        file_id,
+        filename,
+    })
+        .then((res) => {
+            if (!hideSnackbar) {
+                enqueueSnackbar(
+                    "Generated JSON file renamed successfully.", //
+                    { variant: "success" }
+                );
+            }
+            return res?.data?.data;
+        })
+        .catch((reason) => {
+            processDomainFailure(reason, serviceDomainProps);
+            return Promise.reject(reason);
+        });
+};
+
 /**
  * Fetches the raw JSON text content of a previously saved generated diagram
  * file (as opposed to `downloadProjectDiagramFileGeneratedJson`, which

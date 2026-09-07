@@ -2,6 +2,9 @@ import DeleteIcon from "@mui/icons-material/Delete";
 import DownloadIcon from "@mui/icons-material/Download";
 import { GridColDef, GridRenderCellParams } from "@mui/x-data-grid";
 
+import EditableFilenameCell, {
+    preProcessFilenameEditCellProps,
+} from "#root/components/EditableFilenameCell";
 import MuiButton from "#root/components/MuiButton";
 import { ProjectDiagramFileField } from "#root/interfaces/diagramFile";
 import { handleOpenDialog } from "#root/stores/dialogStore";
@@ -52,6 +55,9 @@ export const getProjectGeneratedJsonFilesTableColumns = ({
             field: ProjectDiagramFileField.filename,
             headerName: "File Name", //
             flex: 1,
+            editable: true,
+            renderEditCell: (params) => <EditableFilenameCell {...params} />,
+            preProcessEditCellProps: preProcessFilenameEditCellProps,
         },
         {
             field: ProjectDiagramFileField.timestamp,

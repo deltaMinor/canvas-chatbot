@@ -602,6 +602,37 @@ class ProjectDiagramPDFDocumentFilesAPIView(NonBlockingAPIView):
         )
 
     @raise_exception(
+        "An error occurred while renaming the project PDF document file.",
+        exception_logger=logger,
+    )
+    @verify_data_params(key_list=["project_id", "file_id", "filename"])
+    def patch(
+        self,
+        request: Request,
+    ):
+        """Renames a project PDF document file.
+
+        Args:
+            request (Request): The HTTP request object containing
+            `project_id`, `file_id`, and the requested new `filename`.
+
+        Returns:
+            Response: A response containing the renamed file's `file_id`
+            and final `filename`.
+        """
+        payload = self.project_ad_file_service.rename_file(
+            data=request.data,
+            file_type=PROJECT_AD_FILE_TYPE_PDF_DOCUMENT,
+        )
+        return Response(
+            success(
+                "Project PDF document file renamed successfully.",
+                payload,
+            ),
+            status=status.HTTP_200_OK,
+        )
+
+    @raise_exception(
         "An error occurred while deleting project PDF document files.",
         exception_logger=logger,
     )
@@ -760,6 +791,37 @@ class ProjectDiagramGeneratedJSONFilesAPIView(NonBlockingAPIView):
                 payload,
             ),
             status=status.HTTP_201_CREATED,
+        )
+
+    @raise_exception(
+        "An error occurred while renaming the generated JSON file.",
+        exception_logger=logger,
+    )
+    @verify_data_params(key_list=["project_id", "file_id", "filename"])
+    def patch(
+        self,
+        request: Request,
+    ):
+        """Renames a generated topology JSON file.
+
+        Args:
+            request (Request): The HTTP request object containing
+            `project_id`, `file_id`, and the requested new `filename`.
+
+        Returns:
+            Response: A response containing the renamed file's `file_id`
+            and final `filename`.
+        """
+        payload = self.project_ad_file_service.rename_file(
+            data=request.data,
+            file_type=PROJECT_AD_FILE_TYPE_GENERATED_JSON,
+        )
+        return Response(
+            success(
+                "Generated JSON file renamed successfully.",
+                payload,
+            ),
+            status=status.HTTP_200_OK,
         )
 
     @raise_exception(

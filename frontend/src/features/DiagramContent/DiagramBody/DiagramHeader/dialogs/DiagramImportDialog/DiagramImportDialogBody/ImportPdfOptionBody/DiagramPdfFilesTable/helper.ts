@@ -1,3 +1,5 @@
+import { GridValidRowModel } from "@mui/x-data-grid";
+
 import { MAX_FILE_COUNT, MAX_FILE_SIZE_MB } from "#root/constants/tab";
 import { ServiceDomainProps } from "#root/interfaces/domain";
 import { FileUploadFactory } from "#root/lib/upload";
@@ -5,6 +7,7 @@ import CallApiWithSnackbar from "#root/services/CallApiWithSnackbar";
 import {
     deleteProjectDiagramFilePdf,
     downloadProjectDiagramFilePdf,
+    renameProjectDiagramFilePdf,
 } from "#root/services/domain/diagram_pdf_file";
 import { refreshProjectDiagramFilePdf } from "#root/stores/backendRefreshStore";
 import {
@@ -102,4 +105,34 @@ export const handleClickUploadPdfFile = async (files?: FileList) => {
         messageOnSuccess: "Saved.",
         disableMessageOnError: true,
     });
+};
+
+export const processProjectPdfFileNameRowUpdate = async (
+    newRow: GridValidRowModel, //
+    oldRow: GridValidRowModel
+) => {
+    if (newRow.filename === oldRow.filename) return oldRow;
+
+    const project_id = getProjectIdFromStore();
+
+    await CallApiWithSnackbar({
+        async_func: async () => {
+            await renameProjectDiagramFilePdf(
+                {
+                    project_id,
+                    file_id: oldRow.file_id,
+                    filename: newRow.filename,
+                },
+                {}
+            );
+        },
+        func_on_success: async () => {
+            await refreshProjectDiagramFilePdf();
+        },
+        message: "Renaming ...",
+        messageOnSuccess: "Renamed.",
+        propagateError: true,
+    });
+
+    return newRow;
 };

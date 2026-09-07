@@ -27,6 +27,7 @@ from shared_libs.models.base_models import (
     DomainFileRepositoryDeleteOneModel,
     DomainFileRepositoryInsertOneModel,
     DomainFileRepositoryQueryModel,
+    DomainFileRepositoryUpdateOneModel,
     DomainRepositoryQueryModel,
     DomainRepositoryUpdateOneModel,
     ProducerDataModel,
@@ -877,6 +878,36 @@ def create_insert_project_ad_file_task(self, body):
     res = project_ad_file_service.insert_one_file(**domain_insert_model.model_dump())
     return success(
         "Project architecture diagram file is inserted successfully.",
+        res,
+    )
+
+
+@raise_exception(
+    "Failed to complete rename project architecture diagram file task.",
+    exception_logger=logger,
+)
+@shared_task(
+    base=ApplicationTask,
+    bind=True,
+    name="diagram.create_rename_project_ad_file_task",
+    queue="diagram_queue",
+)
+def create_rename_project_ad_file_task(self, body):
+    from service.tasks.client import tm_db_client
+
+    project_ad_file_service = ProjectADFileService(
+        repository=FileRepository(
+            collection=FileRepositoryCollection(
+                database=tm_db_client,
+                collection=Collection.project_ad_file.value,
+            ),
+        )
+    )
+
+    domain_rename_model = DomainFileRepositoryUpdateOneModel(**body)
+    res = project_ad_file_service.rename_one_file(**domain_rename_model.model_dump())
+    return success(
+        "Project architecture diagram file is renamed successfully.",
         res,
     )
 

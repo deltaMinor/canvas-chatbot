@@ -326,6 +326,13 @@ export class ArchitectureDiagramService {
         const params = { project_id, file_id };
         return await axios_json_api.get("project_diagram/files/pdf/download", { params });
     }
+    async patchProjectDiagramFilePdf(data: {
+        project_id: string;
+        file_id: string;
+        filename: string;
+    }): Promise<AxiosApiResponse<{ file_id: string; filename: string }>> {
+        return await axios_json_api.patch("project_diagram/files/pdf", data);
+    }
 
     // Generated JSON Files (storage only, saved automatically from TopologyGenerator output)
     async getProjectDiagramFileGeneratedJson(
@@ -361,6 +368,13 @@ export class ArchitectureDiagramService {
         return await axios_json_api.get("project_diagram/files/generated_json/download", {
             params,
         });
+    }
+    async patchProjectDiagramFileGeneratedJson(data: {
+        project_id: string;
+        file_id: string;
+        filename: string;
+    }): Promise<AxiosApiResponse<{ file_id: string; filename: string }>> {
+        return await axios_json_api.patch("project_diagram/files/generated_json", data);
     }
 
     // Module Files

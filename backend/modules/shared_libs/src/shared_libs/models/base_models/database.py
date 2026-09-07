@@ -184,7 +184,8 @@ class DomainFileRepositoryInsertOneModel(_FileCollectionCommonModel):
 
 
 class DomainFileRepositoryUpdateOneModel(_FileCollectionCommonModel):
-    pass
+    filename: str | None = Field(default=None)
+    user_info: Optional["UserInfoModel"] = None
 
 
 class DomainFileRepositoryDeleteOneModel(_FileCollectionCommonModel):
