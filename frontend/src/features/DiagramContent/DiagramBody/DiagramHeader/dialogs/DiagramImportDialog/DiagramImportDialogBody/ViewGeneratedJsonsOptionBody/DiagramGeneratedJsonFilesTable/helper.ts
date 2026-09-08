@@ -1,14 +1,16 @@
 import { GridValidRowModel } from "@mui/x-data-grid";
 
+import { DialogConfirmStateEnum } from "#root/enums/dialog";
 import { ServiceDomainProps } from "#root/interfaces/domain";
 import CallApiWithSnackbar from "#root/services/CallApiWithSnackbar";
 import {
     deleteProjectDiagramFileGeneratedJson,
-    downloadProjectDiagramFileGeneratedJson,
     renameProjectDiagramFileGeneratedJson,
 } from "#root/services/domain/diagram_generated_json_file";
 import { refreshProjectDiagramFileGeneratedJson } from "#root/stores/backendRefreshStore";
 import { getProjectIdFromStore } from "#root/stores/backendStore";
+import { handleOpenDialogConfirm } from "#root/stores/dialogStore";
+import { setPendingTopologyDiagramAddress } from "#root/utils/diagramChatbot/topologyDiagramPendingStore";
 
 export const processClickDeleteProjectGeneratedJsonFiles = async (
     {
@@ -26,20 +28,9 @@ export const processClickDeleteProjectGeneratedJsonFiles = async (
     );
 };
 
-export const handleClickDownloadGeneratedJsonFile = async (file_id: string) => {
-    const project_id = getProjectIdFromStore();
-
-    await CallApiWithSnackbar({
-        async_func: async () => {
-            await downloadProjectDiagramFileGeneratedJson(
-                { project_id, file_id }, //
-                {}
-            );
-        },
-        message: "Downloading ...",
-        messageOnSuccess: "Downloaded.",
-        disableMessageOnError: true,
-    });
+export const handleClickImportGeneratedJsonFile = (file_id: string) => {
+    setPendingTopologyDiagramAddress(file_id);
+    handleOpenDialogConfirm(DialogConfirmStateEnum.confirmGenerateDiagramFromTopologyGenerator);
 };
 
 export const processProjectGeneratedJsonFileNameRowUpdate = async (

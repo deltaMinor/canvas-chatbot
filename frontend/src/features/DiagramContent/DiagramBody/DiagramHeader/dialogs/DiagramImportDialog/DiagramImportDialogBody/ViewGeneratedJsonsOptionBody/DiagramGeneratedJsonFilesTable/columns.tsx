@@ -1,5 +1,5 @@
 import DeleteIcon from "@mui/icons-material/Delete";
-import DownloadIcon from "@mui/icons-material/Download";
+import SaveAlt from "@mui/icons-material/SaveAlt";
 import { GridColDef, GridRenderCellParams } from "@mui/x-data-grid";
 
 import EditableFilenameCell, {
@@ -12,7 +12,7 @@ import { setMuiDataGridSelectedRowId } from "#root/stores/muiDataGridStore";
 import { convertTimezoneToSGT } from "#root/utils/genericHelper";
 
 import { deleteProjectGeneratedJsonFileDialogConfirmStateKey } from "./constants";
-import { handleClickDownloadGeneratedJsonFile } from "./helper";
+import { handleClickImportGeneratedJsonFile } from "./helper";
 import { ProjectGeneratedJsonFilesTableRefObject } from "./interface";
 import { getProjectGeneratedJsonFileRowIdFromRow } from "./rows";
 
@@ -35,7 +35,7 @@ export const getProjectGeneratedJsonFilesTableColumns = ({
         handleOpenDialog(deleteProjectGeneratedJsonFileDialogConfirmStateKey);
     };
 
-    const handleClickDownload = async (
+    const handleClickImport = (
         _event: React.MouseEvent<HTMLButtonElement, MouseEvent>, //
         params: GridRenderCellParams
     ) => {
@@ -43,7 +43,7 @@ export const getProjectGeneratedJsonFilesTableColumns = ({
             row: params.row,
             muiDataGridTableInstanceId,
         });
-        await handleClickDownloadGeneratedJsonFile(row_id);
+        handleClickImportGeneratedJsonFile(row_id);
     };
 
     return [
@@ -70,15 +70,15 @@ export const getProjectGeneratedJsonFilesTableColumns = ({
         },
         {
             field: ProjectDiagramFileField.download,
-            headerName: "Download",
+            headerName: "Import",
             headerAlign: "center",
             align: "center",
             renderCell: (params) => {
                 return (
                     <MuiButton
-                        onClick={(ev) => handleClickDownload(ev, params)} //
+                        onClick={(ev) => handleClickImport(ev, params)} //
                         color="primary"
-                        startIcon={<DownloadIcon />}
+                        startIcon={<SaveAlt />}
                     />
                 );
             },
