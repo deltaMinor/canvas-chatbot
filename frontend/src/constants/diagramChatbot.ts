@@ -18,6 +18,9 @@ export const MSG_CONFIRM_CLEAR_RUNS =
 export const MSG_CONFIRM_CLEAR_ALL =
     'This will clear the chat history, canvas diagram, and stored run ids, are you sure?\n(Enter "yes" to confirm)';
 
+export const DEFAULT_DIAGRAM_QUOTA = 5;
+export const MSG_DIAGRAM_QUOTA_REACHED = "Diagram generation quota reached.";
+
 export const INPUT_HELP: SpecialInput = {
     label: "Command List: /help",
     input: "/help",

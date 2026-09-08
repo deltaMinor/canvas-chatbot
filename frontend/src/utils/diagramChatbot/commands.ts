@@ -1,6 +1,7 @@
 import { RefObject } from "react";
 
 import {
+    DEFAULT_DIAGRAM_QUOTA,
     INPUT_HELP,
     INPUT_LLM_INTENT,
     INPUT_LLM_ONTO,
@@ -9,6 +10,7 @@ import {
     MSG_CONFIRM_CLEAR_CHAT,
     MSG_CONFIRM_CLEAR_DIAGRAM,
     MSG_CONFIRM_CLEAR_RUNS,
+    MSG_DIAGRAM_QUOTA_REACHED,
     MSG_HELP,
     TOPOLOGY_CONTINUE_INPUT,
     TOPOLOGY_CONTINUE_TITLE,
@@ -20,6 +22,7 @@ import { ChatbotState } from "#root/enums/diagram-chatbot";
 import { ChatMessage, ChatbotHandle, HandleInputFnOutput } from "#root/interfaces/chatbot";
 import { getProjectDiagramFilePdfFromApi } from "#root/services/domain/diagram_pdf_file";
 import { sendIntentRXMessage } from "#root/services/domain/intentrx";
+import { getProjectFromStore } from "#root/stores/backendStore";
 import { stringsToHandleInputFnOutput } from "#root/utils/chatbot/formatOutput";
 import { formatSetupTopologyPanels } from "#root/utils/diagramChatbot/formatIntentRX";
 import {
@@ -140,6 +143,16 @@ export const handleNeutralState = async (
             return startIntentRXSession("topology", ChatbotState.LlmTopology, intentContext);
         }
         case "/start topology": {
+            const project = getProjectFromStore();
+            const diagramsGenerated = project?.diagrams_generated ?? 0;
+            const diagramQuota = project?.diagram_quota ?? DEFAULT_DIAGRAM_QUOTA;
+            if (diagramQuota <= diagramsGenerated) {
+                return [
+                    stringsToHandleInputFnOutput(MSG_DIAGRAM_QUOTA_REACHED),
+                    ChatbotState.Neutral,
+                ];
+            }
+
             const [response, state] = await startIntentRXSession(
                 "topology",
                 ChatbotState.LlmTopologySetup,

@@ -1,8 +1,9 @@
 import React from "react";
 
-import { DialogContent } from "@mui/material";
+import { DialogContent, Stack, Typography } from "@mui/material";
 
 import MuiDialogTitle from "#root/components/MuiDialogTitle";
+import { DEFAULT_DIAGRAM_QUOTA } from "#root/constants/diagramChatbot";
 import { useProject } from "#root/hooks/backendHooks";
 
 const UserSettingsDialogBodyComponent = () => {
@@ -13,7 +14,14 @@ const UserSettingsDialogBodyComponent = () => {
             <MuiDialogTitle //
                 title="User Settings"
             />
-            <DialogContent>Diagrams Generated: {project?.diagrams_generated ?? 0}</DialogContent>
+            <DialogContent>
+                <Stack spacing={1}>
+                    <Typography>
+                        Diagram quota: {project?.diagram_quota ?? DEFAULT_DIAGRAM_QUOTA}
+                    </Typography>
+                    <Typography>Diagrams Generated: {project?.diagrams_generated ?? 0}</Typography>
+                </Stack>
+            </DialogContent>
         </>
     );
 };

@@ -33,17 +33,27 @@ def _get_projects_collection():
     return db[PROJECT_COLLECTION_NAME]
 
 
-def _get_diagrams_generated(project_id: str) -> int:
+DEFAULT_DIAGRAM_QUOTA = 5
+
+
+def _get_diagram_generation_state(project_id: str) -> dict:
     client = MongoClient(
         settings.DB_URL,
         connectTimeoutMS=5000,
         serverSelectionTimeoutMS=10000,
     )
     db = client[settings.DB_NAME]
-    project_ad = db[PROJECT_AD_COLLECTION_NAME].find_one(
-        {"project_id": project_id}, {"diagrams_generated": 1}
+    project_ad = (
+        db[PROJECT_AD_COLLECTION_NAME].find_one(
+            {"project_id": project_id},
+            {"diagrams_generated": 1, "diagram_quota": 1},
+        )
+        or {}
     )
-    return (project_ad or {}).get("diagrams_generated") or 0
+    return {
+        "diagrams_generated": project_ad.get("diagrams_generated") or 0,
+        "diagram_quota": project_ad.get("diagram_quota", DEFAULT_DIAGRAM_QUOTA),
+    }
 
 
 def _default_project(project_id: str) -> dict:
@@ -89,7 +99,7 @@ class ProjectAPIView(APIView):
                 upsert=True,
             )
 
-        project["diagrams_generated"] = _get_diagrams_generated(project_id)
+        project.update(_get_diagram_generation_state(project_id))
 
         return Response(
             success("Project is retrieved successfully.", {"project": project}),

@@ -247,6 +247,7 @@ class ProjectADBaseModel(
     conversations: list["ConversationBaseModel"] | None = Field(default=[])
     topology_run_context: list["TopologyRunContextBaseModel"] | None = Field(default=[])
     diagrams_generated: int | None = Field(default=0)
+    diagram_quota: int | None = Field(default=5)
     isCompleted: bool | None = Field(default=False)
     lastCompletedBy: Optional["MetadataModel"] = Field(
         default_factory=MetadataModel,
