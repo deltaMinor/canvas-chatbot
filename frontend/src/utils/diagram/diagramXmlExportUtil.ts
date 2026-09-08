@@ -192,7 +192,7 @@ export const generateDrawioXml = async (
     const pageHeight = Math.max(1100, Math.ceil(contentHeight + DIAGRAM_MARGIN * 2));
 
     return [
-        `<mxfile host="app.diagrams.net">`,
+        `<mxfile host="app.diagrams.net" _generated_by="pdf-json-parser-v1">`,
         `    <diagram id="architecture-canvas" name="Architecture">`,
         `        <mxGraphModel dx="800" dy="600" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="${pageWidth}" pageHeight="${pageHeight}" math="0" shadow="0">`,
         `            <root>`,

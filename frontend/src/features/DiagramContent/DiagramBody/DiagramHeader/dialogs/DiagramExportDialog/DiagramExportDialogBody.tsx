@@ -44,7 +44,10 @@ const DiagramExportDialogBodyComponent = () => {
                     projectDiagram as typeof projectDiagram & { conversations?: unknown };
 
                 downloadJson(
-                    projectDiagramWithoutConversations, //
+                    {
+                        _generated_by: "pdf-json-parser-v1",
+                        ...projectDiagramWithoutConversations,
+                    }, //
                     "project_diagram"
                 );
             },
