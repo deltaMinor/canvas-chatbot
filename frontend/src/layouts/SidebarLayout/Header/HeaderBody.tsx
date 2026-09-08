@@ -8,6 +8,7 @@ import ClearButton from "./ClearButton";
 import ExportButton from "./ExportButton";
 import GeneratedDiagramsButton from "./GeneratedDiagramsButton";
 import ImportButton from "./ImportButton";
+import UserSettingsButton from "./UserSettingsButton";
 
 const BRAND_NAME = import.meta.env.VITE_BRAND_NAME || "Integrative Threat Modelling Platform";
 
@@ -82,6 +83,7 @@ const HeaderBodyComponent = () => {
                                     }}
                                     spacing={0}
                                 >
+                                    <UserSettingsButton />
                                     <ImportButton />
                                     <GeneratedDiagramsButton />
                                     <ExportButton />

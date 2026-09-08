@@ -27,7 +27,7 @@ from shared_libs.constants.architecture_diagram import (
 )
 from shared_libs.constants.database import MAX_FILE_COUNT
 from shared_libs.decorators import raise_exception
-from shared_libs.domain import DatabaseLogService, ProjectADFileService
+from shared_libs.domain import DatabaseLogService, ProjectADFileService, ProjectADService
 from shared_libs.exceptions.api_exceptions import BadRequest, NotFound
 from shared_libs.infrastructure.producer.service import Producer
 from shared_libs.infrastructure.remote_file_repository.service import (
@@ -43,6 +43,7 @@ from shared_libs.models.base_models import (
 )
 from shared_libs.producers.producer_data import (
     producer_data_database_log_ad,
+    producer_data_project_ad,
     producer_data_project_ad_file,
 )
 from shared_libs.types.auditLog import AuditLogAction, AuditLogTargetKey
@@ -82,6 +83,36 @@ class ProjectADFileApplicationService(ProjectADFileService):
                 ),
             )
         )
+        self.project_ad_service = ProjectADService(
+            repository=RemoteRepository(
+                producer=Producer(
+                    producer_data_model=ProducerDataModel(
+                        **producer_data_project_ad,
+                    ),
+                    celery_app=celery_app,
+                ),
+            )
+        )
+
+    def _increment_diagrams_generated(self, project_id: str) -> None:
+        """Best-effort bump of `diagrams_generated` on the project's AD
+        document. Called only after a generated diagram JSON has already
+        been successfully written to the database, so a failure here must
+        never surface as a failure of the overall save.
+        """
+        try:
+            self.project_ad_service.update_one(
+                {"project_id": project_id},
+                payload={"diagrams_generated": 1},
+                operator="$inc",
+                user_info=SYSTEM_USER_INFO,
+            )
+        except Exception:
+            logger.warning(
+                "Failed to increment diagrams_generated for project %s.",
+                project_id,
+                exc_info=True,
+            )
 
     def _build_files_response(
         self,
@@ -650,6 +681,8 @@ class ProjectADFileApplicationService(ProjectADFileService):
             content_type="application/json",
             decoded_file=decoded_file,
         )
+
+        self._increment_diagrams_generated(project_id)
 
         return {"file_id": file_id, "filename": filename}
 

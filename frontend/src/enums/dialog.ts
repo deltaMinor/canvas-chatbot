@@ -33,6 +33,7 @@ export enum DialogStateEnum {
     uploadModuleDirectory = "uploadModuleDirectory",
     uploadTerraformFile = "uploadTerraformFile",
     uploadXMLFile = "uploadXMLFile",
+    userSettings = "userSettings",
     viewAssociatedRisk = "viewAssociatedRisk",
     viewConflictScenarioDetails = "viewConflictScenarioDetails",
     viewConflictResolve = "viewConflictResolve",

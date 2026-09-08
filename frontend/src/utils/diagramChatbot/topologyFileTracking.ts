@@ -1,7 +1,7 @@
 import { ChatMessage } from "#root/interfaces/chatbot";
 import { saveGeneratedTopologyJson } from "#root/services/domain/diagram_generated_json_file";
 import { IntentRXPanel, readIntentRXFile } from "#root/services/domain/intentrx";
-import { refreshProjectDiagramFileGeneratedJson } from "#root/stores/backendRefreshStore";
+import { refreshProject, refreshProjectDiagramFileGeneratedJson } from "#root/stores/backendRefreshStore";
 import { formatIntentRXPanels } from "#root/utils/diagramChatbot/formatIntentRX";
 import {
     extractTopologyRunId,
@@ -107,6 +107,7 @@ export const applyTopologyFileFromAddress = async (
     if (!saved?.file_id) return [];
 
     void refreshProjectDiagramFileGeneratedJson();
+    void refreshProject();
 
     return [
         {
@@ -144,6 +145,7 @@ export const checkAndApplyTopologyFile = async (
     if (!generatedJsonFileId) return messages;
 
     void refreshProjectDiagramFileGeneratedJson();
+    void refreshProject();
 
     return [
         ...messages,

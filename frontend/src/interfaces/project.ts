@@ -130,6 +130,7 @@ export interface ProjectCore extends ProjectProps {
     project_settings: ProjectSettingsData;
     resource_tags: string[];
     tier_level: number;
+    diagrams_generated?: number;
 }
 
 export interface Project extends ProjectCore {

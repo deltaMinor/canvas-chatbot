@@ -17,6 +17,7 @@ logger = logging.getLogger(__name__)
 # frontend's Project interface expects) directly via pymongo, so a separate
 # service/database is not required.
 PROJECT_COLLECTION_NAME = "projects"
+PROJECT_AD_COLLECTION_NAME = "project_ad"
 
 
 def _get_projects_collection():
@@ -30,6 +31,19 @@ def _get_projects_collection():
     )
     db = client[settings.DB_NAME]
     return db[PROJECT_COLLECTION_NAME]
+
+
+def _get_diagrams_generated(project_id: str) -> int:
+    client = MongoClient(
+        settings.DB_URL,
+        connectTimeoutMS=5000,
+        serverSelectionTimeoutMS=10000,
+    )
+    db = client[settings.DB_NAME]
+    project_ad = db[PROJECT_AD_COLLECTION_NAME].find_one(
+        {"project_id": project_id}, {"diagrams_generated": 1}
+    )
+    return (project_ad or {}).get("diagrams_generated") or 0
 
 
 def _default_project(project_id: str) -> dict:
@@ -74,6 +88,8 @@ class ProjectAPIView(APIView):
                 {"$set": project},
                 upsert=True,
             )
+
+        project["diagrams_generated"] = _get_diagrams_generated(project_id)
 
         return Response(
             success("Project is retrieved successfully.", {"project": project}),
