@@ -131,6 +131,7 @@ export interface ProjectCore extends ProjectProps {
     resource_tags: string[];
     tier_level: number;
     diagrams_generated?: number;
+    diagrams_generated_today?: number;
     diagram_quota?: number;
 }
 

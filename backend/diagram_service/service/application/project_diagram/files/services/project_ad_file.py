@@ -100,13 +100,22 @@ class ProjectADFileApplicationService(ProjectADFileService):
         been successfully written to the database, so a failure here must
         never surface as a failure of the overall save.
         """
+        today = datetime.now(TZINFO).strftime("%Y-%m-%d")
         try:
-            self.project_ad_service.update_one(
-                {"project_id": project_id},
-                payload={"diagrams_generated": 1},
+            result = self.project_ad_service.update_one(
+                {"project_id": project_id, "diagrams_generated.date": today},
+                payload={"diagrams_generated.$.amount": 1},
                 operator="$inc",
                 user_info=SYSTEM_USER_INFO,
             )
+            matched_count = (result or {}).get("updateResult", {}).get("matched_count", 0)
+            if not matched_count:
+                self.project_ad_service.update_one(
+                    {"project_id": project_id},
+                    payload={"diagrams_generated": {"date": today, "amount": 1}},
+                    operator="$push",
+                    user_info=SYSTEM_USER_INFO,
+                )
         except Exception:
             logger.warning(
                 "Failed to increment diagrams_generated for project %s.",

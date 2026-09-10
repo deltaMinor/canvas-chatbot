@@ -1,4 +1,5 @@
 import logging
+from datetime import datetime
 
 from django.conf import settings
 from pymongo import MongoClient
@@ -50,8 +51,28 @@ def _get_diagram_generation_state(project_id: str) -> dict:
         )
         or {}
     )
+
+    diagrams_generated_raw = project_ad.get("diagrams_generated")
+    diagrams_generated_list = (
+        diagrams_generated_raw if isinstance(diagrams_generated_raw, list) else []
+    )
+
+    today = datetime.now(settings.TZINFO).strftime("%Y-%m-%d")
+    diagrams_generated_today = next(
+        (
+            entry.get("amount") or 0
+            for entry in diagrams_generated_list
+            if isinstance(entry, dict) and entry.get("date") == today
+        ),
+        0,
+    )
+    diagrams_generated_total = sum(
+        (entry.get("amount") or 0) for entry in diagrams_generated_list if isinstance(entry, dict)
+    )
+
     return {
-        "diagrams_generated": project_ad.get("diagrams_generated") or 0,
+        "diagrams_generated": diagrams_generated_total,
+        "diagrams_generated_today": diagrams_generated_today,
         "diagram_quota": project_ad.get("diagram_quota", DEFAULT_DIAGRAM_QUOTA),
     }
 

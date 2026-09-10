@@ -144,9 +144,9 @@ export const handleNeutralState = async (
         }
         case "/start topology": {
             const project = getProjectFromStore();
-            const diagramsGenerated = project?.diagrams_generated ?? 0;
+            const diagramsGeneratedToday = project?.diagrams_generated_today ?? 0;
             const diagramQuota = project?.diagram_quota ?? DEFAULT_DIAGRAM_QUOTA;
-            if (diagramQuota <= diagramsGenerated) {
+            if (diagramQuota <= diagramsGeneratedToday) {
                 return [
                     stringsToHandleInputFnOutput(MSG_DIAGRAM_QUOTA_REACHED),
                     ChatbotState.Neutral,

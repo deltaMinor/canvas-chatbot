@@ -16,10 +16,11 @@ const UserSettingsDialogBodyComponent = () => {
             />
             <DialogContent>
                 <Stack spacing={1}>
-                    <Typography>
-                        Diagram quota: {project?.diagram_quota ?? DEFAULT_DIAGRAM_QUOTA}
-                    </Typography>
                     <Typography>Diagrams Generated: {project?.diagrams_generated ?? 0}</Typography>
+                    <Typography>
+                        Diagram quota: {project?.diagrams_generated_today ?? 0}/
+                        {project?.diagram_quota ?? DEFAULT_DIAGRAM_QUOTA}
+                    </Typography>
                 </Stack>
             </DialogContent>
         </>

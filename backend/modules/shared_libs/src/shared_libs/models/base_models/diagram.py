@@ -1,6 +1,6 @@
 from typing import Optional, Self
 
-from pydantic import BaseModel, Field, model_validator
+from pydantic import BaseModel, Field, field_validator, model_validator
 
 from shared_libs.constants.diagram import BLANK_ARCHITECTURE_CANVAS
 from shared_libs.models.model_validators import (
@@ -24,6 +24,7 @@ __all__ = [
     "CanvasNodeHandle",
     "CanvasNodeMeasured",
     "CanvasXYPosition",
+    "DiagramGenerationRecordBaseModel",
     "LLMGenerationMetadataModel",
     "MasterADTemplateBaseModel",
     "ProjectADBaseModel",
@@ -236,6 +237,12 @@ class TopologyRunContextBaseModel(BaseModel):
     created_at: str
 
 
+class DiagramGenerationRecordBaseModel(BaseModel):
+
+    date: str
+    amount: int = Field(default=0)
+
+
 class ProjectADBaseModel(
     PatchBaseModel,
     ProjectADBaseValidator,
@@ -246,7 +253,7 @@ class ProjectADBaseModel(
     )
     conversations: list["ConversationBaseModel"] | None = Field(default=[])
     topology_run_context: list["TopologyRunContextBaseModel"] | None = Field(default=[])
-    diagrams_generated: int | None = Field(default=0)
+    diagrams_generated: list["DiagramGenerationRecordBaseModel"] | None = Field(default=[])
     diagram_quota: int | None = Field(default=5)
     isCompleted: bool | None = Field(default=False)
     lastCompletedBy: Optional["MetadataModel"] = Field(
@@ -268,3 +275,8 @@ class ProjectADBaseModel(
             handler=handler,
         )
         return model
+
+    @field_validator("diagrams_generated", mode="before")
+    @classmethod
+    def _coerce_legacy_diagrams_generated(cls, value):
+        return value if isinstance(value, list) else []
