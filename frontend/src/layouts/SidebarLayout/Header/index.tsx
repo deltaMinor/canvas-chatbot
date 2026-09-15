@@ -3,6 +3,7 @@ import React from "react";
 import { useActiveNavKeyEffect } from "#root/hooks/layoutHooks";
 
 import HeaderBody from "./HeaderBody";
+import AdminUsersDialog from "./dialogs/AdminUsersDialog";
 import UserSettingsDialog from "./dialogs/UserSettingsDialog";
 
 const HeaderComponent = () => {
@@ -10,6 +11,7 @@ const HeaderComponent = () => {
 
     return (
         <>
+            <AdminUsersDialog />
             <UserSettingsDialog />
             <HeaderBody />
         </>

@@ -1,5 +1,4 @@
 import React from "react";
-
 import { useNavigate } from "react-router-dom";
 
 import AdminPanelSettingsIcon from "@mui/icons-material/AdminPanelSettings";
@@ -8,6 +7,8 @@ import { MenuItem, Select, SelectChangeEvent, Stack, Tooltip } from "@mui/materi
 
 import { DiagramToolbarButton } from "#root/components/DiagramToolbarPrimitives";
 import { useMockUsers } from "#root/hooks/useMockUsers";
+import { DialogStateEnum } from "#root/interfaces/dialog";
+import { handleOpenDialog } from "#root/stores/dialogStore";
 
 const MockUserSwitcherComponent = () => {
     const navigate = useNavigate();
@@ -26,8 +27,8 @@ const MockUserSwitcherComponent = () => {
     );
 
     const handleOpenAdmin = React.useCallback(() => {
-        navigate("/admin/users");
-    }, [navigate]);
+        handleOpenDialog(DialogStateEnum.adminUsers);
+    }, []);
 
     if (users.length === 0) {
         return null;
@@ -39,7 +40,10 @@ const MockUserSwitcherComponent = () => {
             spacing={0.5}
             sx={{ alignItems: "center" }}
         >
-            <PersonIcon sx={{ color: "#fff" }} fontSize="small" />
+            <PersonIcon
+                sx={{ color: "#fff" }}
+                fontSize="small"
+            />
             <Select
                 value={currentUser?.user_id ?? ""}
                 onChange={handleChange}

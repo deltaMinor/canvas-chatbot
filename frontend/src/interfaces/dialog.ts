@@ -41,6 +41,7 @@ export enum DialogStateEnum {
     addMasterRegisterScenario = "addMasterRegisterScenario",
     addProjectRegisterScenario = "addProjectRegisterScenario",
     addRegister = "addRegister",
+    adminUsers = "adminUsers",
     appVersionInfo = "appVersionInfo",
     assessmentCheckpointHistory = "assessmentCheckpointHistory",
     attackFlowDatabase = "attackFlowDatabase",
