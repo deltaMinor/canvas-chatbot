@@ -27,4 +27,8 @@ mongoimport --host "$host" --port "$port" \
     --db "$adDbName" --collection kb_tosca \
     --file /docker-entrypoint-initdb.d/data/kb_tosca.json
 
+mongoimport --host "$host" --port "$port" \
+    --db "$adDbName" --collection mock_users \
+    --file /docker-entrypoint-initdb.d/data/mock_users.json --jsonArray
+
 echo "Seed data import completed."

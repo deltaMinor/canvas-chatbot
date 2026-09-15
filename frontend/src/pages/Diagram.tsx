@@ -7,6 +7,7 @@ import { DEFAULT_PROJECT_ID } from "#root/constants/project";
 import { KbToscaInitializer } from "#root/initializers/KbToscaInitializer";
 import { ProjectDiagramInitializer } from "#root/initializers/ProjectDiagramInitializer";
 import { ProjectInitializer } from "#root/initializers/ProjectInitializer";
+import { getStoredMockUserProjectId } from "#root/lib/mockUser";
 
 import FeatureGate from "../components/FeatureGate";
 import DiagramContent from "../features/DiagramContent";
@@ -22,9 +23,10 @@ const DiagramPageComponent = () => {
     const projectId = new URLSearchParams(location.search).get("project_id");
 
     if (!projectId) {
+        const fallbackProjectId = getStoredMockUserProjectId() || DEFAULT_PROJECT_ID;
         return (
             <Navigate
-                to={`/?project_id=${DEFAULT_PROJECT_ID}`}
+                to={`/?project_id=${fallbackProjectId}`}
                 replace
             />
         );

@@ -16,6 +16,7 @@ try {
   db.createCollection("project_ad_file_terraform");
   db.createCollection("project_ad_chat_history_log");
   db.createCollection("project_ad");
+  db.createCollection("mock_users");
   db.createCollection("project_diagram_file");
   db.createCollection("master_ad_template");
   db.createCollection("kb_tosca");

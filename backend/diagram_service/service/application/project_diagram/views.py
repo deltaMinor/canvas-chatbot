@@ -1,6 +1,8 @@
 import logging
 
+from django.conf import settings
 from main import celery_app
+from pymongo import MongoClient
 from rest_framework import status
 from rest_framework.decorators import throttle_classes
 from rest_framework.request import Request
@@ -16,6 +18,25 @@ from shared_libs.lib.nonblocking_api_view import NonBlockingAPIView
 from shared_libs.templates.message_template import success
 
 logger = logging.getLogger(__name__)
+
+PROJECT_AD_COLLECTION_NAME = "project_ad"
+
+
+def _ensure_project_ad_exists(project_id: str) -> None:
+    if not project_id:
+        return
+    client = MongoClient(
+        settings.DB_URL,
+        connectTimeoutMS=5000,
+        serverSelectionTimeoutMS=10000,
+    )
+    db = client[settings.DB_NAME]
+
+    db[PROJECT_AD_COLLECTION_NAME].update_one(
+        {"project_id": project_id},
+        {"$setOnInsert": {"project_id": project_id}},
+        upsert=True,
+    )
 
 
 @throttle_classes([UserRateThrottle])
@@ -67,6 +88,9 @@ class ProjectDiagramAPIView(NonBlockingAPIView):
         Returns:
             Response: A response object containing the status and data for the client.
         """
+        project_id = request.GET.get("project_id")
+        _ensure_project_ad_exists(project_id)
+
         project_ad = self.project_ad_service.get_project_ad(
             data=request.GET,
         )

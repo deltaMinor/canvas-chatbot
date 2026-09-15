@@ -250,6 +250,11 @@ CORS_ALLOWED_ORIGINS = service_env_processor.get_hosts_from_string(
     env_key="CORS_ALLOWED_ORIGIN_HOSTS",
 )
 
+# The mock multi-user simulation
+from corsheaders.defaults import default_headers as _cors_default_headers  # noqa: E402
+
+CORS_ALLOW_HEADERS = [*_cors_default_headers, "x-mock-user-id"]
+
 # Load balancer IP list (if required)
 if os.environ.get("REQUIRE_LB_IP_LIST") == "TRUE":
     ALLOWED_HOSTS += service_env_processor.get_hosts_from_string(

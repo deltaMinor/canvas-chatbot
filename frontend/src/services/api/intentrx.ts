@@ -7,9 +7,13 @@ import {
     baseHeaders,
 } from "#root/lib/http-common";
 
+import { setupApiInterceptors } from "./tokenRefresh";
+
 const baseURL = `${SINGLE_ORIGIN_SERVER_BASE_URL}/${AD_API_URL_PREFIX}`;
 
 const axios_json_api = axios.create({ baseURL, headers: { ...baseHeaders } });
+
+setupApiInterceptors(axios_json_api);
 
 export interface IntentRXPanel {
     title: string | null;
