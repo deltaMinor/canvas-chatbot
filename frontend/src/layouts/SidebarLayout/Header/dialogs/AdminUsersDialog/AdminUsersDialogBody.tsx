@@ -2,6 +2,7 @@ import React from "react";
 
 import AddIcon from "@mui/icons-material/Add";
 import DeleteOutlineIcon from "@mui/icons-material/DeleteOutline";
+import FileDownloadOutlinedIcon from "@mui/icons-material/FileDownloadOutlined";
 import {
     Alert,
     Chip,
@@ -27,6 +28,7 @@ import { useMockUsers } from "#root/hooks/useMockUsers";
 import { DialogStateEnum } from "#root/interfaces/dialog";
 import { MockUser, patchMockUserQuota } from "#root/services/api/mockUsers";
 import { handleCloseDialogAsync } from "#root/stores/dialogStore";
+import { downloadCsv, downloadJson } from "#root/utils/fileDownloadHelper";
 
 const AdminUsersDialogBodyComponent = () => {
     const { users, loaded, currentUser, createUser, deleteUser, refresh } = useMockUsers();
@@ -86,6 +88,36 @@ const AdminUsersDialogBodyComponent = () => {
         }
     }, [createUser]);
 
+    const buildExportRows = React.useCallback(
+        () =>
+            users.map((mockUser) => ({
+                user: mockUser.display_name,
+                role: mockUser.is_admin ? "Admin" : "User",
+                project_id: mockUser.project_id,
+                diagrams_generated: mockUser.diagrams_generated,
+                diagram_quota: mockUser.diagram_quota,
+            })),
+        [users]
+    );
+
+    const handleExportCsv = React.useCallback(() => {
+        const rows = buildExportRows();
+        if (rows.length === 0) {
+            enqueueSnackbar("No users to export.", { variant: "info" });
+            return;
+        }
+        downloadCsv(rows, "userData");
+    }, [buildExportRows]);
+
+    const handleExportJson = React.useCallback(() => {
+        const rows = buildExportRows();
+        if (rows.length === 0) {
+            enqueueSnackbar("No users to export.", { variant: "info" });
+            return;
+        }
+        downloadJson(rows, "userData");
+    }, [buildExportRows]);
+
     const handleDeleteUser = React.useCallback(
         async (user: MockUser) => {
             if (
@@ -117,42 +149,17 @@ const AdminUsersDialogBodyComponent = () => {
     return (
         <>
             <MuiDialogTitle //
-                title="Mock users"
+                title="Admin"
             />
             <DialogContent>
                 {loaded && !currentUser?.is_admin ? (
                     <Alert severity="warning">
-                        You need to be signed in as an admin mock user to manage users and diagram
-                        quotas. Use the user switcher in the header to pick an admin user (e.g.
-                        &quot;Priya Admin&quot;).
+                        You need to be signed in as an admin to manage users and diagram quotas. Use
+                        the user switcher in the header to pick an admin user (e.g. &quot;
+                        Admin&quot;).
                     </Alert>
                 ) : (
                     <>
-                        <Stack
-                            direction="row" //
-                            spacing={2}
-                            sx={{ alignItems: "flex-start", justifyContent: "space-between" }}
-                            className="pb-2"
-                        >
-                            <Typography
-                                variant="body2" //
-                                color="text.secondary"
-                            >
-                                Every mock user is scoped to their own project, so their uploaded
-                                PDFs and generated diagram JSON stay separate. Add or remove users
-                                to test with more or fewer of them, and adjust each user&apos;s
-                                diagram generation quota below.
-                            </Typography>
-                            <MuiButton
-                                variant="contained"
-                                startIcon={<AddIcon />}
-                                disabled={creating}
-                                onClick={handleAddUser}
-                                sx={{ flexShrink: 0 }}
-                            >
-                                Add user
-                            </MuiButton>
-                        </Stack>
                         <TableContainer>
                             <Table size="small">
                                 <TableHead>
@@ -277,6 +284,34 @@ const AdminUsersDialogBodyComponent = () => {
                                 </TableBody>
                             </Table>
                         </TableContainer>
+                        <Stack
+                            direction="row" //
+                            spacing={1}
+                            className="pt-2"
+                        >
+                            <MuiButton
+                                variant="contained"
+                                startIcon={<AddIcon />}
+                                disabled={creating}
+                                onClick={handleAddUser}
+                            >
+                                Add user
+                            </MuiButton>
+                            <MuiButton
+                                variant="outlined"
+                                startIcon={<FileDownloadOutlinedIcon />}
+                                onClick={handleExportCsv}
+                            >
+                                Export as CSV
+                            </MuiButton>
+                            <MuiButton
+                                variant="outlined"
+                                startIcon={<FileDownloadOutlinedIcon />}
+                                onClick={handleExportJson}
+                            >
+                                Export as JSON
+                            </MuiButton>
+                        </Stack>
                     </>
                 )}
             </DialogContent>

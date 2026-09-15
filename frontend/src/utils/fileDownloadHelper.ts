@@ -15,6 +15,37 @@ export const downloadJson = (
     document.body.removeChild(link);
 };
 
+const escapeCsvValue = (value: string | number): string => {
+    const stringValue = String(value);
+    if (/[",\n]/.test(stringValue)) {
+        return `"${stringValue.replace(/"/g, '""')}"`;
+    }
+    return stringValue;
+};
+
+export const downloadCsv = (
+    rows: Record<string, string | number>[], //
+    fileName: string
+) => {
+    if (rows.length === 0) return;
+
+    const headers = Object.keys(rows[0]);
+    const lines = [
+        headers.map(escapeCsvValue).join(","),
+        ...rows.map((row) => headers.map((header) => escapeCsvValue(row[header])).join(",")),
+    ];
+
+    const blob = new Blob([lines.join("\n")], { type: "text/csv" });
+    const url = URL.createObjectURL(blob);
+    const link = document.createElement("a");
+    link.href = url;
+    link.download = `${fileName}.csv`;
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+    URL.revokeObjectURL(url);
+};
+
 export const downloadDrawioXml = (
     xmlContent: string, //
     fileName: string
