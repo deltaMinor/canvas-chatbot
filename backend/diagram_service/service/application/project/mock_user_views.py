@@ -14,12 +14,38 @@ logger = logging.getLogger(__name__)
 
 
 class MockUsersAPIView(APIView):
-    """Lists every mock user"""
+    """Lists every mock user (seeding the default set on first use), and
+    lets an admin create a new one.
+"""
 
     def get(self, request: Request):
         users = mock_users.list_users()
         return Response(
             success("Mock users retrieved successfully.", {"users": users}),
+            status=status.HTTP_200_OK,
+        )
+
+    def post(self, request: Request):
+        mock_users.require_admin(request)
+
+        new_user = mock_users.create_user()
+        return Response(
+            success("Mock user created successfully.", {"user": new_user}),
+            status=status.HTTP_201_CREATED,
+        )
+
+
+class MockUserAPIView(APIView):
+    """Admin-only endpoint to delete a mock user and everything belonging to
+    their project.
+    """
+
+    def delete(self, request: Request, user_id: str):
+        mock_users.require_admin(request)
+
+        mock_users.delete_user(user_id)
+        return Response(
+            success("Mock user deleted successfully.", {"user_id": user_id}),
             status=status.HTTP_200_OK,
         )
 

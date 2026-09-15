@@ -33,6 +33,16 @@ export const getMockUsers = async (): Promise<AxiosApiResponse<{ users: MockUser
     return await axios_api.get("mock_users");
 };
 
+export const createMockUser = async (): Promise<AxiosApiResponse<{ user: MockUser }>> => {
+    return await axios_api.post("mock_users");
+};
+
+export const deleteMockUser = async (
+    userId: string
+): Promise<AxiosApiResponse<{ user_id: string }>> => {
+    return await axios_api.delete(`mock_users/${userId}`);
+};
+
 export const patchMockUserQuota = async (
     userId: string,
     diagramQuota: number

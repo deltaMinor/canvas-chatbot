@@ -1,7 +1,9 @@
 import logging
+import uuid
 from datetime import datetime
 
 from django.conf import settings
+from gridfs import GridFSBucket
 from pymongo import MongoClient
 
 from shared_libs.exceptions.api_exceptions import BadRequest, NotFound, Unauthorized
@@ -12,6 +14,10 @@ MOCK_USER_HEADER = "X-Mock-User-Id"
 
 MOCK_USERS_COLLECTION_NAME = "mock_users"
 PROJECT_AD_COLLECTION_NAME = "project_ad"
+
+PROJECTS_COLLECTION_NAME = "projects"
+
+PROJECT_AD_FILE_BUCKET_NAME = "project_ad_file"
 
 DEFAULT_DIAGRAM_QUOTA = 5
 
@@ -24,25 +30,25 @@ DEFAULT_MOCK_USERS: list[dict] = [
         "project_id": "project_17206c2a-06f8-49f1-b775-0e60adc22a74",
     },
     {
-        "user_id": "user_1",
-        "username": "User 1",
-        "display_name": "User 1",
+        "user_id": "user_alice",
+        "username": "alice",
+        "display_name": "Alice Chen",
         "is_admin": False,
-        "project_id": "project_4c1c274c-a0d1-4b04-9587-5201e4ff737f",
+        "project_id": "project_alice_9f18f3c2",
     },
     {
-        "user_id": "user_2",
-        "username": "User 2",
-        "display_name": "User 2",
+        "user_id": "user_bob",
+        "username": "bob",
+        "display_name": "Bob Martinez",
         "is_admin": False,
-        "project_id": "project_e98fa4d9-8efc-4b0e-a3b5-cb6f38ec85dd",
+        "project_id": "project_bob_5e2a7d41",
     },
     {
-        "user_id": "admin",
+        "user_id": "user_admin",
         "username": "admin",
-        "display_name": "Admin",
+        "display_name": "Priya Admin",
         "is_admin": True,
-        "project_id": "project_72a954bc-459d-4af6-8d92-48ea88769443",
+        "project_id": "project_admin_c7b0a916",
     },
 ]
 
@@ -160,3 +166,60 @@ def set_diagram_quota(user_id: str, diagram_quota: int) -> dict:
     )
 
     return {**target_user, **_diagram_quota_for_project(project_id)}
+
+
+def create_user() -> dict:
+    ensure_seeded()
+    collection = _get_mock_users_collection()
+
+    new_index = collection.count_documents({}) + 1
+    user = {
+        "user_id": f"user_{uuid.uuid4().hex}",
+        "username": f"user{new_index}",
+        "display_name": f"User {new_index}",
+        "is_admin": False,
+        "project_id": f"project_{uuid.uuid4()}",
+    }
+    collection.insert_one({**user, "created_at": datetime.now(settings.TZINFO)})
+
+    return {**user, **_diagram_quota_for_project(user["project_id"])}
+
+
+def delete_user(user_id: str) -> None:
+    target_user = get_user(user_id)
+    if not target_user:
+        raise NotFound(f"No mock user found for user_id '{user_id}'.")
+
+    mock_users_collection = _get_mock_users_collection()
+    if mock_users_collection.estimated_document_count() <= 1:
+        raise BadRequest("Cannot delete the last remaining mock user.")
+    if target_user.get("is_admin") and mock_users_collection.count_documents(
+        {"is_admin": True}
+    ) <= 1:
+        raise BadRequest("Cannot delete the last remaining admin user.")
+
+    project_id = target_user["project_id"]
+    db = _get_db()
+
+    mock_users_collection.delete_one({"user_id": user_id})
+    db[PROJECT_AD_COLLECTION_NAME].delete_one({"project_id": project_id})
+    db[PROJECTS_COLLECTION_NAME].delete_one({"project_id": project_id})
+
+    file_ids = [
+        doc["_id"]
+        for doc in db[f"{PROJECT_AD_FILE_BUCKET_NAME}.files"].find(
+            {"project_id": project_id}, {"_id": 1}
+        )
+    ]
+    if file_ids:
+        bucket = GridFSBucket(db, bucket_name=PROJECT_AD_FILE_BUCKET_NAME)
+        for file_id in file_ids:
+            try:
+                bucket.delete(file_id)
+            except Exception:
+                logger.warning(
+                    "Failed to delete project_ad_file %s for project %s.",
+                    file_id,
+                    project_id,
+                    exc_info=True,
+                )

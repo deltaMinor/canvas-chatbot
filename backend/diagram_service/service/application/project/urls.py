@@ -1,6 +1,6 @@
 from django.urls import path
 
-from .mock_user_views import MockUserQuotaAPIView, MockUsersAPIView
+from .mock_user_views import MockUserAPIView, MockUserQuotaAPIView, MockUsersAPIView
 from .views import ProjectAPIView
 
 urlpatterns = [
@@ -12,6 +12,10 @@ urlpatterns = [
     path(
         "mock_users",
         MockUsersAPIView.as_view(),
+    ),
+    path(
+        "mock_users/<str:user_id>",
+        MockUserAPIView.as_view(),
     ),
     path(
         "mock_users/<str:user_id>/quota",

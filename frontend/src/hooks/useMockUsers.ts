@@ -5,7 +5,12 @@ import {
     getStoredMockUserId,
     setStoredMockUser,
 } from "#root/lib/mockUser";
-import { MockUser, getMockUsers } from "#root/services/api/mockUsers";
+import {
+    MockUser,
+    createMockUser,
+    deleteMockUser,
+    getMockUsers,
+} from "#root/services/api/mockUsers";
 
 export const useMockUsers = () => {
     const [users, setUsers] = React.useState<MockUser[]>([]);
@@ -38,7 +43,9 @@ export const useMockUsers = () => {
     }, []);
 
     React.useEffect(() => {
-        if (!loaded || currentUserId || users.length === 0) return;
+        if (!loaded || users.length === 0) return;
+        if (currentUserId && users.some((user) => user.user_id === currentUserId)) return;
+
         const defaultUser = users.find((user) => !user.is_admin) ?? users[0];
         setStoredMockUser(defaultUser.user_id, defaultUser.project_id);
         setCurrentUserId(defaultUser.user_id);
@@ -49,12 +56,30 @@ export const useMockUsers = () => {
         [users, currentUserId]
     );
 
-    const switchUser = React.useCallback((userId: string) => {
-        const target = users.find((user) => user.user_id === userId);
-        if (!target) return;
-        setStoredMockUser(target.user_id, target.project_id);
-        setCurrentUserId(target.user_id);
-    }, [users]);
+    const switchUser = React.useCallback(
+        (userId: string) => {
+            const target = users.find((user) => user.user_id === userId);
+            if (!target) return;
+            setStoredMockUser(target.user_id, target.project_id);
+            setCurrentUserId(target.user_id);
+        },
+        [users]
+    );
 
-    return { users, loaded, currentUser, switchUser, refresh };
+    const createUser = React.useCallback(async () => {
+        const res = await createMockUser();
+        const newUser = res.data.data.user;
+        await refresh();
+        return newUser;
+    }, [refresh]);
+
+    const deleteUser = React.useCallback(
+        async (userId: string) => {
+            await deleteMockUser(userId);
+            await refresh();
+        },
+        [refresh]
+    );
+
+    return { users, loaded, currentUser, switchUser, createUser, deleteUser, refresh };
 };
