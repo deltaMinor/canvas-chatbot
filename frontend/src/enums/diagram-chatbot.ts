@@ -11,4 +11,5 @@ export enum ChatbotState {
     LlmTopologySetupContinue = 233,
     LlmTopologySetupUploadedPdf = 234,
     LlmTopologySetupUpload = 235,
+    LlmTopologyPreflightConfirm = 236,
 }

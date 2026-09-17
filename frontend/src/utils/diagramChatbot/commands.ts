@@ -529,7 +529,7 @@ export const handleTopologySetupContinue = async (
         {
             messages: messages.length > 0 ? messages : [{ text: "" }],
         },
-        intentRxResponse.ended ? ChatbotState.Neutral : ChatbotState.LlmTopology,
+        intentRxResponse.ended ? ChatbotState.Neutral : ChatbotState.LlmTopologyPreflightConfirm,
     ];
 };
 
@@ -558,7 +558,6 @@ export const handleLlmTopologySetupUploadedPdf = async (
                 ChatbotState.LlmTopologySetupUploadedPdf,
             ];
         }
-        console.log(files.length);
         if (numInput < 1 || numInput > files.length) {
             return [
                 stringsToHandleInputFnOutput(
@@ -605,9 +604,7 @@ export const handleLlmTopologySetupUploadedPdf = async (
                         ChatbotState.LlmTopology
                     )
             );
-            console.log(firstResponse.panels[0]?.text);
             text = getIndexWithPdf(firstResponse.panels, targetFileString);
-            console.log(text);
         }
     }
     const intentRxResponse = await withIntentRXProgress(
@@ -637,7 +634,7 @@ export const handleLlmTopologySetupUploadedPdf = async (
         {
             messages: messages.length > 0 ? messages : [{ text: "" }],
         },
-        intentRxResponse.ended ? ChatbotState.Neutral : ChatbotState.LlmTopology,
+        intentRxResponse.ended ? ChatbotState.Neutral : ChatbotState.LlmTopologyPreflightConfirm,
     ];
 };
 
@@ -708,7 +705,6 @@ export const handleLlmTopologySetupUpload = async (
                 )
         );
         text = extractLastDatabasePdfIndex(firstResponse.panels) ?? "";
-        console.log(text);
         const fileName =
             extractDatabasePdfFileNameFromPanelText(firstResponse.panels[0]?.text ?? "", text) ??
             DEFAULT_TOPOLOGY_FILE_NAME;
@@ -741,6 +737,56 @@ export const handleLlmTopologySetupUpload = async (
         {
             messages: messages.length > 0 ? messages : [{ text: "" }],
         },
-        intentRxResponse.ended ? ChatbotState.Neutral : ChatbotState.LlmTopology,
+        intentRxResponse.ended ? ChatbotState.Neutral : ChatbotState.LlmTopologyPreflightConfirm,
+    ];
+};
+
+export const handleLlmTopologyPreflightConfirm = async (
+    input: ChatMessage,
+    intentContext: IntentRXContext
+): Promise<[HandleInputFnOutput, ChatbotState]> => {
+    const text = input.text ?? "";
+    const intentRxResponse = await withIntentRXProgress(
+        intentContext.sessionId,
+        intentContext.onProgress,
+        () =>
+            sendIntentRXMessage(
+                intentContext.sessionId,
+                text,
+                intentContext.projectId,
+                intentContext.conversationId,
+                ChatbotState.LlmTopology
+            )
+    );
+    let messages = await checkAndApplyTopologyFile(
+        intentContext.sessionId,
+        intentContext.projectId,
+        intentContext.conversationId,
+        intentRxResponse.panels,
+        intentRxResponse.topology_diagram_address
+    );
+    if (intentRxResponse.ended) {
+        resetTopologyFileTrackingState(intentContext.sessionId);
+    }
+    let nextChatbotState: ChatbotState;
+    switch (text) {
+        case ":quit":
+            nextChatbotState = ChatbotState.Neutral;
+            break;
+        case "yes":
+            nextChatbotState = ChatbotState.LlmTopology;
+            break;
+        case "no":
+            nextChatbotState = ChatbotState.LlmTopologySetup;
+            messages = formatSetupTopologyPanels(messages);
+            break;
+        default:
+            nextChatbotState = ChatbotState.LlmTopologyPreflightConfirm;
+            break;
+    }
+
+    return [
+        { messages: messages.length > 0 ? messages : [{ text: "" }] },
+        intentRxResponse.ended ? ChatbotState.Neutral : nextChatbotState,
     ];
 };

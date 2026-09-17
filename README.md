@@ -4,6 +4,11 @@ This is a stripped-down copy of `tm-project`, focused entirely on **the
 diagram canvas chatbot**: a chat panel that sits alongside an architecture
 diagram canvas and can drive it.
 
+Do note that as this application is made to accomodate IntentRX with minimal changes
+to the LLM workflow, and IntentRX lacks API endpoints, the chatbot relies on regex
+to parse and present IntentRX's outputs. Some of the chatbot's features may become
+deprecated if IntentRX undergoes major changes to its output format.
+
 ## Technologies Used
 
 - Django + Django REST Framework

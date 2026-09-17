@@ -33,14 +33,8 @@ export const formatIntentRXPanels = (panels: IntentRXPanel[]): ChatMessage[] =>
         .filter((text) => text.length > 0)
         .map((text) => ({ text }));
 
-const TO_REPLACE_SETUP_PARAGRAPH = [
-    "How would you like to continue?",
-    "[1] Use one of the detected files",
-    "[2] Provide a new absolute PDF path",
-    "[3] Import from database (tm_ad_db)",
-    "[4] Continue from previous run",
-    "[5] Continue without a diagram",
-].join("\n");
+const TO_REPLACE_SETUP_PARAGRAPH_RE =
+    /Detected \d+ PDF file\(s\) in the inputs directory\.\nHow would you like to continue\?\n\[1\] Use one of the detected files\n\[2\] Provide a new absolute PDF path\n\[3\] Import from database \(tm_ad_db\)\n\[4\] Continue from previous run\n\[5\] Continue without a diagram/;
 
 const REPLACEMENT_SETUP_PARAGRAPH = [
     "How would you like to continue?",
@@ -50,12 +44,12 @@ const REPLACEMENT_SETUP_PARAGRAPH = [
 ].join("\n");
 
 const addMenuOptions = (input: string): string => {
-    return input.split(TO_REPLACE_SETUP_PARAGRAPH).join(REPLACEMENT_SETUP_PARAGRAPH);
+    return input.replace(TO_REPLACE_SETUP_PARAGRAPH_RE, REPLACEMENT_SETUP_PARAGRAPH);
 };
 
 export const formatSetupTopologyPanels = (messages: ChatMessage[]): ChatMessage[] =>
     messages.map((message) =>
-        message.text?.includes(TO_REPLACE_SETUP_PARAGRAPH)
+        message.text && TO_REPLACE_SETUP_PARAGRAPH_RE.test(message.text)
             ? { text: addMenuOptions(message.text) }
             : message
     );

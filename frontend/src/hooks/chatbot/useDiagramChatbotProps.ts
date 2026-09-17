@@ -68,6 +68,7 @@ import {
     handleConfirmClearDiagramState,
     handleConfirmClearRunsState,
     handleIntentRXState,
+    handleLlmTopologyPreflightConfirm,
     handleLlmTopologySetupUpload,
     handleLlmTopologySetupUploadedPdf,
     handleNeutralState,
@@ -223,6 +224,7 @@ export const useDiagramChatbotProps = (chatbotRef: RefObject<ChatbotHandle | nul
             };
 
             const currentState = getChatbotState(activeConversationId);
+            console.log(currentState);
             switch (currentState) {
                 case ChatbotState.Neutral:
                     [resultOutput, resultState] = await handleNeutralState(input, intentContext);
@@ -276,6 +278,12 @@ export const useDiagramChatbotProps = (chatbotRef: RefObject<ChatbotHandle | nul
                     break;
                 case ChatbotState.LlmTopologySetupUpload:
                     [resultOutput, resultState] = await handleLlmTopologySetupUpload(
+                        input,
+                        intentContext
+                    );
+                    break;
+                case ChatbotState.LlmTopologyPreflightConfirm:
+                    [resultOutput, resultState] = await handleLlmTopologyPreflightConfirm(
                         input,
                         intentContext
                     );
