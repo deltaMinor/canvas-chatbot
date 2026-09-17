@@ -79,15 +79,6 @@ export const handleNeutralState = async (
                 ChatbotState.Neutral,
             ];
         }
-        // Demo/test case for the waiting UI: counts down from 5 to 1,
-        // updating the progress bar text once per second.
-        case "/wait": {
-            for (let secondsLeft = 5; secondsLeft >= 1; secondsLeft--) {
-                intentContext.onProgress(`Waiting for ${secondsLeft} seconds...`);
-                await new Promise((resolve) => setTimeout(resolve, 1000));
-            }
-            return [stringsToHandleInputFnOutput("Done waiting!"), ChatbotState.Neutral];
-        }
         case "/runs": {
             const runs = await fetchTopologyRunContexts(
                 intentContext.projectId,
@@ -97,41 +88,6 @@ export const handleNeutralState = async (
                 stringsToHandleInputFnOutput(formatTopologyRunContexts(runs)),
                 ChatbotState.Neutral,
             ];
-        }
-        case "/project_id": {
-            return [
-                stringsToHandleInputFnOutput(
-                    intentContext.projectId
-                        ? `Current project ID: ${intentContext.projectId}`
-                        : "No project is currently open."
-                ),
-                ChatbotState.Neutral,
-            ];
-        }
-        case "/pdfs": {
-            try {
-                const projectDiagramFilePdf = await getProjectDiagramFilePdfFromApi(
-                    intentContext.projectId
-                );
-                const files = getUploadedPdfs(projectDiagramFilePdf);
-
-                if (files.length === 0) {
-                    return [
-                        stringsToHandleInputFnOutput("No uploaded PDF files found."),
-                        ChatbotState.Neutral,
-                    ];
-                }
-
-                const lines = filesToList(files);
-                return [stringsToHandleInputFnOutput(lines), ChatbotState.Neutral];
-            } catch (err) {
-                return [
-                    stringsToHandleInputFnOutput(
-                        `Failed to list PDF files: ${err instanceof Error ? err.message : String(err)}`
-                    ),
-                    ChatbotState.Neutral,
-                ];
-            }
         }
         case "/start onto": {
             return startIntentRXSession("onto", ChatbotState.LlmOnto, intentContext);
